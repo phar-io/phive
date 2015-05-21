@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Phive" default="build" basedir=".">
+    <property name="source" value="src"/>
+
+    <target name="clean" description="Clean up and create artifact directories">
+        <delete dir="${basedir}/build/docs"/>
+        <delete dir="${basedir}/build/coverage"/>
+        <delete dir="${basedir}/build/logs"/>
+        <delete dir="${basedir}/build/pdepend"/>
+        <delete dir="${basedir}/build/phpab"/>
+
+        <mkdir dir="${basedir}/build/docs"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/logs"/>
+        <mkdir dir="${basedir}/build/pdepend"/>
+        <mkdir dir="${basedir}/build/phpab"/>
+    </target>
+
+    <target name="phpab">
+        <exec executable="phpab">
+            <arg line="--cache ${basedir}/build/phpab/autoload.cache -o src/autoload.php" />
+            <arg path="src" />
+        </exec>
+    </target>
+
+    <target name="phpunit" description="Run unit tests using PHPUnit">
+        <exec executable="phpunit" failonerror="true"/>
+    </target>
+
+    <target name="parallelTasks"
+            description="Run the pdepend, phpmd, phpcpd, phpcs and phploc tasks in parallel using a maximum of 2 threads.">
+        <parallel threadCount="2">
+            <sequential>
+                <antcall target="pdepend"/>
+                <antcall target="phpmd"/>
+            </sequential>
+            <antcall target="phpcpd"/>
+            <antcall target="phpcs"/>
+            <antcall target="phploc"/>
+        </parallel>
+    </target>
+
+    <target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
+        <exec executable="pdepend">
+            <arg line="--jdepend-xml=${basedir}/build/logs/jdepend.xml
+              --jdepend-chart=${basedir}/build/pdepend/dependencies.svg
+              --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg
+              ${source}"/>
+        </exec>
+    </target>
+
+    <target name="phpmd" description="Generate pmd.xml using PHPMD">
+        <exec executable="phpmd">
+            <arg line="${source}
+              xml
+              codesize,design,naming,unusedcode
+              --reportfile ${basedir}/build/logs/pmd.xml"/>
+        </exec>
+    </target>
+
+    <target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
+        <exec executable="phpcpd">
+            <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml ${source}"/>
+        </exec>
+    </target>
+
+    <target name="phploc" description="Generate phploc.xml">
+        <exec executable="phploc">
+            <arg line="--count-tests --log-xml ${basedir}/build/logs/phploc.xml ${source} tests"/>
+        </exec>
+    </target>
+
+    <target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
+        <exec executable="phpcs" output="/dev/null">
+            <arg line="--report=checkstyle
+              --report-file=${basedir}/build/logs/checkstyle.xml
+              --standard=phpcs.xml
+              ${source}"/>
+        </exec>
+    </target>
+
+    <target name="docs">
+        <delete dir="${basedir}/build/docs" />
+        <exec executable="${basedir}/phpdox" />
+    </target>
+
+    <target name="phar" description="Create PHAR archive of Phive and its dependencies">
+
+        <delete>
+            <fileset dir="${basedir}/build/phar">
+                <include name="**/*.phar"/>
+            </fileset>
+        </delete>
+
+        <exec executable="bash" outputproperty="version">
+            <arg value="-c"/>
+            <arg value="${basedir}/phive --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
+        </exec>
+
+        <exec executable="phpab" failonerror="true">
+            <arg value="--var"/>
+            <arg value="VERSION=${version}"/>
+            <arg value="--all"/>
+            <arg value="--phar"/>
+            <arg value="--alias" />
+            <arg value="phive.phar" />
+            <arg value="--gzip"/>
+            <arg value="--output"/>
+            <arg path="${basedir}/build/phar/phive-${version}.phar"/>
+            <arg value="--template"/>
+            <arg path="${basedir}/build/phar/autoload.php.in"/>
+            <arg path="${source}"/>
+        </exec>
+
+        <chmod file="${basedir}/build/phar/phive-${version}.phar" perm="ugo+rx"/>
+
+    </target>
+
+    <target name="build" depends="clean,parallelTasks,phpunit"/>
+</project>

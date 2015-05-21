@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<phive xmlns="https://phar.io/phive">
+
+    <config home="/tmp/phive" />
+
+    <phar name="phpunit" version="4.5.*" />
+    <phar name="phpab" version="nightly" verify="N" />
+
+    <phar url="https://some.tld/tool.phar" />
+
+</phive>

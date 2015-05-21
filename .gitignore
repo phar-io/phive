@@ -1,0 +1,7 @@
+/.buildpath
+/.project
+/.settings
+/.idea
+/build
+/phpunit.xml
+/vendor
