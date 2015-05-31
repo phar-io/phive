@@ -18,10 +18,11 @@ spl_autoload_register(
                 'theseer\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
                 'theseer\\phive\\installcommand' => '/commands/install/InstallCommand.php',
                 'theseer\\phive\\installcommandconfig' => '/commands/install/InstallCommandConfig.php',
-                'theseer\\phive\\installworker' => '/commands/install/InstallService.php',
+                'theseer\\phive\\installservice' => '/commands/install/InstallService.php',
                 'theseer\\phive\\phardownloader' => '/commands/install/PharDownloader.php',
                 'theseer\\phive\\pharfile' => '/commands/install/PharFile.php',
                 'theseer\\phive\\pharioclient' => '/commands/install/PharIoClient.php',
+                'theseer\\phive\\url' => '/shared/Url.php',
                 'theseer\\phive\\version' => '/commands/version/Version.php',
                 'theseer\\phive\\versioncommand' => '/commands/version/VersionCommand.php'
             );
@@ -30,6 +31,8 @@ spl_autoload_register(
         if (isset($classes[$cn])) {
             require __DIR__ . $classes[$cn];
         }
-    }
+    },
+    true,
+    false
 );
 // @codeCoverageIgnoreEnd
