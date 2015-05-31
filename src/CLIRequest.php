@@ -49,8 +49,8 @@ namespace TheSeer\Phive {
                 return;
             }
 
-            $this->command = $this->argv[1];
             if (count($this->argv) >= 2) {
+                $this->command = $this->argv[1];
                 $this->options = new CLICommandOptions(array_slice($this->argv, 2));
                 return;
             }
