@@ -1,0 +1,52 @@
+<?php
+namespace TheSeer\Phive {
+
+    class PgpKeyDownloader {
+
+        const PATH = '/pks/lookup';
+
+        /**
+         * @var Curl
+         */
+        private $curl;
+
+        /**
+         * @var array
+         */
+        private $keyServers = [];
+
+        /**
+         * @param Curl  $curl
+         * @param array $keyServers
+         */
+        public function __construct(Curl $curl, array $keyServers) {
+            $this->curl = $curl;
+            $this->keyServers = $keyServers;
+        }
+
+        /**
+         * @param string $keyId
+         *
+         * @return string
+         */
+        public function download($keyId) {
+            $params = [
+                'search' => '0x' . $keyId,
+                'op' => 'get',
+                'options' => 'mr'
+            ];
+            foreach ($this->keyServers as $keyServer) {
+                try {
+                    $result = $this->curl->get($keyServer . self::PATH, $params);
+                } catch (CurlException $e) {
+                    continue;
+                }
+                return $result;
+            }
+            throw new \InvalidArgumentException(sprintf('Key %s not found on key servers', $keyId));
+        }
+
+    }
+
+}
+
