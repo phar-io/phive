@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class GnupgKeyImporter {
+    class GnupgKeyRing implements KeyRingInterface {
 
         /**
          * @var \Gnupg
@@ -16,10 +16,11 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @param string $key
+         * @param string $keyId
+         * @return bool
          */
-        public function importKey($key) {
-            return $this->gnupg->import($key);
+        public function hasKey($keyId) {
+            return !empty($this->gnupg->keyinfo($keyId));
         }
 
     }

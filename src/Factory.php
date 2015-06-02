@@ -92,7 +92,7 @@ namespace TheSeer\Phive {
          * @return KeyService
          */
         public function getKeyService() {
-            return new KeyService($this->getPgpKeyDownloader(), $this->getGnupgKeyImporter());
+            return new KeyService($this->getPgpKeyDownloader(), $this->getGnupgKeyImporter(), $this->getGnupgKeyRing());
         }
 
         /**
@@ -103,10 +103,17 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return PgpKeyDownloader
+         * @return GnupgKeyDownloader
          */
         private function getPgpKeyDownloader() {
-            return new PgpKeyDownloader($this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php');
+            return new GnupgKeyDownloader($this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php');
+        }
+
+        /**
+         * @return GnupgKeyRing
+         */
+        private function getGnupgKeyRing() {
+            return new GnupgKeyRing($this->getGnupg());
         }
 
         /**

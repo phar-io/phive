@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class PgpKeyDownloader {
+    class GnupgKeyDownloader implements KeyDownloaderInterface {
 
         const PATH = '/pks/lookup';
 

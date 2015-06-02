@@ -4,22 +4,31 @@ namespace TheSeer\Phive {
     class KeyService {
 
         /**
-         * @var PgpKeyDownloader
+         * @var KeyDownloaderInterface
          */
         private $keyDownloader;
 
         /**
-         * @var GnupgKeyImporter
+         * @var KeyImporterInterface
          */
         private $keyImporter;
 
         /**
-         * @param PgpKeyDownloader $keyDownloader
-         * @param GnupgKeyImporter $keyImporter
+         * @var KeyRingInterface
          */
-        public function __construct(PgpKeyDownloader $keyDownloader, GnupgKeyImporter $keyImporter) {
+        private $keyRing;
+
+        /**
+         * @param KeyDownloaderInterface $keyDownloader
+         * @param KeyImporterInterface   $keyImporter
+         * @param KeyRingInterface       $keyRing
+         */
+        public function __construct(
+            KeyDownloaderInterface $keyDownloader, KeyImporterInterface $keyImporter, KeyRingInterface $keyRing
+        ) {
             $this->keyDownloader = $keyDownloader;
             $this->keyImporter = $keyImporter;
+            $this->keyRing = $keyRing;
         }
 
         /**
@@ -38,6 +47,15 @@ namespace TheSeer\Phive {
          */
         public function importKey($key) {
             return $this->keyImporter->importKey($key);
+        }
+
+        /**
+         * @param string $key
+         *
+         * @return bool
+         */
+        public function isKnownKey($key) {
+            return $this->keyRing->hasKey($key);
         }
 
     }

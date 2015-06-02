@@ -20,7 +20,7 @@ namespace TheSeer\Phive {
                 'http://example.com/pks/lookup', ['search' => '0x12345678', 'op' => 'get', 'options' => 'mr']
             )->shouldBeCalled();
 
-            $downloader = new PgpKeyDownloader($this->curl->reveal(), ['http://example.com']);
+            $downloader = new GnupgKeyDownloader($this->curl->reveal(), ['http://example.com']);
             $downloader->download('12345678');
         }
 
@@ -28,7 +28,7 @@ namespace TheSeer\Phive {
             $this->curl->get(Argument::any(), Argument::any())
                 ->willReturn('Some Key String');
 
-            $downloader = new PgpKeyDownloader($this->curl->reveal(), ['http://example.com']);
+            $downloader = new GnupgKeyDownloader($this->curl->reveal(), ['http://example.com']);
             $this->assertSame('Some Key String', $downloader->download('12345678'));
         }
 
@@ -37,7 +37,7 @@ namespace TheSeer\Phive {
          */
         public function testThrowsExceptionIfKeyWasNotFound() {
             $this->curl->get(Argument::any(), Argument::any())->willThrow(new CurlException());
-            $downloader = new PgpKeyDownloader($this->curl->reveal(), ['http://example.com']);
+            $downloader = new GnupgKeyDownloader($this->curl->reveal(), ['http://example.com']);
             $downloader->download('12345678');
         }
 
