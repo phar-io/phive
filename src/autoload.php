@@ -20,6 +20,8 @@ spl_autoload_register(
                 'theseer\\phive\\gnupgkeydownloader' => '/shared/keyservice/gpg/GnupgKeyDownloader.php',
                 'theseer\\phive\\gnupgkeyimporter' => '/shared/keyservice/gpg/GnupgKeyImporter.php',
                 'theseer\\phive\\gnupgkeyring' => '/shared/keyservice/gpg/GnupgKeyRing.php',
+                'theseer\\phive\\gnupgsignatureverifier' => '/shared/signature/gpg/GnupgSignatureVerifier.php',
+                'theseer\\phive\\gnupgverificationresult' => '/shared/signature/gpg/GnupgVerificationResult.php',
                 'theseer\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
                 'theseer\\phive\\installcommand' => '/commands/install/InstallCommand.php',
                 'theseer\\phive\\installcommandconfig' => '/commands/install/InstallCommandConfig.php',
@@ -31,7 +33,10 @@ spl_autoload_register(
                 'theseer\\phive\\phardownloader' => '/commands/install/PharDownloader.php',
                 'theseer\\phive\\pharfile' => '/commands/install/PharFile.php',
                 'theseer\\phive\\pharioclient' => '/commands/install/PharIoClient.php',
+                'theseer\\phive\\signatureservice' => '/shared/signature/SignatureService.php',
+                'theseer\\phive\\signatureverifierinterface' => '/shared/signature/SignatureVerifierInterface.php',
                 'theseer\\phive\\url' => '/shared/Url.php',
+                'theseer\\phive\\verificationfailedexception' => '/shared/signature/VerificationFailedException.php',
                 'theseer\\phive\\version' => '/commands/version/Version.php',
                 'theseer\\phive\\versioncommand' => '/commands/version/VersionCommand.php'
             );

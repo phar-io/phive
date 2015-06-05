@@ -78,7 +78,7 @@ namespace TheSeer\Phive {
          * @return SignatureService
          */
         public function getSignatureService() {
-            return new SignatureService(new SignatureVerifierLocator($this));
+            return new SignatureService($this->getGnupgSignatureVerifier());
         }
 
         /**
