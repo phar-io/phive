@@ -16,12 +16,19 @@ namespace TheSeer\Phive {
         private $keyServers = [];
 
         /**
-         * @param Curl  $curl
-         * @param Url[] $keyServers
+         * @var LoggerInterface
          */
-        public function __construct(Curl $curl, array $keyServers) {
+        private $logger;
+
+        /**
+         * @param Curl            $curl
+         * @param Url[]           $keyServers
+         * @param LoggerInterface $logger
+         */
+        public function __construct(Curl $curl, array $keyServers, LoggerInterface $logger) {
             $this->curl = $curl;
             $this->keyServers = $keyServers;
+            $this->logger = $logger;
         }
 
         /**
@@ -36,12 +43,15 @@ namespace TheSeer\Phive {
                 'options' => 'mr'
             ];
             foreach ($this->keyServers as $keyServer) {
-                try {
-                    $result = $this->curl->get($keyServer . self::PATH, $params);
-                } catch (CurlException $e) {
-                    continue;
+                $this->logger->logInfo(sprintf('Trying %s', $keyServer));
+                $result = $this->curl->get(new Url($keyServer . self::PATH), $params);
+                if ($result->getHttpCode() == 200) {
+                    $this->logger->logInfo('Sucessfully downloaded key');
+                    return $result->getBody();
                 }
-                return $result;
+                $this->logger->logWarning(
+                    sprintf('Failed with status code %s: %s', $result->getHttpCode(), $result->getErrorMessage())
+                );
             }
             throw new \InvalidArgumentException(sprintf('Key %s not found on key servers', $keyId));
         }

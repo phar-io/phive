@@ -106,7 +106,23 @@ namespace TheSeer\Phive {
          * @return GnupgKeyDownloader
          */
         private function getPgpKeyDownloader() {
-            return new GnupgKeyDownloader($this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php');
+            return new GnupgKeyDownloader(
+                $this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php', $this->getColoredConsoleLogger()
+            );
+        }
+
+        /**
+         * @return ColoredConsoleLogger
+         */
+        private function getColoredConsoleLogger() {
+            return  new ColoredConsoleLogger(ConsoleLogger::VERBOSE_INFO);
+        }
+
+        /**
+         * @return ConsoleLogger
+         */
+        private function getConsoleLogger() {
+            return new ConsoleLogger(ConsoleLogger::VERBOSE_INFO);
         }
 
         /**
