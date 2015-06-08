@@ -11,13 +11,13 @@ namespace TheSeer\Phive {
         private $curl;
 
         /**
-         * @var array
+         * @var Url[]
          */
         private $keyServers = [];
 
         /**
          * @param Curl  $curl
-         * @param array $keyServers
+         * @param Url[] $keyServers
          */
         public function __construct(Curl $curl, array $keyServers) {
             $this->curl = $curl;
