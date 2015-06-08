@@ -74,7 +74,7 @@ namespace TheSeer\Phive {
          * @return PharDownloader
          */
         private function getPharDownloader() {
-            return new PharDownloader();
+            return new PharDownloader($this->getCurl());
         }
 
         /**

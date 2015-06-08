@@ -90,7 +90,7 @@ namespace TheSeer\Phive {
          * @return PharFile
          */
         public function downloadPhar(Url $url) {
-            $this->logger->logInfo(sprintf('Downloading phar from %s', $url));
+            $this->logger->logInfo(sprintf('Downloading PHAR from %s', $url));
             return $this->downloadClient->getFile($url);
         }
 

@@ -4,21 +4,32 @@ namespace TheSeer\Phive {
     class PharDownloader {
 
         /**
-         * @param string $url
-         *
-         * @return PharFile
+         * @var Curl
          */
-        public function getFile($url) {
-            $contents = file_get_contents($url);
-            return new PharFile($this->getFilename($url), $contents);
+        private $curl;
+
+        /**
+         * @param Curl $curl
+         */
+        public function __construct(Curl $curl) {
+            $this->curl = $curl;
         }
 
         /**
-         * @param string $url
+         * @param Url $url
          *
-         * @return string
+         * @return PharFile
+         * @throws DownloadFailedException
          */
-        private function getFilename($url) {
+        public function getFile(Url $url) {
+            $result = $this->curl->get($url);
+            if ($result->getHttpCode() == 200) {
+                return new PharFile($this->getFilename($url), $result->getBody());
+            }
+            throw new DownloadFailedException($result->getErrorMessage(), $result->getHttpCode());
+        }
+
+        private function getFilename(Url $url) {
             return pathinfo($url, PATHINFO_BASENAME);
         }
     }
