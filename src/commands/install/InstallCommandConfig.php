@@ -17,9 +17,21 @@ namespace TheSeer\Phive {
             $this->cliOptions = $options;
         }
 
+        /**
+         * @return Url
+         * @throws CLICommandOptionsException
+         */
+        public function getPharUrl() {
+            return new Url($this->cliOptions->getArgument(0));
+        }
 
-        public function get
-
+        /**
+         * @return Url
+         * @throws CLICommandOptionsException
+         */
+        public function getSignatureUrl() {
+            return new Url($this->cliOptions->getArgument(0) . '.asc');
+        }
     }
 
 }

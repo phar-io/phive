@@ -16,6 +16,7 @@ namespace TheSeer\Phive {
         /**
          * InstallCommand constructor.
          *
+         * @param InstallService       $service
          * @param InstallCommandConfig $config
          */
         public function __construct(InstallService $service, InstallCommandConfig $config) {
@@ -24,7 +25,12 @@ namespace TheSeer\Phive {
         }
 
         public function execute() {
-            $this->config->
+            $phar = $this->service->downloadPhar($this->config->getPharUrl());
+            $signature = $this->service->downloadSignature($this->config->getSignatureUrl());
+            if (!$this->service->verifySignature($phar, $signature)) {
+                throw new VerificationFailedException();
+            }
+            $this->service->installPhar($phar);
         }
 
     }
