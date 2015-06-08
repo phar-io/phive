@@ -3,15 +3,45 @@ namespace TheSeer\Phive {
 
     class PharFile {
 
-        private $content;
+        /**
+         * @var string
+         */
+        private $filename = '';
 
-        public function __construct($content) {
+        /**
+         * @var string
+         */
+        private $content = '';
+
+        /**
+         * @param string $filename
+         * @param string $content
+         */
+        public function __construct($filename, $content) {
+            $this->filename = $filename;
             $this->content = $content;
         }
 
+        /**
+         * @return string
+         */
+        public function getFilename() {
+            return $this->filename;
+        }
+
+        /**
+         * @param $destination
+         */
         public function saveAs($destination) {
             file_put_contents($destination, $this->content);
             chmod($destination, 0755);
+        }
+
+        /**
+         * @return string
+         */
+        public function getContent() {
+            return $this->content;
         }
     }
 
