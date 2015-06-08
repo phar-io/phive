@@ -136,7 +136,11 @@ namespace TheSeer\Phive {
          * @return Curl
          */
         private function getCurl() {
-            return new Curl();
+            $proxy = '';
+            if (isset($_SERVER['https_proxy'])) {
+                $proxy = $_SERVER['https_proxy'];
+            }
+            return new Curl($proxy);
         }
 
         /**
