@@ -19,16 +19,26 @@ namespace TheSeer\Phive {
         private $keyRing;
 
         /**
+         * @var LoggerInterface
+         */
+        private $logger;
+
+        /**
          * @param KeyDownloaderInterface $keyDownloader
          * @param KeyImporterInterface   $keyImporter
          * @param KeyRingInterface       $keyRing
+         * @param LoggerInterface        $logger
          */
         public function __construct(
-            KeyDownloaderInterface $keyDownloader, KeyImporterInterface $keyImporter, KeyRingInterface $keyRing
+            KeyDownloaderInterface $keyDownloader,
+            KeyImporterInterface $keyImporter,
+            KeyRingInterface $keyRing,
+            LoggerInterface $logger
         ) {
             $this->keyDownloader = $keyDownloader;
             $this->keyImporter = $keyImporter;
             $this->keyRing = $keyRing;
+            $this->logger = $logger;
         }
 
         /**
@@ -37,6 +47,7 @@ namespace TheSeer\Phive {
          * @return string
          */
         public function downloadKey($keyId) {
+            $this->logger->logInfo(sprintf('Downloading key %s', $keyId));
             return $this->keyDownloader->download($keyId);
         }
 
@@ -46,6 +57,7 @@ namespace TheSeer\Phive {
          * @return mixed
          */
         public function importKey($key) {
+            $this->logger->logInfo(sprintf('Importing key'));
             return $this->keyImporter->importKey($key);
         }
 

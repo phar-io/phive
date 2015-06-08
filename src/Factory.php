@@ -92,7 +92,12 @@ namespace TheSeer\Phive {
          * @return KeyService
          */
         public function getKeyService() {
-            return new KeyService($this->getPgpKeyDownloader(), $this->getGnupgKeyImporter(), $this->getGnupgKeyRing());
+            return new KeyService(
+                $this->getPgpKeyDownloader(),
+                $this->getGnupgKeyImporter(),
+                $this->getGnupgKeyRing(),
+                $this->getColoredConsoleLogger()
+            );
         }
 
         /**
