@@ -20,6 +20,7 @@ spl_autoload_register(
                 'theseer\\phive\\curlexception' => '/shared/curl/CurlException.php',
                 'theseer\\phive\\curlresponse' => '/shared/curl/CurlResponse.php',
                 'theseer\\phive\\downloadfailedexception' => '/commands/install/DownloadFailedException.php',
+                'theseer\\phive\\environment' => '/shared/Environment.php',
                 'theseer\\phive\\factory' => '/Factory.php',
                 'theseer\\phive\\gnupgkeydownloader' => '/shared/keyservice/gpg/GnupgKeyDownloader.php',
                 'theseer\\phive\\gnupgkeyimporter' => '/shared/keyservice/gpg/GnupgKeyImporter.php',
