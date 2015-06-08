@@ -56,7 +56,10 @@ namespace TheSeer\Phive {
         private function getInstallService() {
             return new InstallService(
                 $this->getPharIoClient(),
-                $this->getPharDownloader()
+                $this->getPharDownloader(),
+                $this->getKeyService(),
+                $this->getSignatureService(),
+                $this->getColoredConsoleLogger()
             );
         }
 
