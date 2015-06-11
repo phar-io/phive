@@ -23,7 +23,7 @@ namespace TheSeer\Phive {
          * @param array  $curlInfo
          * @param string $curlError
          */
-        public function __construct($responseBody, $curlInfo, $curlError) {
+        public function __construct($responseBody, array $curlInfo, $curlError) {
             $this->responseBody = $responseBody;
             $this->curlInfo = $curlInfo;
             $this->curlError = $curlError;
