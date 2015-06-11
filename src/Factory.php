@@ -106,7 +106,6 @@ namespace TheSeer\Phive {
             return new KeyService(
                 $this->getPgpKeyDownloader(),
                 $this->getGnupgKeyImporter(),
-                $this->getGnupgKeyRing(),
                 $this->getColoredConsoleLogger()
             );
         }
@@ -140,14 +139,7 @@ namespace TheSeer\Phive {
         private function getConsoleLogger() {
             return new ConsoleLogger(ConsoleLogger::VERBOSE_INFO);
         }
-
-        /**
-         * @return GnupgKeyRing
-         */
-        private function getGnupgKeyRing() {
-            return new GnupgKeyRing($this->getGnupg());
-        }
-
+        
         /**
          * @return Curl
          */
