@@ -15,6 +15,7 @@ spl_autoload_register(
                 'theseer\\phive\\commandinterface' => '/commands/CommandInterface.php',
                 'theseer\\phive\\commandlocator' => '/commands/CommandLocator.php',
                 'theseer\\phive\\commandlocatorexception' => '/commands/CommandLocatorException.php',
+                'theseer\\phive\\config' => '/Config.php',
                 'theseer\\phive\\consolelogger' => '/shared/logger/ConsoleLogger.php',
                 'theseer\\phive\\curl' => '/shared/curl/Curl.php',
                 'theseer\\phive\\curlexception' => '/shared/curl/CurlException.php',

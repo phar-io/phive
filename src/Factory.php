@@ -82,7 +82,7 @@ namespace TheSeer\Phive {
          * @return PharInstaller
          */
         private function getPharInstaller() {
-            return new PharInstaller($this->getEnvironment()->getHomeDirectory(), getcwd());
+            return new PharInstaller($this->getConfig()->getHomeDirectory(), getcwd());
         }
 
         /**
@@ -168,10 +168,17 @@ namespace TheSeer\Phive {
         }
 
         /**
+         * @return Config
+         */
+        private function getConfig() {
+            return new Config($this->getEnvironment());
+        }
+
+        /**
          * @return \Gnupg
          */
         private function getGnupg() {
-            putenv('GNUPGHOME=' . $this->getEnvironment()->getHomeDirectory() . '/gpg');
+            putenv('GNUPGHOME=' . $this->getConfig()->getHomeDirectory() . '/gpg');
             $gpg = new \Gnupg();
             $gpg->seterrormode(\gnupg::ERROR_EXCEPTION);
             return $gpg;
