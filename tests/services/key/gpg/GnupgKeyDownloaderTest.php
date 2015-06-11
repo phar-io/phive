@@ -51,10 +51,14 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @expectedException \TheSeer\Phive\CurlException
+         * @expectedException \TheSeer\Phive\DownloadFailedException
          */
         public function testThrowsExceptionIfKeyWasNotFound() {
-            $this->curl->get(Argument::any(), Argument::any())->willThrow(new CurlException());
+            $response = $this->prophesize(CurlResponse::class);
+            $response->getHttpCode()->willReturn(404);
+            $response->getErrorMessage()->willReturn('Not Found');
+
+            $this->curl->get(Argument::any(), Argument::any())->willReturn($response);
             $downloader = new GnupgKeyDownloader(
                 $this->curl->reveal(), [new Url('https://example.com')], $this->logger->reveal()
             );

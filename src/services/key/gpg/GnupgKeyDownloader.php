@@ -35,6 +35,7 @@ namespace TheSeer\Phive {
          * @param string $keyId
          *
          * @return string
+         * @throws DownloadFailedException
          */
         public function download($keyId) {
             $params = [
@@ -53,7 +54,7 @@ namespace TheSeer\Phive {
                     sprintf('Failed with status code %s: %s', $result->getHttpCode(), $result->getErrorMessage())
                 );
             }
-            throw new \InvalidArgumentException(sprintf('Key %s not found on key servers', $keyId));
+            throw new DownloadFailedException(sprintf('Key %s not found on key servers', $keyId));
         }
 
     }
