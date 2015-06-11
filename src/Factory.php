@@ -57,6 +57,7 @@ namespace TheSeer\Phive {
             return new InstallService(
                 $this->getPharIoClient(),
                 $this->getPharDownloader(),
+                $this->getPharInstaller(),
                 $this->getKeyService(),
                 $this->getSignatureService(),
                 $this->getColoredConsoleLogger()
@@ -75,6 +76,13 @@ namespace TheSeer\Phive {
          */
         private function getPharDownloader() {
             return new PharDownloader($this->getCurl());
+        }
+
+        /**
+         * @return PharInstaller
+         */
+        private function getPharInstaller() {
+            return new PharInstaller($this->getEnvironment()->getHomeDirectory(), getcwd());
         }
 
         /**
@@ -145,17 +153,25 @@ namespace TheSeer\Phive {
          */
         private function getCurl() {
             $proxy = '';
-            if (isset($_SERVER['https_proxy'])) {
-                $proxy = $_SERVER['https_proxy'];
+            $environment = $this->getEnvironment();
+            if ($environment->hasProxy()) {
+                $proxy = $environment->getProxy();
             }
             return new Curl($proxy);
+        }
+
+        /**
+         * @return Environment
+         */
+        private function getEnvironment() {
+            return new Environment($_SERVER);
         }
 
         /**
          * @return \Gnupg
          */
         private function getGnupg() {
-            putenv('GNUPGHOME=~/.PHIVE/gpg');
+            putenv('GNUPGHOME=' . $this->getEnvironment()->getHomeDirectory() . '/gpg');
             $gpg = new \Gnupg();
             $gpg->seterrormode(\gnupg::ERROR_EXCEPTION);
             return $gpg;
