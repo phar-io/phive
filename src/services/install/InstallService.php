@@ -19,6 +19,11 @@ namespace TheSeer\Phive {
         private $pharIoClient;
 
         /**
+         * @var PharInstaller
+         */
+        private $pharInstaller;
+
+        /**
          * @var PharDownloader
          */
         private $downloadClient;
@@ -31,6 +36,7 @@ namespace TheSeer\Phive {
         /**
          * @param PharIoClient     $pharIoClient
          * @param PharDownloader   $downloadClient
+         * @param PharInstaller    $pharInstaller
          * @param KeyService       $keyService
          * @param SignatureService $signatureService
          * @param LoggerInterface  $logger
@@ -38,12 +44,14 @@ namespace TheSeer\Phive {
         public function __construct(
             PharIoClient $pharIoClient,
             PharDownloader $downloadClient,
+            PharInstaller $pharInstaller,
             KeyService $keyService,
             SignatureService $signatureService,
             LoggerInterface $logger
         ) {
             $this->pharIoClient = $pharIoClient;
             $this->downloadClient = $downloadClient;
+            $this->pharInstaller = $pharInstaller;
             $this->keyService = $keyService;
             $this->signatureService = $signatureService;
             $this->logger = $logger;
@@ -106,10 +114,11 @@ namespace TheSeer\Phive {
 
         /**
          * @param PharFile $phar
+         * @param bool     $copy
          */
-        public function installPhar(PharFile $phar) {
-            $this->logger->logInfo(sprintf('Installing phar %s', $phar->getFilename()));
-            // TODO implement
+        public function installPhar(PharFile $phar, $copy = false) {
+            $this->logger->logInfo(sprintf('Installing PHAR %s', $phar->getFilename()));
+            $this->pharInstaller->install($phar, $copy);
         }
 
     }

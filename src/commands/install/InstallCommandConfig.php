@@ -32,6 +32,13 @@ namespace TheSeer\Phive {
         public function getSignatureUrl() {
             return new Url($this->cliOptions->getArgument(0) . '.asc');
         }
+
+        /**
+         * @return bool
+         */
+        public function makeCopy() {
+            return $this->cliOptions->isSwitch('copy');
+        }
     }
 
 }
