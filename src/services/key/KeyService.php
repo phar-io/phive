@@ -30,7 +30,6 @@ namespace TheSeer\Phive {
         ) {
             $this->keyDownloader = $keyDownloader;
             $this->keyImporter = $keyImporter;
-            $this->keyRing = $keyRing;
             $this->logger = $logger;
         }
 

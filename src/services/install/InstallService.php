@@ -14,19 +14,14 @@ namespace TheSeer\Phive {
         private $signatureService;
 
         /**
+         * @var PharService
+         */
+        private $pharService;
+
+        /**
          * @var PharIoClient
          */
         private $pharIoClient;
-
-        /**
-         * @var PharInstaller
-         */
-        private $pharInstaller;
-
-        /**
-         * @var PharDownloader
-         */
-        private $downloadClient;
 
         /**
          * @var LoggerInterface
@@ -34,24 +29,18 @@ namespace TheSeer\Phive {
         private $logger;
 
         /**
-         * @param PharIoClient     $pharIoClient
-         * @param PharDownloader   $downloadClient
-         * @param PharInstaller    $pharInstaller
+         * @param PharService      $pharService
          * @param KeyService       $keyService
          * @param SignatureService $signatureService
          * @param LoggerInterface  $logger
          */
         public function __construct(
-            PharIoClient $pharIoClient,
-            PharDownloader $downloadClient,
-            PharInstaller $pharInstaller,
+            PharService $pharService,
             KeyService $keyService,
             SignatureService $signatureService,
             LoggerInterface $logger
         ) {
-            $this->pharIoClient = $pharIoClient;
-            $this->downloadClient = $downloadClient;
-            $this->pharInstaller = $pharInstaller;
+            $this->pharService = $pharService;
             $this->keyService = $keyService;
             $this->signatureService = $signatureService;
             $this->logger = $logger;
@@ -99,7 +88,7 @@ namespace TheSeer\Phive {
          */
         public function downloadPhar(Url $url) {
             $this->logger->logInfo(sprintf('Downloading PHAR from %s', $url));
-            return $this->downloadClient->getFile($url);
+            return $this->pharService->download($url);
         }
 
         /**
@@ -109,16 +98,16 @@ namespace TheSeer\Phive {
          */
         public function downloadSignature(Url $url) {
             $this->logger->logInfo(sprintf('Downloading signature from %s', $url));
-            return $this->downloadClient->getFile($url);
+            return $this->pharService->download($url);
         }
 
         /**
          * @param PharFile $phar
-         * @param bool     $copy
+         * @param bool     $makeCopy
          */
-        public function installPhar(PharFile $phar, $copy = false) {
+        public function installPhar(PharFile $phar, $makeCopy = false) {
             $this->logger->logInfo(sprintf('Installing PHAR %s', $phar->getFilename()));
-            $this->pharInstaller->install($phar, $copy);
+            $this->pharService->install($phar, $makeCopy);
         }
 
     }

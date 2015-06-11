@@ -55,9 +55,7 @@ namespace TheSeer\Phive {
          */
         private function getInstallService() {
             return new InstallService(
-                $this->getPharIoClient(),
-                $this->getPharDownloader(),
-                $this->getPharInstaller(),
+                $this->getPharService(),
                 $this->getKeyService(),
                 $this->getSignatureService(),
                 $this->getColoredConsoleLogger()
@@ -83,6 +81,13 @@ namespace TheSeer\Phive {
          */
         private function getPharInstaller() {
             return new PharInstaller($this->getConfig()->getHomeDirectory(), getcwd());
+        }
+
+        /**
+         * @return PharService
+         */
+        public function getPharService() {
+            return new PharService($this->getPharDownloader(), $this->getPharInstaller());
         }
 
         /**
@@ -139,7 +144,7 @@ namespace TheSeer\Phive {
         private function getConsoleLogger() {
             return new ConsoleLogger(ConsoleLogger::VERBOSE_INFO);
         }
-        
+
         /**
          * @return Curl
          */
