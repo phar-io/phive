@@ -39,11 +39,36 @@ namespace TheSeer\Phive {
         }
 
         /**
+         * @dataProvider getProxyProvider
+         *
+         * @param string $home
+         */
+        public function testGetHomeDirectory($home) {
+            $env = new Environment(['HOME' => $home]);
+            $this->assertSame($home, $env->getHomeDirectory());
+        }
+
+        public function getHomeDirectoryProvider() {
+            return [
+                ['https://proxy.example.com:8080'],
+                ['http://proxy.domain.tld'],
+            ];
+        }
+
+        /**
          * @expectedException \BadMethodCallException
          */
         public function testGetProxyThrowsExceptionIfProxyIsNotSet() {
             $env = new Environment([]);
             $env->getProxy();
+        }
+
+        /**
+         * @expectedException \BadMethodCallException
+         */
+        public function testGetHomeDirectoryThrowsExceptionIfHomeIsNotSet() {
+            $env = new Environment([]);
+            $env->getHomeDirectory();
         }
 
     }
