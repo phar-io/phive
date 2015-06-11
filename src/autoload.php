@@ -38,6 +38,7 @@ spl_autoload_register(
                 'theseer\\phive\\loggerinterface' => '/shared/logger/LoggerInterface.php',
                 'theseer\\phive\\phardownloader' => '/services/install/PharDownloader.php',
                 'theseer\\phive\\pharfile' => '/shared/PharFile.php',
+                'theseer\\phive\\pharinstaller' => '/services/install/PharInstaller.php',
                 'theseer\\phive\\pharioclient' => '/services/install/PharIoClient.php',
                 'theseer\\phive\\signatureservice' => '/services/signature/SignatureService.php',
                 'theseer\\phive\\signatureverifierinterface' => '/services/signature/SignatureVerifierInterface.php',
