@@ -29,6 +29,11 @@ namespace TheSeer\Phive {
             throw new DownloadFailedException($result->getErrorMessage(), $result->getHttpCode());
         }
 
+        /**
+         * @param Url $url
+         *
+         * @return string
+         */
         private function getFilename(Url $url) {
             return pathinfo($url, PATHINFO_BASENAME);
         }
