@@ -16,10 +16,10 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return string
+         * @return Directory
          */
         public function getHomeDirectory() {
-            return $this->environment->getHomeDirectory() . '/.PHIVE';
+            return $this->environment->getHomeDirectory()->child('.phive');
         }
 
     }

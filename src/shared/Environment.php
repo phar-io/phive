@@ -26,13 +26,13 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return string
+         * @return Directory
          */
         public function getHomeDirectory() {
             if (!$this->hasHomeDirectory()) {
                 throw new \BadMethodCallException('No home directory set in environment');
             }
-            return $this->server['HOME'];
+            return new Directory($this->server['HOME']);
         }
 
         /**

@@ -20,6 +20,8 @@ spl_autoload_register(
                 'theseer\\phive\\curl' => '/shared/curl/Curl.php',
                 'theseer\\phive\\curlexception' => '/shared/curl/CurlException.php',
                 'theseer\\phive\\curlresponse' => '/shared/curl/CurlResponse.php',
+                'theseer\\phive\\directory' => '/shared/Directory.php',
+                'theseer\\phive\\directoryexception' => '/shared/DirectoryException.php',
                 'theseer\\phive\\downloadfailedexception' => '/shared/DownloadFailedException.php',
                 'theseer\\phive\\environment' => '/shared/Environment.php',
                 'theseer\\phive\\factory' => '/Factory.php',

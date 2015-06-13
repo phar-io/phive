@@ -4,9 +4,9 @@ namespace TheSeer\Phive {
     class PharInstaller {
 
         /**
-         * @var string
+         * @var Directory
          */
-        private $homeDirectory = '';
+        private $pharDirectory = '';
 
         /**
          * @var string
@@ -14,11 +14,11 @@ namespace TheSeer\Phive {
         private $workingDirectory = '';
 
         /**
-         * @param string $homeDirectory
-         * @param string $workingDirectory
+         * @param Directory $pharDirectory
+         * @param Directory $workingDirectory
          */
-        public function __construct($homeDirectory, $workingDirectory) {
-            $this->homeDirectory = $homeDirectory;
+        public function __construct(Directory $pharDirectory, Directory $workingDirectory) {
+            $this->pharDirectory = $pharDirectory;
             $this->workingDirectory = $workingDirectory;
         }
 
@@ -27,9 +27,9 @@ namespace TheSeer\Phive {
          * @param bool     $copy
          */
         public function install(PharFile $phar, $copy) {
-            $destination = $this->homeDirectory . '/phars/' . $phar->getFilename();
+            $destination = $this->pharDirectory . '/' . $phar->getFilename();
             if ($copy) {
-                $destination = $this->workingDirectory . '/vendor/' . $phar->getFilename();
+                $destination = $this->workingDirectory . '/' . $phar->getFilename();
             }
             $phar->saveAs($destination);
             if (!$copy) {
@@ -41,11 +41,11 @@ namespace TheSeer\Phive {
          * @param PharFile $phar
          */
         private function link(PharFile $phar) {
-            $link = $this->workingDirectory . '/vendor/' . $phar->getFilename();
+            $link = $this->workingDirectory . '/' . $phar->getFilename();
             if (file_exists($link)) {
                 unlink($link);
             }
-            symlink($this->homeDirectory . '/phars/' . $phar->getFilename(), $link);
+            symlink($this->pharDirectory . '/' . $phar->getFilename(), $link);
         }
 
     }
