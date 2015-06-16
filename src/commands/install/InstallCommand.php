@@ -30,7 +30,7 @@ namespace TheSeer\Phive {
             if (!$this->service->verifySignature($phar, $signature)) {
                 throw new VerificationFailedException();
             }
-            $destination = $this->config->getWorkingDirectory() . $phar->getFilename();
+            $destination = $this->config->getWorkingDirectory() . '/' . $phar->getFilename();
             $this->service->installPhar($phar, $destination, $this->config->makeCopy());
         }
 
