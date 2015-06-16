@@ -4,4 +4,4 @@
 /.idea
 /build
 /phpunit.xml
-/vendor
+/tools
