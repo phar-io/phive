@@ -30,14 +30,6 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @param $destination
-         */
-        public function saveAs($destination) {
-            file_put_contents($destination, $this->content);
-            chmod($destination, 0755);
-        }
-
-        /**
          * @return string
          */
         public function getContent() {

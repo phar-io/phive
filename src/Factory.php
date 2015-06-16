@@ -32,7 +32,7 @@ namespace TheSeer\Phive {
         public function getInstallCommand(CLICommandOptions $options) {
             return new InstallCommand(
                 $this->getInstallService(),
-                new InstallCommandConfig($options)
+                new InstallCommandConfig($options, $this->getConfig())
             );
         }
 

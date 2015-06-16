@@ -21,7 +21,7 @@ namespace TheSeer\Phive {
          * @param bool     $copy
          */
         public function install(PharFile $phar, $destination, $copy) {
-            $phar->saveAs($this->pharDirectory . '/' . $phar->getFilename());
+            file_put_contents($this->pharDirectory . '/' . $phar->getFilename(), $phar->getContent());
 
             if (file_exists($destination)) {
                 unlink($destination);
