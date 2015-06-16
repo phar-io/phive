@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class Version {
+    class PhiveVersion {
 
         private $version;
 

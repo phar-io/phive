@@ -4,14 +4,14 @@ namespace TheSeer\Phive {
     class VersionCommand implements CommandInterface {
 
         /**
-         * @var Version
+         * @var PhiveVersion
          */
         private $version;
 
         /**
-         * @param Version $version
+         * @param PhiveVersion $version
          */
-        public function __construct(Version $version) {
+        public function __construct(PhiveVersion $version) {
             $this->version = $version;
         }
 

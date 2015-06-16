@@ -14,7 +14,7 @@ namespace TheSeer\Phive {
          * @return VersionCommand
          */
         public function getVersionCommand() {
-            return new VersionCommand($this->getVersion());
+            return new VersionCommand($this->getPhiveVersion());
         }
 
         /**
@@ -44,10 +44,10 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return Version
+         * @return PhiveVersion
          */
-        private function getVersion() {
-            return new Version();
+        private function getPhiveVersion() {
+            return new PhiveVersion();
         }
 
         /**

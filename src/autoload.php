@@ -42,11 +42,12 @@ spl_autoload_register(
                 'theseer\\phive\\pharinstaller' => '/services/phar/PharInstaller.php',
                 'theseer\\phive\\pharioclient' => '/services/install/PharIoClient.php',
                 'theseer\\phive\\pharservice' => '/services/phar/PharService.php',
+                'theseer\\phive\\phiveversion' => '/commands/version/PhiveVersion.php',
                 'theseer\\phive\\signatureservice' => '/services/signature/SignatureService.php',
                 'theseer\\phive\\signatureverifierinterface' => '/services/signature/SignatureVerifierInterface.php',
                 'theseer\\phive\\url' => '/shared/Url.php',
                 'theseer\\phive\\verificationfailedexception' => '/services/signature/VerificationFailedException.php',
-                'theseer\\phive\\version' => '/commands/version/Version.php',
+                'theseer\\phive\\version' => '/shared/Version.php',
                 'theseer\\phive\\versioncommand' => '/commands/version/VersionCommand.php'
             );
         }
