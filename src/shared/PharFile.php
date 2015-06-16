@@ -35,6 +35,13 @@ namespace TheSeer\Phive {
         public function getContent() {
             return $this->content;
         }
+
+        /**
+         * @return string
+         */
+        public function getSha1Hash() {
+            return sha1($this->content);
+        }
     }
 
 }
