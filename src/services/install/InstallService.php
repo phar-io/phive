@@ -103,11 +103,12 @@ namespace TheSeer\Phive {
 
         /**
          * @param PharFile $phar
+         * @param string   $destination
          * @param bool     $makeCopy
          */
-        public function installPhar(PharFile $phar, $makeCopy = false) {
+        public function installPhar(PharFile $phar, $destination, $makeCopy = false) {
             $this->logger->logInfo(sprintf('Installing PHAR %s', $phar->getFilename()));
-            $this->pharService->install($phar, $makeCopy);
+            $this->pharService->install($phar, $destination, $makeCopy);
         }
 
     }

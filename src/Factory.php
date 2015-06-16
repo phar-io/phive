@@ -80,10 +80,7 @@ namespace TheSeer\Phive {
          * @return PharInstaller
          */
         private function getPharInstaller() {
-            return new PharInstaller(
-                $this->getConfig()->getHomeDirectory()->child('phars'),
-                new Directory(getcwd() . '/tools')
-            );
+            return new PharInstaller($this->getConfig()->getHomeDirectory()->child('phars'));
         }
 
         /**

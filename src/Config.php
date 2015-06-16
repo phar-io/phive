@@ -22,6 +22,13 @@ namespace TheSeer\Phive {
             return $this->environment->getHomeDirectory()->child('.phive');
         }
 
+        /**
+         * @return Directory
+         */
+        public function getWorkingDirectory() {
+            return $this->environment->getWorkingDirectory();
+        }
+
     }
 
 }

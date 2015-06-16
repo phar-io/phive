@@ -36,6 +36,13 @@ namespace TheSeer\Phive {
         }
 
         /**
+         * @return Directory
+         */
+        public function getWorkingDirectory() {
+            return (new Directory(getcwd()))->child('tools');
+        }
+
+        /**
          * @return bool
          */
         public function hasProxy() {

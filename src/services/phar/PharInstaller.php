@@ -9,43 +9,45 @@ namespace TheSeer\Phive {
         private $pharDirectory = '';
 
         /**
-         * @var string
-         */
-        private $workingDirectory = '';
-
-        /**
          * @param Directory $pharDirectory
-         * @param Directory $workingDirectory
          */
-        public function __construct(Directory $pharDirectory, Directory $workingDirectory) {
+        public function __construct(Directory $pharDirectory) {
             $this->pharDirectory = $pharDirectory;
-            $this->workingDirectory = $workingDirectory;
         }
 
         /**
          * @param PharFile $phar
+         * @param string   $destination
          * @param bool     $copy
          */
-        public function install(PharFile $phar, $copy) {
-            $destination = $this->pharDirectory . '/' . $phar->getFilename();
-            if ($copy) {
-                $destination = $this->workingDirectory . '/' . $phar->getFilename();
+        public function install(PharFile $phar, $destination, $copy) {
+            $phar->saveAs($this->pharDirectory . '/' . $phar->getFilename());
+
+            if (file_exists($destination)) {
+                unlink($destination);
             }
-            $phar->saveAs($destination);
-            if (!$copy) {
-                $this->link($phar);
+            if ($copy) {
+                $this->copy($phar, $destination);
+            } else {
+                $this->link($phar, $destination);
             }
         }
 
         /**
          * @param PharFile $phar
+         * @param string   $destination
          */
-        private function link(PharFile $phar) {
-            $link = $this->workingDirectory . '/' . $phar->getFilename();
-            if (file_exists($link)) {
-                unlink($link);
-            }
-            symlink($this->pharDirectory . '/' . $phar->getFilename(), $link);
+        private function copy(PharFile $phar, $destination) {
+            copy($this->pharDirectory . '/' . $phar->getFilename(), $destination);
+            chmod($destination, 0755);
+        }
+
+        /**
+         * @param PharFile $phar
+         * @param string   $destination
+         */
+        private function link(PharFile $phar, $destination) {
+            symlink($this->pharDirectory . '/' . $phar->getFilename(), $destination);
         }
 
     }

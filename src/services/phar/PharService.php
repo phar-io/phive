@@ -34,10 +34,11 @@ namespace TheSeer\Phive {
 
         /**
          * @param PharFile $phar
+         * @param string   $destination
          * @param bool     $makeCopy
          */
-        public function install(PharFile $phar, $makeCopy = false) {
-            $this->installer->install($phar, $makeCopy);
+        public function install(PharFile $phar, $destination, $makeCopy = false) {
+            $this->installer->install($phar, $destination, $makeCopy);
         }
 
     }
