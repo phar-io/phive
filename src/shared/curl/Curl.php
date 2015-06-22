@@ -4,15 +4,15 @@ namespace TheSeer\Phive {
     class Curl {
 
         /**
-         * @var string
+         * @var CurlConfig
          */
-        private $httpsProxy = '';
+        private $config;
 
         /**
-         * @param string $httpsProxy
+         * @param CurlConfig $curlConfig
          */
-        public function __construct($httpsProxy = '') {
-            $this->httpsProxy = $httpsProxy;
+        public function __construct(CurlConfig $curlConfig) {
+            $this->config = $curlConfig;
         }
 
         /**
@@ -24,12 +24,7 @@ namespace TheSeer\Phive {
         public function get(Url $url, array $params = []) {
             $url .= '?' . http_build_query($params);
             $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-            if ('' !== $this->httpsProxy) {
-                curl_setopt($ch, CURLOPT_PROXY, $this->httpsProxy);
-            }
+            curl_setopt_array($ch, $this->config->asCurlOptArray());
             return new CurlResponse(curl_exec($ch), curl_getinfo($ch), curl_error($ch));
         }
 

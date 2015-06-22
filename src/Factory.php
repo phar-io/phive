@@ -149,12 +149,12 @@ namespace TheSeer\Phive {
          * @return Curl
          */
         private function getCurl() {
-            $proxy = '';
+            $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
             $environment = $this->getEnvironment();
             if ($environment->hasProxy()) {
-                $proxy = $environment->getProxy();
+                $config->setProxy($environment->getProxy());
             }
-            return new Curl($proxy);
+            return new Curl($config);
         }
 
         /**
