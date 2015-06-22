@@ -40,6 +40,27 @@ namespace TheSeer\Phive {
         }
 
         /**
+         * @return mixed
+         * @throws CLICommandOptionsException
+         */
+        public function getPharName() {
+            $filename = pathinfo($this->cliOptions->getArgument(0), PATHINFO_FILENAME);
+            preg_match('/(.*)-[0-9].[0-9].[0-9].*/',$filename, $matches);
+            return $matches[1];
+        }
+
+        /**
+         * @return Version
+         * @throws CLICommandOptionsException
+         */
+        public function getPharVersion() {
+            $filename = pathinfo($this->cliOptions->getArgument(0), PATHINFO_FILENAME);
+            preg_match('/-([0-9].[0-9].[0-9].*)/',$filename, $matches);
+            return new Version($matches[1]);
+        }
+
+
+        /**
          * @return Url
          * @throws CLICommandOptionsException
          */
