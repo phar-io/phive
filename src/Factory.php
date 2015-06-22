@@ -4,6 +4,11 @@ namespace TheSeer\Phive {
     class Factory {
 
         /**
+         * @var Curl
+         */
+        private $curl;
+
+        /**
          * @return CLI
          */
         public function getCLI() {
@@ -149,12 +154,19 @@ namespace TheSeer\Phive {
          * @return Curl
          */
         private function getCurl() {
-            $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
-            $environment = $this->getEnvironment();
-            if ($environment->hasProxy()) {
-                $config->setProxy($environment->getProxy());
+            if (null === $this->curl) {
+                $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
+                $config->addLocalSslCertificate(
+                    new Url('https://hkps.pool.sks-keyservers.net'),
+                    __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+                );
+                $environment = $this->getEnvironment();
+                if ($environment->hasProxy()) {
+                    $config->setProxy($environment->getProxy());
+                }
+                $this->curl = new Curl($config);
             }
-            return new Curl($config);
+            return $this->curl;
         }
 
         /**

@@ -22,9 +22,11 @@ namespace TheSeer\Phive {
          * @return CurlResponse
          */
         public function get(Url $url, array $params = []) {
-            $url .= '?' . http_build_query($params);
-            $ch = curl_init($url);
+            $ch = curl_init($url . '?' . http_build_query($params));
             curl_setopt_array($ch, $this->config->asCurlOptArray());
+            if ($this->config->hasLocalSslCertificate($url)) {
+                curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($url));
+            }
             return new CurlResponse(curl_exec($ch), curl_getinfo($ch), curl_error($ch));
         }
 

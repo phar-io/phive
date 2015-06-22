@@ -19,6 +19,11 @@ namespace TheSeer\Phive {
         private $userAgent = '';
 
         /**
+         * @var array
+         */
+        private $localSslCertificates = [];
+
+        /**
          * @param string $userAgent
          */
         public function __construct($userAgent) {
@@ -35,6 +40,32 @@ namespace TheSeer\Phive {
             if ('' !== $username && '' !== $password) {
                 $this->proxyCredentials = sprintf('%:%', $username, $password);
             }
+        }
+
+        /**
+         * @param Url    $url
+         * @param string $certFilename
+         */
+        public function addLocalSslCertificate(Url $url, $certFilename) {
+            $this->localSslCertificates[parse_url($url, PHP_URL_HOST)] = $certFilename;
+        }
+
+        /**
+         * @param Url $url
+         *
+         * @return bool
+         */
+        public function hasLocalSslCertificate(Url $url) {
+            return array_key_exists(parse_url($url, PHP_URL_HOST), $this->localSslCertificates);
+        }
+
+        /**
+         * @param Url $url
+         *
+         * @return string
+         */
+        public function getLocalSslCertificate(Url $url) {
+            return $this->localSslCertificates[parse_url($url, PHP_URL_HOST)];
         }
 
         /**
