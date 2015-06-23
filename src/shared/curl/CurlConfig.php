@@ -9,7 +9,7 @@ namespace TheSeer\Phive {
         private $proxyUrl;
 
         /**
-         * @var string
+         * @var string optional proxy credentials
          */
         private $proxyCredentials;
 
@@ -38,7 +38,7 @@ namespace TheSeer\Phive {
         public function setProxy($url, $username = '', $password = '') {
             $this->proxyUrl = $url;
             if ('' !== $username && '' !== $password) {
-                $this->proxyCredentials = sprintf('%:%', $username, $password);
+                $this->proxyCredentials = sprintf('%s:%s', $username, $password);
             }
         }
 
@@ -63,8 +63,12 @@ namespace TheSeer\Phive {
          * @param Url $url
          *
          * @return string
+         * @throws CurlException
          */
         public function getLocalSslCertificate(Url $url) {
+            if (!$this->hasLocalSslCertificate($url)) {
+                throw new CurlException(sprintf('No local certificate for %s found', (string)$url));
+            }
             return $this->localSslCertificates[parse_url($url, PHP_URL_HOST)];
         }
 
