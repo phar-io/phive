@@ -43,33 +43,34 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @param Url    $url
+         * @param string $hostname
          * @param string $certFilename
          */
-        public function addLocalSslCertificate(Url $url, $certFilename) {
-            $this->localSslCertificates[parse_url($url, PHP_URL_HOST)] = $certFilename;
+        public function addLocalSslCertificate($hostname, $certFilename) {
+            $this->localSslCertificates[$hostname] = $certFilename;
         }
 
         /**
-         * @param Url $url
+         * @param string $hostname
          *
          * @return bool
+         *
          */
-        public function hasLocalSslCertificate(Url $url) {
-            return array_key_exists(parse_url($url, PHP_URL_HOST), $this->localSslCertificates);
+        public function hasLocalSslCertificate($hostname) {
+            return array_key_exists($hostname, $this->localSslCertificates);
         }
 
         /**
-         * @param Url $url
+         * @param string $hostname
          *
          * @return string
          * @throws CurlException
          */
-        public function getLocalSslCertificate(Url $url) {
-            if (!$this->hasLocalSslCertificate($url)) {
-                throw new CurlException(sprintf('No local certificate for %s found', (string)$url));
+        public function getLocalSslCertificate($hostname) {
+            if (!$this->hasLocalSslCertificate($hostname)) {
+                throw new CurlException(sprintf('No local certificate for hostname %s found', $hostname));
             }
-            return $this->localSslCertificates[parse_url($url, PHP_URL_HOST)];
+            return $this->localSslCertificates[$hostname];
         }
 
         /**

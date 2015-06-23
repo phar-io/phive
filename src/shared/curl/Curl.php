@@ -24,8 +24,9 @@ namespace TheSeer\Phive {
         public function get(Url $url, array $params = []) {
             $ch = curl_init($url . '?' . http_build_query($params));
             curl_setopt_array($ch, $this->config->asCurlOptArray());
-            if ($this->config->hasLocalSslCertificate($url)) {
-                curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($url));
+            $hostname = parse_url((string)$url, PHP_URL_HOST);
+            if ($this->config->hasLocalSslCertificate($hostname)) {
+                curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname));
             }
             return new CurlResponse(curl_exec($ch), curl_getinfo($ch), curl_error($ch));
         }

@@ -44,7 +44,7 @@ namespace TheSeer\Phive {
 
         public function testAddsLocalSslCertificate() {
             $config = new CurlConfig('foo');
-            $url = new Url('https://example.com');
+            $url = 'example.com';
             $this->assertFalse($config->hasLocalSslCertificate($url));
             $config->addLocalSslCertificate($url, 'cert.pem');
             $this->assertTrue($config->hasLocalSslCertificate($url));
@@ -56,7 +56,7 @@ namespace TheSeer\Phive {
          */
         public function testGetLocalSslCertificateThrowsExceptionIfCertificateDoesNotExist() {
             $config = new CurlConfig('foo');
-            $config->getLocalSslCertificate(new Url('https://example.com'));
+            $config->getLocalSslCertificate('example.com');
         }
 
     }

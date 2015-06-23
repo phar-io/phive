@@ -157,8 +157,7 @@ namespace TheSeer\Phive {
             if (null === $this->curl) {
                 $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
                 $config->addLocalSslCertificate(
-                    new Url('https://hkps.pool.sks-keyservers.net'),
-                    __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+                    'hkps.pool.sks-keyservers.net', __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
                 );
                 $environment = $this->getEnvironment();
                 if ($environment->hasProxy()) {
