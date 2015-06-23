@@ -21,6 +21,16 @@ namespace TheSeer\Phive {
             ];
         }
 
+        public function testFilename() {
+            $file = new PharFile('foo.phar', 'bar');
+            $this->assertSame('foo.phar', $file->getFilename());
+        }
+
+        public function testContent() {
+            $file = new PharFile('foo.phar', 'bar');
+            $this->assertSame('bar', $file->getContent());
+        }
+
     }
 
 }
