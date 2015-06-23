@@ -4,14 +4,14 @@ namespace TheSeer\Phive {
     class SignatureService {
 
         /**
-         * @var SignatureVerifierInterface
+         * @var SignatureVerifier
          */
         private $signatureVerifier;
 
         /**
-         * @param SignatureVerifierInterface $signatureVerifier
+         * @param SignatureVerifier $signatureVerifier
          */
-        public function __construct(SignatureVerifierInterface $signatureVerifier) {
+        public function __construct(SignatureVerifier $signatureVerifier) {
             $this->signatureVerifier = $signatureVerifier;
         }
 

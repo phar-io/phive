@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    interface KeyImporterInterface {
+    interface KeyImporter {
 
         /**
          * @param string $key

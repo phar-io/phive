@@ -9,7 +9,7 @@ namespace TheSeer\Phive {
 
         public function testValidCLIRequestGetsExecuted() {
             $request = new CLIRequest([]);
-            $command = $this->prophesize(CommandInterface::class);
+            $command = $this->prophesize(Command::class);
 
             $locator  =  $this->prophesize(CommandLocator::class);
             $locator->getCommandForRequest($request)->willReturn($command->reveal())->shouldBeCalled();

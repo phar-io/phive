@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class ConsoleLogger implements LoggerInterface {
+    class ConsoleLogger implements Logger {
 
         const VERBOSE_ERROR = 1;
         const VERBOSE_WARNING = 2;

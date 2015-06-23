@@ -12,13 +12,13 @@ namespace TheSeer\Phive {
         private $curl;
 
         /**
-         * @var LoggerInterface|ObjectProphecy
+         * @var Logger|ObjectProphecy
          */
         private $logger;
 
         public function setUp() {
             $this->curl = $this->prophesize(Curl::class);
-            $this->logger = $this->prophesize(LoggerInterface::class);
+            $this->logger = $this->prophesize(Logger::class);
         }
 
         public function testInvokesCurlWithExpectedParams() {

@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    interface KeyDownloaderInterface {
+    interface KeyDownloader {
 
         public function download($keyId);
 

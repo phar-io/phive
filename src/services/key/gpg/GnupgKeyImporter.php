@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class GnupgKeyImporter implements KeyImporterInterface {
+    class GnupgKeyImporter implements KeyImporter {
 
         /**
          * @var \Gnupg

@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class InstallCommand implements CommandInterface {
+    class InstallCommand implements Command {
 
         /**
          * @var InstallService

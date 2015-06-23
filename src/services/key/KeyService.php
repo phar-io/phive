@@ -4,29 +4,29 @@ namespace TheSeer\Phive {
     class KeyService {
 
         /**
-         * @var KeyDownloaderInterface
+         * @var KeyDownloader
          */
         private $keyDownloader;
 
         /**
-         * @var KeyImporterInterface
+         * @var KeyImporter
          */
         private $keyImporter;
 
         /**
-         * @var LoggerInterface
+         * @var Logger
          */
         private $logger;
 
         /**
-         * @param KeyDownloaderInterface $keyDownloader
-         * @param KeyImporterInterface   $keyImporter
-         * @param LoggerInterface        $logger
+         * @param KeyDownloader $keyDownloader
+         * @param KeyImporter   $keyImporter
+         * @param Logger        $logger
          */
         public function __construct(
-            KeyDownloaderInterface $keyDownloader,
-            KeyImporterInterface $keyImporter,
-            LoggerInterface $logger
+            KeyDownloader $keyDownloader,
+            KeyImporter $keyImporter,
+            Logger $logger
         ) {
             $this->keyDownloader = $keyDownloader;
             $this->keyImporter = $keyImporter;

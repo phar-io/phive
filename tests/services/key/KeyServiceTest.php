@@ -6,24 +6,24 @@ namespace TheSeer\Phive {
     class KeyServiceTest extends \PHPUnit_Framework_TestCase {
 
         /**
-         * @var KeyDownloaderInterface|ObjectProphecy
+         * @var KeyDownloader|ObjectProphecy
          */
         private $downloader;
 
         /**
-         * @var KeyImporterInterface|ObjectProphecy
+         * @var KeyImporter|ObjectProphecy
          */
         private $importer;
 
         /**
-         * @var LoggerInterface|ObjectProphecy
+         * @var Logger|ObjectProphecy
          */
         private $logger;
 
         public function setUp() {
-            $this->downloader = $this->prophesize(KeyDownloaderInterface::class);
-            $this->importer = $this->prophesize(KeyImporterInterface::class);
-            $this->logger = $this->prophesize(LoggerInterface::class);
+            $this->downloader = $this->prophesize(KeyDownloader::class);
+            $this->importer = $this->prophesize(KeyImporter::class);
+            $this->logger = $this->prophesize(Logger::class);
         }
 
         public function testInvokesKeyDownloader() {

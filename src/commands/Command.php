@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    interface CommandInterface {
+    interface Command {
 
         public function execute();
 

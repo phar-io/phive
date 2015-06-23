@@ -19,7 +19,7 @@ namespace TheSeer\Phive {
          * @param CLIRequest $request
          *
          * @throws CommandLocatorException
-         * @return CommandInterface
+         * @return Command
          */
         public function getCommandForRequest(CLIRequest $request) {
             $command = $request->getCommand();

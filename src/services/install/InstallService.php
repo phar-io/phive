@@ -24,7 +24,7 @@ namespace TheSeer\Phive {
         private $pharIoClient;
 
         /**
-         * @var LoggerInterface
+         * @var Logger
          */
         private $logger;
 
@@ -32,13 +32,13 @@ namespace TheSeer\Phive {
          * @param PharService      $pharService
          * @param KeyService       $keyService
          * @param SignatureService $signatureService
-         * @param LoggerInterface  $logger
+         * @param Logger  $logger
          */
         public function __construct(
             PharService $pharService,
             KeyService $keyService,
             SignatureService $signatureService,
-            LoggerInterface $logger
+            Logger $logger
         ) {
             $this->pharService = $pharService;
             $this->keyService = $keyService;

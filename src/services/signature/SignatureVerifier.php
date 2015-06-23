@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    interface SignatureVerifierInterface {
+    interface SignatureVerifier {
 
         /**
          * @param string $message

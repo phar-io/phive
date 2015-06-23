@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class VersionCommand implements CommandInterface {
+    class VersionCommand implements Command {
 
         /**
          * @var PhiveVersion

@@ -6,12 +6,12 @@ namespace TheSeer\Phive {
     class SignatureServiceTest extends \PHPUnit_Framework_TestCase {
 
         /**
-         * @var SignatureVerifierInterface|ObjectProphecy
+         * @var SignatureVerifier|ObjectProphecy
          */
         private $verifier;
 
         public function setUp() {
-            $this->verifier = $this->prophesize(SignatureVerifierInterface::class);
+            $this->verifier = $this->prophesize(SignatureVerifier::class);
         }
 
         public function testInvokesSignatureVerifier() {

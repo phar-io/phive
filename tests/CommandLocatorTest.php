@@ -19,7 +19,7 @@ namespace TheSeer\Phive {
             } else {
                 $method = new MethodProphecy($factory, $factoryMethod, []);
             }
-            $method->willReturn($this->prophesize(CommandInterface::class)->reveal());
+            $method->willReturn($this->prophesize(Command::class)->reveal());
 
             $factory->addMethodProphecy($method);
             $locator = new CommandLocator($factory->reveal());
@@ -29,7 +29,7 @@ namespace TheSeer\Phive {
             $request->getCommandOptions()->willReturn($arguments);
 
             $result = $locator->getCommandForRequest($request->reveal());
-            $this->assertInstanceOf(CommandInterface::class, $result);
+            $this->assertInstanceOf(Command::class, $result);
         }
 
         public function commandProvider() {

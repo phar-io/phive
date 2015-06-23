@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class GnupgKeyDownloader implements KeyDownloaderInterface {
+    class GnupgKeyDownloader implements KeyDownloader {
 
         const PATH = '/pks/lookup';
 
@@ -16,16 +16,16 @@ namespace TheSeer\Phive {
         private $keyServers = [];
 
         /**
-         * @var LoggerInterface
+         * @var Logger
          */
         private $logger;
 
         /**
          * @param Curl            $curl
          * @param Url[]           $keyServers
-         * @param LoggerInterface $logger
+         * @param Logger $logger
          */
-        public function __construct(Curl $curl, array $keyServers, LoggerInterface $logger) {
+        public function __construct(Curl $curl, array $keyServers, Logger $logger) {
             $this->curl = $curl;
             $this->keyServers = $keyServers;
             $this->logger = $logger;

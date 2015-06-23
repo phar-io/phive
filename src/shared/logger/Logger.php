@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    interface LoggerInterface {
+    interface Logger {
 
         /**
          * @param string $infoMessage
