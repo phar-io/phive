@@ -85,7 +85,9 @@ namespace TheSeer\Phive {
          * @return PharInstaller
          */
         private function getPharInstaller() {
-            return new PharInstaller($this->getConfig()->getHomeDirectory()->child('phars'));
+            return new PharInstaller(
+                $this->getConfig()->getHomeDirectory()->child('phars'), $this->getColoredConsoleLogger()
+            );
         }
 
         /**
