@@ -42,20 +42,19 @@ namespace TheSeer\Phive {
 
         public function execute() {
             $phar = $this->repository->getByUrl($this->config->getPharUrl());
-            $destination = $this->getDestination($phar->getFile());
+            $destination = $this->getDestination($phar);
             $this->pharService->install($phar->getFile(), $destination, $this->config->makeCopy());
             $this->repository->addUsage($phar, $destination);
 
         }
 
         /**
-         * @param File $pharFile
+         * @param Phar $phar
          *
          * @return string
          */
-        private function getDestination(File $pharFile) {
-            $filename = pathinfo($pharFile->getFilename(), PATHINFO_FILENAME);
-            return $this->config->getWorkingDirectory() . DIRECTORY_SEPARATOR . $filename;
+        private function getDestination(Phar $phar) {
+            return $this->config->getWorkingDirectory() . DIRECTORY_SEPARATOR . $phar->getName();
         }
 
 
