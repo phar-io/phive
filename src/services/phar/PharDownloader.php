@@ -9,24 +9,66 @@ namespace TheSeer\Phive {
         private $curl;
 
         /**
-         * @param Curl $curl
+         * @var SignatureService
          */
-        public function __construct(Curl $curl) {
+        private $signatureService;
+
+        /**
+         * @param Curl             $curl
+         * @param SignatureService $signatureService
+         */
+        public function __construct(Curl $curl, SignatureService $signatureService) {
             $this->curl = $curl;
+            $this->signatureService = $signatureService;
         }
 
         /**
          * @param Url $url
          *
-         * @return PharFile
+         * @return File
+         * @throws DownloadFailedException
+         * @throws VerificationFailedException
+         */
+        public function download(Url $url) {
+            $pharFile = $this->downloadFile($url);
+            $signatureFile = $this->downloadFile($this->getSignatureUrl($url));
+            if (!$this->verifySignature($pharFile, $signatureFile)) {
+                throw new VerificationFailedException('Signature could not be verified');
+            }
+            return $pharFile;
+        }
+
+        /**
+         * @param Url $url
+         *
+         * @return File
          * @throws DownloadFailedException
          */
-        public function getFile(Url $url) {
+        private function downloadFile(Url $url) {
             $result = $this->curl->get($url);
-            if ($result->getHttpCode() == 200) {
-                return new PharFile($this->getFilename($url), $result->getBody());
+            if ($result->getHttpCode() !== 200) {
+                throw new DownloadFailedException($result->getErrorMessage(), $result->getHttpCode());
             }
-            throw new DownloadFailedException($result->getErrorMessage(), $result->getHttpCode());
+            return new File($this->getFilename($url), $result->getBody());
+        }
+
+        /**
+         * @param File $phar
+         * @param File $signature
+         *
+         * @return bool
+         */
+        private function verifySignature(File $phar, File $signature) {
+            return $this->signatureService->verify($phar->getContent(), $signature->getContent());
+        }
+
+        /**
+         * @param Url $pharUrl
+         *
+         * @return Url
+         */
+        private function getSignatureUrl(Url $pharUrl) {
+            return new Url($pharUrl . '.asc');
         }
 
         /**

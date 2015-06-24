@@ -25,19 +25,19 @@ namespace TheSeer\Phive {
         /**
          * @param Url $pharUrl
          *
-         * @return PharFile
+         * @return File
          * @throws DownloadFailedException
          */
         public function download(Url $pharUrl) {
-            return $this->downloader->getFile($pharUrl);
+            return $this->downloader->download($pharUrl);
         }
 
         /**
-         * @param PharFile $phar
+         * @param File $phar
          * @param string   $destination
          * @param bool     $makeCopy
          */
-        public function install(PharFile $phar, $destination, $makeCopy = false) {
+        public function install(File $phar, $destination, $makeCopy = false) {
             $this->installer->install($phar, $destination, $makeCopy);
         }
 

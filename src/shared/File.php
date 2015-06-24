@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class PharFile {
+    class File {
 
         /**
          * @var string

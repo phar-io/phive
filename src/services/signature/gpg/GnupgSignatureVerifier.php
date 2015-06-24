@@ -12,10 +12,17 @@ namespace TheSeer\Phive {
         private $gpg;
 
         /**
-         * @param \Gnupg $gpg
+         * @var KeyService
          */
-        public function __construct(\Gnupg $gpg) {
+        private $keyService;
+
+        /**
+         * @param \Gnupg     $gpg
+         * @param KeyService $keyService
+         */
+        public function __construct(\Gnupg $gpg, KeyService $keyService) {
             $this->gpg = $gpg;
+            $this->keyService = $keyService;
         }
 
         /**
@@ -27,6 +34,10 @@ namespace TheSeer\Phive {
          */
         public function verify($message, $signature) {
             try {
+                $result = new GnupgVerificationResult($this->gpg->verify($message, $signature)[0]);
+                if (!$result->wasVerificationSuccessful() && !$result->isKnownKey()) {
+                    $this->keyService->importKey($this->keyService->downloadKey($result->getFingerprint()));
+                }
                 return new GnupgVerificationResult($this->gpg->verify($message, $signature)[0]);
             } catch (\Exception $e) {
                 throw new VerificationFailedException($e->getMessage(), $e->getCode(), $e);

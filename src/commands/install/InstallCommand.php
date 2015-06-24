@@ -4,35 +4,60 @@ namespace TheSeer\Phive {
     class InstallCommand implements Command {
 
         /**
-         * @var InstallService
-         */
-        private $service;
-
-        /**
          * @var InstallCommandConfig
          */
         private $config;
 
         /**
+         * @var PharRepository
+         */
+        private $repository;
+
+        /**
+         * @var PharService
+         */
+        private $pharService;
+
+        /**
+         * @var Logger
+         */
+        private $logger;
+
+        /**
          * InstallCommand constructor.
          *
-         * @param InstallService       $service
          * @param InstallCommandConfig $config
+         * @param PharRepository       $repository
+         * @param PharService          $pharService
+         * @param Logger               $logger
          */
-        public function __construct(InstallService $service, InstallCommandConfig $config) {
-            $this->service = $service;
+        public function __construct(
+            InstallCommandConfig $config, PharRepository $repository, PharService $pharService, Logger $logger
+        ) {
             $this->config = $config;
+            $this->repository = $repository;
+            $this->pharService = $pharService;
+            $this->logger = $logger;
         }
 
         public function execute() {
-            $phar = $this->service->downloadPhar($this->config->getPharUrl());
-            $signature = $this->service->downloadSignature($this->config->getSignatureUrl());
-            if (!$this->service->verifySignature($phar, $signature)) {
-                throw new VerificationFailedException();
-            }
-            $destination = $this->config->getWorkingDirectory() . '/' . $phar->getFilename();
-            $this->service->installPhar($phar, $destination, $this->config->makeCopy());
+            $phar = $this->repository->getByUrl($this->config->getPharUrl());
+            $destination = $this->getDestination($phar->getFile());
+            $this->pharService->install($phar->getFile(), $destination, $this->config->makeCopy());
+            $this->repository->addUsage($phar, $destination);
+
         }
+
+        /**
+         * @param File $pharFile
+         *
+         * @return string
+         */
+        private function getDestination(File $pharFile) {
+            $filename = pathinfo($pharFile->getFilename(), PATHINFO_FILENAME);
+            return $this->config->getWorkingDirectory() . DIRECTORY_SEPARATOR . $filename;
+        }
+
 
     }
 

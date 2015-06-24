@@ -14,16 +14,16 @@ namespace TheSeer\Phive {
         private $version;
 
         /**
-         * @var PharFile
+         * @var File
          */
         private $file;
 
         /**
          * @param string   $name
          * @param Version  $version
-         * @param PharFile $file
+         * @param File $file
          */
-        public function __construct($name, Version $version, PharFile $file) {
+        public function __construct($name, Version $version, File $file) {
             $this->name = $name;
             $this->file = $file;
             $this->version = $version;
@@ -44,7 +44,7 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return PharFile
+         * @return File
          */
         public function getFile() {
             return $this->file;

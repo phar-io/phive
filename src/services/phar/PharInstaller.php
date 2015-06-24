@@ -16,13 +16,11 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @param PharFile $phar
+         * @param File $phar
          * @param string   $destination
          * @param bool     $copy
          */
-        public function install(PharFile $phar, $destination, $copy) {
-            file_put_contents($this->pharDirectory . '/' . $phar->getFilename(), $phar->getContent());
-
+        public function install(File $phar, $destination, $copy) {
             if (file_exists($destination)) {
                 unlink($destination);
             }
@@ -34,20 +32,20 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @param PharFile $phar
+         * @param File $phar
          * @param string   $destination
          */
-        private function copy(PharFile $phar, $destination) {
-            copy($this->pharDirectory . '/' . $phar->getFilename(), $destination);
+        private function copy(File $phar, $destination) {
+            copy($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
             chmod($destination, 0755);
         }
 
         /**
-         * @param PharFile $phar
+         * @param File $phar
          * @param string   $destination
          */
-        private function link(PharFile $phar, $destination) {
-            symlink($this->pharDirectory . '/' . $phar->getFilename(), $destination);
+        private function link(File $phar, $destination) {
+            symlink($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
         }
 
     }

@@ -30,14 +30,26 @@ namespace TheSeer\Phive {
         }
 
         /**
+         * @return PharDatabase
+         */
+        private function getPharDatabase() {
+            return new PharDatabase(
+                $this->getConfig()->getHomeDirectory() . '/phars.xml',
+                $this->getConfig()->getHomeDirectory()->child('phars')
+            );
+        }
+
+        /**
          * @param CLICommandOptions $options
          *
          * @return InstallCommand
          */
         public function getInstallCommand(CLICommandOptions $options) {
             return new InstallCommand(
-                $this->getInstallService(),
-                new InstallCommandConfig($options, $this->getConfig())
+                new InstallCommandConfig($options, $this->getConfig()),
+                $this->getPharRepository(),
+                $this->getPharService(),
+                $this->getColoredConsoleLogger()
             );
         }
 
@@ -56,18 +68,6 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return InstallService
-         */
-        private function getInstallService() {
-            return new InstallService(
-                $this->getPharService(),
-                $this->getKeyService(),
-                $this->getSignatureService(),
-                $this->getColoredConsoleLogger()
-            );
-        }
-
-        /**
          * @return PharIoClient
          */
         private function getPharIoClient() {
@@ -78,7 +78,7 @@ namespace TheSeer\Phive {
          * @return PharDownloader
          */
         private function getPharDownloader() {
-            return new PharDownloader($this->getCurl());
+            return new PharDownloader($this->getCurl(), $this->getSignatureService());
         }
 
         /**
@@ -106,7 +106,7 @@ namespace TheSeer\Phive {
          * @return GnupgSignatureVerifier
          */
         public function getGnupgSignatureVerifier() {
-            return new GnupgSignatureVerifier($this->getGnupg());
+            return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
         }
 
         /**
@@ -188,8 +188,21 @@ namespace TheSeer\Phive {
         private function getGnupg() {
             putenv('GNUPGHOME=' . $this->getConfig()->getHomeDirectory()->child('gpg'));
             $gpg = new \Gnupg();
-            $gpg->seterrormode(\gnupg::ERROR_EXCEPTION);
+            $gpg->seterrormode(\Gnupg::ERROR_EXCEPTION);
             return $gpg;
+        }
+
+        /**
+         * @return PharRepository
+         */
+        private function getPharRepository() {
+            return new PharRepository(
+                $this->getPharDatabase(),
+                $this->getPharService(),
+                $this->getSignatureService(),
+                $this->getKeyService(),
+                $this->getColoredConsoleLogger()
+            );
         }
 
     }

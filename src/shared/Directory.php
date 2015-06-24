@@ -35,7 +35,7 @@ namespace TheSeer\Phive {
          */
         public function child($child, $mode = NULL) {
             return new Directory(
-                $this->path . '/' . $child,
+                $this->path . DIRECTORY_SEPARATOR . $child,
                 $mode !== NULL ? $mode : $this->mode
             );
         }

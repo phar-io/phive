@@ -10,8 +10,14 @@ namespace TheSeer\Phive {
          */
         private $curl;
 
+        /**
+         * @var SignatureService|ObjectProphecy
+         */
+        private $signatureService;
+
         public function setUp() {
             $this->curl = $this->prophesize(Curl::class);
+            $this->signatureService = $this->prophesize(SignatureService::class);
         }
 
         /**
@@ -24,8 +30,8 @@ namespace TheSeer\Phive {
             $url = new Url('https://example.com/foo.phar');
             $curlReponse = new CurlResponse('', ['http_code' => $statusCode], '');
             $this->curl->get($url)->willReturn($curlReponse);
-            $downloader = new PharDownloader($this->curl->reveal());
-            $downloader->getFile($url);
+            $downloader = new PharDownloader($this->curl->reveal(), $this->signatureService->reveal());
+            $downloader->download($url);
         }
 
         /**
@@ -42,13 +48,17 @@ namespace TheSeer\Phive {
 
         public function testReturnsExpectedPharFileIfStatusCodeIs200() {
             $url = new Url('https://example.com/foo.phar');
+            $signatureUrl = new Url('https://example.com/foo.phar.asc');
             $curlReponse = new CurlResponse('foo', ['http_code' => 200], '');
             $this->curl->get($url)->willReturn($curlReponse);
+            $this->curl->get($signatureUrl)->willReturn($curlReponse);
 
-            $expected = new PharFile('foo.phar', 'foo');
+            $this->signatureService->verify('foo', 'foo')->willReturn(true);
 
-            $downloader = new PharDownloader($this->curl->reveal());
-            $this->assertEquals($expected, $downloader->getFile($url));
+            $expected = new File('foo.phar', 'foo');
+
+            $downloader = new PharDownloader($this->curl->reveal(), $this->signatureService->reveal());
+            $this->assertEquals($expected, $downloader->download($url));
 
         }
 

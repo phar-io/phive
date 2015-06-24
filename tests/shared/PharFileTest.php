@@ -10,7 +10,7 @@ namespace TheSeer\Phive {
          * @param string $expectedHash
          */
         public function testGeneratesExpectedSha1Hash($content, $expectedHash) {
-            $file = new PharFile('foo.phar', $content);
+            $file = new File('foo.phar', $content);
             $this->assertSame($expectedHash, $file->getSha1Hash());
         }
 
@@ -22,12 +22,12 @@ namespace TheSeer\Phive {
         }
 
         public function testFilename() {
-            $file = new PharFile('foo.phar', 'bar');
+            $file = new File('foo.phar', 'bar');
             $this->assertSame('foo.phar', $file->getFilename());
         }
 
         public function testContent() {
-            $file = new PharFile('foo.phar', 'bar');
+            $file = new File('foo.phar', 'bar');
             $this->assertSame('bar', $file->getContent());
         }
 
