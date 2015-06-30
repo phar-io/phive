@@ -103,10 +103,12 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return GnupgSignatureVerifier
+         * @return NativeGnupgSignatureVerifier
          */
         public function getGnupgSignatureVerifier() {
-            return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
+            return new NativeGnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
+            //putenv('GNUPGHOME=' . $this->getConfig()->getHomeDirectory()->child('gpg'));
+            //return new CliGnupgSignatureVerifier('/usr/bin/gpg');
         }
 
         /**
@@ -121,10 +123,12 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return GnupgKeyImporter
+         * @return NativeGnupgKeyImporter
          */
         private function getGnupgKeyImporter() {
-            return new GnupgKeyImporter($this->getGnupg());
+            //return new NativeGnupgKeyImporter($this->getGnupg());
+            putenv('GNUPGHOME=' . $this->getConfig()->getHomeDirectory()->child('gpg'));
+            return new CliGnupgKeyImporter('/usr/bin/gpg');
         }
 
         /**

@@ -1,7 +1,7 @@
 <?php
 namespace TheSeer\Phive {
 
-    class GnupgKeyImporter implements KeyImporter {
+    class NativeGnupgKeyImporter implements KeyImporter {
 
         /**
          * @var \Gnupg
@@ -17,9 +17,15 @@ namespace TheSeer\Phive {
 
         /**
          * @param string $key
+         *
+         * @return KeyImportResult|void
          */
         public function importKey($key) {
-            return $this->gnupg->import($key);
+            $result = $this->gnupg->import($key);
+            return new KeyImportResult(
+                $result['imported'],
+                isset($result['fingerprint']) ? $result['fingerprint'] : null
+            );
         }
 
     }

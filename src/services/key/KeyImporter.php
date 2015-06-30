@@ -5,6 +5,8 @@ namespace TheSeer\Phive {
 
         /**
          * @param string $key
+         *
+         * @return KeyImportResult
          */
         public function importKey($key);
 

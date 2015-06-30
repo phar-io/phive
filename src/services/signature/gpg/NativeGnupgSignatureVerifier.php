@@ -4,7 +4,7 @@ namespace TheSeer\Phive {
     /**
      * GPG Signature Verification using the GnuPG PECL Extension.
      */
-    class GnupgSignatureVerifier implements SignatureVerifier {
+    class NativeGnupgSignatureVerifier implements SignatureVerifier {
 
         /**
          * @var \Gnupg
