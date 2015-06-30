@@ -30,6 +30,15 @@ namespace TheSeer\Phive {
         }
 
         /**
+         * @param CLICommandOptions $options
+         *
+         * @return SkelCommand
+         */
+        public function getSkelCommand(CLICommandOptions $options) {
+            return new SkelCommand(new SkelCommandConfig($options, getcwd()), $this->getPhiveVersion());
+        }
+
+        /**
          * @return PharDatabase
          */
         private function getPharDatabase() {

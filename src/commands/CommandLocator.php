@@ -35,6 +35,10 @@ namespace TheSeer\Phive {
                     return $this->factory->getInstallCommand($request->getCommandOptions());
                 }
 
+                case 'skel' : {
+                    return $this->factory->getSkelCommand($request->getCommandOptions());
+                }
+
                 default: {
                     throw new CommandLocatorException(
                         sprintf('Command "%s" is not a valid command', $command),
