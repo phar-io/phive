@@ -22,6 +22,7 @@ namespace TheSeer\Phive {
             $this->assertSame($expectedPatch, $version->getPatch());
             $this->assertSame($expectedLabel, $version->getLabel());
             $this->assertSame($expectedMetadata, $version->getBuildMetadata());
+            $this->assertSame($versionString, $version->getVersionString());
         }
 
         public function versionProvider() {
