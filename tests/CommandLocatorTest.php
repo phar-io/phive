@@ -34,8 +34,9 @@ namespace TheSeer\Phive {
 
         public function commandProvider() {
             return [
-                'help' => ['help', 'getHelpCommand'],
+                'help'    => ['help', 'getHelpCommand'],
                 'version' => ['version', 'getVersionCommand'],
+                'skel'    => ['skel', 'getSkelCommand', new CLICommandOptions([])],
                 'install' => ['install', 'getInstallCommand', new CLICommandOptions([])]
             ];
         }

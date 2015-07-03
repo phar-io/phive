@@ -13,6 +13,7 @@ namespace TheSeer\Phive {
         }
 
         public function run(CLIRequest $request) {
+            ExceptionHandler::register();
             try {
                 $this->locator->getCommandForRequest($request)->execute();
             } catch (CommandLocatorException $e) {

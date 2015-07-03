@@ -9,10 +9,17 @@ namespace TheSeer\Phive {
         private $pharDirectory = '';
 
         /**
-         * @param Directory $pharDirectory
+         * @var Logger
          */
-        public function __construct(Directory $pharDirectory) {
+        private $logger;
+
+        /**
+         * @param Directory $pharDirectory
+         * @param Logger    $logger
+         */
+        public function __construct(Directory $pharDirectory, Logger $logger) {
             $this->pharDirectory = $pharDirectory;
+            $this->logger = $logger;
         }
 
         /**
@@ -36,6 +43,7 @@ namespace TheSeer\Phive {
          * @param string   $destination
          */
         private function copy(File $phar, $destination) {
+            $this->logger->logInfo(sprintf('Copying %s to %s', $phar->getFilename(), $destination));
             copy($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
             chmod($destination, 0755);
         }
@@ -45,6 +53,7 @@ namespace TheSeer\Phive {
          * @param string   $destination
          */
         private function link(File $phar, $destination) {
+            $this->logger->logInfo(sprintf('Symlinking %s to %s', $phar->getFilename(), $destination));
             symlink($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
         }
 
