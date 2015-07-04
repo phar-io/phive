@@ -29,6 +29,13 @@ namespace TheSeer\Phive {
             return $this->environment->getWorkingDirectory();
         }
 
+        /**
+         * @return string
+         */
+        public function getGPGBinaryPath() {
+            return '/usr/bin/gpg';
+        }
+
     }
 
 }

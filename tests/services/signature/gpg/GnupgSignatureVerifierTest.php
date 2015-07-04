@@ -25,14 +25,14 @@ namespace TheSeer\Phive {
          */
         public function testThrowsVerificationFailedExceptionIfGnuPgThrowsException() {
             $this->gnupg->verify('foo', 'bar')->willThrow(new \Exception());
-            $verifier = new NativeGnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
+            $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
             $verifier->verify('foo', 'bar');
         }
 
         public function testReturnsExpectedVerificationResult() {
             $verificationData = ['summary' => 128, 'fingerprint' => 'foo'];
             $this->gnupg->verify('foo', 'bar')->willReturn([$verificationData]);
-            $verifier = new NativeGnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
+            $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
             $actual = $verifier->verify('foo', 'bar');
             $expected = new GnupgVerificationResult($verificationData);
             $this->assertEquals($expected, $actual);

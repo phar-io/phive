@@ -114,12 +114,10 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return NativeGnupgSignatureVerifier
+         * @return SignatureVerifier
          */
         public function getGnupgSignatureVerifier() {
-            return new NativeGnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
-            //putenv('GNUPGHOME=' . $this->getConfig()->getHomeDirectory()->child('gpg'));
-            //return new CliGnupgSignatureVerifier('/usr/bin/gpg');
+            return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
         }
 
         /**
@@ -134,12 +132,10 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @return NativeGnupgKeyImporter
+         * @return KeyImporter
          */
         private function getGnupgKeyImporter() {
-            //return new NativeGnupgKeyImporter($this->getGnupg());
-            putenv('GNUPGHOME=' . $this->getConfig()->getHomeDirectory()->child('gpg'));
-            return new CliGnupgKeyImporter('/usr/bin/gpg');
+            return new GnupgKeyImporter($this->getGnupg());
         }
 
         /**
@@ -201,9 +197,20 @@ namespace TheSeer\Phive {
          * @return \Gnupg
          */
         private function getGnupg() {
-            putenv('GNUPGHOME=' . $this->getConfig()->getHomeDirectory()->child('gpg'));
-            $gpg = new \Gnupg();
-            $gpg->seterrormode(\Gnupg::ERROR_EXCEPTION);
+            $home = $this->getConfig()->getHomeDirectory()->child('gpg');
+            if (extension_loaded('gnupg')) {
+                putenv('GNUPGHOME=' . $home);
+                $gpg = new \Gnupg();
+                $gpg->seterrormode(\Gnupg::ERROR_EXCEPTION);
+            } else {
+                $gpg = new GnuPG(
+                    $this->getConfig()->getGPGBinaryPath(),
+                    $home
+                );
+                if (!class_exists('\Gnupg')) {
+                    class_alias(GnuPG::class, '\Gnupg');
+                }
+            }
             return $gpg;
         }
 
