@@ -39,6 +39,20 @@ namespace TheSeer\Phive {
         }
 
         /**
+         * @param CLICommandOptions $options
+         *
+         * @return RemoveCommand
+         */
+        public function getRemoveCommand(CLICommandOptions $options) {
+            return new RemoveCommand(
+                new RemoveCommandConfig($options, $this->getConfig()),
+                $this->getPharRepository(),
+                $this->getPharService(),
+                $this->getColoredConsoleLogger()
+            );
+        }
+
+        /**
          * @return PharDatabase
          */
         private function getPharDatabase() {

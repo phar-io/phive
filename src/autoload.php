@@ -51,6 +51,8 @@ spl_autoload_register(
                 'theseer\\phive\\pharrepository' => '/shared/PharRepository.php',
                 'theseer\\phive\\pharservice' => '/services/phar/PharService.php',
                 'theseer\\phive\\phiveversion' => '/commands/version/PhiveVersion.php',
+                'theseer\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
+                'theseer\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
                 'theseer\\phive\\signatureservice' => '/services/signature/SignatureService.php',
                 'theseer\\phive\\signatureverifier' => '/services/signature/SignatureVerifier.php',
                 'theseer\\phive\\skelcommand' => '/commands/skel/SkelCommand.php',

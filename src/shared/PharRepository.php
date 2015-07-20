@@ -60,6 +60,33 @@ namespace TheSeer\Phive {
         }
 
         /**
+         * @param string $filename
+         *
+         * @return Phar
+         * @throws PharDatabaseException
+         */
+        public function getByUsage($filename) {
+            return $this->pharDatabase->getPharByUsage($filename);
+        }
+
+        /**
+         * @param Phar   $phar
+         * @param string $destination
+         */
+        public function removeUsage(Phar $phar, $destination) {
+            $this->pharDatabase->removeUsage($phar, $destination);
+        }
+
+        /**
+         * @param Phar $phar
+         *
+         * @return bool
+         */
+        public function hasUsages(Phar $phar) {
+            return $this->pharDatabase->hasUsages($phar);
+        }
+
+        /**
          * @param Url $url
          *
          * @return string

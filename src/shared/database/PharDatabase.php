@@ -52,7 +52,7 @@ namespace TheSeer\Phive {
         /**
          * @todo this belongs elsewhere
          *
-*@param File $pharFile
+         * @param File $pharFile
          */
         private function savePhar(File $pharFile) {
             $destination = $this->pharDirectory . DIRECTORY_SEPARATOR . $pharFile->getFilename();
@@ -81,12 +81,22 @@ namespace TheSeer\Phive {
             if (!$this->hasPhar($name, $version)) {
                 throw new PharDatabaseException(sprintf('Phar %s %s not found in database.', $name, $version->getVersionString()));
             }
-            $pharNode = $this->getFirstMatchingPharNode($name, $version);
-            return new Phar(
-                $pharNode->getAttribute('name'),
-                new Version($pharNode->getAttribute('version')),
-                $this->loadPharFile($pharNode->getAttribute('location'))
-            );
+            return $this->nodetoPhar($this->getFirstMatchingPharNode($name, $version));
+        }
+
+        /**
+         * @param string $filename
+         *
+         * @return Phar
+         * @throws PharDatabaseException
+         */
+        public function getPharByUsage($filename) {
+            $pharNode = $this->xPath->query(sprintf('//phar[usage/@destination="%s"]', $filename))->item(0);
+            if (null === $pharNode) {
+                throw new PharDatabaseException(sprintf('No phar with usage %s found', $filename));
+            }
+            /** @var \DOMElement $pharNode */
+            return $this->nodetoPhar($pharNode);
         }
 
         /**
@@ -101,6 +111,27 @@ namespace TheSeer\Phive {
             $usageNode = $this->dom->createElement('usage');
             $usageNode->setAttribute('destination', $destination);
             $pharNode->appendChild($usageNode);
+            $this->save();
+        }
+
+        /**
+         * @param Phar $phar
+         *
+         * @return bool
+         */
+        public function hasUsages(Phar $phar) {
+            $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
+            return $this->xPath->query('//usage', $pharNode)->length > 0;
+        }
+
+        /**
+         * @param Phar   $phar
+         * @param string $destination
+         */
+        public function removeUsage(Phar $phar, $destination) {
+            $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
+            $usageNode = $this->xPath->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->item(0);
+            $pharNode->removeChild($usageNode);
             $this->save();
         }
 
@@ -144,6 +175,19 @@ namespace TheSeer\Phive {
         private function getFirstMatchingPharNode($name, Version $version) {
             $query = sprintf('//phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
             return $this->xPath->query($query)->item(0);
+        }
+
+        /**
+         * @param \DOMElement $pharNode
+         *
+         * @return Phar
+         */
+        private function nodetoPhar(\DOMElement $pharNode) {
+            return new Phar(
+                $pharNode->getAttribute('name'),
+                new Version($pharNode->getAttribute('version')),
+                $this->loadPharFile($pharNode->getAttribute('location'))
+            );
         }
 
     }

@@ -35,6 +35,10 @@ namespace TheSeer\Phive {
                     return $this->factory->getInstallCommand($request->getCommandOptions());
                 }
 
+                case 'remove' : {
+                    return $this->factory->getRemoveCommand($request->getCommandOptions());
+                }
+
                 case 'skel' : {
                     return $this->factory->getSkelCommand($request->getCommandOptions());
                 }
