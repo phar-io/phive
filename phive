@@ -38,7 +38,7 @@
  */
 
 require __DIR__ . '/vendor/autoload.php';
-require __DIR__ . '/src/repository/autoload.php';
+require __DIR__ . '/src/autoload.php';
 
 (new \PharIo\Phive\Factory())->getRunner()->run(
     new TheSeer\CLI\Request($_SERVER['argv'])
