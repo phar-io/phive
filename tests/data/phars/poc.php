@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../../../src/autoload.php';
-$factory = new \TheSeer\Phive\Factory();
+$factory = new \PharIo\Phive\Factory();
 
 $sigService = $factory->getSignatureService();
 $keyService = $factory->getKeyService();
@@ -10,7 +10,7 @@ $sig = file_get_contents(__DIR__ . '/phploc-2.0.6.phar.asc');
 
 try {
     $result = $sigService->verify($phar, $sig);
-} catch (\TheSeer\Phive\VerificationFailedException $e) {
+} catch (\PharIo\Phive\VerificationFailedException $e) {
     echo "signature verification failed: " . $e->getMessage() . "\n";
     exit(1);
 }
@@ -32,7 +32,7 @@ if (!$result->wasVerificationSuccessful() && !$result->isKnownKey()) {
     echo "retrying verification \n";
     try {
         $result = $sigService->verify($phar, $sig);
-    } catch (\TheSeer\Phive\VerificationFailedException $e) {
+    } catch (\PharIo\Phive\VerificationFailedException $e) {
         echo "signature verification failed: " . $e->getMessage() . "\n";
         exit(1);
     }

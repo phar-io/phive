@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     use Prophecy\Prophecy\ObjectProphecy;
 
@@ -21,7 +21,7 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @expectedException \TheSeer\Phive\VerificationFailedException
+         * @expectedException \PharIo\Phive\VerificationFailedException
          */
         public function testThrowsVerificationFailedExceptionIfGnuPgThrowsException() {
             $this->gnupg->verify('foo', 'bar')->willThrow(new \Exception());

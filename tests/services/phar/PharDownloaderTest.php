@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     use Prophecy\Prophecy\ObjectProphecy;
 
@@ -22,7 +22,7 @@ namespace TheSeer\Phive {
 
         /**
          * @dataProvider httpStatusCodeProvider
-         * @expectedException \TheSeer\Phive\DownloadFailedException
+         * @expectedException \PharIo\Phive\DownloadFailedException
          *
          * @param int $statusCode
          */

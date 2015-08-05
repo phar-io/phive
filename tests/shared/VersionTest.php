@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     class VersionTest extends \PHPUnit_Framework_TestCase {
 

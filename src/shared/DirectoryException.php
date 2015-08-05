@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     class DirectoryException extends \Exception {
         const InvalidMode = 1;

@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     class CLIRequestTest extends \PHPUnit_Framework_TestCase {
 

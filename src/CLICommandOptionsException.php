@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     class CLICommandOptionsException extends \Exception {
         const NoSuchOption = 1;

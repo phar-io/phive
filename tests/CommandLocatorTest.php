@@ -1,10 +1,10 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     use Prophecy\Prophecy\MethodProphecy;
 
     /**
-     * @covers TheSeer\Phive\CommandLocator
+     * @covers PharIo\Phive\CommandLocator
      */
     class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
 
@@ -42,8 +42,8 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @expectedException \TheSeer\Phive\CommandLocatorException
-         * @expectedExceptionCode \TheSeer\Phive\CommandLocatorException::UnknownCommand
+         * @expectedException \PharIo\Phive\CommandLocatorException
+         * @expectedExceptionCode \PharIo\Phive\CommandLocatorException::UnknownCommand
          */
         public function testRequestingAnUnknownCommandThrowsException() {
             $factory = $this->prophesize(Factory::class);

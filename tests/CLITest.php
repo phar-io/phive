@@ -1,8 +1,8 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     /**
-     * @covers TheSeer\Phive\CLI
+     * @covers PharIo\Phive\CLI
      */
 
     class CLITest extends \PHPUnit_Framework_TestCase {
@@ -19,7 +19,7 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @expectedException \TheSeer\Phive\CommandLocatorException
+         * @expectedException \PharIo\Phive\CommandLocatorException
          */
         public function testGeneralExceptionsArePassedOn() {
             $request = new CLIRequest([]);

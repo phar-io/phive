@@ -1,14 +1,14 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     /**
-     * @covers TheSeer\Phive\CLICommandOptions
+     * @covers PharIo\Phive\CLICommandOptions
      */
     class CLICommandOptionsTest extends \PHPUnit_Framework_TestCase {
 
         /**
-         * @expectedException \TheSeer\Phive\CLICommandOptionsException
-         * @expectedExceptionCode \TheSeer\Phive\CLICommandOptionsException::NoSuchOption
+         * @expectedException \PharIo\Phive\CLICommandOptionsException
+         * @expectedExceptionCode \PharIo\Phive\CLICommandOptionsException::NoSuchOption
          */
         public function testRequestingNonExistingOptionThrowsException() {
             $instance = new CLICommandOptions([]);
@@ -16,8 +16,8 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @expectedException \TheSeer\Phive\CLICommandOptionsException
-         * @expectedExceptionCode \TheSeer\Phive\CLICommandOptionsException::InvalidArgumentIndex
+         * @expectedException \PharIo\Phive\CLICommandOptionsException
+         * @expectedExceptionCode \PharIo\Phive\CLICommandOptionsException::InvalidArgumentIndex
          */
         public function testRequestingNonExistingArgumentThrowsException() {
             $instance = new CLICommandOptions([]);

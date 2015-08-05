@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     use Prophecy\Argument;
     use Prophecy\Prophecy\ObjectProphecy;
@@ -51,7 +51,7 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @expectedException \TheSeer\Phive\DownloadFailedException
+         * @expectedException \PharIo\Phive\DownloadFailedException
          */
         public function testThrowsExceptionIfKeyWasNotFound() {
             $response = $this->prophesize(CurlResponse::class);

@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     class CurlConfigTest extends \PHPUnit_Framework_TestCase {
 
@@ -52,7 +52,7 @@ namespace TheSeer\Phive {
         }
 
         /**
-         * @expectedException \TheSeer\Phive\CurlException
+         * @expectedException \PharIo\Phive\CurlException
          */
         public function testGetLocalSslCertificateThrowsExceptionIfCertificateDoesNotExist() {
             $config = new CurlConfig('foo');

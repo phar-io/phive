@@ -1,5 +1,5 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
     /**
      * GPG Signature Verification using the GnuPG PECL Extension.
