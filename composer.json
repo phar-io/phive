@@ -1,0 +1,38 @@
+{
+  "name" : "phar-io/phive",
+  "description" : "",
+  "license" : "BSD-3-Clause",
+  "authors" : [
+    {
+      "name" : "Arne Blankerts",
+      "email" : "arne@blankerts.de",
+      "role" : "Developer"
+    },
+    {
+      "name" : "Sebastian Heuer",
+      "email" : "belanur@phpeople.de",
+      "role" : "Developer"
+    }
+  ],
+  "support" : {
+    "issues" : "https://github.com/phar-io/phive/issues"
+  },
+  "require" : {
+    "php" : ">=5.6.0",
+    "ext-dom" : "*",
+    "theseer/cli": "~0.1"
+  },
+  "suggest": {
+    "ext-gnupg": "*"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  },
+  "bin" : [
+      "phive"
+  ],
+  "minimum-stability" : "dev",
+  "prefer-stable" : true
+}
