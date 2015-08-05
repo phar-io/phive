@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive {
 
+    use TheSeer\CLI;
+
     class SkelCommandConfig {
 
         /**
-         * @var CLICommandOptions
+         * @var CLI\CommandOptions
          */
         private $cliOptions;
 
@@ -14,10 +16,10 @@ namespace PharIo\Phive {
         private $workingDirectory = '';
 
         /**
-         * @param CLICommandOptions $cliOptions
+         * @param CLI\CommandOptions $cliOptions
          * @param                   $workingDirectory
          */
-        public function __construct(CLICommandOptions $cliOptions, $workingDirectory) {
+        public function __construct(CLI\CommandOptions $cliOptions, $workingDirectory) {
             $this->cliOptions = $cliOptions;
             $this->workingDirectory = rtrim($workingDirectory, '/');
 

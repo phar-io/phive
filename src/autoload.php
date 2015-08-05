@@ -7,14 +7,8 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'phario\\phive\\cli' => '/CLI.php',
-                'phario\\phive\\clicommandoptions' => '/CLICommandOptions.php',
-                'phario\\phive\\clicommandoptionsexception' => '/CLICommandOptionsException.php',
-                'phario\\phive\\clirequest' => '/CLIRequest.php',
                 'phario\\phive\\coloredconsolelogger' => '/shared/logger/ColoredConsoleLogger.php',
-                'phario\\phive\\command' => '/commands/Command.php',
                 'phario\\phive\\commandlocator' => '/commands/CommandLocator.php',
-                'phario\\phive\\commandlocatorexception' => '/commands/CommandLocatorException.php',
                 'phario\\phive\\config' => '/Config.php',
                 'phario\\phive\\consolelogger' => '/shared/logger/ConsoleLogger.php',
                 'phario\\phive\\curl' => '/shared/curl/Curl.php',

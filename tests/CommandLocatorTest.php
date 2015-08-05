@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
+    use TheSeer\CLI;
     use Prophecy\Prophecy\MethodProphecy;
 
     /**
@@ -11,7 +12,7 @@ namespace PharIo\Phive {
         /**
          * @dataProvider commandProvider
          */
-        public function testValidCommandsAreReturned($command, $factoryMethod, CLICommandOptions $arguments = NULL) {
+        public function testValidCommandsAreReturned($command, $factoryMethod, CLI\CommandOptions $arguments = NULL) {
             $factory = $this->prophesize(Factory::class);
 
             if ($arguments != NULL) {
@@ -19,37 +20,37 @@ namespace PharIo\Phive {
             } else {
                 $method = new MethodProphecy($factory, $factoryMethod, []);
             }
-            $method->willReturn($this->prophesize(Command::class)->reveal());
+            $method->willReturn($this->prophesize(CLI\Command::class)->reveal());
 
             $factory->addMethodProphecy($method);
             $locator = new CommandLocator($factory->reveal());
 
-            $request = $this->prophesize(CLIRequest::class);
+            $request = $this->prophesize(CLI\Request::class);
             $request->getCommand()->willReturn($command)->shouldBeCalled();
             $request->getCommandOptions()->willReturn($arguments);
 
             $result = $locator->getCommandForRequest($request->reveal());
-            $this->assertInstanceOf(Command::class, $result);
+            $this->assertInstanceOf(CLI\Command::class, $result);
         }
 
         public function commandProvider() {
             return [
                 'help'    => ['help', 'getHelpCommand'],
                 'version' => ['version', 'getVersionCommand'],
-                'skel'    => ['skel', 'getSkelCommand', new CLICommandOptions([])],
-                'install' => ['install', 'getInstallCommand', new CLICommandOptions([])]
+                'skel'    => ['skel', 'getSkelCommand', new CLI\CommandOptions([])],
+                'install' => ['install', 'getInstallCommand', new CLI\CommandOptions([])]
             ];
         }
 
         /**
-         * @expectedException \PharIo\Phive\CommandLocatorException
-         * @expectedExceptionCode \PharIo\Phive\CommandLocatorException::UnknownCommand
+         * @expectedException \TheSeer\CLI\CommandLocatorException
+         * @expectedExceptionCode \TheSeer\CLI\CommandLocatorException::UnknownCommand
          */
         public function testRequestingAnUnknownCommandThrowsException() {
             $factory = $this->prophesize(Factory::class);
             $locator = new CommandLocator($factory->reveal());
 
-            $request = $this->prophesize(CLIRequest::class);
+            $request = $this->prophesize(CLI\Request::class);
             $request->getCommand()->willReturn('unknown');
 
             $locator->getCommandForRequest($request->reveal());

@@ -37,9 +37,10 @@
  *             1 Execution Error
  */
 
-require __DIR__ . '/src/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/src/repository/autoload.php';
 
-(new TheSeer\Phive\Factory())->getCLI()->run(
-    new TheSeer\Phive\CLIRequest($_SERVER['argv'])
+(new \PharIo\Phive\Factory())->getRunner()->run(
+    new TheSeer\CLI\Request($_SERVER['argv'])
 );
-;
+

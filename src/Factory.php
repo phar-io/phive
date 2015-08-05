@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive {
 
+    use TheSeer\CLI;
+
     class Factory {
 
         /**
@@ -9,10 +11,10 @@ namespace PharIo\Phive {
         private $curl;
 
         /**
-         * @return CLI
+         * @return CLI\Runner
          */
         public function getCLI() {
-            return new CLI($this->getCommandLocator());
+            return new CLI\Runner($this->getCommandLocator());
         }
 
         /**
@@ -30,11 +32,11 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param CLICommandOptions $options
+         * @param CLI\CommandOptions $options
          *
          * @return SkelCommand
          */
-        public function getSkelCommand(CLICommandOptions $options) {
+        public function getSkelCommand(CLI\CommandOptions $options) {
             return new SkelCommand(new SkelCommandConfig($options, getcwd()), $this->getPhiveVersion());
         }
 
@@ -63,11 +65,11 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param CLICommandOptions $options
+         * @param CLI\CommandOptions $options
          *
          * @return InstallCommand
          */
-        public function getInstallCommand(CLICommandOptions $options) {
+        public function getInstallCommand(CLI\CommandOptions $options) {
             return new InstallCommand(
                 new InstallCommandConfig($options, $this->getConfig()),
                 $this->getPharRepository(),

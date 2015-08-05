@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive {
 
+    use TheSeer\CLI;
+
     class InstallCommandConfig {
 
         /**
-         * @var CLICommandOptions
+         * @var CLI\CommandOptions
          */
         private $cliOptions;
 
@@ -16,10 +18,10 @@ namespace PharIo\Phive {
         /**
          * InstallCommandConfig constructor.
          *
-         * @param CLICommandOptions $options
+         * @param CLI\CommandOptions $options
          * @param Config            $config
          */
-        public function __construct(CLICommandOptions $options, Config $config) {
+        public function __construct(CLI\CommandOptions $options, Config $config) {
             $this->cliOptions = $options;
             $this->config = $config;
         }
@@ -33,7 +35,7 @@ namespace PharIo\Phive {
 
         /**
          * @return Url
-         * @throws CLICommandOptionsException
+         * @throws CLI\CommandOptionsException
          */
         public function getPharUrl() {
             return new Url($this->cliOptions->getArgument(0));

@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive {
 
+    use TheSeer\CLI\Command;
+
     class InstallCommand implements Command {
 
         /**

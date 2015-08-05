@@ -1,7 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
-    class CommandLocator {
+    use TheSeer\CLI;
+
+    class CommandLocator implements CLI\CommandLocator {
 
         /**
          * @var Factory
@@ -16,12 +18,12 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param CLIRequest $request
+         * @param CLI\Request $request
          *
-         * @throws CommandLocatorException
-         * @return Command
+         * @throws CLI\CommandLocatorException
+         * @return CLI\Command
          */
-        public function getCommandForRequest(CLIRequest $request) {
+        public function getCommandForRequest(CLI\Request $request) {
             $command = $request->getCommand();
             switch ($command) {
                 case 'help' : {
@@ -44,9 +46,9 @@ namespace PharIo\Phive {
                 }
 
                 default: {
-                    throw new CommandLocatorException(
+                    throw new CLI\CommandLocatorException(
                         sprintf('Command "%s" is not a valid command', $command),
-                        CommandLocatorException::UnknownCommand
+                        CLI\CommandLocatorException::UnknownCommand
                     );
                 }
             }
