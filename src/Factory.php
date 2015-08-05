@@ -13,7 +13,7 @@ namespace PharIo\Phive {
         /**
          * @return CLI\Runner
          */
-        public function getCLI() {
+        public function getRunner() {
             return new CLI\Runner($this->getCommandLocator());
         }
 
