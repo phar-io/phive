@@ -37,12 +37,11 @@ spl_autoload_register(
                 'phario\\phive\\keyservice' => '/services/key/KeyService.php',
                 'phario\\phive\\logger' => '/shared/logger/Logger.php',
                 'phario\\phive\\phar' => '/shared/Phar.php',
-                'phario\\phive\\phardatabase' => '/shared/database/PharDatabase.php',
-                'phario\\phive\\phardatabaseexception' => '/shared/database/PharDatabaseException.php',
                 'phario\\phive\\phardownloader' => '/services/phar/PharDownloader.php',
                 'phario\\phive\\pharinstaller' => '/services/phar/PharInstaller.php',
                 'phario\\phive\\pharioclient' => '/services/phario/PharIoClient.php',
-                'phario\\phive\\pharrepository' => '/shared/PharRepository.php',
+                'phario\\phive\\pharrepository' => '/shared/repository/PharRepository.php',
+                'phario\\phive\\pharrepositoryexception' => '/shared/repository/PharRepositoryException.php',
                 'phario\\phive\\pharservice' => '/services/phar/PharService.php',
                 'phario\\phive\\phiveversion' => '/commands/version/PhiveVersion.php',
                 'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
@@ -55,7 +54,7 @@ spl_autoload_register(
                 'phario\\phive\\verificationfailedexception' => '/services/signature/VerificationFailedException.php',
                 'phario\\phive\\version' => '/shared/Version.php',
                 'phario\\phive\\versioncommand' => '/commands/version/VersionCommand.php',
-                'phario\\phive\\xmldatabase' => '/shared/database/XmlDatabase.php'
+                'phario\\phive\\xmlrepository' => '/shared/repository/XmlRepository.php'
             );
         }
         $cn = strtolower($class);

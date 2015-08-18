@@ -55,16 +55,6 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return PharDatabase
-         */
-        private function getPharDatabase() {
-            return new PharDatabase(
-                $this->getConfig()->getHomeDirectory() . '/phars.xml',
-                $this->getConfig()->getHomeDirectory()->child('phars')
-            );
-        }
-
-        /**
          * @param CLI\CommandOptions $options
          *
          * @return InstallCommand
@@ -72,9 +62,7 @@ namespace PharIo\Phive {
         public function getInstallCommand(CLI\CommandOptions $options) {
             return new InstallCommand(
                 new InstallCommandConfig($options, $this->getConfig()),
-                $this->getPharRepository(),
-                $this->getPharService(),
-                $this->getColoredConsoleLogger()
+                $this->getPharService()
             );
         }
 
@@ -119,7 +107,7 @@ namespace PharIo\Phive {
          * @return PharService
          */
         public function getPharService() {
-            return new PharService($this->getPharDownloader(), $this->getPharInstaller());
+            return new PharService($this->getPharDownloader(), $this->getPharInstaller(), $this->getPharRepository());
         }
 
         /**
@@ -235,11 +223,8 @@ namespace PharIo\Phive {
          */
         private function getPharRepository() {
             return new PharRepository(
-                $this->getPharDatabase(),
-                $this->getPharService(),
-                $this->getSignatureService(),
-                $this->getKeyService(),
-                $this->getColoredConsoleLogger()
+                $this->getConfig()->getHomeDirectory() . '/phars.xml',
+                $this->getConfig()->getHomeDirectory()->child('phars')
             );
         }
 

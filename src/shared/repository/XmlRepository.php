@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    abstract class XmlDatabase {
+    abstract class XmlRepository {
 
         /**
          * @var string
