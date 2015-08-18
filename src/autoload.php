@@ -53,6 +53,7 @@ spl_autoload_register(
                 'phario\\phive\\verificationfailedexception' => '/services/signature/VerificationFailedException.php',
                 'phario\\phive\\version' => '/shared/Version.php',
                 'phario\\phive\\versioncommand' => '/commands/version/VersionCommand.php',
+                'phario\\phive\\xmldatabase' => '/shared/database/XmlDatabase.php',
                 'theseer\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
                 'theseer\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php'
             );
