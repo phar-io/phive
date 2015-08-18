@@ -1,0 +1,58 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "9ed6c473fb70ac480dbed809156645e2",
+    "packages": [
+        {
+            "name": "theseer/cli",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/theseer/CLI.git",
+                "reference": "0044f87b4892109e437d4243d51fc037bd8c7761"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/theseer/CLI/zipball/0044f87b4892109e437d4243d51fc037bd8c7761",
+                "reference": "0044f87b4892109e437d4243d51fc037bd8c7761",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD License"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de"
+                }
+            ],
+            "description": "A simplistic CLI micro framework to ease development of command based CLI applications in PHP.",
+            "time": "2015-07-20 16:21:40"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.6.0",
+        "ext-dom": "*"
+    },
+    "platform-dev": []
+}
