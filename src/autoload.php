@@ -45,6 +45,8 @@ spl_autoload_register(
                 'phario\\phive\\pharrepository' => '/shared/PharRepository.php',
                 'phario\\phive\\pharservice' => '/services/phar/PharService.php',
                 'phario\\phive\\phiveversion' => '/commands/version/PhiveVersion.php',
+                'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
+                'phario\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
                 'phario\\phive\\signatureservice' => '/services/signature/SignatureService.php',
                 'phario\\phive\\signatureverifier' => '/services/signature/SignatureVerifier.php',
                 'phario\\phive\\skelcommand' => '/commands/skel/SkelCommand.php',
@@ -53,9 +55,7 @@ spl_autoload_register(
                 'phario\\phive\\verificationfailedexception' => '/services/signature/VerificationFailedException.php',
                 'phario\\phive\\version' => '/shared/Version.php',
                 'phario\\phive\\versioncommand' => '/commands/version/VersionCommand.php',
-                'phario\\phive\\xmldatabase' => '/shared/database/XmlDatabase.php',
-                'theseer\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
-                'theseer\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php'
+                'phario\\phive\\xmldatabase' => '/shared/database/XmlDatabase.php'
             );
         }
         $cn = strtolower($class);

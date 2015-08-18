@@ -1,7 +1,9 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
 
-    class RemoveCommand implements Command {
+    use TheSeer\CLI;
+
+    class RemoveCommand implements CLI\Command {
 
         /**
          * @var RemoveCommandConfig

@@ -41,11 +41,11 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param CLICommandOptions $options
+         * @param CLI\CommandOptions $options
          *
          * @return RemoveCommand
          */
-        public function getRemoveCommand(CLICommandOptions $options) {
+        public function getRemoveCommand(CLI\CommandOptions $options) {
             return new RemoveCommand(
                 new RemoveCommandConfig($options, $this->getConfig()),
                 $this->getPharRepository(),

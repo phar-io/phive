@@ -1,10 +1,12 @@
 <?php
-namespace TheSeer\Phive {
+namespace PharIo\Phive {
+
+    use TheSeer\CLI;
 
     class RemoveCommandConfig {
 
         /**
-         * @var CLICommandOptions
+         * @var CLI\CommandOptions
          */
         private $cliOptions;
 
@@ -16,10 +18,10 @@ namespace TheSeer\Phive {
         /**
          * InstallCommandConfig constructor.
          *
-         * @param CLICommandOptions $options
+         * @param CLI\CommandOptions $options
          * @param Config            $config
          */
-        public function __construct(CLICommandOptions $options, Config $config) {
+        public function __construct(CLI\CommandOptions $options, Config $config) {
             $this->cliOptions = $options;
             $this->config = $config;
         }
@@ -33,7 +35,7 @@ namespace TheSeer\Phive {
 
         /**
          * @return string
-         * @throws CLICommandOptionsException
+         * @throws CLI\CommandOptionsException
          */
         public function getPharName() {
             return $this->cliOptions->getArgument(0);
