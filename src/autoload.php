@@ -7,6 +7,7 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'phario\\phive\\aliasresolver' => '/services/phar/AliasResolver.php',
                 'phario\\phive\\coloredconsolelogger' => '/shared/logger/ColoredConsoleLogger.php',
                 'phario\\phive\\commandlocator' => '/commands/CommandLocator.php',
                 'phario\\phive\\config' => '/Config.php',
@@ -37,15 +38,18 @@ spl_autoload_register(
                 'phario\\phive\\keyservice' => '/services/key/KeyService.php',
                 'phario\\phive\\logger' => '/shared/logger/Logger.php',
                 'phario\\phive\\phar' => '/shared/Phar.php',
+                'phario\\phive\\pharalias' => '/shared/PharAlias.php',
                 'phario\\phive\\phardownloader' => '/services/phar/PharDownloader.php',
                 'phario\\phive\\pharinstaller' => '/services/phar/PharInstaller.php',
                 'phario\\phive\\pharioclient' => '/services/phario/PharIoClient.php',
-                'phario\\phive\\pharrepository' => '/shared/repository/PharRepository.php',
+                'phario\\phive\\phariorepositorylist' => '/shared/PharIoRepositoryList.php',
+                'phario\\phive\\pharrepository' => '/shared/PharRepository.php',
                 'phario\\phive\\pharrepositoryexception' => '/shared/repository/PharRepositoryException.php',
                 'phario\\phive\\pharservice' => '/services/phar/PharService.php',
                 'phario\\phive\\phiveversion' => '/commands/version/PhiveVersion.php',
                 'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
                 'phario\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
+                'phario\\phive\\resolveexception' => '/shared/ResolveException.php',
                 'phario\\phive\\signatureservice' => '/services/signature/SignatureService.php',
                 'phario\\phive\\signatureverifier' => '/services/signature/SignatureVerifier.php',
                 'phario\\phive\\skelcommand' => '/commands/skel/SkelCommand.php',
