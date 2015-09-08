@@ -18,6 +18,9 @@ namespace PharIo\Phive {
             return $urls;
         }
 
+        /**
+         * @return string
+         */
         protected function getRootElementName() {
             return 'repositories';
         }
