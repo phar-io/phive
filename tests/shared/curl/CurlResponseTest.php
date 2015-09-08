@@ -3,6 +3,8 @@ namespace PharIo\Phive {
 
     class CurlResponseTest extends \PHPUnit_Framework_TestCase {
 
+        use ScalarTestDataProvider;
+
         /**
          * @dataProvider httpCodeProvider
          *
@@ -30,7 +32,7 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @dataProvider bodyProvider
+         * @dataProvider stringProvider
          *
          * @param string $body
          */
@@ -39,28 +41,14 @@ namespace PharIo\Phive {
             $this->assertEquals($body, $response->getBody());
         }
 
-        public function bodyProvider() {
-            return [
-                ['foo'],
-                ['bar']
-            ];
-        }
-
         /**
-         * @dataProvider errorMessageProvider
+         * @dataProvider stringProvider
          *
          * @param string $message
          */
         public function testGetErrorMessage($message) {
             $response = new CurlResponse('', ['http_code' => 400], $message);
             $this->assertEquals($message, $response->getErrorMessage());
-        }
-
-        public function errorMessageProvider() {
-            return [
-                ['foo'],
-                ['bar']
-            ];
         }
 
     }
