@@ -39,7 +39,6 @@ spl_autoload_register(
                 'phario\\phive\\pharalias' => '/shared/PharAlias.php',
                 'phario\\phive\\phardownloader' => '/services/phar/PharDownloader.php',
                 'phario\\phive\\pharinstaller' => '/services/phar/PharInstaller.php',
-                'phario\\phive\\pharioclient' => '/services/phario/PharIoClient.php',
                 'phario\\phive\\phariorepositorylist' => '/shared/PharIoRepositoryList.php',
                 'phario\\phive\\pharrepository' => '/shared/PharRepository.php',
                 'phario\\phive\\pharrepositoryexception' => '/shared/exceptions/PharRepositoryException.php',

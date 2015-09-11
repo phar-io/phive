@@ -81,13 +81,6 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return PharIoClient
-         */
-        private function getPharIoClient() {
-            return new PharIoClient();
-        }
-
-        /**
          * @return PharDownloader
          */
         private function getPharDownloader() {
