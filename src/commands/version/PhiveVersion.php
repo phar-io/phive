@@ -14,7 +14,7 @@ namespace PharIo\Phive {
         }
 
         public function getVersionString() {
-            return 'Phive ' . $this->getVersion() . " - Copyright (C) 2015 by Arne Blankerts and contributors";
+            return 'Phive ' . $this->getVersion() . " - Copyright (C) 2015 by Arne Blankerts and Sebastian Heuer";
         }
 
     }
