@@ -18,7 +18,7 @@
 
     <target name="phpab">
         <exec executable="phpab">
-            <arg line="--cache ${basedir}/build/phpab/autoload.cache -o src/autoload.php" />
+            <arg line="--cache ${basedir}/build/phpab/autoload.cache -1 -o src/autoload.php" />
             <arg path="src" />
         </exec>
     </target>
