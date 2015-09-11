@@ -21,36 +21,36 @@ namespace PharIo\Phive {
         private $pharService;
 
         /**
-         * @var Logger
+         * @var Output
          */
-        private $logger;
+        private $output;
 
         /**
          * @param RemoveCommandConfig  $config
          * @param PharRepository       $repository
          * @param PharService          $pharService
-         * @param Logger               $logger
+         * @param Output               $output
          */
         public function __construct(
-            RemoveCommandConfig $config, PharRepository $repository, PharService $pharService, Logger $logger
+            RemoveCommandConfig $config, PharRepository $repository, PharService $pharService, Output $output
         ) {
             $this->config = $config;
             $this->repository = $repository;
             $this->pharService = $pharService;
-            $this->logger = $logger;
+            $this->output = $output;
         }
 
         public function execute() {
             $destination = $this->config->getWorkingDirectory() . '/' . $this->config->getPharName();
             $phar = $this->repository->getByUsage($destination);
-            $this->logger->logInfo(
+            $this->output->writeInfo(
                 sprintf('Removing Phar %s %s', $phar->getName(), $phar->getVersion()->getVersionString())
             );
             $this->repository->removeUsage($phar, $destination);
             unlink($destination);
 
             if (!$this->repository->hasUsages($phar)) {
-                $this->logger->logInfo(
+                $this->output->writeInfo(
                     sprintf(
                         'Phar %s %s has no more known usages. You can run \'phive purge\' to remove unused Phars.', $phar->getName(), $phar->getVersion()->getVersionString()
                     )

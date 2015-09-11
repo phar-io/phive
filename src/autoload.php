@@ -34,7 +34,7 @@ spl_autoload_register(
                 'phario\\phive\\keyimporter' => '/services/key/KeyImporter.php',
                 'phario\\phive\\keyimportresult' => '/services/key/KeyImportResult.php',
                 'phario\\phive\\keyservice' => '/services/key/KeyService.php',
-                'phario\\phive\\logger' => '/shared/logger/Logger.php',
+                'phario\\phive\\output' => '/shared/logger/Logger.php',
                 'phario\\phive\\phar' => '/shared/Phar.php',
                 'phario\\phive\\pharalias' => '/shared/PharAlias.php',
                 'phario\\phive\\phardownloader' => '/services/phar/PharDownloader.php',

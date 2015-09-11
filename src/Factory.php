@@ -50,7 +50,7 @@ namespace PharIo\Phive {
                 new RemoveCommandConfig($options, $this->getConfig()),
                 $this->getPharRepository(),
                 $this->getPharService(),
-                $this->getColoredConsoleLogger()
+                $this->getColoredConsoleOutput()
             );
         }
 
@@ -99,7 +99,7 @@ namespace PharIo\Phive {
          */
         private function getPharInstaller() {
             return new PharInstaller(
-                $this->getConfig()->getHomeDirectory()->child('phars'), $this->getColoredConsoleLogger()
+                $this->getConfig()->getHomeDirectory()->child('phars'), $this->getColoredConsoleOutput()
             );
         }
 
@@ -131,7 +131,7 @@ namespace PharIo\Phive {
             return new KeyService(
                 $this->getPgpKeyDownloader(),
                 $this->getGnupgKeyImporter(),
-                $this->getColoredConsoleLogger()
+                $this->getColoredConsoleOutput()
             );
         }
 
@@ -147,22 +147,22 @@ namespace PharIo\Phive {
          */
         private function getPgpKeyDownloader() {
             return new GnupgKeyDownloader(
-                $this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php', $this->getColoredConsoleLogger()
+                $this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php', $this->getColoredConsoleOutput()
             );
         }
 
         /**
-         * @return Logger
+         * @return Output
          */
-        private function getColoredConsoleLogger() {
-            return new CLI\ColoredConsoleLogger(CLI\ConsoleLogger::VERBOSE_INFO);
+        private function getColoredConsoleOutput() {
+            return new CLI\ColoredConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
         }
 
         /**
-         * @return Logger
+         * @return Output
          */
-        private function getConsoleLogger() {
-            return new CLI\ConsoleLogger(CLI\ConsoleLogger::VERBOSE_INFO);
+        private function getConsoleOutput() {
+            return new CLI\ConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
         }
 
         /**

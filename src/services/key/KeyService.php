@@ -14,23 +14,23 @@ namespace PharIo\Phive {
         private $keyImporter;
 
         /**
-         * @var Logger
+         * @var Output
          */
-        private $logger;
+        private $output;
 
         /**
          * @param KeyDownloader $keyDownloader
          * @param KeyImporter   $keyImporter
-         * @param Logger        $logger
+         * @param Output        $output
          */
         public function __construct(
             KeyDownloader $keyDownloader,
             KeyImporter $keyImporter,
-            Logger $logger
+            Output $output
         ) {
             $this->keyDownloader = $keyDownloader;
             $this->keyImporter = $keyImporter;
-            $this->logger = $logger;
+            $this->output = $output;
         }
 
         /**
@@ -39,7 +39,7 @@ namespace PharIo\Phive {
          * @return string
          */
         public function downloadKey($keyId) {
-            $this->logger->logInfo(sprintf('Downloading key %s', $keyId));
+            $this->output->writeInfo(sprintf('Downloading key %s', $keyId));
             return $this->keyDownloader->download($keyId);
         }
 
@@ -49,7 +49,7 @@ namespace PharIo\Phive {
          * @return mixed
          */
         public function importKey($key) {
-            $this->logger->logInfo(sprintf('Importing key'));
+            $this->output->writeInfo(sprintf('Importing key'));
             return $this->keyImporter->importKey($key);
         }
 

@@ -9,17 +9,17 @@ namespace PharIo\Phive {
         private $pharDirectory = '';
 
         /**
-         * @var Logger
+         * @var Output
          */
-        private $logger;
+        private $output;
 
         /**
          * @param Directory $pharDirectory
-         * @param Logger    $logger
+         * @param Output    $output
          */
-        public function __construct(Directory $pharDirectory, Logger $logger) {
+        public function __construct(Directory $pharDirectory, Output $output) {
             $this->pharDirectory = $pharDirectory;
-            $this->logger = $logger;
+            $this->output = $output;
         }
 
         /**
@@ -43,7 +43,7 @@ namespace PharIo\Phive {
          * @param string   $destination
          */
         private function copy(File $phar, $destination) {
-            $this->logger->logInfo(sprintf('Copying %s to %s', $phar->getFilename(), $destination));
+            $this->output->writeInfo(sprintf('Copying %s to %s', $phar->getFilename(), $destination));
             copy($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
             chmod($destination, 0755);
         }
@@ -53,7 +53,7 @@ namespace PharIo\Phive {
          * @param string   $destination
          */
         private function link(File $phar, $destination) {
-            $this->logger->logInfo(sprintf('Symlinking %s to %s', $phar->getFilename(), $destination));
+            $this->output->writeInfo(sprintf('Symlinking %s to %s', $phar->getFilename(), $destination));
             symlink($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
         }
 

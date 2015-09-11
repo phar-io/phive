@@ -20,7 +20,7 @@
   "require" : {
     "php" : ">=5.6.0",
     "ext-dom" : "*",
-    "theseer/cli": "~0.1"
+    "theseer/cli": "~0.2"
   },
   "suggest": {
     "ext-gnupg": "*"
