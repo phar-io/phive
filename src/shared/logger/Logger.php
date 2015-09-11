@@ -1,23 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
-    interface Logger {
+    use TheSeer\CLI;
 
-        /**
-         * @param string $infoMessage
-         */
-        public function logInfo($infoMessage);
-
-        /**
-         * @param string $errorMessage
-         */
-        public function logError($errorMessage);
-
-        /**
-         * @param string $warningMessage
-         */
-        public function logWarning($warningMessage);
-
+    interface Logger extends CLI\Logger {
     }
 
 }

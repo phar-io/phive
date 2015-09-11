@@ -152,17 +152,17 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return ColoredConsoleLogger
+         * @return Logger
          */
         private function getColoredConsoleLogger() {
-            return  new ColoredConsoleLogger(ConsoleLogger::VERBOSE_INFO);
+            return new CLI\ColoredConsoleLogger(CLI\ConsoleLogger::VERBOSE_INFO);
         }
 
         /**
-         * @return ConsoleLogger
+         * @return Logger
          */
         private function getConsoleLogger() {
-            return new ConsoleLogger(ConsoleLogger::VERBOSE_INFO);
+            return new CLI\ConsoleLogger(CLI\ConsoleLogger::VERBOSE_INFO);
         }
 
         /**

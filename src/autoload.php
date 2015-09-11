@@ -8,10 +8,8 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'phario\\phive\\aliasresolver' => '/services/phar/AliasResolver.php',
-                'phario\\phive\\coloredconsolelogger' => '/shared/logger/ColoredConsoleLogger.php',
                 'phario\\phive\\commandlocator' => '/commands/CommandLocator.php',
                 'phario\\phive\\config' => '/Config.php',
-                'phario\\phive\\consolelogger' => '/shared/logger/ConsoleLogger.php',
                 'phario\\phive\\curl' => '/shared/curl/Curl.php',
                 'phario\\phive\\curlconfig' => '/shared/curl/CurlConfig.php',
                 'phario\\phive\\curlexception' => '/shared/exceptions/CurlException.php',
