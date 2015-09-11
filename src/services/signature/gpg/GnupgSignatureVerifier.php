@@ -36,7 +36,10 @@ namespace PharIo\Phive {
             try {
                 $result = new GnupgVerificationResult($this->gpg->verify($message, $signature)[0]);
                 if (!$result->wasVerificationSuccessful() && !$result->isKnownKey()) {
-                    $this->keyService->importKey($this->keyService->downloadKey($result->getFingerprint()));
+                    $this->keyService->importKey(
+                        $result->getFingerprint(),
+                        $this->keyService->downloadKey($result->getFingerprint())
+                    );
                 }
                 return new GnupgVerificationResult($this->gpg->verify($message, $signature)[0]);
             } catch (\Exception $e) {

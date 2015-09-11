@@ -124,7 +124,8 @@ namespace PharIo\Phive {
             return new KeyService(
                 $this->getPgpKeyDownloader(),
                 $this->getGnupgKeyImporter(),
-                $this->getColoredConsoleOutput()
+                $this->getColoredConsoleOutput(),
+                $this->getConsoleInput()
             );
         }
 
@@ -156,6 +157,13 @@ namespace PharIo\Phive {
          */
         private function getConsoleOutput() {
             return new ConsoleOutput(ConsoleOutput::VERBOSE_INFO);
+        }
+
+        /**
+         * @return ConsoleInput
+         */
+        private function getConsoleInput() {
+            return new ConsoleInput($this->getConsoleOutput());
         }
 
         /**

@@ -19,18 +19,26 @@ namespace PharIo\Phive {
         private $output;
 
         /**
+         * @var Input
+         */
+        private $input;
+
+        /**
          * @param KeyDownloader $keyDownloader
          * @param KeyImporter   $keyImporter
          * @param Output        $output
+         * @param Input         $input
          */
         public function __construct(
             KeyDownloader $keyDownloader,
             KeyImporter $keyImporter,
-            Output $output
+            Output $output,
+            Input $input
         ) {
             $this->keyDownloader = $keyDownloader;
             $this->keyImporter = $keyImporter;
             $this->output = $output;
+            $this->input = $input;
         }
 
         /**
@@ -40,6 +48,7 @@ namespace PharIo\Phive {
          */
         public function downloadKey($keyId) {
             $this->output->writeInfo(sprintf('Downloading key %s', $keyId));
+
             return $this->keyDownloader->download($keyId);
         }
 
@@ -47,9 +56,13 @@ namespace PharIo\Phive {
          * @param string
          *
          * @return mixed
+         * @throws VerificationFailedException
          */
-        public function importKey($key) {
-            $this->output->writeInfo(sprintf('Importing key'));
+        public function importKey($keyId, $key) {
+            if (!$this->input->confirm(sprintf('Import key %s?', $keyId))) {
+                throw new VerificationFailedException(sprintf('User declined import of key %s', $keyId));
+            }
+
             return $this->keyImporter->importKey($key);
         }
 
