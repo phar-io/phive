@@ -11,14 +11,22 @@ namespace PharIo\Phive {
         private $version;
 
         /**
+         * @var Output
+         */
+        private $output;
+
+        /**
          * @param PhiveVersion $version
          */
-        public function __construct(PhiveVersion $version) {
+        public function __construct(PhiveVersion $version, Output $output) {
             $this->version = $version;
+            $this->output = $output;
         }
 
         public function execute() {
-            echo $this->version->getVersionString() . "\n\n";
+            $this->output->writeText(
+                $this->version->getVersionString() . "\n\n"
+            );
         }
 
     }

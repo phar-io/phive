@@ -21,7 +21,7 @@ namespace PharIo\Phive {
          * @return VersionCommand
          */
         public function getVersionCommand() {
-            return new VersionCommand($this->getPhiveVersion());
+            return new VersionCommand($this->getPhiveVersion(), $this->getConsoleOutput());
         }
 
         /**
