@@ -12,13 +12,13 @@ namespace PharIo\Phive {
         private $curl;
 
         /**
-         * @var Logger|ObjectProphecy
+         * @var Output|ObjectProphecy
          */
-        private $logger;
+        private $output;
 
         public function setUp() {
             $this->curl = $this->prophesize(Curl::class);
-            $this->logger = $this->prophesize(Logger::class);
+            $this->output = $this->prophesize(Output::class);
         }
 
         public function testInvokesCurlWithExpectedParams() {
@@ -31,7 +31,7 @@ namespace PharIo\Phive {
             )->shouldBeCalled()->willReturn($response->reveal());
 
             $downloader = new GnupgKeyDownloader(
-                $this->curl->reveal(), [new Url('https://example.com')], $this->logger->reveal()
+                $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
             );
             $downloader->download('12345678');
         }
@@ -45,7 +45,7 @@ namespace PharIo\Phive {
                 ->willReturn($response->reveal());
 
             $downloader = new GnupgKeyDownloader(
-                $this->curl->reveal(), [new Url('https://example.com')], $this->logger->reveal()
+                $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
             );
             $this->assertSame('Some Key String', $downloader->download('12345678'));
         }
@@ -60,7 +60,7 @@ namespace PharIo\Phive {
 
             $this->curl->get(Argument::any(), Argument::any())->willReturn($response);
             $downloader = new GnupgKeyDownloader(
-                $this->curl->reveal(), [new Url('https://example.com')], $this->logger->reveal()
+                $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
             );
             $downloader->download('12345678');
         }
