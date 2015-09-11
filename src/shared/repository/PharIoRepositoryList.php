@@ -10,7 +10,7 @@ namespace PharIo\Phive {
          */
         public function getRepositoryUrls(PharAlias $alias) {
             $urls = [];
-            $query = sprintf('//phar[@alias="%s"]/repository', $alias);
+            $query = sprintf('//phive:phar[@alias="%s"]/phive:repository', $alias);
             foreach ($this->getXPath()->query($query) as $repositoryNode) {
                 /** @var \DOMElement $repositoryNode */
                 $urls[] = new Url($repositoryNode->getAttribute('url'));
@@ -29,7 +29,7 @@ namespace PharIo\Phive {
          * @return string
          */
         protected function getNamespace() {
-            return '';
+            return 'https://phar.io/repository-list';
         }
 
     }

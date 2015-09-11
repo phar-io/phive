@@ -84,7 +84,7 @@ namespace PharIo\Phive {
          * @return PharDownloader
          */
         private function getPharDownloader() {
-            return new PharDownloader($this->getCurl(), $this->getSignatureService());
+            return new PharDownloader($this->getFileDownloader(), $this->getSignatureService());
         }
 
         /**
@@ -94,6 +94,13 @@ namespace PharIo\Phive {
             return new PharInstaller(
                 $this->getConfig()->getHomeDirectory()->child('phars'), $this->getColoredConsoleOutput()
             );
+        }
+
+        /**
+         * @return FileDownloader
+         */
+        private function getFileDownloader() {
+            return new FileDownloader($this->getCurl());
         }
 
         /**
@@ -109,8 +116,22 @@ namespace PharIo\Phive {
          * @return AliasResolver
          */
         private function getAliasResolver() {
+
             return new AliasResolver(
-                new PharIoRepositoryList(__DIR__ . '/../conf/repositories.xml')
+                new PharIoRepositoryList(
+                    $this->getPharIoRepositoryListFileLoader()->load($this->getConfig()->getHomeDirectory())
+                )
+            );
+        }
+
+        /**
+         * @return PharIoRepositoryListFileLoader
+         */
+        private function getPharIoRepositoryListFileLoader() {
+            return new PharIoRepositoryListFileLoader(
+                $this->getConfig()->getRepositoryListUrl(),
+                $this->getFileDownloader(),
+                $this->getColoredConsoleOutput()
             );
         }
 

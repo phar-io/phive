@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<repositories>
+<repositories xmlns="https://phar.io/repository-list">
     <phar alias="phpunit">
         <repository url="https://phar.phpunit.de"/>
         <repository url="https://phar.io"/>

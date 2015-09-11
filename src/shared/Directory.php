@@ -41,6 +41,15 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param string $filename
+         *
+         * @return string
+         */
+        public function file($filename) {
+            return $this->path . DIRECTORY_SEPARATOR . $filename;
+        }
+
+        /**
          * @return string
          */
         public function __toString() {

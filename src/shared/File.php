@@ -42,6 +42,13 @@ namespace PharIo\Phive {
         public function getSha1Hash() {
             return sha1($this->content);
         }
+
+        /**
+         * @param string $filename
+         */
+        public function saveAs($filename) {
+            file_put_contents($filename, $this->getContent());
+        }
     }
 
 }

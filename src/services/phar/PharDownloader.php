@@ -4,9 +4,9 @@ namespace PharIo\Phive {
     class PharDownloader {
 
         /**
-         * @var Curl
+         * @var FileDownloader
          */
-        private $curl;
+        private $fileDownloader;
 
         /**
          * @var SignatureService
@@ -14,11 +14,11 @@ namespace PharIo\Phive {
         private $signatureService;
 
         /**
-         * @param Curl             $curl
+         * @param FileDownloader   $fileDownloader
          * @param SignatureService $signatureService
          */
-        public function __construct(Curl $curl, SignatureService $signatureService) {
-            $this->curl = $curl;
+        public function __construct(FileDownloader $fileDownloader, SignatureService $signatureService) {
+            $this->fileDownloader = $fileDownloader;
             $this->signatureService = $signatureService;
         }
 
@@ -30,26 +30,12 @@ namespace PharIo\Phive {
          * @throws VerificationFailedException
          */
         public function download(Url $url) {
-            $pharFile = $this->downloadFile($url);
-            $signatureFile = $this->downloadFile($this->getSignatureUrl($url));
+            $pharFile = $this->fileDownloader->download($url);
+            $signatureFile = $this->fileDownloader->download($this->getSignatureUrl($url));
             if (!$this->verifySignature($pharFile, $signatureFile)) {
                 throw new VerificationFailedException('Signature could not be verified');
             }
             return $pharFile;
-        }
-
-        /**
-         * @param Url $url
-         *
-         * @return File
-         * @throws DownloadFailedException
-         */
-        private function downloadFile(Url $url) {
-            $result = $this->curl->get($url);
-            if ($result->getHttpCode() !== 200) {
-                throw new DownloadFailedException($result->getErrorMessage(), $result->getHttpCode());
-            }
-            return new File($this->getFilename($url), $result->getBody());
         }
 
         /**
@@ -71,14 +57,6 @@ namespace PharIo\Phive {
             return new Url($pharUrl . '.asc');
         }
 
-        /**
-         * @param Url $url
-         *
-         * @return string
-         */
-        private function getFilename(Url $url) {
-            return pathinfo($url, PATHINFO_BASENAME);
-        }
     }
 
 }

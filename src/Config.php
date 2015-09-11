@@ -36,6 +36,13 @@ namespace PharIo\Phive {
             return '/usr/bin/gpg';
         }
 
+        /**
+         * @return Url
+         */
+        public function getRepositoryListUrl() {
+            return new Url('https://phar.io/repositories.xml');
+        }
+
     }
 
 }
