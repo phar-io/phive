@@ -45,6 +45,10 @@ namespace PharIo\Phive {
                     return $this->factory->getSkelCommand($request->getCommandOptions());
                 }
 
+                case 'update-repository-list' : {
+                    return $this->factory->getUpdateRepositoryListCommand();
+                }
+
                 default: {
                     throw new CLI\CommandLocatorException(
                         sprintf('Command "%s" is not a valid command', $command),

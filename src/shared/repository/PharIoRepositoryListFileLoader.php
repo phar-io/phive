@@ -3,12 +3,15 @@ namespace PharIo\Phive {
 
     class PharIoRepositoryListFileLoader {
 
-        const FILENAME = 'repositories.xml';
-
         /**
          * @var Url
          */
         private $sourceUrl;
+
+        /**
+         * @var string
+         */
+        private $filename;
 
         /**
          * @var FileDownloader
@@ -22,31 +25,40 @@ namespace PharIo\Phive {
 
         /**
          * @param Url            $sourceUrl
+         * @param                $filename
          * @param FileDownloader $fileDownloader
          * @param Output         $output
          */
-        public function __construct(Url $sourceUrl, FileDownloader $fileDownloader, Output $output) {
+        public function __construct(
+            Url $sourceUrl,
+            $filename,
+            FileDownloader $fileDownloader,
+            Output $output
+        ) {
             $this->sourceUrl = $sourceUrl;
+            $this->filename = $filename;
             $this->fileDownloader = $fileDownloader;
             $this->output = $output;
         }
 
         /**
-         * @param Directory $directory
-         *
          * @return string
-         * @throws DownloadFailedException
          */
-        public function load(Directory $directory) {
-            $filename = $directory->file(self::FILENAME);
-            if (!file_exists($filename)) {
-                $this->output->writeInfo(sprintf('Downloading repository list from %s', $this->sourceUrl));
-                $file = $this->fileDownloader->download($this->sourceUrl);
-                $file->saveAs($filename);
+        public function load() {
+            if (!file_exists($this->filename)) {
+                $this->downloadFromSource();
             }
-            return $filename;
+            return $this->filename;
         }
 
+        /**
+         * @throws DownloadFailedException
+         */
+        public function downloadFromSource() {
+            $this->output->writeInfo(sprintf('Downloading repository list from %s', $this->sourceUrl));
+            $file = $this->fileDownloader->download($this->sourceUrl);
+            $file->saveAs($this->filename);
+        }
 
     }
 

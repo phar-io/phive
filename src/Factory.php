@@ -41,6 +41,13 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @return UpdateRepositoryListCommand
+         */
+        public function getUpdateRepositoryListCommand() {
+            return new UpdateRepositoryListCommand($this->getPharIoRepositoryListFileLoader());
+        }
+
+        /**
          * @param CLI\CommandOptions $options
          *
          * @return RemoveCommand
@@ -130,6 +137,7 @@ namespace PharIo\Phive {
         private function getPharIoRepositoryListFileLoader() {
             return new PharIoRepositoryListFileLoader(
                 $this->getConfig()->getRepositoryListUrl(),
+                $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
                 $this->getFileDownloader(),
                 $this->getColoredConsoleOutput()
             );

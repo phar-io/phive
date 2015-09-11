@@ -61,6 +61,7 @@ spl_autoload_register(
                 'phario\\phive\\signatureverifier' => '/services/signature/SignatureVerifier.php',
                 'phario\\phive\\skelcommand' => '/commands/skel/SkelCommand.php',
                 'phario\\phive\\skelcommandconfig' => '/commands/skel/SkelCommandConfig.php',
+                'phario\\phive\\updaterepositorylistcommand' => '/commands/update-repository-list/UpdateRepositoryListCommand.php',
                 'phario\\phive\\url' => '/shared/Url.php',
                 'phario\\phive\\verificationfailedexception' => '/shared/exceptions/VerificationFailedException.php',
                 'phario\\phive\\version' => '/shared/Version.php',

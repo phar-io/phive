@@ -17,6 +17,7 @@ namespace PharIo\Phive {
 
         /**
          * @param PhiveVersion $version
+         * @param Output       $output
          */
         public function __construct(PhiveVersion $version, Output $output) {
             $this->version = $version;
@@ -24,9 +25,7 @@ namespace PharIo\Phive {
         }
 
         public function execute() {
-            $this->output->writeText(
-                $this->version->getVersionString() . "\n\n"
-            );
+            $this->output->writeText($this->version->getVersionString() . "\n\n");
         }
 
     }
