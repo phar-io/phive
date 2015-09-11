@@ -100,7 +100,18 @@ namespace PharIo\Phive {
          * @return PharService
          */
         public function getPharService() {
-            return new PharService($this->getPharDownloader(), $this->getPharInstaller(), $this->getPharRepository());
+            return new PharService(
+                $this->getPharDownloader(), $this->getPharInstaller(), $this->getPharRepository(), $this->getAliasResolver()
+            );
+        }
+
+        /**
+         * @return AliasResolver
+         */
+        private function getAliasResolver() {
+            return new AliasResolver(
+                new PharIoRepositoryList(__DIR__ . '/../conf/repositories.xml')
+            );
         }
 
         /**

@@ -26,8 +26,15 @@ namespace PharIo\Phive {
             $this->pharService = $pharService;
         }
 
+        /**
+         *
+         */
         public function execute() {
-            $this->pharService->installByUrl($this->config->getPharUrl(), $this->config->getWorkingDirectory());
+            if ($this->config->hasPharUrl()) {
+                $this->pharService->installByUrl($this->config->getPharUrl(), $this->config->getWorkingDirectory());
+            } else {
+                $this->pharService->installByAlias($this->config->getPharAlias(), $this->config->getWorkingDirectory());
+            }
         }
 
     }

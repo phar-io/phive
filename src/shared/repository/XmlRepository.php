@@ -48,16 +48,14 @@ namespace PharIo\Phive {
         }
 
         /**
-         *
+         * @return string
          */
-        protected function save() {
-            $this->dom->save($this->filename);
-        }
+        abstract protected function getRootElementName();
 
         /**
          * @return string
          */
-        abstract protected function getRootElementName();
+        abstract protected function getNamespace();
 
         /**
          *
@@ -72,6 +70,7 @@ namespace PharIo\Phive {
                 $this->dom->appendChild($this->dom->createElement($this->getRootElementName()));
             }
             $this->xPath = new \DOMXPath($this->dom);
+            $this->xPath->registerNamespace('phive', $this->getNamespace());
         }
 
     }

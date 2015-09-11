@@ -19,14 +19,26 @@ namespace PharIo\Phive {
         private $repository;
 
         /**
+         * @var AliasResolver
+         */
+        private $aliasResolver;
+
+        /**
          * @param PharDownloader $downloader
          * @param PharInstaller  $installer
          * @param PharRepository $repository
+         * @param AliasResolver  $resolver
          */
-        public function __construct(PharDownloader $downloader, PharInstaller $installer, PharRepository $repository) {
+        public function __construct(
+            PharDownloader $downloader,
+            PharInstaller $installer,
+            PharRepository $repository,
+            AliasResolver $resolver
+        ) {
             $this->downloader = $downloader;
             $this->installer = $installer;
             $this->repository = $repository;
+            $this->aliasResolver = $resolver;
         }
 
         /**
@@ -52,11 +64,36 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param PharAlias  $alias
+         * @param string     $destination
+         * @param bool       $makeCopy
+         *
+         * @throws InstallationFailedException
+         * @throws ResolveException
+         */
+        public function installByAlias(PharAlias $alias, $destination, $makeCopy = false) {
+            foreach ($this->aliasResolver->resolve($alias) as $repoUrl) {
+                try {
+                    //$repo = new PharIoRepository($repoUrl);
+                    $repo = new PharIoRepository(__DIR__ . '/../../../phive.repository.xml');
+                    $releases = $repo->getReleases($alias);
+                    $this->installByUrl($releases->getLatest()->getUrl(), $destination, $makeCopy);
+                    return;
+                } catch (\Exception $e) {
+                    // TODO catch only relevant exceptions
+                    // TODO log failed installation attempt
+                    continue;
+                }
+            }
+            throw new InstallationFailedException('Installation failed');
+        }
+
+        /**
          * @param Phar   $phar
          * @param string $destination
          * @param bool   $makeCopy
          */
-        public function install(Phar $phar, $destination, $makeCopy = false) {
+        private function install(Phar $phar, $destination, $makeCopy = false) {
             $destination = $destination . '/' . $phar->getName();
             $this->installer->install($phar->getFile(), $destination, $makeCopy);
             $this->repository->addUsage($phar, $destination);

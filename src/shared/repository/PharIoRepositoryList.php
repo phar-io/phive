@@ -25,6 +25,13 @@ namespace PharIo\Phive {
             return 'repositories';
         }
 
+        /**
+         * @return string
+         */
+        protected function getNamespace() {
+            return '';
+        }
+
     }
 
 }

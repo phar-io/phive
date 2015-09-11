@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="https://phar.io/repository" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="repository" type="rep:repositoryType" xmlns:rep="https://phar.io/repository"/>
+  <xs:complexType name="pharType">
+    <xs:sequence>
+      <xs:element type="rep:releaseType" name="release" xmlns:rep="https://phar.io/repository"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="releaseType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element type="rep:signatureType" name="signature" xmlns:rep="https://phar.io/repository"/>
+      <xs:element type="rep:hashType" name="hash" xmlns:rep="https://phar.io/repository"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="version" use="required"/>
+    <xs:attribute type="xs:string" name="url" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="signatureType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type" use="required" default="gpg"/>
+        <xs:attribute type="xs:string" name="url">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    Optional attribute. By default ".asc" will be added to the url of the PHAR.
+                    If the url of the signature file does not match this pattern, the url can be put here.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="repositoryType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element type="rep:pharType" name="phar" xmlns:rep="https://phar.io/repository"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="hashType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="type" use="required" default="sha-1"/>
+        <xs:attribute type="xs:string" name="value" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>

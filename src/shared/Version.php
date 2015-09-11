@@ -115,6 +115,32 @@ namespace PharIo\Phive {
             return $this->versionString;
         }
 
+        /**
+         * @param Version $version
+         *
+         * @return bool
+         */
+        public function isGreaterThan(Version $version) {
+            if ($version->getMajor() > $this->getMajor()) {
+                return false;
+            }
+            if ($version->getMajor() < $this->getMajor()) {
+                return true;
+            }
+            if ($version->getMinor() > $this->getMinor()) {
+                return false;
+            }
+            if ($version->getMinor() < $this->getMinor()) {
+                return true;
+            }
+            if ($version->getPatch() >= $this->getPatch()) {
+                return false;
+            }
+            if ($version->getPatch() < $this->getPatch()) {
+                return true;
+            }
+        }
+
     }
 
 }

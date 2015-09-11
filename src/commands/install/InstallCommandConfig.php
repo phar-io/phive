@@ -43,6 +43,22 @@ namespace PharIo\Phive {
 
         /**
          * @return bool
+         * @throws CLI\CommandOptionsException
+         */
+        public function hasPharUrl() {
+            return strpos($this->cliOptions->getArgument(0), 'https://') !== false;
+        }
+
+        /**
+         * @return PharAlias
+         * @throws CLI\CommandOptionsException
+         */
+        public function getPharAlias() {
+            return new PharAlias($this->cliOptions->getArgument(0));
+        }
+
+        /**
+         * @return bool
          */
         public function makeCopy() {
             return $this->cliOptions->isSwitch('copy');

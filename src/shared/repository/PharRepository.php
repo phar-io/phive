@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    class PharRepository extends XmlRepository {
+    class PharRepository extends WritableXmlRepository {
 
         /**
          * @var Directory
@@ -160,6 +160,13 @@ namespace PharIo\Phive {
          */
         protected function getRootElementName() {
             return 'phars';
+        }
+
+        /**
+         * @return string
+         */
+        protected function getNamespace() {
+            return '';
         }
 
 

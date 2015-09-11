@@ -35,6 +35,31 @@ namespace PharIo\Phive {
             ];
         }
 
+        /**
+         * @dataProvider versionGreaterThanProvider
+         *
+         * @param Version $versionA
+         * @param Version $versionB
+         * @param bool    $expectedResult
+         */
+        public function testIsGreaterThan(Version $versionA, Version $versionB, $expectedResult) {
+            $this->assertSame($expectedResult, $versionA->isGreaterThan($versionB));
+        }
+
+        public function versionGreaterThanProvider() {
+            return [
+                [new Version('1.0.0'), new Version('1.0.1'), false],
+                [new Version('1.0.1'), new Version('1.0.0'), true],
+                [new Version('1.1.0'), new Version('1.0.1'), true],
+                [new Version('1.1.0'), new Version('2.0.1'), false],
+                [new Version('1.1.0'), new Version('1.1.0'), false],
+                [new Version('2.5.8'), new Version('1.6.8'), true],
+                [new Version('2.5.8'), new Version('2.6.8'), false],
+                [new Version('2.5.8'), new Version('3.1.2'), false],
+            ];
+        }
+
+
     }
 
 }

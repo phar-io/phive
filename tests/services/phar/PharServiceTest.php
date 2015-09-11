@@ -20,31 +20,16 @@ namespace PharIo\Phive {
          */
         private $repository;
 
+        /**
+         * @var AliasResolver|ObjectProphecy
+         */
+        private $resolver;
+
         protected function setUp() {
             $this->downloader = $this->prophesize(PharDownloader::class);
             $this->installer = $this->prophesize(PharInstaller::class);
             $this->repository = $this->prophesize(PharRepository::class);
-        }
-
-        public function testInstallInvokesInstallerAsExpected() {
-            $file = new File('foo.phar', 'bar');
-            $phar = new Phar('foo', new Version('1.20.1'), $file);
-            $this->installer->install(
-                $file,
-                '/tmp/foo',
-                false
-            )->shouldBeCalled();
-            $this->getPharService()->install($phar, '/tmp', false);
-        }
-
-        public function testInstallInvokesRepositoryAsExpected() {
-            $file = new File('foo.phar', 'bar');
-            $phar = new Phar('foo', new Version('1.20.1'), $file);
-            $this->repository->addUsage(
-                $phar,
-                '/tmp/foo'
-            )->shouldBeCalled();
-            $this->getPharService()->install($phar, '/tmp', false);
+            $this->resolver = $this->prophesize(AliasResolver::class);
         }
 
         public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
@@ -128,7 +113,12 @@ namespace PharIo\Phive {
          * @return PharService
          */
         private function getPharService() {
-            return new PharService($this->downloader->reveal(), $this->installer->reveal(), $this->repository->reveal());
+            return new PharService(
+                $this->downloader->reveal(),
+                $this->installer->reveal(),
+                $this->repository->reveal(),
+                $this->resolver->reveal()
+            );
         }
 
     }
