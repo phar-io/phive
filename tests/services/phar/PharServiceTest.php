@@ -56,6 +56,9 @@ namespace PharIo\Phive {
                 ->shouldBeCalled()
                 ->willReturn(false);
 
+            $this->repository->addPhar($expectedPhar)
+                ->shouldBeCalled();
+
             $this->downloader->download($url)
                 ->shouldBeCalled()
                 ->willReturn($file);

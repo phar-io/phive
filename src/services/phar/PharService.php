@@ -44,6 +44,7 @@ namespace PharIo\Phive {
             $version = $this->getPharVersion($pharUrl);
             if (!$this->repository->hasPhar($name, $version)) {
                 $phar = new Phar($name, $version, $this->downloader->download($pharUrl));
+                $this->repository->addPhar($phar);
             } else {
                 $phar = $this->repository->getPhar($name, $version);
             }
