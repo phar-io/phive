@@ -8,8 +8,10 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'phario\\phive\\aliasresolver' => '/services/phar/AliasResolver.php',
+                'phario\\phive\\coloredconsoleoutput' => '/shared/cli/ColoredConsoleOutput.php',
                 'phario\\phive\\commandlocator' => '/commands/CommandLocator.php',
                 'phario\\phive\\config' => '/Config.php',
+                'phario\\phive\\consoleoutput' => '/shared/cli/ConsoleOutput.php',
                 'phario\\phive\\curl' => '/shared/curl/Curl.php',
                 'phario\\phive\\curlconfig' => '/shared/curl/CurlConfig.php',
                 'phario\\phive\\curlexception' => '/shared/exceptions/CurlException.php',
@@ -27,6 +29,7 @@ spl_autoload_register(
                 'phario\\phive\\gnupgsignatureverifier' => '/services/signature/gpg/GnupgSignatureVerifier.php',
                 'phario\\phive\\gnupgverificationresult' => '/services/signature/gpg/GnupgVerificationResult.php',
                 'phario\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
+                'phario\\phive\\input' => '/shared/cli/Input.php',
                 'phario\\phive\\installcommand' => '/commands/install/InstallCommand.php',
                 'phario\\phive\\installcommandconfig' => '/commands/install/InstallCommandConfig.php',
                 'phario\\phive\\ioexception' => '/shared/exceptions/IOException.php',
@@ -34,7 +37,7 @@ spl_autoload_register(
                 'phario\\phive\\keyimporter' => '/services/key/KeyImporter.php',
                 'phario\\phive\\keyimportresult' => '/services/key/KeyImportResult.php',
                 'phario\\phive\\keyservice' => '/services/key/KeyService.php',
-                'phario\\phive\\output' => '/shared/logger/Logger.php',
+                'phario\\phive\\output' => '/shared/cli/Output.php',
                 'phario\\phive\\phar' => '/shared/Phar.php',
                 'phario\\phive\\pharalias' => '/shared/PharAlias.php',
                 'phario\\phive\\phardownloader' => '/services/phar/PharDownloader.php',

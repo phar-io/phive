@@ -148,14 +148,14 @@ namespace PharIo\Phive {
          * @return Output
          */
         private function getColoredConsoleOutput() {
-            return new CLI\ColoredConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
+            return new ColoredConsoleOutput(ConsoleOutput::VERBOSE_INFO);
         }
 
         /**
          * @return Output
          */
         private function getConsoleOutput() {
-            return new CLI\ConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
+            return new ConsoleOutput(ConsoleOutput::VERBOSE_INFO);
         }
 
         /**
