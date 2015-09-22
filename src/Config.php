@@ -40,7 +40,7 @@ namespace PharIo\Phive {
          * @return Url
          */
         public function getRepositoryListUrl() {
-            return new Url('https://phar.io/repositories.xml');
+            return new Url('https://phar.io/data/repositories.xml');
         }
 
     }
