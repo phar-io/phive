@@ -24,21 +24,29 @@ namespace PharIo\Phive {
         private $aliasResolver;
 
         /**
+         * @var Output
+         */
+        private $output;
+
+        /**
          * @param PharDownloader $downloader
          * @param PharInstaller  $installer
          * @param PharRepository $repository
          * @param AliasResolver  $resolver
+         * @param Output         $output
          */
         public function __construct(
             PharDownloader $downloader,
             PharInstaller $installer,
             PharRepository $repository,
-            AliasResolver $resolver
+            AliasResolver $resolver,
+            Output $output
         ) {
             $this->downloader = $downloader;
             $this->installer = $installer;
             $this->repository = $repository;
             $this->aliasResolver = $resolver;
+            $this->output = $output;
         }
 
         /**
@@ -74,14 +82,15 @@ namespace PharIo\Phive {
         public function installByAlias(PharAlias $alias, $destination, $makeCopy = false) {
             foreach ($this->aliasResolver->resolve($alias) as $repoUrl) {
                 try {
-                    //$repo = new PharIoRepository($repoUrl);
-                    $repo = new PharIoRepository(__DIR__ . '/../../../phive.repository.xml');
+                    $repo = new PharIoRepository($repoUrl);
                     $releases = $repo->getReleases($alias);
                     $this->installByUrl($releases->getLatest()->getUrl(), $destination, $makeCopy);
                     return;
                 } catch (\Exception $e) {
                     // TODO catch only relevant exceptions
-                    // TODO log failed installation attempt
+                    $this->output->writeWarning(
+                        sprintf('Installation from repository %s failed: %s', $repoUrl, $e->getMessage())
+                    );
                     continue;
                 }
             }

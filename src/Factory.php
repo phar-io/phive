@@ -115,7 +115,11 @@ namespace PharIo\Phive {
          */
         public function getPharService() {
             return new PharService(
-                $this->getPharDownloader(), $this->getPharInstaller(), $this->getPharRepository(), $this->getAliasResolver()
+                $this->getPharDownloader(),
+                $this->getPharInstaller(),
+                $this->getPharRepository(),
+                $this->getAliasResolver(),
+                $this->getColoredConsoleOutput()
             );
         }
 
@@ -125,9 +129,7 @@ namespace PharIo\Phive {
         private function getAliasResolver() {
 
             return new AliasResolver(
-                new PharIoRepositoryList(
-                    $this->getPharIoRepositoryListFileLoader()->load($this->getConfig()->getHomeDirectory())
-                )
+                new PharIoRepositoryList($this->getPharIoRepositoryListFileLoader()->load())
             );
         }
 
