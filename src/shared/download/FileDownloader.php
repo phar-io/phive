@@ -24,7 +24,9 @@ namespace PharIo\Phive {
         public function download(Url $url) {
             $response = $this->curl->get($url);
             if ($response->getHttpCode() !== 200) {
-                throw new DownloadFailedException($response->getErrorMessage(), $response->getHttpCode());
+                throw new DownloadFailedException(
+                    sprintf('Download failed with status code %s', $response->getHttpCode())
+                );
             }
             return new File($this->getFilename($url), $response->getBody());
         }
