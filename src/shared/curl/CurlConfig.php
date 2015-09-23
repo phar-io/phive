@@ -79,6 +79,7 @@ namespace PharIo\Phive {
         public function asCurlOptArray() {
             return [
                 CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_CONNECTTIMEOUT => 5,
                 CURLOPT_TIMEOUT => 10,
                 CURLOPT_USERAGENT => $this->userAgent,
