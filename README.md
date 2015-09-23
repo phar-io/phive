@@ -17,14 +17,14 @@ cluttered dependencies!
 ##Getting PHIVE
 
 Installation of PHIVE is easy and about the last time you have to do anything phar related manually.
-Grab your copy of PHIVE from the [releases](https://github.com/theseer/PHIVE/releases) section at our github page or
+Grab your copy of PHIVE from the [releases](https://github.com/phar-io/phive/releases) section at our github page or
 follow these 5 simple steps:
 
     wget -o https://phar.io/releases/phive.phar
     gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79
     gpg --verify https://phar.io/releases/phive.phar.asc phive.phar
     chmod +x phive.phar
-    sudo mv phive.phar /usr/bin/phive</code></pre>
+    sudo mv phive.phar /usr/bin/phive
 
 
 ##Sample Usages
@@ -48,8 +48,6 @@ and only a symbolic link is created for the project. You can of course also expl
 be made in favor of symbolic links (use -copy).
 
 ##Contributing
-
-[Fork us!](https://github.com/phar-io/phive)
 
 PHIVE and phar.io are open source projects relesaed under the BSD license. You are welcome to join the development
 team!  
