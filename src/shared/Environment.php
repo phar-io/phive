@@ -59,6 +59,13 @@ namespace PharIo\Phive {
             return $this->server['https_proxy'];
         }
 
+        /**
+         * @return string
+         */
+        public function getBinaryName() {
+            return $this->server['_'];
+        }
+
     }
 
 }

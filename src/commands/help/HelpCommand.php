@@ -5,8 +5,37 @@ namespace PharIo\Phive {
 
     class HelpCommand implements Command {
 
+        /**
+         * @var PhiveVersion
+         */
+        private $version;
+
+        /**
+         * @var Environment
+         */
+        private $environment;
+
+        /**
+         * @var Output
+         */
+        private $output;
+
+        /**
+         * @param PhiveVersion $version
+         * @param Output       $output
+         */
+        public function __construct(PhiveVersion $version, Environment $environment, Output $output) {
+            $this->version = $version;
+            $this->environment = $environment;
+            $this->output = $output;
+        }
+
         public function execute() {
-            // TODO: Implement execute() method.
+            $this->output->writeText($this->version->getVersionString() . "\n\n");
+            $this->output->writeText(
+                str_replace('%phive', $this->environment->getBinaryName(), file_get_contents(__DIR__ . '/help.txt'))
+                . "\n\n"
+            );
         }
 
     }

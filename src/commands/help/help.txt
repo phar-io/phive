@@ -1,0 +1,25 @@
+Usage: %phive <command> [arguments]
+
+help:
+    Show this help output and exit
+
+version:
+    Show release version and exit
+
+install <alias|url> [destination]
+    Perform installation of a phar distributed application or library
+
+    alias/url       Installation via known alias or explicit download form given url
+    destination     (optional) Target directory for the phar
+
+    --copy          Copy phar file instead of using symlink
+
+remove <alias>
+    Remove installed phar from project
+
+skel
+    Create a default configuration file
+
+update-repository-list
+    Update the alias list of known phar distributed applications and libraries
+

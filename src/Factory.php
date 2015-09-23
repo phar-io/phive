@@ -28,7 +28,7 @@ namespace PharIo\Phive {
          * @return HelpCommand
          */
         public function getHelpCommand() {
-            return new HelpCommand();
+            return new HelpCommand($this->getPhiveVersion(), $this->getEnvironment(), $this->getConsoleOutput());
         }
 
         /**
