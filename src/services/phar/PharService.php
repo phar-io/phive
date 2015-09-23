@@ -118,21 +118,24 @@ namespace PharIo\Phive {
             $filename = pathinfo((string)$url, PATHINFO_FILENAME);
             preg_match('/(.*)-[0-9]+.[0-9]+.[0-9]+.*/', $filename, $matches);
             if (count($matches) !== 2) {
-                throw new DownloadFailedException(sprintf('Could not extract PHAR name from %s', $url));
+                $matches[1] = $filename;
             }
 
             return $matches[1];
         }
 
         /**
-         * @param URl $url
+         * @param Url $url
          *
          * @return Version
          * @throws DownloadFailedException
          */
-        private function getPharVersion(URl $url) {
+        private function getPharVersion(Url $url) {
             $filename = pathinfo((string)$url, PATHINFO_FILENAME);
             preg_match('/-([0-9]+.[0-9]+.[0-9]+.*)/', $filename, $matches);
+            if (count($matches) !== 2) {
+                preg_match('/\/([0-9]+.[0-9]+.[0-9]+.*)\//', (string)$url, $matches);
+            }
             if (count($matches) !== 2) {
                 throw new DownloadFailedException(sprintf('Could not extract PHAR version from %s', $url));
             }
