@@ -5,7 +5,7 @@ namespace PharIo\Phive {
 
         private $version;
 
-        public function __construct($version = 'v0.1-dev') {
+        public function __construct($version = '0.1.0') {
             $this->version = $version;
         }
 
