@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+spl_autoload_register(
+  function ($class)
+  {
+      static $classes = NULL;
+
+      if ($classes === NULL) {
+          $classes = array(
+            ___CLASSLIST___
+          );
+      }
+
+      $class = strtolower($class);
+
+      if (isset($classes[$class])) {
+          require 'phar://phive.phar/' . $classes[$class];
+      }
+  }
+);
+
+Phar::mapPhar('phive.phar');
+
+(new \PharIo\Phive\Factory())->getRunner()->run(
+    new TheSeer\CLI\Request($_SERVER['argv'])
+);
+
+__HALT_COMPILER();

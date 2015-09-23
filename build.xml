@@ -94,7 +94,7 @@
 
         <exec executable="bash" outputproperty="version">
             <arg value="-c"/>
-            <arg value="${basedir}/phive --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
+            <arg value="${basedir}/phive version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
         </exec>
 
         <exec executable="phpab" failonerror="true">
@@ -108,13 +108,30 @@
             <arg value="--output"/>
             <arg path="${basedir}/build/phar/phive-${version}.phar"/>
             <arg value="--template"/>
-            <arg path="${basedir}/build/phar/autoload.php.in"/>
-            <arg path="${source}"/>
+            <arg path="${basedir}/build/phar/bootstrap.php.in"/>
+            <arg value="--basedir" />
+            <arg path="${basedir}" />
+            <arg path="${source}" />
+            <arg path="${basedir}/vendor/theseer" />
         </exec>
 
         <chmod file="${basedir}/build/phar/phive-${version}.phar" perm="ugo+rx"/>
 
     </target>
+
+    <target name="release" description="Make a release based on latest tag" depends="phar">
+
+        <exec executable="gpg">
+            <arg value="--local-user" />
+            <arg value="team@phar.io" />
+            <arg value="--detach-sign" />
+            <arg value="--output" />
+            <arg path="${basedir}/build/phar/phive-${version}.phar.asc" />
+            <arg path="${basedir}/build/phar/phive-${version}.phar" />
+        </exec>
+
+    </target>
+
 
     <target name="build" depends="clean,parallelTasks,phpunit"/>
 </project>
