@@ -20,25 +20,23 @@ Installation of PHIVE is easy and about the last time you have to do anything ph
 Grab your copy of PHIVE from the [releases](https://github.com/theseer/PHIVE/releases) section at our github page or
 follow these 5 simple steps:
 
-    wget -o  https://github.com/theseer/PHIVE/releases/latest/PHIVE.phar
-    gpg --keyserver some.where --import 0x1234567890
-    gpg --verify https://github.com/theseer/PHIVE/releases/latest/PHIVE.phar.asc PHIVE.phar
-    chmod +x PHIVE.phar
-    sudo mv PHIVE.phar /usr/bin/PHIVE
+    wget -o https://phar.io/releases/phive.phar
+    gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79
+    gpg --verify https://phar.io/releases/phive.phar.asc phive.phar
+    chmod +x phive.phar
+    sudo mv phive.phar /usr/bin/phive</code></pre>
+
 
 ##Sample Usages
 
 Once installed, PHIVE is ready for action. Some example invocations are shown below:
     
-    phive install https://proprietary.org/some.phar 
+    phive install phpunit
+    phive install --copy phpdox
+    phive install phpdox bin/phpdox
+    phive install https://phar.phpunit.de/phpunit-4.8.6.phar
 
-    phive install -copy https://proprietary.org/some.phar
-     
-    phive remove  some.phar
-    
-    phive version
 
- 
 ##How it works
 
 PHIVE makes installation easy by downloading the phar archive from the given location, including the verification of
