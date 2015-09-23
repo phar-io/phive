@@ -4,20 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dcd40ccc0efc23ee56fda34e1b2142c1",
+    "hash": "044456fe7853c18e10313eeeffd6ce19",
+    "content-hash": "39399dad268976a22148452a863cc150",
     "packages": [
         {
             "name": "theseer/cli",
-            "version": "0.2",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/CLI.git",
-                "reference": "cc731b59f50a96d19f489210993cb2a5f471f921"
+                "reference": "7391f4ec4b8fe5306ddb93c0e8eb133dc1ac1a29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/CLI/zipball/cc731b59f50a96d19f489210993cb2a5f471f921",
-                "reference": "cc731b59f50a96d19f489210993cb2a5f471f921",
+                "url": "https://api.github.com/repos/theseer/CLI/zipball/7391f4ec4b8fe5306ddb93c0e8eb133dc1ac1a29",
+                "reference": "7391f4ec4b8fe5306ddb93c0e8eb133dc1ac1a29",
                 "shasum": ""
             },
             "require-dev": {
@@ -41,7 +42,7 @@
                 }
             ],
             "description": "A simplistic CLI micro framework to ease development of command based CLI applications in PHP.",
-            "time": "2015-09-11 11:09:17"
+            "time": "2015-09-23 15:52:25"
         }
     ],
     "packages-dev": [],
