@@ -3,6 +3,7 @@
 /.settings
 /.idea
 /build
+/phive.xml
 /phpunit.xml
 /tools
 /vendor
