@@ -49,8 +49,8 @@ namespace PharIo\Phive {
             $this->extractLabel($versionString);
             $versionSegments = explode('.', $versionString);
             $this->major = $versionSegments[0];
-            $this->minor = $versionSegments[1];
-            $this->patch = $versionSegments[2];
+            $this->minor = isset($versionSegments[1]) ? $versionSegments[1] : 0;
+            $this->patch = isset($versionSegments[2]) ? $versionSegments[2] : 0;
         }
 
         /**
