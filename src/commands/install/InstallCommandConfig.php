@@ -56,8 +56,9 @@ namespace PharIo\Phive {
         public function getPharAlias() {
             $alias = $this->cliOptions->getArgument(0);
             $aliasSegments = explode('@', $alias, 2);
+            $parser = new VersionConstraintParser();
             if (count($aliasSegments) === 2) {
-                $versionConstraint = new ExactVersionConstraint($aliasSegments[1]);
+                $versionConstraint = $parser->parse($aliasSegments[1]);
             } else {
                 $versionConstraint = new AnyVersionConstraint();
             }
