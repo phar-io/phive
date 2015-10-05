@@ -20,7 +20,7 @@ namespace PharIo\Phive {
          *
          * @return bool
          */
-        public function matches(Version $version)
+        public function complies(Version $version)
         {
             return $version->getMajor() == $this->major;
         }

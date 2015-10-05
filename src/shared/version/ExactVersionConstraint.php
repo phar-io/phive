@@ -21,7 +21,7 @@ namespace PharIo\Phive {
          *
          * @return bool
          */
-        public function matches(Version $version)
+        public function complies(Version $version)
         {
             return $this->value == $version->getVersionString();
         }

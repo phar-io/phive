@@ -8,7 +8,7 @@ class AnyVersionConstraint implements VersionConstraintInterface
      *
      * @return bool
      */
-    public function matches(Version $version)
+    public function complies(Version $version)
     {
         return true;
     }

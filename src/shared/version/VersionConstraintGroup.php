@@ -21,10 +21,10 @@ namespace PharIo\Phive {
          *
          * @return bool
          */
-        public function matches(Version $version)
+        public function complies(Version $version)
         {
             foreach ($this->constraints as $constraint) {
-                if (!$constraint->matches($version)) {
+                if (!$constraint->complies($version)) {
                     return false;
                 }
             }

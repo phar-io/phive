@@ -27,7 +27,7 @@ namespace PharIo\Phive {
             /** @var null|Release $latest */
             $latest = null;
             foreach ($this->releases as $release) {
-                if (!$versionConstraint->matches($release->getVersion())) {
+                if (!$versionConstraint->complies($release->getVersion())) {
                     continue;
                 }
                 if ($latest === null || $release->getVersion()->isGreaterThan($latest->getVersion())) {
