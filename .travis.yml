@@ -4,6 +4,12 @@ os:
 
 language: php
 
+before_install:
+  - composer self-update
+
+install:
+  - travis_retry composer install --no-interaction --prefer-source
+
 php:
   - 5.5
   - 5.6
