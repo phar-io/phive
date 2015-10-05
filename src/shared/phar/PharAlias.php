@@ -6,20 +6,34 @@ namespace PharIo\Phive {
         /**
          * @var string
          */
-        private $value = '';
+        private $name = '';
 
         /**
-         * @param string $value
+         * @var ExactVersionConstraint
          */
-        public function __construct($value) {
-            $this->value = $value;
+        private $versionConstraint;
+
+        /**
+         * @param string                     $name
+         * @param VersionConstraintInterface $versionConstraint
+         */
+        public function __construct($name, VersionConstraintInterface $versionConstraint) {
+            $this->name = $name;
+            $this->versionConstraint = $versionConstraint;
+        }
+
+        /**
+         * @return ExactVersionConstraint
+         */
+        public function getVersionConstraint() {
+            return $this->versionConstraint;
         }
 
         /**
          * @return string
          */
         public function __toString() {
-            return $this->value;
+            return $this->name;
         }
 
     }

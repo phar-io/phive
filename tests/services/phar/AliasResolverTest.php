@@ -19,7 +19,7 @@ namespace PharIo\Phive {
          */
         public function testThrowsExceptionIfListReturnsEmptyArray()
         {
-            $alias = new PharAlias('phpunit');
+            $alias = new PharAlias('phpunit', new AnyVersionConstraint());
             $this->repositoryList->getRepositoryUrls($alias)
                 ->shouldBeCalled()
                 ->willReturn([]);
@@ -30,7 +30,7 @@ namespace PharIo\Phive {
 
         public function testReturnsExpectedArrayOfUrls()
         {
-            $alias = new PharAlias('phpunit');
+            $alias = new PharAlias('phpunit', new AnyVersionConstraint());
 
             $urls = [
                 new Url('https://example.com/foo'),

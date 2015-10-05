@@ -11,7 +11,7 @@ namespace PharIo\Phive {
          * @param string $value
          */
         public function testValueHandling($value) {
-            $alias = new PharAlias($value);
+            $alias = new PharAlias($value, new AnyVersionConstraint());
             $this->assertSame($value, (string)$alias);
         }
 

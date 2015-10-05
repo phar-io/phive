@@ -8,6 +8,7 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'phario\\phive\\aliasresolver' => '/services/phar/AliasResolver.php',
+                'phario\\phive\\anyversionconstraint' => '/shared/version/AnyVersionConstraint.php',
                 'phario\\phive\\coloredconsoleoutput' => '/shared/cli/ColoredConsoleOutput.php',
                 'phario\\phive\\commandlocator' => '/commands/CommandLocator.php',
                 'phario\\phive\\config' => '/Config.php',
@@ -21,6 +22,7 @@ spl_autoload_register(
                 'phario\\phive\\directoryexception' => '/shared/exceptions/DirectoryException.php',
                 'phario\\phive\\downloadfailedexception' => '/shared/exceptions/DownloadFailedException.php',
                 'phario\\phive\\environment' => '/shared/Environment.php',
+                'phario\\phive\\exactversionconstraint' => '/shared/version/ExactVersionConstraint.php',
                 'phario\\phive\\exceptionhandler' => '/ExceptionHandler.php',
                 'phario\\phive\\factory' => '/Factory.php',
                 'phario\\phive\\file' => '/shared/File.php',
@@ -66,6 +68,8 @@ spl_autoload_register(
                 'phario\\phive\\verificationfailedexception' => '/shared/exceptions/VerificationFailedException.php',
                 'phario\\phive\\version' => '/shared/Version.php',
                 'phario\\phive\\versioncommand' => '/commands/version/VersionCommand.php',
+                'phario\\phive\\versionconstraintinterface' => '/shared/version/VersionConstraintInterface.php',
+                'phario\\phive\\versionconstraintparser' => '/shared/version/VersionConstraintParser.php',
                 'phario\\phive\\writablexmlrepository' => '/shared/repository/WritableXmlRepository.php',
                 'phario\\phive\\xmlrepository' => '/shared/repository/XmlRepository.php',
                 'phario\\phive \\releaseexception' => '/shared/exceptions/ReleaseException.php'

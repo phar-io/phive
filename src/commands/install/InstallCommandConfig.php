@@ -54,7 +54,14 @@ namespace PharIo\Phive {
          * @throws CLI\CommandOptionsException
          */
         public function getPharAlias() {
-            return new PharAlias($this->cliOptions->getArgument(0));
+            $alias = $this->cliOptions->getArgument(0);
+            $aliasSegments = explode('@', $alias, 2);
+            if (count($aliasSegments) === 2) {
+                $versionConstraint = new ExactVersionConstraint($aliasSegments[1]);
+            } else {
+                $versionConstraint = new AnyVersionConstraint();
+            }
+            return new PharAlias($aliasSegments[0], $versionConstraint);
         }
 
         /**
@@ -63,6 +70,7 @@ namespace PharIo\Phive {
         public function makeCopy() {
             return $this->cliOptions->isSwitch('copy');
         }
+
     }
 
 }

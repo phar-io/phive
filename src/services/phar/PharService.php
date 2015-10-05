@@ -84,7 +84,7 @@ namespace PharIo\Phive {
                 try {
                     $repo = new PharIoRepository($repoUrl);
                     $releases = $repo->getReleases($alias);
-                    $this->installByUrl($releases->getLatest()->getUrl(), $destination, $makeCopy);
+                    $this->installByUrl($releases->getLatest($alias->getVersionConstraint())->getUrl(), $destination, $makeCopy);
                     return;
                 } catch (\Exception $e) {
                     // TODO catch only relevant exceptions
