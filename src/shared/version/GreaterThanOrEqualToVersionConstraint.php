@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    class GreaterOrEqualThanVersionConstraint implements VersionConstraintInterface
+    class GreaterThanOrEqualToVersionConstraint implements VersionConstraintInterface
     {
         /**
          * @var Version

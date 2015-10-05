@@ -32,7 +32,7 @@ spl_autoload_register(
                 'phario\\phive\\gnupgkeyimporter' => '/services/key/gpg/GnupgKeyImporter.php',
                 'phario\\phive\\gnupgsignatureverifier' => '/services/signature/gpg/GnupgSignatureVerifier.php',
                 'phario\\phive\\gnupgverificationresult' => '/services/signature/gpg/GnupgVerificationResult.php',
-                'phario\\phive\\greaterorequalthanversionconstraint' => '/shared/version/GreaterOrEqualThanVersionConstraint.php',
+                'phario\\phive\\greaterthanorequaltoversionconstraint' => '/shared/version/GreaterThanOrEqualToVersionConstraint.php',
                 'phario\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
                 'phario\\phive\\input' => '/shared/cli/Input.php',
                 'phario\\phive\\installationfailedexception' => '/shared/exceptions/InstallationFailedException.php',

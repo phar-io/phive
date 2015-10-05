@@ -15,7 +15,7 @@ namespace PharIo\Phive {
                 case '~':
                     return new VersionConstraintGroup(
                         [
-                            new GreaterOrEqualThanVersionConstraint(new Version(substr($value, 1))),
+                            new GreaterThanOrEqualToVersionConstraint(new Version(substr($value, 1))),
                             new SpecificMajorVersionConstraint($this->getMajor($value))
                         ]
                     );
