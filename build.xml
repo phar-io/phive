@@ -21,6 +21,10 @@
             <arg line="--cache ${basedir}/build/phpab/autoload.cache -1 -o src/autoload.php" />
             <arg path="src" />
         </exec>
+        <exec executable="phpab">
+            <arg line="--cache ${basedir}/build/phpab/autoload.cache -1 -o tests/autoload.php" />
+            <arg path="tests" />
+        </exec>
     </target>
 
     <target name="phpunit" description="Run unit tests using PHPUnit">
