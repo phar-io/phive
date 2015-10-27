@@ -22,6 +22,7 @@ namespace PharIo\Phive {
 
         /**
          * @param PhiveVersion $version
+         * @param Environment  $environment
          * @param Output       $output
          */
         public function __construct(PhiveVersion $version, Environment $environment, Output $output) {

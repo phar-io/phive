@@ -14,6 +14,9 @@ install <alias|url> [destination]
 
     --copy          Copy phar file instead of using symlink
 
+purge
+    Delete unused phars
+
 remove <alias>
     Remove installed phar from project
 

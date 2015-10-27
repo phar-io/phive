@@ -37,6 +37,10 @@ namespace PharIo\Phive {
                     return $this->factory->getInstallCommand($request->getCommandOptions());
                 }
 
+                case 'purge': {
+                    return $this->factory->getPurgeCommand($request->getCommandOptions());
+                }
+
                 case 'remove' : {
                     return $this->factory->getRemoveCommand($request->getCommandOptions());
                 }

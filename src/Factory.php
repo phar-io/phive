@@ -74,6 +74,19 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param CLI\CommandOptions $options
+         *
+         * @return PurgeCommand
+         */
+        public function getPurgeCommand(CLI\CommandOptions $options) {
+            return new PurgeCommand(
+                new PurgeCommandConfig($options, $this->getConfig()),
+                $this->getPharRepository(),
+                $this->getColoredConsoleOutput()
+            );
+        }
+
+        /**
          * @return CommandLocator
          */
         private function getCommandLocator() {

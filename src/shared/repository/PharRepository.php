@@ -115,6 +115,17 @@ namespace PharIo\Phive {
 
         /**
          * @param Phar $phar
+         */
+        public function removePhar(Phar $phar)
+        {
+            $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
+            unlink($this->getPharDestination($phar->getFile()));
+            $pharNode->parentNode->removeChild($pharNode);
+            $this->save();
+        }
+
+        /**
+         * @param Phar $phar
          *
          * @return bool
          */
@@ -145,7 +156,7 @@ namespace PharIo\Phive {
          */
         private function savePhar(File $pharFile)
         {
-            $destination = $this->pharDirectory . DIRECTORY_SEPARATOR . $pharFile->getFilename();
+            $destination = $this->getPharDestination($pharFile);
             file_put_contents($destination, $pharFile->getContent());
             chmod($destination, 0755);
         }
@@ -204,6 +215,15 @@ namespace PharIo\Phive {
             return '';
         }
 
+        /**
+         * @param File $file
+         *
+         * @return string
+         */
+        private function getPharDestination(File $file)
+        {
+            return $this->pharDirectory . DIRECTORY_SEPARATOR . $file->getFilename();
+        }
 
     }
 

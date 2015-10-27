@@ -55,6 +55,8 @@ spl_autoload_register(
                 'phario\\phive\\pharrepositoryexception' => '/shared/exceptions/PharRepositoryException.php',
                 'phario\\phive\\pharservice' => '/services/phar/PharService.php',
                 'phario\\phive\\phiveversion' => '/commands/version/PhiveVersion.php',
+                'phario\\phive\\purgecommand' => '/commands/purge/PurgeCommand.php',
+                'phario\\phive\\purgecommandconfig' => '/commands/purge/PurgeCommandConfig.php',
                 'phario\\phive\\release' => '/shared/phar/Release.php',
                 'phario\\phive\\releasecollection' => '/shared/phar/ReleaseCollection.php',
                 'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
