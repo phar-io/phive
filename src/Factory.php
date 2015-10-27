@@ -250,7 +250,9 @@ namespace PharIo\Phive {
          * @return Config
          */
         private function getConfig() {
-            return new Config($this->getEnvironment());
+            return new Config(
+                $this->getEnvironment(), new PhiveXmlConfig(__DIR__ . '/../phive.xml')
+            );
         }
 
         /**

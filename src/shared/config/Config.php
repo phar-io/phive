@@ -9,10 +9,17 @@ namespace PharIo\Phive {
         private $environment;
 
         /**
-         * @param Environment $environment
+         * @var PhiveXmlConfig
          */
-        public function __construct(Environment $environment) {
+        private $phiveXmlConfig;
+
+        /**
+         * @param Environment    $environment
+         * @param PhiveXmlConfig $phiveXmlConfig
+         */
+        public function __construct(Environment $environment, PhiveXmlConfig $phiveXmlConfig) {
             $this->environment = $environment;
+            $this->phiveXmlConfig = $phiveXmlConfig;
         }
 
         /**
@@ -41,6 +48,13 @@ namespace PharIo\Phive {
          */
         public function getRepositoryListUrl() {
             return new Url('https://phar.io/data/repositories.xml');
+        }
+
+        /**
+         * @return array
+         */
+        public function getPhars() {
+            return $this->phiveXmlConfig->getPhars();
         }
 
     }

@@ -39,6 +39,25 @@ namespace PharIo\Phive {
          */
         public function getRequestedPhars()
         {
+            if ($this->cliOptions->getArgumentCount() == 0) {
+                return $this->config->getPhars();
+            }
+            return $this->getPharsFromCliArguments();
+        }
+
+        /**
+         * @return bool
+         */
+        public function makeCopy() {
+            return $this->cliOptions->isSwitch('copy');
+        }
+
+        /**
+         * @return array
+         * @throws CLI\CommandOptionsException
+         */
+        private function getPharsFromCliArguments()
+        {
             $phars = [];
             for ($i = 0; $i < $this->cliOptions->getArgumentCount(); $i++) {
                 $argument = $this->cliOptions->getArgument($i);
@@ -56,13 +75,6 @@ namespace PharIo\Phive {
                 }
             }
             return $phars;
-        }
-
-        /**
-         * @return bool
-         */
-        public function makeCopy() {
-            return $this->cliOptions->isSwitch('copy');
         }
 
     }
