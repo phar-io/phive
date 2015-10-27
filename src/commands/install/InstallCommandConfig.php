@@ -34,35 +34,28 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return Url
+         * @return array
          * @throws CLI\CommandOptionsException
          */
-        public function getPharUrl() {
-            return new Url($this->cliOptions->getArgument(0));
-        }
-
-        /**
-         * @return bool
-         * @throws CLI\CommandOptionsException
-         */
-        public function hasPharUrl() {
-            return strpos($this->cliOptions->getArgument(0), 'https://') !== false;
-        }
-
-        /**
-         * @return PharAlias
-         * @throws CLI\CommandOptionsException
-         */
-        public function getPharAlias() {
-            $alias = $this->cliOptions->getArgument(0);
-            $aliasSegments = explode('@', $alias, 2);
-            $parser = new VersionConstraintParser();
-            if (count($aliasSegments) === 2) {
-                $versionConstraint = $parser->parse($aliasSegments[1]);
-            } else {
-                $versionConstraint = new AnyVersionConstraint();
+        public function getRequestedPhars()
+        {
+            $phars = [];
+            for ($i = 0; $i < $this->cliOptions->getArgumentCount(); $i++) {
+                $argument = $this->cliOptions->getArgument($i);
+                if (strpos($argument, 'https://') !== false) {
+                    $phars[] = new Url($argument);
+                } else {
+                    $aliasSegments = explode('@', $argument, 2);
+                    $parser = new VersionConstraintParser();
+                    if (count($aliasSegments) === 2) {
+                        $versionConstraint = $parser->parse($aliasSegments[1]);
+                    } else {
+                        $versionConstraint = new AnyVersionConstraint();
+                    }
+                    $phars[] = new PharAlias($aliasSegments[0], $versionConstraint);
+                }
             }
-            return new PharAlias($aliasSegments[0], $versionConstraint);
+            return $phars;
         }
 
         /**

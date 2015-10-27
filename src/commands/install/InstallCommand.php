@@ -30,10 +30,12 @@ namespace PharIo\Phive {
          *
          */
         public function execute() {
-            if ($this->config->hasPharUrl()) {
-                $this->pharService->installByUrl($this->config->getPharUrl(), $this->config->getWorkingDirectory());
-            } else {
-                $this->pharService->installByAlias($this->config->getPharAlias(), $this->config->getWorkingDirectory());
+            foreach ($this->config->getRequestedPhars() as $requestedPhar) {
+                if ($requestedPhar instanceof Url) {
+                    $this->pharService->installByUrl($requestedPhar, $this->config->getWorkingDirectory());
+                } else {
+                    $this->pharService->installByAlias($requestedPhar, $this->config->getWorkingDirectory());
+                }
             }
         }
 
