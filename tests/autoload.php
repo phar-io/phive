@@ -8,10 +8,12 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'phario\\phive\\aliasresolvertest' => '/services/phar/AliasResolverTest.php',
+                'phario\\phive\\anyversionconstrainttest' => '/shared/versionconstraints/AnyVersionConstraintTest.php',
                 'phario\\phive\\commandlocatortest' => '/CommandLocatorTest.php',
                 'phario\\phive\\curlconfigtest' => '/shared/curl/CurlConfigTest.php',
                 'phario\\phive\\curlresponsetest' => '/shared/curl/CurlResponseTest.php',
                 'phario\\phive\\environmenttest' => '/shared/EnvironmentTest.php',
+                'phario\\phive\\exactversionconstrainttest' => '/shared/versionconstraints/ExactVersionConstraintTest.php',
                 'phario\\phive\\gnupgkeydownloadertest' => '/services/key/gpg/GnupgKeyDownloaderTest.php',
                 'phario\\phive\\gnupgkeyimportertest' => '/services/key/gpg/GnupgKeyImporterTest.php',
                 'phario\\phive\\gnupgsignatureverifiertest' => '/services/signature/gpg/GnupgSignatureVerifierTest.php',
@@ -30,6 +32,7 @@ spl_autoload_register(
                 'phario\\phive\\skelcommandconfigtest' => '/commands/skel/SkelCommandConfigTest.php',
                 'phario\\phive\\teststreamwrapper' => '/TestStreamWrapper.php',
                 'phario\\phive\\urltest' => '/shared/UrlTest.php',
+                'phario\\phive\\versionconstraintparsertest' => '/shared/versionconstraints/VersionConstraintParserTest.php',
                 'phario\\phive\\versiontest' => '/shared/VersionTest.php'
             );
         }

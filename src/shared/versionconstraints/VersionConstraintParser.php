@@ -22,6 +22,17 @@ namespace PharIo\Phive {
                     );
             }
 
+            $version = new Version($value);
+            if ($version->getMajor() === '*') {
+                return new AnyVersionConstraint();
+            }
+            if ($version->getMinor() === '*') {
+                return new SpecificMajorVersionConstraint($version->getMajor());
+            }
+            if ($version->getPatch() === '*') {
+                return new SpecificMajorAndMinorVersionConstraint($version->getMajor(), $version->getMinor());
+            }
+
             return new ExactVersionConstraint($value);
         }
 
