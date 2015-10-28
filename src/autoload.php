@@ -23,7 +23,6 @@ spl_autoload_register(
                 'phario\\phive\\downloadfailedexception' => '/shared/exceptions/DownloadFailedException.php',
                 'phario\\phive\\environment' => '/shared/Environment.php',
                 'phario\\phive\\exactversionconstraint' => '/shared/version/ExactVersionConstraint.php',
-                'phario\\phive\\exceptionhandler' => '/ExceptionHandler.php',
                 'phario\\phive\\factory' => '/Factory.php',
                 'phario\\phive\\file' => '/shared/File.php',
                 'phario\\phive\\filedownloader' => '/shared/download/FileDownloader.php',
