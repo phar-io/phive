@@ -72,11 +72,12 @@ spl_autoload_register(
                 'phario\\phive\\updaterepositorylistcommand' => '/commands/update-repository-list/UpdateRepositoryListCommand.php',
                 'phario\\phive\\url' => '/shared/Url.php',
                 'phario\\phive\\verificationfailedexception' => '/shared/exceptions/VerificationFailedException.php',
-                'phario\\phive\\version' => '/shared/Version.php',
+                'phario\\phive\\version' => '/shared/version/Version.php',
                 'phario\\phive\\versioncommand' => '/commands/version/VersionCommand.php',
                 'phario\\phive\\versionconstraintgroup' => '/shared/versionconstraints/VersionConstraintGroup.php',
                 'phario\\phive\\versionconstraintinterface' => '/shared/versionconstraints/VersionConstraintInterface.php',
                 'phario\\phive\\versionconstraintparser' => '/shared/versionconstraints/VersionConstraintParser.php',
+                'phario\\phive\\versionnumber' => '/shared/version/VersionNumber.php',
                 'phario\\phive\\writablexmlrepository' => '/shared/repository/WritableXmlRepository.php',
                 'phario\\phive\\xmlrepository' => '/shared/repository/XmlRepository.php',
                 'phario\\phive \\releaseexception' => '/shared/exceptions/ReleaseException.php'

@@ -22,7 +22,7 @@ namespace PharIo\Phive {
          */
         public function complies(Version $version)
         {
-            return $version->getMajor() == $this->major;
+            return $version->getMajor()->getValue() == $this->major;
         }
 
     }

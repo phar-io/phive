@@ -4,19 +4,19 @@ namespace PharIo\Phive {
     class Version {
 
         /**
-         * @var string
+         * @var VersionNumber
          */
-        private $major = '';
+        private $major;
 
         /**
-         * @var string
+         * @var VersionNumber
          */
-        private $minor = '';
+        private $minor;
 
         /**
-         * @var string
+         * @var VersionNumber
          */
-        private $patch = '';
+        private $patch;
 
         /**
          * @var string
@@ -48,9 +48,13 @@ namespace PharIo\Phive {
             $this->extractBuildMetaData($versionString);
             $this->extractLabel($versionString);
             $versionSegments = explode('.', $versionString);
-            $this->major = $versionSegments[0];
-            $this->minor = isset($versionSegments[1]) ? $versionSegments[1] : '*';
-            $this->patch = isset($versionSegments[2]) ? $versionSegments[2] : '*';
+            $this->major = new VersionNumber($versionSegments[0]);
+
+            $minorValue = isset($versionSegments[1]) ? $versionSegments[1] : null;
+            $patchValue = isset($versionSegments[2]) ? $versionSegments[2] : null;
+
+            $this->minor = new VersionNumber($minorValue);
+            $this->patch = new VersionNumber($patchValue);
         }
 
         /**
@@ -74,21 +78,21 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return string
+         * @return VersionNumber
          */
         public function getMajor() {
             return $this->major;
         }
 
         /**
-         * @return string
+         * @return VersionNumber
          */
         public function getMinor() {
             return $this->minor;
         }
 
         /**
-         * @return string
+         * @return VersionNumber
          */
         public function getPatch() {
             return $this->patch;
@@ -121,22 +125,22 @@ namespace PharIo\Phive {
          * @return bool
          */
         public function isGreaterThan(Version $version) {
-            if ($version->getMajor() > $this->getMajor()) {
+            if ($version->getMajor()->getValue() > $this->getMajor()->getValue()) {
                 return false;
             }
-            if ($version->getMajor() < $this->getMajor()) {
+            if ($version->getMajor()->getValue() < $this->getMajor()->getValue()) {
                 return true;
             }
-            if ($version->getMinor() > $this->getMinor()) {
+            if ($version->getMinor()->getValue() > $this->getMinor()->getValue()) {
                 return false;
             }
-            if ($version->getMinor() < $this->getMinor()) {
+            if ($version->getMinor()->getValue() < $this->getMinor()->getValue()) {
                 return true;
             }
-            if ($version->getPatch() >= $this->getPatch()) {
+            if ($version->getPatch()->getValue() >= $this->getPatch()->getValue()) {
                 return false;
             }
-            if ($version->getPatch() < $this->getPatch()) {
+            if ($version->getPatch()->getValue() < $this->getPatch()->getValue()) {
                 return true;
             }
             return false;

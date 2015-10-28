@@ -29,10 +29,10 @@ namespace PharIo\Phive {
          */
         public function complies(Version $version)
         {
-            if ($version->getMajor() != $this->major) {
+            if ($version->getMajor()->getValue() != $this->major) {
                 return false;
             }
-            return $version->getMinor() == $this->minor;
+            return $version->getMinor()->getValue() == $this->minor;
         }
 
     }

@@ -17,20 +17,20 @@ namespace PharIo\Phive {
                     return new VersionConstraintGroup(
                         [
                             new GreaterThanOrEqualToVersionConstraint($version),
-                            new SpecificMajorVersionConstraint($version->getMajor())
+                            new SpecificMajorVersionConstraint($version->getMajor()->getValue())
                         ]
                     );
             }
 
             $version = new Version($value);
-            if ($version->getMajor() === '*') {
+            if ($version->getMajor()->isAny()) {
                 return new AnyVersionConstraint();
             }
-            if ($version->getMinor() === '*') {
-                return new SpecificMajorVersionConstraint($version->getMajor());
+            if ($version->getMinor()->isAny()) {
+                return new SpecificMajorVersionConstraint($version->getMajor()->getValue());
             }
-            if ($version->getPatch() === '*') {
-                return new SpecificMajorAndMinorVersionConstraint($version->getMajor(), $version->getMinor());
+            if ($version->getPatch()->isAny()) {
+                return new SpecificMajorAndMinorVersionConstraint($version->getMajor()->getValue(), $version->getMinor()->getValue());
             }
 
             return new ExactVersionConstraint($value);

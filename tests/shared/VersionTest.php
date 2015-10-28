@@ -17,9 +17,9 @@ namespace PharIo\Phive {
             $versionString, $expectedMajor, $expectedMinor, $expectedPatch, $expectedLabel = '', $expectedMetadata = ''
         ) {
             $version  = new Version($versionString);
-            $this->assertSame($expectedMajor, $version->getMajor());
-            $this->assertSame($expectedMinor, $version->getMinor());
-            $this->assertSame($expectedPatch, $version->getPatch());
+            $this->assertSame($expectedMajor, $version->getMajor()->getValue());
+            $this->assertSame($expectedMinor, $version->getMinor()->getValue());
+            $this->assertSame($expectedPatch, $version->getPatch()->getValue());
             $this->assertSame($expectedLabel, $version->getLabel());
             $this->assertSame($expectedMetadata, $version->getBuildMetadata());
             $this->assertSame($versionString, $version->getVersionString());
