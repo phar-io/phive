@@ -37,13 +37,6 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return bool
-         */
-        public function hasError() {
-            return '' !== $this->curlError;
-        }
-
-        /**
          * @return string
          */
         public function getErrorMessage() {

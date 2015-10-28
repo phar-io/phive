@@ -23,14 +23,6 @@ namespace PharIo\Phive {
             ];
         }
 
-        public function testHasError() {
-            $response = new CurlResponse('', ['http_code' => 200], '');
-            $this->assertFalse($response->hasError());
-
-            $response = new CurlResponse('', ['http_code' => 404], 'some error');
-            $this->assertTrue($response->hasError());
-        }
-
         /**
          * @dataProvider stringProvider
          *
