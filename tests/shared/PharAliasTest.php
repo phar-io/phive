@@ -15,6 +15,26 @@ namespace PharIo\Phive {
             $this->assertSame($value, (string)$alias);
         }
 
+        /**
+         * @dataProvider versionConstraintProvider
+         *
+         * @param VersionConstraintInterface $constraint
+         */
+        public function testGetVersionConstraint(VersionConstraintInterface $constraint) {
+            $alias = new PharAlias('foo', $constraint);
+            $this->assertSame($constraint, $alias->getVersionConstraint());
+        }
+
+        /**
+         * @return array
+         */
+        public static function versionConstraintProvider() {
+            return [
+                [new AnyVersionConstraint()],
+                [new ExactVersionConstraint('1.0.0')]
+            ];
+        }
+
     }
 
 }
