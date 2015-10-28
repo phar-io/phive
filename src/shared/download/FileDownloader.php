@@ -9,10 +9,17 @@ namespace PharIo\Phive {
         private $curl;
 
         /**
-         * @param Curl $curl
+         * @var Output
          */
-        public function __construct(Curl $curl) {
+        private $output;
+
+        /**
+         * @param Curl   $curl
+         * @param Output $output
+         */
+        public function __construct(Curl $curl, Output $output) {
             $this->curl = $curl;
+            $this->output = $output;
         }
 
         /**
@@ -22,6 +29,7 @@ namespace PharIo\Phive {
          * @throws DownloadFailedException
          */
         public function download(Url $url) {
+            $this->output->writeInfo(sprintf('Downloading %s', $url));
             $response = $this->curl->get($url);
             if ($response->getHttpCode() !== 200) {
                 throw new DownloadFailedException(
@@ -31,6 +39,9 @@ namespace PharIo\Phive {
                         $response->getErrorMessage()
                     )
                 );
+            }
+            if (empty($response->getBody())) {
+                throw new DownloadFailedException('Download failed - response is empty');
             }
             return new File($this->getFilename($url), $response->getBody());
         }

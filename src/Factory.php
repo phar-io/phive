@@ -120,7 +120,7 @@ namespace PharIo\Phive {
          * @return FileDownloader
          */
         private function getFileDownloader() {
-            return new FileDownloader($this->getCurl());
+            return new FileDownloader($this->getCurl(), $this->getColoredConsoleOutput());
         }
 
         /**
