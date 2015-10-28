@@ -13,26 +13,16 @@ namespace PharIo\Phive {
 
             switch($value[0]) {
                 case '~':
+                    $version = new Version(substr($value, 1));
                     return new VersionConstraintGroup(
                         [
-                            new GreaterThanOrEqualToVersionConstraint(new Version(substr($value, 1))),
-                            new SpecificMajorVersionConstraint($this->getMajor($value))
+                            new GreaterThanOrEqualToVersionConstraint($version),
+                            new SpecificMajorVersionConstraint($version->getMajor())
                         ]
                     );
             }
 
             return new ExactVersionConstraint($value);
-        }
-
-        /**
-         * @param string $value
-         *
-         * @return int
-         */
-        private function getMajor($value)
-        {
-            preg_match('/([0-9]*?)\./', $value, $matches);
-            return (int)$matches[1];
         }
 
     }
