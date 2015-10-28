@@ -61,6 +61,7 @@ spl_autoload_register(
                 'phario\\phive\\releasecollection' => '/shared/phar/ReleaseCollection.php',
                 'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
                 'phario\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
+                'phario\\phive\\requestedphar' => '/commands/install/RequestedPhar.php',
                 'phario\\phive\\resolveexception' => '/shared/exceptions/ResolveException.php',
                 'phario\\phive\\signatureservice' => '/services/signature/SignatureService.php',
                 'phario\\phive\\signatureverifier' => '/services/signature/SignatureVerifier.php',

@@ -41,6 +41,8 @@ namespace PharIo\Phive {
         public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
             $url = new Url('https://example.com/foo-1.20.1.phar');
             $file = new File('foo.phar', 'bar');
+            $requestedPhar = RequestedPhar::fromUrl($url);
+
             $expectedPhar = new Phar('foo', new Version('1.20.1'), $file);
 
             $this->repository->hasPhar('foo', new Version('1.20.1'))
@@ -66,12 +68,14 @@ namespace PharIo\Phive {
                 true
             )->shouldBeCalled();
 
-            $this->getPharService()->installByUrl($url, '/tmp', true);
+            $this->getPharService()->install($requestedPhar, '/tmp', true);
         }
 
         public function testInstallByUrlGetsPharFromRepositoryAndInvokesInstaller() {
             $url = new Url('https://example.com/foo-1.20.1.phar');
             $file = new File('foo.phar', 'bar');
+            $requestedPhar = RequestedPhar::fromUrl($url);
+
             $phar = new Phar('foo', new Version('1.20.1'), $file);
 
             $this->repository->hasPhar('foo', new Version('1.20.1'))
@@ -94,16 +98,19 @@ namespace PharIo\Phive {
                 true
             )->shouldBeCalled();
 
-            $this->getPharService()->installByUrl($url, '/tmp', true);
+            $this->getPharService()->install($requestedPhar, '/tmp', true);
         }
 
         /**
          * @dataProvider invalidUrlProvider
          * @expectedException \PharIo\Phive\DownloadFailedException
+         *
+         * @param $urlString
          */
         public function testInstallByUrlThrowsExceptionIfUrlDoesNotContainValidPharName($urlString) {
             $url = new Url($urlString);
-            $this->getPharService()->installByUrl($url, '/tmp', true);
+            $requestedPhar = RequestedPhar::fromUrl($url);
+            $this->getPharService()->install($requestedPhar, '/tmp', true);
         }
 
         public function invalidUrlProvider() {

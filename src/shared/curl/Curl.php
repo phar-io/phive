@@ -16,6 +16,10 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @todo add optional progresshandler
+         */
+
+        /**
          * @param Url $url
          * @param array $params
          *

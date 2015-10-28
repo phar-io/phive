@@ -18,6 +18,7 @@ spl_autoload_register(
                 'phario\\phive\\gnupgkeyimportertest' => '/services/key/gpg/GnupgKeyImporterTest.php',
                 'phario\\phive\\gnupgsignatureverifiertest' => '/services/signature/gpg/GnupgSignatureVerifierTest.php',
                 'phario\\phive\\gnupgverificationresulttest' => '/services/signature/gpg/GnupgVerificationResultTest.php',
+                'phario\\phive\\greaterthanorequaltoversionconstrainttest' => '/shared/versionconstraints/GreaterThanOrEqualToVersionConstraintTest.php',
                 'phario\\phive\\keyimportresulttest' => '/services/key/KeyImportResultTest.php',
                 'phario\\phive\\keyservicetest' => '/services/key/KeyServiceTest.php',
                 'phario\\phive\\pharaliastest' => '/shared/PharAliasTest.php',
@@ -30,8 +31,11 @@ spl_autoload_register(
                 'phario\\phive\\scalartestdataprovider' => '/ScalarTestDataProvider.php',
                 'phario\\phive\\signatureservicetest' => '/services/signature/SignatureServiceTest.php',
                 'phario\\phive\\skelcommandconfigtest' => '/commands/skel/SkelCommandConfigTest.php',
+                'phario\\phive\\specificmajorandminorversionconstrainttest' => '/shared/versionconstraints/SpecificMajorAndMinorVersionConstraintTest.php',
+                'phario\\phive\\specificmajorversionconstrainttest' => '/shared/versionconstraints/SpecificMajorVersionConstraintTest.php',
                 'phario\\phive\\teststreamwrapper' => '/TestStreamWrapper.php',
                 'phario\\phive\\urltest' => '/shared/UrlTest.php',
+                'phario\\phive\\versionconstraintgrouptest' => '/shared/versionconstraints/VersionConstraintGroupTest.php',
                 'phario\\phive\\versionconstraintparsertest' => '/shared/versionconstraints/VersionConstraintParserTest.php',
                 'phario\\phive\\versiontest' => '/shared/VersionTest.php'
             );

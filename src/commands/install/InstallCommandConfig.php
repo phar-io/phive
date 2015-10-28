@@ -53,7 +53,7 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return array
+         * @return RequestedPhar[]
          * @throws CLI\CommandOptionsException
          */
         private function getPharsFromCliArguments()
@@ -62,7 +62,7 @@ namespace PharIo\Phive {
             for ($i = 0; $i < $this->cliOptions->getArgumentCount(); $i++) {
                 $argument = $this->cliOptions->getArgument($i);
                 if (strpos($argument, 'https://') !== false) {
-                    $phars[] = new Url($argument);
+                    $phars[] = RequestedPhar::fromUrl(new Url($argument));
                 } else {
                     $aliasSegments = explode('@', $argument, 2);
                     $parser = new VersionConstraintParser();
@@ -71,7 +71,7 @@ namespace PharIo\Phive {
                     } else {
                         $versionConstraint = new AnyVersionConstraint();
                     }
-                    $phars[] = new PharAlias($aliasSegments[0], $versionConstraint);
+                    $phars[] = RequestedPhar::fromAlias(new PharAlias($aliasSegments[0], $versionConstraint));
                 }
             }
             return $phars;

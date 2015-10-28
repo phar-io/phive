@@ -50,16 +50,23 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param Url  $pharUrl
-         *
-         * @param      $destination
-         * @param bool $makeCopy
+         * @param RequestedPhar $requestedPhar
+         * @param               $destination
+         * @param bool          $makeCopy
          *
          * @return File
+         * @throws DownloadFailedException
          * @throws PharRepositoryException
          * @throws VerificationFailedException
+         *
          */
-        public function installByUrl(Url $pharUrl, $destination, $makeCopy = false) {
+        public function install(RequestedPhar $requestedPhar, $destination, $makeCopy = false) {
+            if ($requestedPhar->isAlias()) {
+                $pharUrl = $this->resolveAlias($requestedPhar->getAlias());
+            } else {
+                $pharUrl = $requestedPhar->getPharUrl();
+            }
+
             $name = $this->getPharName($pharUrl);
             $version = $this->getPharVersion($pharUrl);
             if (!$this->repository->hasPhar($name, $version)) {
@@ -68,44 +75,35 @@ namespace PharIo\Phive {
             } else {
                 $phar = $this->repository->getPhar($name, $version);
             }
-            $this->install($phar, $destination, $makeCopy);
+            $destination = $destination . '/' . $phar->getName();
+            $this->installer->install($phar->getFile(), $destination, $makeCopy);
+            $this->repository->addUsage($phar, $destination);
         }
 
         /**
-         * @param PharAlias  $alias
-         * @param string     $destination
-         * @param bool       $makeCopy
+         * @param PharAlias $alias
          *
+         * @return Url
          * @throws InstallationFailedException
          * @throws ResolveException
+         * @internal param string $destination
+         * @internal param bool $makeCopy
+         *
          */
-        public function installByAlias(PharAlias $alias, $destination, $makeCopy = false) {
+        private function resolveAlias(PharAlias $alias) {
             foreach ($this->aliasResolver->resolve($alias) as $repoUrl) {
                 try {
                     $repo = new PharIoRepository($repoUrl);
                     $releases = $repo->getReleases($alias);
-                    $this->installByUrl($releases->getLatest($alias->getVersionConstraint())->getUrl(), $destination, $makeCopy);
-                    return;
-                } catch (\Exception $e) {
-                    // TODO catch only relevant exceptions
+                    return $releases->getLatest($alias->getVersionConstraint())->getUrl();
+                } catch (ResolveException $e) {
                     $this->output->writeWarning(
-                        sprintf('Installation from repository %s failed: %s', $repoUrl, $e->getMessage())
+                        sprintf('Resolving alias %s with repository %s failed: %s', $alias, $repoUrl, $e->getMessage())
                     );
                     continue;
                 }
             }
-            throw new InstallationFailedException('Installation failed');
-        }
-
-        /**
-         * @param Phar   $phar
-         * @param string $destination
-         * @param bool   $makeCopy
-         */
-        private function install(Phar $phar, $destination, $makeCopy = false) {
-            $destination = $destination . '/' . $phar->getName();
-            $this->installer->install($phar->getFile(), $destination, $makeCopy);
-            $this->repository->addUsage($phar, $destination);
+            throw new ResolveException(sprintf('Could not resolve alias %s', $alias));
         }
 
         /**
