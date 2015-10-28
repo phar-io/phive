@@ -81,7 +81,7 @@ namespace PharIo\Phive {
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_CONNECTTIMEOUT => 5,
-                CURLOPT_TIMEOUT => 10,
+                CURLOPT_TIMEOUT => 60,
                 CURLOPT_USERAGENT => $this->userAgent,
                 CURLOPT_PROXY => $this->proxyUrl,
                 CURLOPT_PROXYUSERPWD => $this->proxyCredentials
