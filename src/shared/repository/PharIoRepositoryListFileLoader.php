@@ -25,7 +25,7 @@ namespace PharIo\Phive {
 
         /**
          * @param Url            $sourceUrl
-         * @param                $filename
+         * @param string         $filename
          * @param FileDownloader $fileDownloader
          * @param Output         $output
          */
