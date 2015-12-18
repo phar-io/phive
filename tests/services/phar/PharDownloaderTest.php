@@ -41,6 +41,64 @@ namespace PharIo\Phive {
             $this->assertEquals($expected, $downloader->download($release));
         }
 
+        public function testVerifiesChecksum() {
+            $url = new Url('https://example.com/foo.phar');
+            $expectedHash = new Sha1Hash(sha1('foo'));
+            $release = new Release(new Version('1.0.0'), $url, $expectedHash);
+            $signatureUrl = new Url('https://example.com/foo.phar.asc');
+
+            $pharFile = new File('foo.phar', 'foo');
+            $this->fileDownloader->download($url)->willReturn($pharFile);
+            $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
+
+            $this->signatureService->verify('foo', 'bar')->willReturn(true);
+
+            $this->checksumService->verify($expectedHash, $pharFile)->shouldBeCalled()->willReturn(true);
+
+            $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureService->reveal(), $this->checksumService->reveal());
+            $downloader->download($release);
+        }
+
+        /**
+         * @expectedException \PharIo\Phive\VerificationFailedException
+         */
+        public function testThrowsExceptionIfSignatureVerificationFails() {
+            $url = new Url('https://example.com/foo.phar');
+            $expectedHash = new Sha1Hash(sha1('foo'));
+            $release = new Release(new Version('1.0.0'), $url, $expectedHash);
+            $signatureUrl = new Url('https://example.com/foo.phar.asc');
+
+            $pharFile = new File('foo.phar', 'foo');
+            $this->fileDownloader->download($url)->willReturn($pharFile);
+            $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
+
+            $this->signatureService->verify('foo', 'bar')->willReturn(false);
+            
+            $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureService->reveal(), $this->checksumService->reveal());
+            $downloader->download($release);
+        }
+
+        /**
+         * @expectedException \PharIo\Phive\VerificationFailedException
+         */
+        public function testThrowsExceptionIfChecksumVerificationFails() {
+            $url = new Url('https://example.com/foo.phar');
+            $expectedHash = new Sha1Hash(sha1('foo'));
+            $release = new Release(new Version('1.0.0'), $url, $expectedHash);
+            $signatureUrl = new Url('https://example.com/foo.phar.asc');
+
+            $pharFile = new File('foo.phar', 'foo');
+            $this->fileDownloader->download($url)->willReturn($pharFile);
+            $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
+
+            $this->signatureService->verify('foo', 'bar')->willReturn(true);
+
+            $this->checksumService->verify($expectedHash, $pharFile)->shouldBeCalled()->willReturn(false);
+
+            $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureService->reveal(), $this->checksumService->reveal());
+            $downloader->download($release);
+        }
+
     }
 
 }

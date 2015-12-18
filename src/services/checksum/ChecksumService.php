@@ -21,7 +21,7 @@ namespace PharIo\Phive {
                     $actual = $file->getSha256Hash();
                     break;
                 default:
-                    throw new InvalidHashException(sprintf('%s is not supported'), $hashClass);
+                    throw new InvalidHashException(sprintf('%s is not supported', $hashClass));
             }
             return $actual->equals($expectedHash);
         }

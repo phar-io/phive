@@ -94,6 +94,6 @@ spl_autoload_register(
         }
     },
     true,
-    false
+    true
 );
 // @codeCoverageIgnoreEnd
