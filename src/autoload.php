@@ -32,11 +32,14 @@ spl_autoload_register(
                 'phario\\phive\\gnupgsignatureverifier' => '/services/signature/gpg/GnupgSignatureVerifier.php',
                 'phario\\phive\\gnupgverificationresult' => '/services/signature/gpg/GnupgVerificationResult.php',
                 'phario\\phive\\greaterthanorequaltoversionconstraint' => '/shared/versionconstraints/GreaterThanOrEqualToVersionConstraint.php',
+                'phario\\phive\\hash' => '/shared/hash/sha/Hash.php',
+                'phario\\phive\\hashservice' => '/services/hash/HashService.php',
                 'phario\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
                 'phario\\phive\\input' => '/shared/cli/Input.php',
                 'phario\\phive\\installationfailedexception' => '/shared/exceptions/InstallationFailedException.php',
                 'phario\\phive\\installcommand' => '/commands/install/InstallCommand.php',
                 'phario\\phive\\installcommandconfig' => '/commands/install/InstallCommandConfig.php',
+                'phario\\phive\\invalidhashexception' => '/services/hash/InvalidHashException.php',
                 'phario\\phive\\ioexception' => '/shared/exceptions/IOException.php',
                 'phario\\phive\\keydownloader' => '/services/key/KeyDownloader.php',
                 'phario\\phive\\keyimporter' => '/services/key/KeyImporter.php',
@@ -63,6 +66,8 @@ spl_autoload_register(
                 'phario\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
                 'phario\\phive\\requestedphar' => '/commands/install/RequestedPhar.php',
                 'phario\\phive\\resolveexception' => '/shared/exceptions/ResolveException.php',
+                'phario\\phive\\sha1hash' => '/shared/hash/sha/Sha1Hash.php',
+                'phario\\phive\\sha256hash' => '/shared/hash/sha/Sha256Hash.php',
                 'phario\\phive\\signatureservice' => '/services/signature/SignatureService.php',
                 'phario\\phive\\signatureverifier' => '/services/signature/SignatureVerifier.php',
                 'phario\\phive\\skelcommand' => '/commands/skel/SkelCommand.php',
@@ -89,6 +94,6 @@ spl_autoload_register(
         }
     },
     true,
-    true
+    false
 );
 // @codeCoverageIgnoreEnd
