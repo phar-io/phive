@@ -28,7 +28,8 @@ namespace PharIo\Phive {
                 $releases->add(
                     new Release(
                         new Version($releaseNode->getAttribute('version')),
-                        new Url($releaseNode->getAttribute('url'))
+                        new Url($releaseNode->getAttribute('url')),
+                        $this->getHash($releaseNode)
                     )
                 );
             }
@@ -47,6 +48,25 @@ namespace PharIo\Phive {
          */
         protected function getNamespace() {
             return 'https://phar.io/repository';
+        }
+
+        /**
+         * @param \DOMElement $releaseNode
+         *
+         * @return Sha1Hash|Sha256Hash
+         * @throws InvalidHashException
+         */
+        private function getHash(\DOMElement $releaseNode) {
+            /** @var \DOMElement $hashNode */
+            $hashNode = $releaseNode->getElementsByTagName('hash')->item(0);
+            $type = $hashNode->getAttribute('type');
+            switch ($type) {
+                case 'sha-1':
+                    return new Sha1Hash($hashNode->getAttribute('value'));
+                case 'sha-256':
+                    return new Sha256Hash($hashNode->getAttribute('value'));
+            }
+            throw new InvalidHashException(sprintf('Unsupported Hash Type %s', $type));
         }
 
     }

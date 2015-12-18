@@ -14,12 +14,19 @@ namespace PharIo\Phive {
         private $url;
 
         /**
+         * @var Hash
+         */
+        private $expectedHash;
+
+        /**
          * @param Version $version
          * @param Url     $url
+         * @param Hash    $expectedHash
          */
-        public function __construct(Version $version, Url $url) {
+        public function __construct(Version $version, Url $url, Hash $expectedHash) {
             $this->version = $version;
             $this->url = $url;
+            $this->expectedHash = $expectedHash;
         }
 
         /**
@@ -36,6 +43,13 @@ namespace PharIo\Phive {
             return $this->url;
         }
 
+        /**
+         * @return Hash
+         */
+        public function getExpectedHash() {
+            return $this->expectedHash;
+        }
+        
     }
 
 }
