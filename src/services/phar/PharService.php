@@ -61,16 +61,12 @@ namespace PharIo\Phive {
          *
          */
         public function install(RequestedPhar $requestedPhar, $destination, $makeCopy = false) {
-            if ($requestedPhar->isAlias()) {
-                $pharUrl = $this->resolveAlias($requestedPhar->getAlias());
-            } else {
-                $pharUrl = $requestedPhar->getPharUrl();
-            }
+            $release = $this->getRelease($requestedPhar);
 
-            $name = $this->getPharName($pharUrl);
-            $version = $this->getPharVersion($pharUrl);
+            $name = $this->getPharName($release->getUrl());
+            $version = $this->getPharVersion($release->getUrl());
             if (!$this->repository->hasPhar($name, $version)) {
-                $phar = new Phar($name, $version, $this->downloader->download($pharUrl));
+                $phar = new Phar($name, $version, $this->downloader->download($release));
                 $this->repository->addPhar($phar);
             } else {
                 $phar = $this->repository->getPhar($name, $version);
@@ -81,9 +77,29 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param RequestedPhar $requestedPhar
+         *
+         * @throws DownloadFailedException
+         * @throws ResolveException
+         *
+         * @return Release
+         */
+        private function getRelease(RequestedPhar $requestedPhar) {
+            if ($requestedPhar->isAlias()) {
+                return $this->resolveAlias($requestedPhar->getAlias());
+            }
+
+            return new Release(
+                $this->getPharVersion($requestedPhar->getPharUrl()),
+                $requestedPhar->getPharUrl(),
+                null
+            );
+        }
+
+        /**
          * @param PharAlias $alias
          *
-         * @return Url
+         * @return Release
          * @throws InstallationFailedException
          * @throws ResolveException
          *
@@ -93,7 +109,7 @@ namespace PharIo\Phive {
                 try {
                     $repo = new PharIoRepository($repoUrl);
                     $releases = $repo->getReleases($alias);
-                    return $releases->getLatest($alias->getVersionConstraint())->getUrl();
+                    return $releases->getLatest($alias->getVersionConstraint());
                 } catch (ResolveException $e) {
                     $this->output->writeWarning(
                         sprintf('Resolving alias %s with repository %s failed: %s', $alias, $repoUrl, $e->getMessage())

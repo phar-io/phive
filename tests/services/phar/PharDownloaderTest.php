@@ -22,6 +22,7 @@ namespace PharIo\Phive {
 
         public function testReturnsExpectedPharFileIfStatusCodeIs200() {
             $url = new Url('https://example.com/foo.phar');
+            $release = new Release(new Version('1.0.0'), $url, null);
             $signatureUrl = new Url('https://example.com/foo.phar.asc');
             $this->fileDownloader->download($url)->willReturn(new File('foo.phar', 'foo'));
             $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
@@ -31,7 +32,7 @@ namespace PharIo\Phive {
             $expected = new File('foo.phar', 'foo');
 
             $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureService->reveal());
-            $this->assertEquals($expected, $downloader->download($url));
+            $this->assertEquals($expected, $downloader->download($release));
         }
 
     }

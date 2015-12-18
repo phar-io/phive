@@ -23,15 +23,15 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param Url $url
+         * @param Release $release
          *
          * @return File
          * @throws DownloadFailedException
          * @throws VerificationFailedException
          */
-        public function download(Url $url) {
-            $pharFile = $this->fileDownloader->download($url);
-            $signatureFile = $this->fileDownloader->download($this->getSignatureUrl($url));
+        public function download(Release $release) {
+            $pharFile = $this->fileDownloader->download($release->getUrl());
+            $signatureFile = $this->fileDownloader->download($this->getSignatureUrl($release->getUrl()));
             if (!$this->verifySignature($pharFile, $signatureFile)) {
                 throw new VerificationFailedException('Signature could not be verified');
             }

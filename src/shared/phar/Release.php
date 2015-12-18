@@ -23,7 +23,7 @@ namespace PharIo\Phive {
          * @param Url     $url
          * @param Hash    $expectedHash
          */
-        public function __construct(Version $version, Url $url, Hash $expectedHash) {
+        public function __construct(Version $version, Url $url, Hash $expectedHash = null) {
             $this->version = $version;
             $this->url = $url;
             $this->expectedHash = $expectedHash;
@@ -48,6 +48,13 @@ namespace PharIo\Phive {
          */
         public function getExpectedHash() {
             return $this->expectedHash;
+        }
+
+        /**
+         * @return bool
+         */
+        public function hasExpectedHash() {
+            return null !== $this->expectedHash;
         }
         
     }
