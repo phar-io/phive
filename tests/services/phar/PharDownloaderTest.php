@@ -73,7 +73,7 @@ namespace PharIo\Phive {
             $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
 
             $this->signatureService->verify('foo', 'bar')->willReturn(false);
-            
+
             $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureService->reveal(), $this->checksumService->reveal());
             $downloader->download($release);
         }

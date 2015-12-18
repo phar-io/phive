@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 class PhiveXmlConfig extends XmlRepository
 {
     /**
-     * @return array
+     * @return RequestedPhar[]
      */
     public function getPhars()
     {
@@ -12,9 +12,9 @@ class PhiveXmlConfig extends XmlRepository
         /** @var \DOMElement $pharNode */
         foreach ($this->getXPath()->query('//phive:phar') as $pharNode) {
             if ($pharNode->hasAttribute('url')) {
-                $phars[] = new Url($pharNode->getAttribute('url'));
+                $phars[] = RequestedPhar::fromUrl(new Url($pharNode->getAttribute('url')));
             } else {
-                $phars[] = $this->getPharAliasFromNode($pharNode);
+                $phars[] = RequestedPhar::fromAlias($this->getPharAliasFromNode($pharNode));
             }
         }
         return $phars;
