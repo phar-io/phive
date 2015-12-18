@@ -31,7 +31,7 @@ namespace PharIo\Phive {
             $pharNode->setAttribute('version', $phar->getVersion()->getVersionString());
             $pharNode->setAttribute('location',
                 $this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFile()->getFilename());
-            $hashNode = $dom->createElement('hash', $phar->getFile()->getSha1Hash());
+            $hashNode = $dom->createElement('hash', $phar->getFile()->getSha1Hash()->asString());
             $hashNode->setAttribute('type', 'sha1');
             $pharNode->appendChild($hashNode);
             $dom->firstChild->appendChild($pharNode);

@@ -10,8 +10,9 @@ namespace PharIo\Phive {
          * @param string $expectedHash
          */
         public function testGeneratesExpectedSha1Hash($content, $expectedHash) {
+            $expectedHash = new Sha1Hash($expectedHash);
             $file = new File('foo.phar', $content);
-            $this->assertSame($expectedHash, $file->getSha1Hash());
+            $this->assertEquals($expectedHash, $file->getSha1Hash());
         }
 
         public function sha1HashProvider() {

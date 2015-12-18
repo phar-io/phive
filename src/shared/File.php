@@ -37,10 +37,10 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return string
+         * @return Sha1Hash
          */
         public function getSha1Hash() {
-            return sha1($this->content);
+            return new Sha1Hash(sha1($this->content));
         }
 
         /**

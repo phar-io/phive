@@ -51,7 +51,7 @@ namespace PharIo\Phive {
 
         /**
          * @param RequestedPhar $requestedPhar
-         * @param               $destination
+         * @param string        $destination
          * @param bool          $makeCopy
          *
          * @return File
@@ -86,8 +86,6 @@ namespace PharIo\Phive {
          * @return Url
          * @throws InstallationFailedException
          * @throws ResolveException
-         * @internal param string $destination
-         * @internal param bool $makeCopy
          *
          */
         private function resolveAlias(PharAlias $alias) {
