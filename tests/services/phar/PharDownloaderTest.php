@@ -15,9 +15,15 @@ namespace PharIo\Phive {
          */
         private $signatureService;
 
+        /**
+         * @var ChecksumService|ObjectProphecy
+         */
+        private $checksumService;
+
         public function setUp() {
             $this->fileDownloader = $this->prophesize(FileDownloader::class);
             $this->signatureService = $this->prophesize(SignatureService::class);
+            $this->checksumService = $this->prophesize(ChecksumService::class);
         }
 
         public function testReturnsExpectedPharFileIfStatusCodeIs200() {
@@ -31,7 +37,7 @@ namespace PharIo\Phive {
 
             $expected = new File('foo.phar', 'foo');
 
-            $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureService->reveal());
+            $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureService->reveal(), $this->checksumService->reveal());
             $this->assertEquals($expected, $downloader->download($release));
         }
 

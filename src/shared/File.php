@@ -44,6 +44,13 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @return Sha256Hash
+         */
+        public function getSha256Hash() {
+            return new Sha256Hash(hash('sha256', $this->content));
+        }
+
+        /**
          * @param string $filename
          */
         public function saveAs($filename) {

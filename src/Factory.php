@@ -104,7 +104,7 @@ namespace PharIo\Phive {
          * @return PharDownloader
          */
         private function getPharDownloader() {
-            return new PharDownloader($this->getFileDownloader(), $this->getSignatureService());
+            return new PharDownloader($this->getFileDownloader(), $this->getSignatureService(), $this->getChecksumService());
         }
 
         /**
@@ -156,6 +156,13 @@ namespace PharIo\Phive {
                 $this->getFileDownloader(),
                 $this->getColoredConsoleOutput()
             );
+        }
+
+        /**
+         * @return ChecksumService
+         */
+        private function getChecksumService() {
+            return new ChecksumService();
         }
 
         /**

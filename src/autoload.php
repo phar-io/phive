@@ -9,6 +9,7 @@ spl_autoload_register(
             $classes = array(
                 'phario\\phive\\aliasresolver' => '/services/phar/AliasResolver.php',
                 'phario\\phive\\anyversionconstraint' => '/shared/versionconstraints/AnyVersionConstraint.php',
+                'phario\\phive\\checksumservice' => '/services/checksum/ChecksumService.php',
                 'phario\\phive\\coloredconsoleoutput' => '/shared/cli/ColoredConsoleOutput.php',
                 'phario\\phive\\commandlocator' => '/commands/CommandLocator.php',
                 'phario\\phive\\config' => '/shared/config/Config.php',
@@ -33,7 +34,6 @@ spl_autoload_register(
                 'phario\\phive\\gnupgverificationresult' => '/services/signature/gpg/GnupgVerificationResult.php',
                 'phario\\phive\\greaterthanorequaltoversionconstraint' => '/shared/versionconstraints/GreaterThanOrEqualToVersionConstraint.php',
                 'phario\\phive\\hash' => '/shared/hash/Hash.php',
-                'phario\\phive\\hashservice' => '/services/hash/HashService.php',
                 'phario\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
                 'phario\\phive\\input' => '/shared/cli/Input.php',
                 'phario\\phive\\installationfailedexception' => '/shared/exceptions/InstallationFailedException.php',
