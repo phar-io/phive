@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\Version
+     */
     class VersionTest extends \PHPUnit_Framework_TestCase {
 
         /**

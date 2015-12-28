@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\VersionConstraintGroup
+     */
     class VersionConstraintGroupTest extends \PHPUnit_Framework_TestCase
     {
 

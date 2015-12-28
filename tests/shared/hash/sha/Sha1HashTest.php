@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\Sha1Hash
+     */
     class Sha1HashTest extends \PHPUnit_Framework_TestCase {
 
         /**

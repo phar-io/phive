@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\GreaterThanOrEqualToVersionConstraint
+     */
     class GreaterThanOrEqualToVersionConstraintTest extends \PHPUnit_Framework_TestCase {
 
         /**

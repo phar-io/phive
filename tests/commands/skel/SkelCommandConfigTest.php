@@ -4,6 +4,9 @@ namespace PharIo\Phive {
     use TheSeer\CLI;
     use Prophecy\Prophecy\ObjectProphecy;
 
+    /**
+     * @covers PharIo\Phive\SkelCommandConfig
+     */
     class SkelCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
         /**

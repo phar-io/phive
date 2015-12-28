@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\PharAlias
+     */
     class PharAliasTest extends \PHPUnit_Framework_TestCase {
 
         use ScalarTestDataProvider;

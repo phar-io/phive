@@ -16,8 +16,6 @@ namespace PharIo\Phive {
         private $pharService;
 
         /**
-         * InstallCommand constructor.
-         *
          * @param InstallCommandConfig $config
          * @param PharService          $pharService
          */

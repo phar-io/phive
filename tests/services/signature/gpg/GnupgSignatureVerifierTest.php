@@ -3,6 +3,9 @@ namespace PharIo\Phive {
 
     use Prophecy\Prophecy\ObjectProphecy;
 
+    /**
+     * @covers PharIo\Phive\GnupgSignatureVerifier
+     */
     class GnupgSignatureVerifierTest extends \PHPUnit_Framework_TestCase {
 
         /**

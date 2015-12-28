@@ -3,6 +3,9 @@ namespace PharIo\Phive {
 
     use Prophecy\Prophecy\ObjectProphecy;
 
+    /**
+     * @covers PharIo\Phive\PharService
+     */
     class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         /**

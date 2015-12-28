@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\Environment
+     */
     class EnvironmentTest extends \PHPUnit_Framework_TestCase {
 
         /**

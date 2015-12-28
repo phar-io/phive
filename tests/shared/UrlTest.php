@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\Url
+     */
     class UrlTest extends \PHPUnit_Framework_TestCase {
 
         /**

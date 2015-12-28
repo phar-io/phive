@@ -1,7 +1,10 @@
 <?php
 namespace PharIo\Phive {
 
-    class PharFileTest extends \PHPUnit_Framework_TestCase {
+    /**
+     * @covers PharIo\Phive\File
+     */
+    class FileTest extends \PHPUnit_Framework_TestCase {
 
         /**
          * @dataProvider sha1HashProvider

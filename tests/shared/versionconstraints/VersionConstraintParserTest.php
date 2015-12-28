@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\VersionConstraintParser
+     */
     class VersionConstraintParserTest extends \PHPUnit_Framework_TestCase {
 
         /**

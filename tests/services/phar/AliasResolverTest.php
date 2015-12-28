@@ -3,6 +3,9 @@ namespace PharIo\Phive {
 
     use Prophecy\Prophecy\ObjectProphecy;
 
+    /**
+     * @covers PharIo\Phive\AliasResolver
+     */
     class AliasResolverTest extends \PHPUnit_Framework_TestCase {
 
         /**

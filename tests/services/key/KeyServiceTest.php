@@ -4,6 +4,9 @@ namespace PharIo\Phive {
     use Prophecy\Argument;
     use Prophecy\Prophecy\ObjectProphecy;
 
+    /**
+     * @covers PharIo\Phive\KeyService
+     */
     class KeyServiceTest extends \PHPUnit_Framework_TestCase {
 
         /**

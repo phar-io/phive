@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\AnyVersionConstraint
+     */
     class AnyVersionConstraintTest extends \PHPUnit_Framework_TestCase {
 
         /**

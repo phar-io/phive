@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive {
 
+    /**
+     * @covers PharIo\Phive\CurlConfig
+     */
     class CurlConfigTest extends \PHPUnit_Framework_TestCase {
 
         public function testPutsUserAgentInCurlOptArray() {
