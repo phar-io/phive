@@ -28,6 +28,16 @@ namespace PharIo\Phive {
             ];
         }
 
+        /**
+         * @return array
+         */
+        public function boolProvider() {
+            return [
+                [true],
+                [false]
+            ];
+        }
+
     }
 
 }
