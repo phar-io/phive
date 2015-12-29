@@ -17,7 +17,7 @@ namespace PharIo\Phive {
         }
 
         public function testReturnsExpectedArrayOfUrls() {
-            $list = new PharIoRepositoryList(__DIR__ . '/../data/repositories.xml');
+            $list = new PharIoRepositoryList(__DIR__ . '/../../data/repositories.xml');
 
             $expected = [new Url('https://phar.phpunit.de'), new Url('https://phar.io')];
             $this->assertEquals($expected, $list->getRepositoryUrls(new PharAlias('phpunit', new AnyVersionConstraint())));

@@ -4,18 +4,6 @@ namespace PharIo\Phive {
     class PharIoRepository extends XmlRepository {
 
         /**
-         * @param Url $repositoryUrl
-         * @todo replace this with properly downloading the repo-XML beforehand
-         */
-        public function __construct(Url $repositoryUrl)
-        {
-            $repositoryXml = file_get_contents($repositoryUrl, false);
-            $filename = tempnam('/tmp', 'repo_');
-            file_put_contents($filename, $repositoryXml);
-            parent::__construct($filename);
-        }
-
-        /**
          * @param PharAlias $alias
          *
          * @return ReleaseCollection

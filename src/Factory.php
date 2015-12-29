@@ -132,7 +132,8 @@ namespace PharIo\Phive {
                 $this->getPharInstaller(),
                 $this->getPharRepository(),
                 $this->getAliasResolver(),
-                $this->getColoredConsoleOutput()
+                $this->getColoredConsoleOutput(),
+                $this->getPharIoRepositoryFactory()
             );
         }
 
@@ -291,6 +292,13 @@ namespace PharIo\Phive {
                 $this->getConfig()->getHomeDirectory() . '/phars.xml',
                 $this->getConfig()->getHomeDirectory()->child('phars')
             );
+        }
+
+        /**
+         * @return PharIoRepositoryFactory
+         */
+        private function getPharIoRepositoryFactory() {
+            return new PharIoRepositoryFactory($this->getFileDownloader());
         }
 
     }

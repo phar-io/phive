@@ -38,7 +38,10 @@ namespace PharIo\Phive {
                 'help'    => ['help', 'getHelpCommand'],
                 'version' => ['version', 'getVersionCommand'],
                 'skel'    => ['skel', 'getSkelCommand', new CLI\CommandOptions([])],
-                'install' => ['install', 'getInstallCommand', new CLI\CommandOptions([])]
+                'install' => ['install', 'getInstallCommand', new CLI\CommandOptions([])],
+                'purge' => ['purge', 'getPurgeCommand', new CLI\CommandOptions([])],
+                'remove' => ['remove', 'getRemoveCommand', new CLI\CommandOptions([])],
+                'update-repository-list' => ['update-repository-list', 'getUpdateRepositoryListCommand'],
             ];
         }
 

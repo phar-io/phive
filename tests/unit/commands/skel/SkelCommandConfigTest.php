@@ -44,7 +44,7 @@ namespace PharIo\Phive {
 
         public function testGetTemplateFilename() {
             $config = new SkelCommandConfig($this->cliOptionsProphecy->reveal(), '/tmp/');
-            $expected = realpath(__DIR__ . '/../../../conf/phive.skeleton.xml');
+            $expected = realpath(__DIR__ . '/../../../../conf/phive.skeleton.xml');
             $actual = realpath($config->getTemplateFilename());
             $this->assertEquals($expected, $actual);
         }

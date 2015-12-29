@@ -25,6 +25,25 @@ namespace PharIo\Phive {
             ];
         }
 
+        /**
+         * @dataProvider sha256HashProvider
+         *
+         * @param string $content
+         * @param string $expectedHash
+         */
+        public function testGeneratesExpectedSha256Hash($content, $expectedHash) {
+            $expectedHash = new Sha256Hash($expectedHash);
+            $file = new File('foo.phar', $content);
+            $this->assertEquals($expectedHash, $file->getSha256Hash());
+        }
+
+        public function sha256HashProvider() {
+            return [
+                ['some content', '290f493c44f5d63d06b374d0a5abd292fae38b92cab2fae5efefe1b0e9347f56'],
+                ['some other content', 'f73f16ede021d01efecf627b5e658be52293f167cfe06c6b8d0e591cb25b68c9']
+            ];
+        }
+
         public function testFilename() {
             $file = new File('foo.phar', 'bar');
             $this->assertSame('foo.phar', $file->getFilename());

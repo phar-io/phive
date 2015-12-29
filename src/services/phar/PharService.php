@@ -29,24 +29,32 @@ namespace PharIo\Phive {
         private $output;
 
         /**
-         * @param PharDownloader $downloader
-         * @param PharInstaller  $installer
-         * @param PharRepository $repository
-         * @param AliasResolver  $resolver
-         * @param Output         $output
+         * @var PharIoRepositoryFactory
+         */
+        private $pharIoRepositoryFactory;
+
+        /**
+         * @param PharDownloader          $downloader
+         * @param PharInstaller           $installer
+         * @param PharRepository          $repository
+         * @param AliasResolver           $resolver
+         * @param Output                  $output
+         * @param PharIoRepositoryFactory $pharIoRepositoryFactory
          */
         public function __construct(
             PharDownloader $downloader,
             PharInstaller $installer,
             PharRepository $repository,
             AliasResolver $resolver,
-            Output $output
+            Output $output,
+            PharIoRepositoryFactory $pharIoRepositoryFactory
         ) {
             $this->downloader = $downloader;
             $this->installer = $installer;
             $this->repository = $repository;
             $this->aliasResolver = $resolver;
             $this->output = $output;
+            $this->pharIoRepositoryFactory = $pharIoRepositoryFactory;
         }
 
         /**
@@ -107,7 +115,7 @@ namespace PharIo\Phive {
         private function resolveAlias(PharAlias $alias) {
             foreach ($this->aliasResolver->resolve($alias) as $repoUrl) {
                 try {
-                    $repo = new PharIoRepository($repoUrl);
+                    $repo = $this->pharIoRepositoryFactory->getRepository($repoUrl);
                     $releases = $repo->getReleases($alias);
                     return $releases->getLatest($alias->getVersionConstraint());
                 } catch (ResolveException $e) {

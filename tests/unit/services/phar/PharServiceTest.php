@@ -33,12 +33,18 @@ namespace PharIo\Phive {
          */
         private $output;
 
+        /**
+         * @var PharIoRepositoryFactory|ObjectProphecy
+         */
+        private $pharIoRepositoryFactory;
+
         protected function setUp() {
             $this->downloader = $this->prophesize(PharDownloader::class);
             $this->installer = $this->prophesize(PharInstaller::class);
             $this->repository = $this->prophesize(PharRepository::class);
             $this->resolver = $this->prophesize(AliasResolver::class);
             $this->output = $this->prophesize(Output::class);
+            $this->pharIoRepositoryFactory = $this->prophesize(PharIoRepositoryFactory::class);
         }
 
         public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
@@ -135,7 +141,8 @@ namespace PharIo\Phive {
                 $this->installer->reveal(),
                 $this->repository->reveal(),
                 $this->resolver->reveal(),
-                $this->output->reveal()
+                $this->output->reveal(),
+                $this->pharIoRepositoryFactory->reveal()
             );
         }
 
