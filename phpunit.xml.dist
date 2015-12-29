@@ -2,7 +2,8 @@
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
          verbose="true"
-         bootstrap="tests/bootstrap.php">
+         bootstrap="tests/bootstrap.php"
+         forceCoversAnnotation="true">
 
     <testsuites>
         <testsuite name="Phive">
