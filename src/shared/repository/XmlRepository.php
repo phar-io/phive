@@ -67,7 +67,7 @@ namespace PharIo\Phive {
             if ($this->filename->exists()) {
                 $this->dom->load($this->filename->asString());
             } else {
-                $this->dom->appendChild($this->dom->createElement($this->getRootElementName()));
+                $this->dom->appendChild($this->dom->createElementNS($this->getNamespace(), $this->getRootElementName()));
             }
             $this->xPath = new \DOMXPath($this->dom);
             $this->xPath->registerNamespace('phive', $this->getNamespace());
