@@ -27,6 +27,7 @@ spl_autoload_register(
                 'phario\\phive\\factory' => '/Factory.php',
                 'phario\\phive\\file' => '/shared/File.php',
                 'phario\\phive\\filedownloader' => '/shared/download/FileDownloader.php',
+                'phario\\phive\\filename' => '/shared/Filename.php',
                 'phario\\phive\\gnupg' => '/shared/GnuPG.php',
                 'phario\\phive\\gnupgkeydownloader' => '/services/key/gpg/GnupgKeyDownloader.php',
                 'phario\\phive\\gnupgkeyimporter' => '/services/key/gpg/GnupgKeyImporter.php',

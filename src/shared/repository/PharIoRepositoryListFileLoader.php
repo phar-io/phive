@@ -9,7 +9,7 @@ namespace PharIo\Phive {
         private $sourceUrl;
 
         /**
-         * @var string
+         * @var Filename
          */
         private $filename;
 
@@ -24,14 +24,14 @@ namespace PharIo\Phive {
         private $output;
 
         /**
-         * @param Url            $sourceUrl
-         * @param string         $filename
-         * @param FileDownloader $fileDownloader
-         * @param Output         $output
+         * @param Url             $sourceUrl
+         * @param Filename        $filename
+         * @param FileDownloader  $fileDownloader
+         * @param Output          $output
          */
         public function __construct(
             Url $sourceUrl,
-            $filename,
+            Filename $filename,
             FileDownloader $fileDownloader,
             Output $output
         ) {
@@ -42,10 +42,10 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return string
+         * @return Filename
          */
         public function load() {
-            if (!file_exists($this->filename)) {
+            if (!$this->filename->exists()) {
                 $this->downloadFromSource();
             }
             return $this->filename;

@@ -49,10 +49,10 @@ namespace PharIo\Phive {
         /**
          * @param Url $url
          *
-         * @return string
+         * @return Filename
          */
         private function getFilename(Url $url) {
-            return pathinfo($url, PATHINFO_BASENAME);
+            return new Filename(pathinfo($url, PATHINFO_BASENAME));
         }
 
     }

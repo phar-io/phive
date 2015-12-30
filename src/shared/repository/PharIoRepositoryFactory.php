@@ -25,7 +25,7 @@ namespace PharIo\Phive {
             $repositoryXml = $this->downloader->download($url);
             $filename = tempnam('/tmp', 'repo_');
             file_put_contents($filename, $repositoryXml);
-            return new PharIoRepository($repositoryXml);
+            return new PharIoRepository($repositoryXml->getFilename());
         }
 
     }

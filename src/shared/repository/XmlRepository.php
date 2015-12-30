@@ -19,9 +19,9 @@ namespace PharIo\Phive {
         private $xPath;
 
         /**
-         * @param string    $filename
+         * @param File $filename
          */
-        public function __construct($filename) {
+        public function __construct(Filename $filename) {
             $this->filename = $filename;
             $this->init();
         }
@@ -64,8 +64,8 @@ namespace PharIo\Phive {
             $this->dom = new \DOMDocument('1.0', 'UTF-8');
             $this->dom->preserveWhiteSpace = false;
             $this->dom->formatOutput = true;
-            if (file_exists($this->filename)) {
-                $this->dom->load($this->filename);
+            if ($this->filename->exists()) {
+                $this->dom->load($this->filename->asString());
             } else {
                 $this->dom->appendChild($this->dom->createElement($this->getRootElementName()));
             }

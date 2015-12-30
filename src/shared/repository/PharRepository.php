@@ -10,10 +10,10 @@ namespace PharIo\Phive {
         private $pharDirectory;
 
         /**
-         * @param string    $filename
+         * @param Filename  $filename
          * @param Directory $pharDirectory
          */
-        public function __construct($filename, Directory $pharDirectory)
+        public function __construct(Filename $filename, Directory $pharDirectory)
         {
             $this->pharDirectory = $pharDirectory;
             parent::__construct($filename);

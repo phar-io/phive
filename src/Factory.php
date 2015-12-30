@@ -143,7 +143,9 @@ namespace PharIo\Phive {
         private function getAliasResolver() {
 
             return new AliasResolver(
-                new PharIoRepositoryList($this->getPharIoRepositoryListFileLoader()->load())
+                new PharIoRepositoryList(
+                    $this->getPharIoRepositoryListFileLoader()->load()
+                )
             );
         }
 
@@ -259,7 +261,7 @@ namespace PharIo\Phive {
          */
         private function getConfig() {
             return new Config(
-                $this->getEnvironment(), new PhiveXmlConfig(__DIR__ . '/../phive.xml')
+                $this->getEnvironment(), new PhiveXmlConfig(new Filename(__DIR__ . '/../phive.xml'))
             );
         }
 
@@ -289,7 +291,7 @@ namespace PharIo\Phive {
          */
         private function getPharRepository() {
             return new PharRepository(
-                $this->getConfig()->getHomeDirectory() . '/phars.xml',
+                $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
                 $this->getConfig()->getHomeDirectory()->child('phars')
             );
         }
