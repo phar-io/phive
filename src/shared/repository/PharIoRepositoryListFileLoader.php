@@ -24,10 +24,10 @@ namespace PharIo\Phive {
         private $output;
 
         /**
-         * @param Url             $sourceUrl
-         * @param Filename        $filename
-         * @param FileDownloader  $fileDownloader
-         * @param Output          $output
+         * @param Url            $sourceUrl
+         * @param Filename       $filename
+         * @param FileDownloader $fileDownloader
+         * @param Output         $output
          */
         public function __construct(
             Url $sourceUrl,

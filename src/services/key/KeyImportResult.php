@@ -14,10 +14,10 @@ namespace PharIo\Phive {
         private $fingerprint;
 
         /**
-         * @param int $count
+         * @param int    $count
          * @param string $fingerprint
          */
-        public function __construct($count, $fingerprint = NULL) {
+        public function __construct($count, $fingerprint = null) {
             $this->count = $count;
             $this->fingerprint = $fingerprint;
         }

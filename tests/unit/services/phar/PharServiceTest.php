@@ -38,15 +38,6 @@ namespace PharIo\Phive {
          */
         private $pharIoRepositoryFactory;
 
-        protected function setUp() {
-            $this->downloader = $this->prophesize(PharDownloader::class);
-            $this->installer = $this->prophesize(PharInstaller::class);
-            $this->repository = $this->prophesize(PharRepository::class);
-            $this->resolver = $this->prophesize(AliasResolver::class);
-            $this->output = $this->prophesize(Output::class);
-            $this->pharIoRepositoryFactory = $this->prophesize(PharIoRepositoryFactory::class);
-        }
-
         public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
             $url = new Url('https://example.com/foo-1.20.1.phar');
             $release = new Release(new Version('1.20.1'), $url, null);
@@ -71,7 +62,6 @@ namespace PharIo\Phive {
                 '/tmp/foo'
             )->shouldBeCalled();
 
-
             $this->installer->install(
                 $file,
                 '/tmp/foo',
@@ -79,6 +69,20 @@ namespace PharIo\Phive {
             )->shouldBeCalled();
 
             $this->getPharService()->install($requestedPhar, '/tmp', true);
+        }
+
+        /**
+         * @return PharService
+         */
+        private function getPharService() {
+            return new PharService(
+                $this->downloader->reveal(),
+                $this->installer->reveal(),
+                $this->repository->reveal(),
+                $this->resolver->reveal(),
+                $this->output->reveal(),
+                $this->pharIoRepositoryFactory->reveal()
+            );
         }
 
         public function testInstallByUrlGetsPharFromRepositoryAndInvokesInstaller() {
@@ -100,7 +104,6 @@ namespace PharIo\Phive {
                 $phar,
                 '/tmp/foo'
             )->shouldBeCalled();
-
 
             $this->installer->install(
                 $file,
@@ -132,18 +135,13 @@ namespace PharIo\Phive {
             ];
         }
 
-        /**
-         * @return PharService
-         */
-        private function getPharService() {
-            return new PharService(
-                $this->downloader->reveal(),
-                $this->installer->reveal(),
-                $this->repository->reveal(),
-                $this->resolver->reveal(),
-                $this->output->reveal(),
-                $this->pharIoRepositoryFactory->reveal()
-            );
+        protected function setUp() {
+            $this->downloader = $this->prophesize(PharDownloader::class);
+            $this->installer = $this->prophesize(PharInstaller::class);
+            $this->repository = $this->prophesize(PharRepository::class);
+            $this->resolver = $this->prophesize(AliasResolver::class);
+            $this->output = $this->prophesize(Output::class);
+            $this->pharIoRepositoryFactory = $this->prophesize(PharIoRepositoryFactory::class);
         }
 
     }

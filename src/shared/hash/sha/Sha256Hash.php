@@ -17,10 +17,14 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return string
+         * @param string $value
+         *
+         * @throws InvalidHashException
          */
-        public function asString() {
-            return $this->value;
+        private function validateValue($value) {
+            if (!preg_match('/^[0-9a-f]{64}$/i', $value)) {
+                throw new InvalidHashException(sprintf('%s is not a valid SHA-256 hash', $value));
+            }
         }
 
         /**
@@ -33,14 +37,10 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param string $value
-         *
-         * @throws InvalidHashException
+         * @return string
          */
-        private function validateValue($value) {
-            if (!preg_match('/^[0-9a-f]{64}$/i', $value)) {
-                throw new InvalidHashException(sprintf('%s is not a valid SHA-256 hash', $value));
-            }
+        public function asString() {
+            return $this->value;
         }
 
     }

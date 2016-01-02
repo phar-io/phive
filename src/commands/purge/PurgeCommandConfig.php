@@ -19,7 +19,7 @@ namespace PharIo\Phive {
          * InstallCommandConfig constructor.
          *
          * @param CLI\CommandOptions $options
-         * @param Config            $config
+         * @param Config             $config
          */
         public function __construct(CLI\CommandOptions $options, Config $config) {
             $this->cliOptions = $options;

@@ -6,18 +6,6 @@ namespace PharIo\Phive {
      */
     class SpecificMajorVersionConstraintTest extends \PHPUnit_Framework_TestCase {
 
-        /**
-         * @dataProvider versionProvider
-         *
-         * @param int     $major
-         * @param Version $version
-         * @param bool    $expectedResult
-         */
-        public function testReturnsTrueForCompliantVersions($major, Version $version, $expectedResult) {
-            $constraint = new SpecificMajorVersionConstraint('foo', $major);
-            $this->assertSame($expectedResult, $constraint->complies($version));
-        }
-
         public static function versionProvider() {
             return [
                 // compliant versions
@@ -29,6 +17,18 @@ namespace PharIo\Phive {
                 [3, new Version('2.2.3'), false],
                 [3, new Version('2.9.9'), false],
             ];
+        }
+
+        /**
+         * @dataProvider versionProvider
+         *
+         * @param int     $major
+         * @param Version $version
+         * @param bool    $expectedResult
+         */
+        public function testReturnsTrueForCompliantVersions($major, Version $version, $expectedResult) {
+            $constraint = new SpecificMajorVersionConstraint('foo', $major);
+            $this->assertSame($expectedResult, $constraint->complies($version));
         }
 
     }

@@ -4,11 +4,9 @@ namespace PharIo\Phive {
     /**
      * @covers PharIo\Phive\VersionConstraintGroup
      */
-    class VersionConstraintGroupTest extends \PHPUnit_Framework_TestCase
-    {
+    class VersionConstraintGroupTest extends \PHPUnit_Framework_TestCase {
 
-        public function testReturnsFalseIfOneConstraintReturnsFalse()
-        {
+        public function testReturnsFalseIfOneConstraintReturnsFalse() {
             $firstConstraint = $this->getMock(VersionConstraint::class);
             $secondConstraint = $this->getMock(VersionConstraint::class);
 
@@ -24,8 +22,7 @@ namespace PharIo\Phive {
             $this->assertFalse($group->complies(new Version('1.0.0')));
         }
 
-        public function testReturnsTrueIfAllConstraintsReturnsTrue()
-        {
+        public function testReturnsTrueIfAllConstraintsReturnsTrue() {
             $firstConstraint = $this->getMock(VersionConstraint::class);
             $secondConstraint = $this->getMock(VersionConstraint::class);
 

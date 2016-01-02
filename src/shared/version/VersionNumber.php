@@ -1,8 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    class VersionNumber
-    {
+    class VersionNumber {
 
         /**
          * @var int

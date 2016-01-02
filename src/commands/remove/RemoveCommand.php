@@ -26,10 +26,10 @@ namespace PharIo\Phive {
         private $output;
 
         /**
-         * @param RemoveCommandConfig  $config
-         * @param PharRepository       $repository
-         * @param PharService          $pharService
-         * @param Output               $output
+         * @param RemoveCommandConfig $config
+         * @param PharRepository      $repository
+         * @param PharService         $pharService
+         * @param Output              $output
          */
         public function __construct(
             RemoveCommandConfig $config, PharRepository $repository, PharService $pharService, Output $output

@@ -14,7 +14,7 @@ namespace PharIo\Phive {
         private $versionConstraint;
 
         /**
-         * @param string                     $name
+         * @param string            $name
          * @param VersionConstraint $versionConstraint
          */
         public function __construct($name, VersionConstraint $versionConstraint) {

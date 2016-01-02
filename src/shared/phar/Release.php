@@ -56,7 +56,7 @@ namespace PharIo\Phive {
         public function hasExpectedHash() {
             return null !== $this->expectedHash;
         }
-        
+
     }
 
 }

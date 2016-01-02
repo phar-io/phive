@@ -18,6 +18,13 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @return CommandLocator
+         */
+        private function getCommandLocator() {
+            return new CommandLocator($this);
+        }
+
+        /**
          * @return VersionCommand
          */
         public function getVersionCommand() {
@@ -25,10 +32,31 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @return PhiveVersion
+         */
+        private function getPhiveVersion() {
+            return new PhiveVersion();
+        }
+
+        /**
+         * @return Output
+         */
+        private function getConsoleOutput() {
+            return new ConsoleOutput(ConsoleOutput::VERBOSE_INFO);
+        }
+
+        /**
          * @return HelpCommand
          */
         public function getHelpCommand() {
             return new HelpCommand($this->getPhiveVersion(), $this->getEnvironment(), $this->getConsoleOutput());
+        }
+
+        /**
+         * @return Environment
+         */
+        private function getEnvironment() {
+            return new Environment($_SERVER);
         }
 
         /**
@@ -48,6 +76,66 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @return PharIoRepositoryListFileLoader
+         */
+        private function getPharIoRepositoryListFileLoader() {
+            return new PharIoRepositoryListFileLoader(
+                $this->getConfig()->getRepositoryListUrl(),
+                $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
+                $this->getFileDownloader(),
+                $this->getColoredConsoleOutput()
+            );
+        }
+
+        /**
+         * @return Config
+         */
+        private function getConfig() {
+            return new Config(
+                $this->getEnvironment(), $this->getPhiveXmlConfig()
+            );
+        }
+
+        /**
+         * @return PhiveXmlConfig
+         */
+        private function getPhiveXmlConfig() {
+            return new PhiveXmlConfig(new Filename(__DIR__ . '/../phive.xml'));
+        }
+
+        /**
+         * @return FileDownloader
+         */
+        private function getFileDownloader() {
+            return new FileDownloader($this->getCurl(), $this->getColoredConsoleOutput());
+        }
+
+        /**
+         * @return Curl
+         */
+        private function getCurl() {
+            if (null === $this->curl) {
+                $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
+                $config->addLocalSslCertificate(
+                    'hkps.pool.sks-keyservers.net', __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+                );
+                $environment = $this->getEnvironment();
+                if ($environment->hasProxy()) {
+                    $config->setProxy($environment->getProxy());
+                }
+                $this->curl = new Curl($config);
+            }
+            return $this->curl;
+        }
+
+        /**
+         * @return Output
+         */
+        private function getColoredConsoleOutput() {
+            return new ColoredConsoleOutput(ConsoleOutput::VERBOSE_INFO);
+        }
+
+        /**
          * @param CLI\CommandOptions $options
          *
          * @return RemoveCommand
@@ -59,6 +147,142 @@ namespace PharIo\Phive {
                 $this->getPharService(),
                 $this->getColoredConsoleOutput()
             );
+        }
+
+        /**
+         * @return PharRepository
+         */
+        private function getPharRepository() {
+            return new PharRepository(
+                $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
+                $this->getConfig()->getHomeDirectory()->child('phars')
+            );
+        }
+
+        /**
+         * @return PharService
+         */
+        public function getPharService() {
+            return new PharService(
+                $this->getPharDownloader(),
+                $this->getPharInstaller(),
+                $this->getPharRepository(),
+                $this->getAliasResolver(),
+                $this->getColoredConsoleOutput(),
+                $this->getPharIoRepositoryFactory()
+            );
+        }
+
+        /**
+         * @return PharDownloader
+         */
+        private function getPharDownloader() {
+            return new PharDownloader($this->getFileDownloader(), $this->getSignatureService(), $this->getChecksumService());
+        }
+
+        /**
+         * @return SignatureService
+         */
+        public function getSignatureService() {
+            return new SignatureService($this->getGnupgSignatureVerifier());
+        }
+
+        /**
+         * @return SignatureVerifier
+         */
+        public function getGnupgSignatureVerifier() {
+            return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
+        }
+
+        /**
+         * @return \Gnupg
+         */
+        private function getGnupg() {
+            $home = $this->getConfig()->getHomeDirectory()->child('gpg');
+            if (extension_loaded('gnupg')) {
+                putenv('GNUPGHOME=' . $home);
+                $gpg = new \Gnupg();
+                $gpg->seterrormode(\Gnupg::ERROR_EXCEPTION);
+            } else {
+                $gpg = new GnuPG(
+                    $this->getConfig()->getGPGBinaryPath(),
+                    $home
+                );
+                if (!class_exists('\Gnupg')) {
+                    class_alias(GnuPG::class, '\Gnupg');
+                }
+            }
+            return $gpg;
+        }
+
+        /**
+         * @return KeyService
+         */
+        public function getKeyService() {
+            return new KeyService(
+                $this->getPgpKeyDownloader(),
+                $this->getGnupgKeyImporter(),
+                $this->getColoredConsoleOutput(),
+                $this->getConsoleInput()
+            );
+        }
+
+        /**
+         * @return GnupgKeyDownloader
+         */
+        private function getPgpKeyDownloader() {
+            return new GnupgKeyDownloader(
+                $this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php', $this->getColoredConsoleOutput()
+            );
+        }
+
+        /**
+         * @return KeyImporter
+         */
+        private function getGnupgKeyImporter() {
+            return new GnupgKeyImporter($this->getGnupg());
+        }
+
+        /**
+         * @return ConsoleInput
+         */
+        private function getConsoleInput() {
+            return new ConsoleInput($this->getConsoleOutput());
+        }
+
+        /**
+         * @return ChecksumService
+         */
+        private function getChecksumService() {
+            return new ChecksumService();
+        }
+
+        /**
+         * @return PharInstaller
+         */
+        private function getPharInstaller() {
+            return new PharInstaller(
+                $this->getConfig()->getHomeDirectory()->child('phars'), $this->getColoredConsoleOutput()
+            );
+        }
+
+        /**
+         * @return AliasResolver
+         */
+        private function getAliasResolver() {
+
+            return new AliasResolver(
+                new PharIoRepositoryList(
+                    $this->getPharIoRepositoryListFileLoader()->load()
+                )
+            );
+        }
+
+        /**
+         * @return PharIoRepositoryFactory
+         */
+        private function getPharIoRepositoryFactory() {
+            return new PharIoRepositoryFactory($this->getFileDownloader());
         }
 
         /**
@@ -85,231 +309,6 @@ namespace PharIo\Phive {
                 $this->getPharRepository(),
                 $this->getColoredConsoleOutput()
             );
-        }
-
-        /**
-         * @return CommandLocator
-         */
-        private function getCommandLocator() {
-            return new CommandLocator($this);
-        }
-
-        /**
-         * @return PhiveVersion
-         */
-        private function getPhiveVersion() {
-            return new PhiveVersion();
-        }
-
-        /**
-         * @return PharDownloader
-         */
-        private function getPharDownloader() {
-            return new PharDownloader($this->getFileDownloader(), $this->getSignatureService(), $this->getChecksumService());
-        }
-
-        /**
-         * @return PharInstaller
-         */
-        private function getPharInstaller() {
-            return new PharInstaller(
-                $this->getConfig()->getHomeDirectory()->child('phars'), $this->getColoredConsoleOutput()
-            );
-        }
-
-        /**
-         * @return FileDownloader
-         */
-        private function getFileDownloader() {
-            return new FileDownloader($this->getCurl(), $this->getColoredConsoleOutput());
-        }
-
-        /**
-         * @return PharService
-         */
-        public function getPharService() {
-            return new PharService(
-                $this->getPharDownloader(),
-                $this->getPharInstaller(),
-                $this->getPharRepository(),
-                $this->getAliasResolver(),
-                $this->getColoredConsoleOutput(),
-                $this->getPharIoRepositoryFactory()
-            );
-        }
-
-        /**
-         * @return AliasResolver
-         */
-        private function getAliasResolver() {
-
-            return new AliasResolver(
-                new PharIoRepositoryList(
-                    $this->getPharIoRepositoryListFileLoader()->load()
-                )
-            );
-        }
-
-        /**
-         * @return PharIoRepositoryListFileLoader
-         */
-        private function getPharIoRepositoryListFileLoader() {
-            return new PharIoRepositoryListFileLoader(
-                $this->getConfig()->getRepositoryListUrl(),
-                $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
-                $this->getFileDownloader(),
-                $this->getColoredConsoleOutput()
-            );
-        }
-
-        /**
-         * @return ChecksumService
-         */
-        private function getChecksumService() {
-            return new ChecksumService();
-        }
-
-        /**
-         * @return SignatureService
-         */
-        public function getSignatureService() {
-            return new SignatureService($this->getGnupgSignatureVerifier());
-        }
-
-        /**
-         * @return SignatureVerifier
-         */
-        public function getGnupgSignatureVerifier() {
-            return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
-        }
-
-        /**
-         * @return KeyService
-         */
-        public function getKeyService() {
-            return new KeyService(
-                $this->getPgpKeyDownloader(),
-                $this->getGnupgKeyImporter(),
-                $this->getColoredConsoleOutput(),
-                $this->getConsoleInput()
-            );
-        }
-
-        /**
-         * @return KeyImporter
-         */
-        private function getGnupgKeyImporter() {
-            return new GnupgKeyImporter($this->getGnupg());
-        }
-
-        /**
-         * @return GnupgKeyDownloader
-         */
-        private function getPgpKeyDownloader() {
-            return new GnupgKeyDownloader(
-                $this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php', $this->getColoredConsoleOutput()
-            );
-        }
-
-        /**
-         * @return Output
-         */
-        private function getColoredConsoleOutput() {
-            return new ColoredConsoleOutput(ConsoleOutput::VERBOSE_INFO);
-        }
-
-        /**
-         * @return Output
-         */
-        private function getConsoleOutput() {
-            return new ConsoleOutput(ConsoleOutput::VERBOSE_INFO);
-        }
-
-        /**
-         * @return ConsoleInput
-         */
-        private function getConsoleInput() {
-            return new ConsoleInput($this->getConsoleOutput());
-        }
-
-        /**
-         * @return Curl
-         */
-        private function getCurl() {
-            if (null === $this->curl) {
-                $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
-                $config->addLocalSslCertificate(
-                    'hkps.pool.sks-keyservers.net', __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
-                );
-                $environment = $this->getEnvironment();
-                if ($environment->hasProxy()) {
-                    $config->setProxy($environment->getProxy());
-                }
-                $this->curl = new Curl($config);
-            }
-            return $this->curl;
-        }
-
-        /**
-         * @return Environment
-         */
-        private function getEnvironment() {
-            return new Environment($_SERVER);
-        }
-
-        /**
-         * @return Config
-         */
-        private function getConfig() {
-            return new Config(
-                $this->getEnvironment(), $this->getPhiveXmlConfig()
-            );
-        }
-
-        /**
-         * @return PhiveXmlConfig
-         */
-        private function getPhiveXmlConfig()
-        {
-            return new PhiveXmlConfig(new Filename(__DIR__ . '/../phive.xml'));
-        }
-
-        /**
-         * @return \Gnupg
-         */
-        private function getGnupg() {
-            $home = $this->getConfig()->getHomeDirectory()->child('gpg');
-            if (extension_loaded('gnupg')) {
-                putenv('GNUPGHOME=' . $home);
-                $gpg = new \Gnupg();
-                $gpg->seterrormode(\Gnupg::ERROR_EXCEPTION);
-            } else {
-                $gpg = new GnuPG(
-                    $this->getConfig()->getGPGBinaryPath(),
-                    $home
-                );
-                if (!class_exists('\Gnupg')) {
-                    class_alias(GnuPG::class, '\Gnupg');
-                }
-            }
-            return $gpg;
-        }
-
-        /**
-         * @return PharRepository
-         */
-        private function getPharRepository() {
-            return new PharRepository(
-                $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
-                $this->getConfig()->getHomeDirectory()->child('phars')
-            );
-        }
-
-        /**
-         * @return PharIoRepositoryFactory
-         */
-        private function getPharIoRepositoryFactory() {
-            return new PharIoRepositoryFactory($this->getFileDownloader());
         }
 
     }

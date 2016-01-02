@@ -22,8 +22,8 @@ namespace PharIo\Phive {
 
         /**
          * @param CLI\CommandOptions $options
-         * @param Config $config
-         * @param PhiveXmlConfig $phiveXmlConfig
+         * @param Config             $config
+         * @param PhiveXmlConfig     $phiveXmlConfig
          */
         public function __construct(CLI\CommandOptions $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
             $this->cliOptions = $options;
@@ -42,8 +42,7 @@ namespace PharIo\Phive {
          * @return RequestedPhar[]
          * @throws CLI\CommandOptionsException
          */
-        public function getRequestedPhars()
-        {
+        public function getRequestedPhars() {
             if ($this->cliOptions->getArgumentCount() == 0) {
                 return $this->phiveXmlConfig->getPhars();
             }
@@ -51,25 +50,10 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return bool
-         */
-        public function makeCopy() {
-            return $this->cliOptions->isSwitch('copy');
-        }
-
-        /**
-         * @return bool
-         */
-        public function saveToPhiveXml() {
-            return $this->cliOptions->isSwitch('save');
-        }
-
-        /**
          * @return RequestedPhar[]
          * @throws CLI\CommandOptionsException
          */
-        private function getPharsFromCliArguments()
-        {
+        private function getPharsFromCliArguments() {
             $phars = [];
             for ($i = 0; $i < $this->cliOptions->getArgumentCount(); $i++) {
                 $argument = $this->cliOptions->getArgument($i);
@@ -87,6 +71,20 @@ namespace PharIo\Phive {
                 }
             }
             return $phars;
+        }
+
+        /**
+         * @return bool
+         */
+        public function makeCopy() {
+            return $this->cliOptions->isSwitch('copy');
+        }
+
+        /**
+         * @return bool
+         */
+        public function saveToPhiveXml() {
+            return $this->cliOptions->isSwitch('save');
         }
 
     }

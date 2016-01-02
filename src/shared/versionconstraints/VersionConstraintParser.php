@@ -1,8 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    class VersionConstraintParser
-    {
+    class VersionConstraintParser {
 
         /**
          * @param string $value
@@ -11,7 +10,7 @@ namespace PharIo\Phive {
          */
         public function parse($value) {
 
-            switch($value[0]) {
+            switch ($value[0]) {
                 case '~':
                     $version = new Version(substr($value, 1));
                     return new VersionConstraintGroup(

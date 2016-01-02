@@ -1,8 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    interface VersionConstraint
-    {
+    interface VersionConstraint {
 
         /**
          * @param Version $version

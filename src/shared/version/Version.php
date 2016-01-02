@@ -78,27 +78,6 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return VersionNumber
-         */
-        public function getMajor() {
-            return $this->major;
-        }
-
-        /**
-         * @return VersionNumber
-         */
-        public function getMinor() {
-            return $this->minor;
-        }
-
-        /**
-         * @return VersionNumber
-         */
-        public function getPatch() {
-            return $this->patch;
-        }
-
-        /**
          * @return string
          */
         public function getLabel() {
@@ -144,6 +123,27 @@ namespace PharIo\Phive {
                 return true;
             }
             return false;
+        }
+
+        /**
+         * @return VersionNumber
+         */
+        public function getMajor() {
+            return $this->major;
+        }
+
+        /**
+         * @return VersionNumber
+         */
+        public function getMinor() {
+            return $this->minor;
+        }
+
+        /**
+         * @return VersionNumber
+         */
+        public function getPatch() {
+            return $this->patch;
         }
 
     }

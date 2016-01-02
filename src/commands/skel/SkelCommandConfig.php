@@ -17,7 +17,7 @@ namespace PharIo\Phive {
 
         /**
          * @param CLI\CommandOptions $cliOptions
-         * @param                   $workingDirectory
+         * @param                    $workingDirectory
          */
         public function __construct(CLI\CommandOptions $cliOptions, $workingDirectory) {
             $this->cliOptions = $cliOptions;

@@ -1,8 +1,8 @@
 <?php
-namespace PharIo\Phive
-{
-    interface Hash
-    {
+namespace PharIo\Phive {
+
+    interface Hash {
+
         public function asString();
 
         /**

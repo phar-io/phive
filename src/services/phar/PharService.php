@@ -131,22 +131,6 @@ namespace PharIo\Phive {
         /**
          * @param Url $url
          *
-         * @return string
-         * @throws DownloadFailedException
-         */
-        private function getPharName(Url $url) {
-            $filename = pathinfo((string)$url, PATHINFO_FILENAME);
-            preg_match('/(.*)-[0-9]+.[0-9]+.[0-9]+.*/', $filename, $matches);
-            if (count($matches) !== 2) {
-                $matches[1] = $filename;
-            }
-
-            return $matches[1];
-        }
-
-        /**
-         * @param Url $url
-         *
          * @return Version
          * @throws DownloadFailedException
          */
@@ -161,6 +145,22 @@ namespace PharIo\Phive {
             }
 
             return new Version($matches[1]);
+        }
+
+        /**
+         * @param Url $url
+         *
+         * @return string
+         * @throws DownloadFailedException
+         */
+        private function getPharName(Url $url) {
+            $filename = pathinfo((string)$url, PATHINFO_FILENAME);
+            preg_match('/(.*)-[0-9]+.[0-9]+.[0-9]+.*/', $filename, $matches);
+            if (count($matches) !== 2) {
+                $matches[1] = $filename;
+            }
+
+            return $matches[1];
         }
     }
 

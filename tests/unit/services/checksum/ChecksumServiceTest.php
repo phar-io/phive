@@ -8,6 +8,14 @@ namespace PharIo\Phive {
      */
     class ChecksumServiceTest extends \PHPUnit_Framework_TestCase {
 
+        public static function hashProvider() {
+            return [
+                ['foo', 'foo', true],
+                ['foo', 'bar', false],
+                ['bar', 'tool', false]
+            ];
+        }
+
         /**
          * @expectedException \PharIo\Phive\InvalidHashException
          */
@@ -22,7 +30,7 @@ namespace PharIo\Phive {
          *
          * @param string $expectedHash
          * @param string $actualHash
-         * @param bool $expected
+         * @param bool   $expected
          *
          * @throws InvalidHashException
          */
@@ -38,11 +46,18 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @return ObjectProphecy|File
+         */
+        private function getFileProphecy() {
+            return $this->prophesize(File::class);
+        }
+
+        /**
          * @dataProvider hashProvider
          *
          * @param string $expectedHash
          * @param string $actualHash
-         * @param bool $expected
+         * @param bool   $expected
          *
          * @throws InvalidHashException
          */
@@ -55,21 +70,6 @@ namespace PharIo\Phive {
 
             $service = new ChecksumService();
             $this->assertSame($expected, $service->verify($expectedHash, $file->reveal()));
-        }
-        
-        public static function hashProvider(){
-            return [
-                ['foo', 'foo', true],
-                ['foo', 'bar', false],
-                ['bar', 'tool', false]
-            ];
-        }
-
-        /**
-         * @return ObjectProphecy|File
-         */
-        private function getFileProphecy() {
-            return $this->prophesize(File::class);
         }
 
     }

@@ -29,24 +29,6 @@ namespace PharIo\Phive {
             $command->execute();
         }
 
-        public function testWritesToOutput() {
-            $config = $this->getCommandConfigMock();
-            $repository = $this->getPharRepositoryMock();
-            $output = $this->getOutputMock();
-
-            $phar1 = $this->getPharMock();
-
-            $repository->expects($this->once())
-                ->method('getUnusedPhars')
-                ->willReturn([$phar1]);
-
-            $output->expects($this->once())
-                ->method('writeInfo');
-
-            $command = new PurgeCommand($config, $repository, $output);
-            $command->execute();
-        }
-
         /**
          * @return \PHPUnit_Framework_MockObject_MockObject|PurgeCommandConfig
          */
@@ -64,6 +46,15 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @return \PHPUnit_Framework_MockObject_MockObject|Phar
+         */
+        private function getPharMock() {
+            $version = $this->getMockBuilder(Version::class)->disableOriginalConstructor()->getMock();
+            $file = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
+            return new Phar('foo', $version, $file);
+        }
+
+        /**
          * @return \PHPUnit_Framework_MockObject_MockObject|Output
          */
         private function getOutputMock() {
@@ -71,13 +62,22 @@ namespace PharIo\Phive {
                 ->disableOriginalConstructor()->getMock();
         }
 
-        /**
-         * @return \PHPUnit_Framework_MockObject_MockObject|Phar
-         */
-        private function getPharMock() {
-            $version = $this->getMockBuilder(Version::class)->disableOriginalConstructor()->getMock();
-            $file = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
-            return new Phar('foo', $version, $file);
+        public function testWritesToOutput() {
+            $config = $this->getCommandConfigMock();
+            $repository = $this->getPharRepositoryMock();
+            $output = $this->getOutputMock();
+
+            $phar1 = $this->getPharMock();
+
+            $repository->expects($this->once())
+                ->method('getUnusedPhars')
+                ->willReturn([$phar1]);
+
+            $output->expects($this->once())
+                ->method('writeInfo');
+
+            $command = new PurgeCommand($config, $repository, $output);
+            $command->execute();
         }
     }
 

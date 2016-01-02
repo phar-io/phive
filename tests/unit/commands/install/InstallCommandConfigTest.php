@@ -23,6 +23,38 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+         */
+        private function getDirectoryMock() {
+            return $this->getMockBuilder(Directory::class)
+                ->disableOriginalConstructor()->getMock();
+        }
+
+        /**
+         * @return \PHPUnit_Framework_MockObject_MockObject|Config
+         */
+        private function getConfigMock() {
+            return $this->getMockBuilder(Config::class)
+                ->disableOriginalConstructor()->getMock();
+        }
+
+        /**
+         * @return \PHPUnit_Framework_MockObject_MockObject|CommandOptions
+         */
+        private function getOptionsMock() {
+            return $this->getMockBuilder(CommandOptions::class)
+                ->disableOriginalConstructor()->getMock();
+        }
+
+        /**
+         * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
+         */
+        private function getPhiveXmlConfigMock() {
+            return $this->getMockBuilder(PhiveXmlConfig::class)
+                ->disableOriginalConstructor()->getMock();
+        }
+
+        /**
          * @dataProvider boolProvider
          *
          * @param $switch
@@ -75,38 +107,6 @@ namespace PharIo\Phive {
 
             $commandConfig = new InstallCommandConfig($options, $this->getConfigMock(), $this->getPhiveXmlConfigMock());
             $this->assertEquals($expected, $commandConfig->getRequestedPhars());
-        }
-
-        /**
-         * @return \PHPUnit_Framework_MockObject_MockObject|CommandOptions
-         */
-        private function getOptionsMock() {
-            return $this->getMockBuilder(CommandOptions::class)
-                ->disableOriginalConstructor()->getMock();
-        }
-
-        /**
-         * @return \PHPUnit_Framework_MockObject_MockObject|Config
-         */
-        private function getConfigMock() {
-            return $this->getMockBuilder(Config::class)
-                ->disableOriginalConstructor()->getMock();
-        }
-
-        /**
-         * @return \PHPUnit_Framework_MockObject_MockObject|Directory
-         */
-        private function getDirectoryMock() {
-            return $this->getMockBuilder(Directory::class)
-                ->disableOriginalConstructor()->getMock();
-        }
-
-        /**
-         * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
-         */
-        private function getPhiveXmlConfigMock() {
-            return $this->getMockBuilder(PhiveXmlConfig::class)
-                ->disableOriginalConstructor()->getMock();
         }
 
     }

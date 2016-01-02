@@ -22,7 +22,6 @@ namespace PharIo\Phive {
             $this->loader->downloadFromSource();
         }
 
-
     }
 
 }

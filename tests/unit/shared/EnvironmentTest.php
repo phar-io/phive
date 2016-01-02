@@ -10,7 +10,7 @@ namespace PharIo\Phive {
          * @dataProvider hasProxyProvider
          *
          * @param string $server
-         * @param bool $expected
+         * @param bool   $expected
          */
         public function testHasProxy($server, $expected) {
             $env = new Environment($server);

@@ -45,6 +45,17 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param string $content
+         * @param string $placeholder
+         * @param string $replacement
+         *
+         * @return string
+         */
+        private function replacePlaceholder($content, $placeholder, $replacement) {
+            return str_replace($placeholder, $replacement, $content);
+        }
+
+        /**
          * @param string $skeleton
          *
          * @throws IOException
@@ -55,17 +66,6 @@ namespace PharIo\Phive {
                 throw new IOException('A PHIVE configuration file already exists. Use the \'-force\' switch to overwrite it.');
             }
             file_put_contents($this->config->getDestination(), $skeleton);
-        }
-
-        /**
-         * @param string $content
-         * @param string $placeholder
-         * @param string $replacement
-         *
-         * @return string
-         */
-        private function replacePlaceholder($content, $placeholder, $replacement) {
-            return str_replace($placeholder, $replacement, $content);
         }
 
     }

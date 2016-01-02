@@ -19,9 +19,9 @@ namespace PharIo\Phive {
         private $file;
 
         /**
-         * @param string   $name
-         * @param Version  $version
-         * @param File $file
+         * @param string  $name
+         * @param Version $version
+         * @param File    $file
          */
         public function __construct($name, Version $version, File $file) {
             $this->name = $name;

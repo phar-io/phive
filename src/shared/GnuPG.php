@@ -52,27 +52,12 @@ namespace PharIo\Phive {
             $status = $this->readFromStatus();
             $this->close();
             if (preg_match('=.*IMPORT_OK\s(\d+)\s(.*)=', $status, $matches)) {
-               return [
-                   'imported' => (int)$matches[1],
-                   'fingerprint' => $matches[2]
-               ];
+                return [
+                    'imported'    => (int)$matches[1],
+                    'fingerprint' => $matches[2]
+                ];
             }
             return ['imported' => 0];
-        }
-
-        public function verify($message, $signature) {
-            $params = [
-                '--enable-special-filenames',
-                '--verify',
-                '-',
-                "'-&4'"
-            ];
-            $this->open($params, [['pipe', 'r']]);
-            $this->writeToPipe(0, $signature);
-            $this->writeToPipe(4, $message);
-            $status = $this->readFromStatus();
-            $this->close();
-            return $this->parseVerifyOutput($status);
         }
 
         private function open(array $params, array $pipes = []) {
@@ -83,36 +68,6 @@ namespace PharIo\Phive {
             );
         }
 
-        private function writeToPipe($pipe, $content) {
-            fwrite($this->pipeHandles[$pipe], $content);
-            fflush($this->pipeHandles[$pipe]);
-            fclose($this->pipeHandles[$pipe]);
-            $this->pipeHandles[$pipe] = false;
-        }
-
-        private function readFromStatus() {
-            stream_set_blocking($this->pipeHandles[3], 0);
-            stream_set_read_buffer($this->pipeHandles[3], 0);
-            $status = '';
-            while (!feof ($this->pipeHandles[3])) {
-                $status .= fread($this->pipeHandles[3], 1);
-            }
-            return $status;
-        }
-
-        /**
-         * @return int
-         */
-        private function close() {
-            foreach($this->pipeHandles as $id => $pipe) {
-                if (is_resource($pipe)) {
-                    fclose($pipe);
-                    $this->pipeHandles[$id] = false;
-                }
-            }
-            return proc_close($this->proc);
-        }
-
         private function buildCLICommand(array $params) {
             return join(' ', array_merge([
                     $this->executable,
@@ -121,7 +76,7 @@ namespace PharIo\Phive {
                     '--no-tty',
                     '--lock-multiple',
                     '--no-permission-warning',
-                    ], $params)
+                ], $params)
             );
         }
 
@@ -143,6 +98,51 @@ namespace PharIo\Phive {
             return $this->pipeDefinitions;
         }
 
+        private function writeToPipe($pipe, $content) {
+            fwrite($this->pipeHandles[$pipe], $content);
+            fflush($this->pipeHandles[$pipe]);
+            fclose($this->pipeHandles[$pipe]);
+            $this->pipeHandles[$pipe] = false;
+        }
+
+        private function readFromStatus() {
+            stream_set_blocking($this->pipeHandles[3], 0);
+            stream_set_read_buffer($this->pipeHandles[3], 0);
+            $status = '';
+            while (!feof($this->pipeHandles[3])) {
+                $status .= fread($this->pipeHandles[3], 1);
+            }
+            return $status;
+        }
+
+        /**
+         * @return int
+         */
+        private function close() {
+            foreach ($this->pipeHandles as $id => $pipe) {
+                if (is_resource($pipe)) {
+                    fclose($pipe);
+                    $this->pipeHandles[$id] = false;
+                }
+            }
+            return proc_close($this->proc);
+        }
+
+        public function verify($message, $signature) {
+            $params = [
+                '--enable-special-filenames',
+                '--verify',
+                '-',
+                "'-&4'"
+            ];
+            $this->open($params, [['pipe', 'r']]);
+            $this->writeToPipe(0, $signature);
+            $this->writeToPipe(4, $message);
+            $status = $this->readFromStatus();
+            $this->close();
+            return $this->parseVerifyOutput($status);
+        }
+
         /**
          * @param $status
          *
@@ -152,11 +152,11 @@ namespace PharIo\Phive {
             $fingerprint = '';
             $timestamp = 0;
             $summary = false;
-            foreach(explode("\n", $status) as $line) {
+            foreach (explode("\n", $status) as $line) {
                 $parts = explode(' ', $line);
                 $fingerprint = $parts[2];
 
-                if (strpos($line, 'VALIDSIG') !== FALSE) {
+                if (strpos($line, 'VALIDSIG') !== false) {
                     // [GNUPG:] VALIDSIG D8406D0D82947747293778314AA394086372C20A 2014-07-19 1405769272 0 4 0 1 10 00 D8406D0D82947747293778314AA394086372C20A
                     /*
                     VALIDSIG <args>
@@ -174,18 +174,18 @@ namespace PharIo\Phive {
                     - <sig-class>
                     - [ <primary-key-fpr> ]
                     */
-                    $timestamp   = $parts[4];
-                    $summary     = 0;
+                    $timestamp = $parts[4];
+                    $summary = 0;
                     break;
                 }
 
-                if (strpos($line, 'BADSIG') !== FALSE) {
+                if (strpos($line, 'BADSIG') !== false) {
                     // [GNUPG:] BADSIG 4AA394086372C20A Sebastian Bergmann <sb@sebastian-bergmann.de>
                     $summary = 4;
                     break;
                 }
 
-                if (strpos($line, 'ERRSIG') !== FALSE) {
+                if (strpos($line, 'ERRSIG') !== false) {
                     // [GNUPG:] ERRSIG 4AA394086372C20A 1 10 00 1405769272 9
                     // ERRSIG  <keyid>  <pkalgo> <hashalgo> <sig_class> <time> <rc>
                     $timestamp = $parts[6];
@@ -195,16 +195,16 @@ namespace PharIo\Phive {
 
             }
 
-            if ($summary === FALSE) {
+            if ($summary === false) {
                 return false;
             }
 
             return [[
                 'fingerprint' => $fingerprint,
-                'validity' => 0,
-                'timestamp' => $timestamp,
-                'status' => $status,
-                'summary' => $summary
+                'validity'    => 0,
+                'timestamp'   => $timestamp,
+                'status'      => $status,
+                'summary'     => $summary
             ]];
         }
 

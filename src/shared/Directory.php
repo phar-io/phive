@@ -17,7 +17,7 @@ namespace PharIo\Phive {
          * Directory constructor.
          *
          * @param string $path
-         * @param int $mode
+         * @param int    $mode
          */
         public function __construct($path, $mode = 0775) {
             $this->ensureModeIsInteger($mode);
@@ -28,32 +28,18 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param string $child
-         * @param int $mode
+         * @param $value
          *
-         * @return Directory
+         * @throws DirectoryException
          */
-        public function child($child, $mode = NULL) {
-            return new Directory(
-                $this->path . DIRECTORY_SEPARATOR . $child,
-                $mode !== NULL ? $mode : $this->mode
+        private function ensureModeIsInteger($value) {
+            if (is_int($value)) {
+                return;
+            }
+            throw new DirectoryException(
+                sprintf('Mode "%s" is not of integer type', $value),
+                DirectoryException::InvalidMode
             );
-        }
-
-        /**
-         * @param string $filename
-         *
-         * @return Filename
-         */
-        public function file($filename) {
-            return new Filename($this->path . DIRECTORY_SEPARATOR . $filename);
-        }
-
-        /**
-         * @return string
-         */
-        public function __toString() {
-            return $this->path;
         }
 
         /**
@@ -66,7 +52,7 @@ namespace PharIo\Phive {
                 return;
             }
             try {
-                mkdir($path, 0777, TRUE);
+                mkdir($path, 0777, true);
             } catch (\ErrorException $e) {
                 throw new DirectoryException(
                     sprintf('Creating directory "%s" failed.', $path),
@@ -78,7 +64,7 @@ namespace PharIo\Phive {
 
         /**
          * @param string $path
-         * @param int $mode
+         * @param int    $mode
          *
          * @throws DirectoryException
          */
@@ -98,18 +84,32 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param $value
+         * @param string $child
+         * @param int    $mode
          *
-         * @throws DirectoryException
+         * @return Directory
          */
-        private function ensureModeIsInteger($value) {
-            if (is_int($value)) {
-                return;
-            }
-            throw new DirectoryException(
-                sprintf('Mode "%s" is not of integer type', $value),
-                DirectoryException::InvalidMode
+        public function child($child, $mode = null) {
+            return new Directory(
+                $this->path . DIRECTORY_SEPARATOR . $child,
+                $mode !== null ? $mode : $this->mode
             );
+        }
+
+        /**
+         * @param string $filename
+         *
+         * @return Filename
+         */
+        public function file($filename) {
+            return new Filename($this->path . DIRECTORY_SEPARATOR . $filename);
+        }
+
+        /**
+         * @return string
+         */
+        public function __toString() {
+            return $this->path;
         }
     }
 

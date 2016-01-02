@@ -22,8 +22,8 @@ namespace PharIo\Phive {
 
         /**
          * @param InstallCommandConfig $config
-         * @param PharService $pharService
-         * @param PhiveXmlConfig $phiveXmlConfig
+         * @param PharService          $pharService
+         * @param PhiveXmlConfig       $phiveXmlConfig
          */
         public function __construct(
             InstallCommandConfig $config,

@@ -14,15 +14,6 @@ namespace PharIo\Phive {
         private $url;
 
         /**
-         * @param PharAlias|null $alias
-         * @param Url|null       $url
-         */
-        private function __construct(PharAlias $alias = null, Url $url = null) {
-            $this->alias = $alias;
-            $this->url = $url;
-        }
-
-        /**
          * @param PharAlias $alias
          *
          * @return RequestedPhar
@@ -59,6 +50,15 @@ namespace PharIo\Phive {
          */
         public function getPharUrl() {
             return $this->url;
+        }
+
+        /**
+         * @param PharAlias|null $alias
+         * @param Url|null       $url
+         */
+        private function __construct(PharAlias $alias = null, Url $url = null) {
+            $this->alias = $alias;
+            $this->url = $url;
         }
 
     }

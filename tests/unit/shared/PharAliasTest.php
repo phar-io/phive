@@ -9,6 +9,16 @@ namespace PharIo\Phive {
         use ScalarTestDataProvider;
 
         /**
+         * @return array
+         */
+        public static function versionConstraintProvider() {
+            return [
+                [new AnyVersionConstraint()],
+                [new ExactVersionConstraint('1.0.0')]
+            ];
+        }
+
+        /**
          * @dataProvider stringProvider
          *
          * @param string $value
@@ -26,16 +36,6 @@ namespace PharIo\Phive {
         public function testGetVersionConstraint(VersionConstraint $constraint) {
             $alias = new PharAlias('foo', $constraint);
             $this->assertSame($constraint, $alias->getVersionConstraint());
-        }
-
-        /**
-         * @return array
-         */
-        public static function versionConstraintProvider() {
-            return [
-                [new AnyVersionConstraint()],
-                [new ExactVersionConstraint('1.0.0')]
-            ];
         }
 
     }

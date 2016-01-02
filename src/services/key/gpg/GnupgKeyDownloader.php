@@ -21,8 +21,8 @@ namespace PharIo\Phive {
         private $output;
 
         /**
-         * @param Curl            $curl
-         * @param Url[]           $keyServers
+         * @param Curl   $curl
+         * @param Url[]  $keyServers
          * @param Output $output
          */
         public function __construct(Curl $curl, array $keyServers, Output $output) {
@@ -39,8 +39,8 @@ namespace PharIo\Phive {
          */
         public function download($keyId) {
             $params = [
-                'search' => '0x' . $keyId,
-                'op' => 'get',
+                'search'  => '0x' . $keyId,
+                'op'      => 'get',
                 'options' => 'mr'
             ];
             foreach ($this->keyServers as $keyServer) {

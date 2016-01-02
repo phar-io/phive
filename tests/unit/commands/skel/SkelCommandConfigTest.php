@@ -1,8 +1,8 @@
 <?php
 namespace PharIo\Phive {
 
-    use TheSeer\CLI;
     use Prophecy\Prophecy\ObjectProphecy;
+    use TheSeer\CLI;
 
     /**
      * @covers PharIo\Phive\SkelCommandConfig

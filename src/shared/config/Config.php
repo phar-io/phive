@@ -9,7 +9,7 @@ namespace PharIo\Phive {
         private $environment;
 
         /**
-         * @param Environment    $environment
+         * @param Environment $environment
          */
         public function __construct(Environment $environment) {
             $this->environment = $environment;

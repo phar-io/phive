@@ -20,7 +20,7 @@ namespace PharIo\Phive {
          */
 
         /**
-         * @param Url $url
+         * @param Url   $url
          * @param array $params
          *
          * @return CurlResponse

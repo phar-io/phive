@@ -25,20 +25,6 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return string
-         */
-        protected function getRootElementName() {
-            return 'repository';
-        }
-
-        /**
-         * @return string
-         */
-        protected function getNamespace() {
-            return 'https://phar.io/repository';
-        }
-
-        /**
          * @param \DOMElement $releaseNode
          *
          * @return Sha1Hash|Sha256Hash
@@ -55,6 +41,20 @@ namespace PharIo\Phive {
                     return new Sha256Hash($hashNode->getAttribute('value'));
             }
             throw new InvalidHashException(sprintf('Unsupported Hash Type %s', $type));
+        }
+
+        /**
+         * @return string
+         */
+        protected function getRootElementName() {
+            return 'repository';
+        }
+
+        /**
+         * @return string
+         */
+        protected function getNamespace() {
+            return 'https://phar.io/repository';
         }
 
     }

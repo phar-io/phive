@@ -23,9 +23,9 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param File $phar
-         * @param string   $destination
-         * @param bool     $copy
+         * @param File   $phar
+         * @param string $destination
+         * @param bool   $copy
          */
         public function install(File $phar, $destination, $copy) {
             if (file_exists($destination)) {
@@ -39,8 +39,8 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param File $phar
-         * @param string   $destination
+         * @param File   $phar
+         * @param string $destination
          */
         private function copy(File $phar, $destination) {
             $this->output->writeInfo(sprintf('Copying %s to %s', $phar->getFilename(), $destination));
@@ -49,8 +49,8 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param File $phar
-         * @param string   $destination
+         * @param File   $phar
+         * @param string $destination
          */
         private function link(File $phar, $destination) {
             $this->output->writeInfo(sprintf('Symlinking %s to %s', $phar->getFilename(), $destination));

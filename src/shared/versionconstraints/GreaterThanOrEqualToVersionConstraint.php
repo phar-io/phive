@@ -1,15 +1,15 @@
 <?php
 namespace PharIo\Phive {
 
-    class GreaterThanOrEqualToVersionConstraint extends AbstractVersionConstraint
-    {
+    class GreaterThanOrEqualToVersionConstraint extends AbstractVersionConstraint {
+
         /**
          * @var Version
          */
         private $minimalVersion;
 
         /**
-         * @param string $originalValue
+         * @param string  $originalValue
          * @param Version $minimalVersion
          */
         public function __construct($originalValue, Version $minimalVersion) {

@@ -13,15 +13,10 @@ namespace PharIo\Phive {
          */
         private $repositoryList;
 
-        protected function setUp() {
-            $this->repositoryList = $this->prophesize(PharIoRepositoryList::class);
-        }
-
         /**
          * @expectedException \PharIo\Phive\ResolveException
          */
-        public function testThrowsExceptionIfListReturnsEmptyArray()
-        {
+        public function testThrowsExceptionIfListReturnsEmptyArray() {
             $alias = new PharAlias('phpunit', new AnyVersionConstraint());
             $this->repositoryList->getRepositoryUrls($alias)
                 ->shouldBeCalled()
@@ -31,8 +26,7 @@ namespace PharIo\Phive {
             $resolver->resolve($alias);
         }
 
-        public function testReturnsExpectedArrayOfUrls()
-        {
+        public function testReturnsExpectedArrayOfUrls() {
             $alias = new PharAlias('phpunit', new AnyVersionConstraint());
 
             $urls = [
@@ -46,6 +40,10 @@ namespace PharIo\Phive {
 
             $resolver = new AliasResolver($this->repositoryList->reveal());
             $this->assertEquals($urls, $resolver->resolve($alias));
+        }
+
+        protected function setUp() {
+            $this->repositoryList = $this->prophesize(PharIoRepositoryList::class);
         }
 
     }

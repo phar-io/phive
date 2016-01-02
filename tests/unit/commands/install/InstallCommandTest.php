@@ -36,31 +36,6 @@ namespace PharIo\Phive {
 
         }
 
-        public function testSaveOption()
-        {
-            $config = $this->getCommandConfigMock();
-            $pharService = $this->getPharServiceMock();
-            $phiveXmlConfig = $this->getPhiveXmlConfigMock();
-
-            $requestedPhar = $this->getRequestedPharMock();
-
-            $config->expects($this->once())
-                ->method('getRequestedPhars')
-                ->will($this->returnValue([$requestedPhar]));
-
-            $config->expects($this->once())
-                ->method('saveToPhiveXml')
-                ->willReturn(true);
-
-            $phiveXmlConfig->expects($this->once())
-                ->method('addPhar')
-                ->with($requestedPhar);
-
-            $command = new InstallCommand($config, $pharService, $phiveXmlConfig);
-
-            $command->execute();
-        }
-
         /**
          * @return \PHPUnit_Framework_MockObject_MockObject|InstallCommandConfig
          */
@@ -91,6 +66,30 @@ namespace PharIo\Phive {
         private function getPhiveXmlConfigMock() {
             return $this->getMockBuilder(PhiveXmlConfig::class)
                 ->disableOriginalConstructor()->getMock();
+        }
+
+        public function testSaveOption() {
+            $config = $this->getCommandConfigMock();
+            $pharService = $this->getPharServiceMock();
+            $phiveXmlConfig = $this->getPhiveXmlConfigMock();
+
+            $requestedPhar = $this->getRequestedPharMock();
+
+            $config->expects($this->once())
+                ->method('getRequestedPhars')
+                ->will($this->returnValue([$requestedPhar]));
+
+            $config->expects($this->once())
+                ->method('saveToPhiveXml')
+                ->willReturn(true);
+
+            $phiveXmlConfig->expects($this->once())
+                ->method('addPhar')
+                ->with($requestedPhar);
+
+            $command = new InstallCommand($config, $pharService, $phiveXmlConfig);
+
+            $command->execute();
         }
 
     }

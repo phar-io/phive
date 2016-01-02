@@ -6,18 +6,6 @@ namespace PharIo\Phive {
      */
     class GreaterThanOrEqualToVersionConstraintTest extends \PHPUnit_Framework_TestCase {
 
-        /**
-         * @dataProvider versionProvider
-         *
-         * @param Version $constraintVersion
-         * @param Version $version
-         * @param bool    $expectedResult
-         */
-        public function testReturnsTrueForCompliantVersions(Version $constraintVersion, Version $version, $expectedResult) {
-            $constraint = new GreaterThanOrEqualToVersionConstraint('foo', $constraintVersion);
-            $this->assertSame($expectedResult, $constraint->complies($version));
-        }
-
         public static function versionProvider() {
             return [
                 // compliant versions
@@ -32,6 +20,18 @@ namespace PharIo\Phive {
                 [new Version('2.3.1'), new Version('2.2.3'), false],
                 [new Version('3.0.2'), new Version('2.9.9'), false],
             ];
+        }
+
+        /**
+         * @dataProvider versionProvider
+         *
+         * @param Version $constraintVersion
+         * @param Version $version
+         * @param bool    $expectedResult
+         */
+        public function testReturnsTrueForCompliantVersions(Version $constraintVersion, Version $version, $expectedResult) {
+            $constraint = new GreaterThanOrEqualToVersionConstraint('foo', $constraintVersion);
+            $this->assertSame($expectedResult, $constraint->complies($version));
         }
 
     }

@@ -36,8 +36,8 @@ namespace PharIo\Phive {
         public function testGetFile(File $file) {
             $phar = new Phar('foo', new Version('1.0.0'), $file);
             $this->assertEquals($file, $phar->getFile());
-        }        
-        
+        }
+
         /**
          * @return array
          */

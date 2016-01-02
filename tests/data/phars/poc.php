@@ -5,7 +5,7 @@ $factory = new \PharIo\Phive\Factory();
 $sigService = $factory->getSignatureService();
 $keyService = $factory->getKeyService();
 
-$phar =  file_get_contents(__DIR__ . '/phploc-2.0.6.phar');
+$phar = file_get_contents(__DIR__ . '/phploc-2.0.6.phar');
 $sig = file_get_contents(__DIR__ . '/phploc-2.0.6.phar.asc');
 
 try {

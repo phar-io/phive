@@ -10,8 +10,7 @@ namespace PharIo\Phive {
          * @return bool
          * @throws InvalidHashException
          */
-        public function verify(Hash $expectedHash, File $file)
-        {
+        public function verify(Hash $expectedHash, File $file) {
             $hashClass = get_class($expectedHash);
             switch ($hashClass) {
                 case Sha1Hash::class:

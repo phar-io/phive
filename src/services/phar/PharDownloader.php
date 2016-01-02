@@ -51,6 +51,15 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param Url $pharUrl
+         *
+         * @return Url
+         */
+        private function getSignatureUrl(Url $pharUrl) {
+            return new Url($pharUrl . '.asc');
+        }
+
+        /**
          * @param File $phar
          * @param File $signature
          *
@@ -58,15 +67,6 @@ namespace PharIo\Phive {
          */
         private function verifySignature(File $phar, File $signature) {
             return $this->signatureService->verify($phar->getContent(), $signature->getContent());
-        }
-
-        /**
-         * @param Url $pharUrl
-         *
-         * @return Url
-         */
-        private function getSignatureUrl(Url $pharUrl) {
-            return new Url($pharUrl . '.asc');
         }
 
     }

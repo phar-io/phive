@@ -1,14 +1,12 @@
 <?php
 namespace PharIo\Phive {
 
-    class UnsupportedHashStub implements Hash
-    {
+    class UnsupportedHashStub implements Hash {
 
         /**
          * @return string
          */
-        public function asString()
-        {
+        public function asString() {
             return 'foo';
         }
 
@@ -17,8 +15,7 @@ namespace PharIo\Phive {
          *
          * @return bool
          */
-        public function equals(Hash $otherHash)
-        {
+        public function equals(Hash $otherHash) {
             return false;
         }
 

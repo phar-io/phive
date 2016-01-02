@@ -9,7 +9,7 @@ namespace PharIo\Phive {
         /**
          * @dataProvider knownKeyProvider
          *
-         * @param int $summary
+         * @param int  $summary
          * @param bool $expected
          */
         public function testIsKnownKey($summary, $expected) {
@@ -29,7 +29,7 @@ namespace PharIo\Phive {
         /**
          * @dataProvider wasVerificationSuccessfulProvider
          *
-         * @param int $summary
+         * @param int  $summary
          * @param bool $expected
          */
         public function testWasVerificationSuccessful($summary, $expected) {

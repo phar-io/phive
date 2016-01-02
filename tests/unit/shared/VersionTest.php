@@ -19,7 +19,7 @@ namespace PharIo\Phive {
         public function testParsesVersionNumbers(
             $versionString, $expectedMajor, $expectedMinor, $expectedPatch, $expectedLabel = '', $expectedMetadata = ''
         ) {
-            $version  = new Version($versionString);
+            $version = new Version($versionString);
             $this->assertSame($expectedMajor, $version->getMajor()->getValue());
             $this->assertSame($expectedMinor, $version->getMinor()->getValue());
             $this->assertSame($expectedPatch, $version->getPatch()->getValue());
@@ -61,7 +61,6 @@ namespace PharIo\Phive {
                 [new Version('2.5.8'), new Version('3.1.2'), false],
             ];
         }
-
 
     }
 

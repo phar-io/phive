@@ -2,6 +2,7 @@
 namespace PharIo\Phive {
 
     abstract class AbstractVersionConstraint implements VersionConstraint {
+
         /**
          * @var string
          */

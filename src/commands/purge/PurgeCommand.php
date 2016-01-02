@@ -21,9 +21,9 @@ namespace PharIo\Phive {
         private $output;
 
         /**
-         * @param PurgeCommandConfig  $config
-         * @param PharRepository       $repository
-         * @param Output               $output
+         * @param PurgeCommandConfig $config
+         * @param PharRepository     $repository
+         * @param Output             $output
          */
         public function __construct(
             PurgeCommandConfig $config, PharRepository $repository, Output $output

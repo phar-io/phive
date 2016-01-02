@@ -24,6 +24,22 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param $name
+         *
+         * @throws \InvalidArgumentException
+         */
+        private function ensureString($name) {
+            if (!is_string($name)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'String expected but "%s" received',
+                        is_object($name) ? get_class($name) : gettype($name)
+                    )
+                );
+            }
+        }
+
+        /**
          * @return string
          */
         public function __toString() {
@@ -39,22 +55,6 @@ namespace PharIo\Phive {
          */
         public function exists() {
             return file_exists($this->name);
-        }
-
-        /**
-         * @param $name
-         *
-         * @throws \InvalidArgumentException
-         */
-        private function ensureString($name) {
-            if (!is_string($name)) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'String expected but "%s" received',
-                        is_object($name) ? get_class($name) : gettype($name)
-                    )
-                );
-            }
         }
 
     }

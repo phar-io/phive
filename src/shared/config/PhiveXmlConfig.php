@@ -1,14 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
-class PhiveXmlConfig extends WritableXmlRepository
-{
+class PhiveXmlConfig extends WritableXmlRepository {
 
     /**
      * @param RequestedPhar $requestedPhar
      */
-    public function addPhar(RequestedPhar $requestedPhar)
-    {
+    public function addPhar(RequestedPhar $requestedPhar) {
         $name = (string)$requestedPhar->getAlias();
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
@@ -22,10 +20,34 @@ class PhiveXmlConfig extends WritableXmlRepository
     }
 
     /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    private function hasPharNode($name) {
+        return $this->getPharNode($name) !== null;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \DOMNode
+     */
+    private function getPharNode($name) {
+        return $this->getXPath()->query(sprintf('//phive:phar[@name="%s"]', mb_strtolower($name)))->item(0);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNamespace() {
+        return 'https://phar.io/phive';
+    }
+
+    /**
      * @return RequestedPhar[]
      */
-    public function getPhars()
-    {
+    public function getPhars() {
         $phars = [];
         /** @var \DOMElement $pharNode */
         foreach ($this->getXPath()->query('//phive:phar') as $pharNode) {
@@ -36,26 +58,6 @@ class PhiveXmlConfig extends WritableXmlRepository
             }
         }
         return $phars;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return \DOMNode
-     */
-    private function getPharNode($name)
-    {
-        return $this->getXPath()->query(sprintf('//phive:phar[@name="%s"]', mb_strtolower($name)))->item(0);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    private function hasPharNode($name)
-    {
-        return $this->getPharNode($name) !== null;
     }
 
     /**
@@ -78,14 +80,6 @@ class PhiveXmlConfig extends WritableXmlRepository
      */
     protected function getRootElementName() {
         return 'phive';
-    }
-
-    /**
-     * @return string
-     */
-    protected function getNamespace()
-    {
-        return 'https://phar.io/phive';
     }
 
 }

@@ -1,8 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    class PharRepository extends WritableXmlRepository
-    {
+    class PharRepository extends WritableXmlRepository {
 
         /**
          * @var Directory
@@ -13,8 +12,7 @@ namespace PharIo\Phive {
          * @param Filename  $filename
          * @param Directory $pharDirectory
          */
-        public function __construct(Filename $filename, Directory $pharDirectory)
-        {
+        public function __construct(Filename $filename, Directory $pharDirectory) {
             $this->pharDirectory = $pharDirectory;
             parent::__construct($filename);
         }
@@ -22,8 +20,7 @@ namespace PharIo\Phive {
         /**
          * @param Phar $phar
          */
-        public function addPhar(Phar $phar)
-        {
+        public function addPhar(Phar $phar) {
             $this->savePhar($phar->getFile());
             $dom = $this->getDom();
             $pharNode = $dom->createElement('phar');
@@ -39,11 +36,30 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @todo this belongs elsewhere
+         *
+         * @param File $pharFile
+         */
+        private function savePhar(File $pharFile) {
+            $destination = $this->getPharDestination($pharFile);
+            file_put_contents($destination, $pharFile->getContent());
+            chmod($destination, 0755);
+        }
+
+        /**
+         * @param File $file
+         *
+         * @return string
+         */
+        private function getPharDestination(File $file) {
+            return $this->pharDirectory . DIRECTORY_SEPARATOR . $file->getFilename();
+        }
+
+        /**
          * @param Phar   $phar
          * @param string $destination
          */
-        public function addUsage(Phar $phar, $destination)
-        {
+        public function addUsage(Phar $phar, $destination) {
             $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
             if ($this->getXPath()->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->length
                 !== 0
@@ -60,11 +76,22 @@ namespace PharIo\Phive {
          * @param string  $name
          * @param Version $version
          *
+         * @return \DOMElement
+         */
+        private function getFirstMatchingPharNode($name, Version $version) {
+            $query = sprintf('//phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
+
+            return $this->getXPath()->query($query)->item(0);
+        }
+
+        /**
+         * @param string  $name
+         * @param Version $version
+         *
          * @return Phar
          * @throws PharRepositoryException
          */
-        public function getPhar($name, Version $version)
-        {
+        public function getPhar($name, Version $version) {
             if (!$this->hasPhar($name, $version)) {
                 throw new PharRepositoryException(sprintf('Phar %s %s not found in database.', $name,
                     $version->getVersionString()));
@@ -79,9 +106,30 @@ namespace PharIo\Phive {
          *
          * @return bool
          */
-        public function hasPhar($name, Version $version)
-        {
+        public function hasPhar($name, Version $version) {
             return $this->getFirstMatchingPharNode($name, $version) !== null;
+        }
+
+        /**
+         * @param \DOMElement $pharNode
+         *
+         * @return Phar
+         */
+        private function nodetoPhar(\DOMElement $pharNode) {
+            return new Phar(
+                $pharNode->getAttribute('name'),
+                new Version($pharNode->getAttribute('version')),
+                $this->loadPharFile($pharNode->getAttribute('location'))
+            );
+        }
+
+        /**
+         * @param string $filename
+         *
+         * @return File
+         */
+        private function loadPharFile($filename) {
+            return new File(new Filename(pathinfo($filename, PATHINFO_BASENAME)), file_get_contents($filename));
         }
 
         /**
@@ -90,8 +138,7 @@ namespace PharIo\Phive {
          * @return Phar
          * @throws PharRepositoryException
          */
-        public function getByUsage($filename)
-        {
+        public function getByUsage($filename) {
             $pharNode = $this->getXPath()->query(sprintf('//phar[usage/@destination="%s"]', $filename))->item(0);
             if (null === $pharNode) {
                 throw new PharRepositoryException(sprintf('No phar with usage %s found', $filename));
@@ -105,8 +152,7 @@ namespace PharIo\Phive {
          * @param Phar   $phar
          * @param string $destination
          */
-        public function removeUsage(Phar $phar, $destination)
-        {
+        public function removeUsage(Phar $phar, $destination) {
             $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
             $usageNode = $this->getXPath()->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->item(0);
             $pharNode->removeChild($usageNode);
@@ -116,8 +162,7 @@ namespace PharIo\Phive {
         /**
          * @param Phar $phar
          */
-        public function removePhar(Phar $phar)
-        {
+        public function removePhar(Phar $phar) {
             $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
             unlink($this->getPharDestination($phar->getFile()));
             $pharNode->parentNode->removeChild($pharNode);
@@ -129,8 +174,7 @@ namespace PharIo\Phive {
          *
          * @return bool
          */
-        public function hasUsages(Phar $phar)
-        {
+        public function hasUsages(Phar $phar) {
             $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
 
             return $this->getXPath()->query('//usage', $pharNode)->length > 0;
@@ -139,8 +183,7 @@ namespace PharIo\Phive {
         /**
          * @return Phar[]
          */
-        public function getUnusedPhars()
-        {
+        public function getUnusedPhars() {
             $unusedPhars = [];
             foreach ($this->getXPath()->query('//phar[count(usage) = 0]') as $pharNode) {
                 $unusedPhars[] = $this->nodetoPhar($pharNode);
@@ -148,81 +191,18 @@ namespace PharIo\Phive {
             return $unusedPhars;
         }
 
-
-        /**
-         * @todo this belongs elsewhere
-         *
-         * @param File $pharFile
-         */
-        private function savePhar(File $pharFile)
-        {
-            $destination = $this->getPharDestination($pharFile);
-            file_put_contents($destination, $pharFile->getContent());
-            chmod($destination, 0755);
-        }
-
-        /**
-         * @param string  $name
-         * @param Version $version
-         *
-         * @return \DOMElement
-         */
-        private function getFirstMatchingPharNode($name, Version $version)
-        {
-            $query = sprintf('//phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
-
-            return $this->getXPath()->query($query)->item(0);
-        }
-
-        /**
-         * @param \DOMElement $pharNode
-         *
-         * @return Phar
-         */
-        private function nodetoPhar(\DOMElement $pharNode)
-        {
-            return new Phar(
-                $pharNode->getAttribute('name'),
-                new Version($pharNode->getAttribute('version')),
-                $this->loadPharFile($pharNode->getAttribute('location'))
-            );
-        }
-
-        /**
-         * @param string $filename
-         *
-         * @return File
-         */
-        private function loadPharFile($filename)
-        {
-            return new File(new Filename(pathinfo($filename, PATHINFO_BASENAME)), file_get_contents($filename));
-        }
-
-
         /**
          * @return string
          */
-        protected function getRootElementName()
-        {
+        protected function getRootElementName() {
             return 'phars';
         }
 
         /**
          * @return string
          */
-        protected function getNamespace()
-        {
+        protected function getNamespace() {
             return '';
-        }
-
-        /**
-         * @param File $file
-         *
-         * @return string
-         */
-        private function getPharDestination(File $file)
-        {
-            return $this->pharDirectory . DIRECTORY_SEPARATOR . $file->getFilename();
         }
 
     }

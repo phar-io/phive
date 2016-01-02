@@ -18,7 +18,7 @@ namespace PharIo\Phive {
             $expectedDefaults = [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_CONNECTTIMEOUT => 5,
-                CURLOPT_TIMEOUT => 60
+                CURLOPT_TIMEOUT        => 60
             ];
             $actual = $config->asCurlOptArray();
             $this->assertArraySubset($expectedDefaults, $actual);
@@ -38,7 +38,7 @@ namespace PharIo\Phive {
             $config = new CurlConfig('foo');
             $config->setProxy('proxy.example.com', 'someuser', 'somepassword');
             $expected = [
-                CURLOPT_PROXY => 'proxy.example.com',
+                CURLOPT_PROXY        => 'proxy.example.com',
                 CURLOPT_PROXYUSERPWD => 'someuser:somepassword'
             ];
             $actual = $config->asCurlOptArray();

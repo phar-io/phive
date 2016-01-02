@@ -6,6 +6,22 @@ namespace PharIo\Phive {
      */
     class ExactVersionConstraintTest extends \PHPUnit_Framework_TestCase {
 
+        public static function compliantVersionProvider() {
+            return [
+                ['1.0.2', new Version('1.0.2')],
+                ['4.8.9', new Version('4.8.9')],
+                ['4.8', new Version('4.8')],
+            ];
+        }
+
+        public static function nonCompliantVersionProvider() {
+            return [
+                ['1.0.2', new Version('1.0.3')],
+                ['4.8.9', new Version('4.7.9')],
+                ['4.8', new Version('4.8.5')],
+            ];
+        }
+
         /**
          * @dataProvider compliantVersionProvider
          *
@@ -17,14 +33,6 @@ namespace PharIo\Phive {
             $this->assertTrue($constraint->complies($version));
         }
 
-        public static function compliantVersionProvider() {
-            return [
-                ['1.0.2', new Version('1.0.2')],
-                ['4.8.9', new Version('4.8.9')],
-                ['4.8', new Version('4.8')],
-            ];
-        }
-
         /**
          * @dataProvider nonCompliantVersionProvider
          *
@@ -34,14 +42,6 @@ namespace PharIo\Phive {
         public function testReturnsFalseForNonCompliantVersion($constraintValue, Version $version) {
             $constraint = new ExactVersionConstraint($constraintValue);
             $this->assertFalse($constraint->complies($version));
-        }
-
-        public static function nonCompliantVersionProvider() {
-            return [
-                ['1.0.2', new Version('1.0.3')],
-                ['4.8.9', new Version('4.7.9')],
-                ['4.8', new Version('4.8.5')],
-            ];
         }
 
     }

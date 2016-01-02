@@ -53,16 +53,6 @@ namespace PharIo\Phive {
         /**
          * @param string $hostname
          *
-         * @return bool
-         *
-         */
-        public function hasLocalSslCertificate($hostname) {
-            return array_key_exists($hostname, $this->localSslCertificates);
-        }
-
-        /**
-         * @param string $hostname
-         *
          * @return string
          * @throws CurlException
          */
@@ -74,6 +64,16 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param string $hostname
+         *
+         * @return bool
+         *
+         */
+        public function hasLocalSslCertificate($hostname) {
+            return array_key_exists($hostname, $this->localSslCertificates);
+        }
+
+        /**
          * @return array
          */
         public function asCurlOptArray() {
@@ -81,10 +81,10 @@ namespace PharIo\Phive {
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_CONNECTTIMEOUT => 5,
-                CURLOPT_TIMEOUT => 60,
-                CURLOPT_USERAGENT => $this->userAgent,
-                CURLOPT_PROXY => $this->proxyUrl,
-                CURLOPT_PROXYUSERPWD => $this->proxyCredentials
+                CURLOPT_TIMEOUT        => 60,
+                CURLOPT_USERAGENT      => $this->userAgent,
+                CURLOPT_PROXY          => $this->proxyUrl,
+                CURLOPT_PROXYUSERPWD   => $this->proxyCredentials
             ];
         }
 

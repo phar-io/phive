@@ -6,17 +6,6 @@ namespace PharIo\Phive {
      */
     class VersionConstraintParserTest extends \PHPUnit_Framework_TestCase {
 
-        /**
-         * @dataProvider versionStringProvider
-         *
-         * @param string                     $versionString
-         * @param VersionConstraint $expectedConstraint
-         */
-        public function testReturnsExpectedConstraint($versionString, VersionConstraint $expectedConstraint) {
-            $parser = new VersionConstraintParser();
-            $this->assertEquals($expectedConstraint, $parser->parse($versionString));
-        }
-
         public static function versionStringProvider() {
             return [
                 ['1.0.2', new ExactVersionConstraint('1.0.2')],
@@ -34,6 +23,17 @@ namespace PharIo\Phive {
                 ['5.*', new SpecificMajorVersionConstraint('5.*', 5)],
                 ['*', new AnyVersionConstraint()]
             ];
+        }
+
+        /**
+         * @dataProvider versionStringProvider
+         *
+         * @param string            $versionString
+         * @param VersionConstraint $expectedConstraint
+         */
+        public function testReturnsExpectedConstraint($versionString, VersionConstraint $expectedConstraint) {
+            $parser = new VersionConstraintParser();
+            $this->assertEquals($expectedConstraint, $parser->parse($versionString));
         }
 
     }

@@ -1,8 +1,8 @@
 <?php
 namespace PharIo\Phive {
 
-    use TheSeer\CLI;
     use Prophecy\Prophecy\MethodProphecy;
+    use TheSeer\CLI;
 
     /**
      * @covers PharIo\Phive\CommandLocator
@@ -12,10 +12,10 @@ namespace PharIo\Phive {
         /**
          * @dataProvider commandProvider
          */
-        public function testValidCommandsAreReturned($command, $factoryMethod, CLI\CommandOptions $arguments = NULL) {
+        public function testValidCommandsAreReturned($command, $factoryMethod, CLI\CommandOptions $arguments = null) {
             $factory = $this->prophesize(Factory::class);
 
-            if ($arguments != NULL) {
+            if ($arguments != null) {
                 $method = new MethodProphecy($factory, $factoryMethod, [$arguments]);
             } else {
                 $method = new MethodProphecy($factory, $factoryMethod, []);
@@ -35,12 +35,12 @@ namespace PharIo\Phive {
 
         public function commandProvider() {
             return [
-                'help'    => ['help', 'getHelpCommand'],
-                'version' => ['version', 'getVersionCommand'],
-                'skel'    => ['skel', 'getSkelCommand', new CLI\CommandOptions([])],
-                'install' => ['install', 'getInstallCommand', new CLI\CommandOptions([])],
-                'purge' => ['purge', 'getPurgeCommand', new CLI\CommandOptions([])],
-                'remove' => ['remove', 'getRemoveCommand', new CLI\CommandOptions([])],
+                'help'                   => ['help', 'getHelpCommand'],
+                'version'                => ['version', 'getVersionCommand'],
+                'skel'                   => ['skel', 'getSkelCommand', new CLI\CommandOptions([])],
+                'install'                => ['install', 'getInstallCommand', new CLI\CommandOptions([])],
+                'purge'                  => ['purge', 'getPurgeCommand', new CLI\CommandOptions([])],
+                'remove'                 => ['remove', 'getRemoveCommand', new CLI\CommandOptions([])],
                 'update-repository-list' => ['update-repository-list', 'getUpdateRepositoryListCommand'],
             ];
         }

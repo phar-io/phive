@@ -15,7 +15,7 @@ namespace PharIo\Phive {
 
         /**
          * @param Filename $filename
-         * @param string $content
+         * @param string   $content
          */
         public function __construct(Filename $filename, $content) {
             $this->filename = $filename;
@@ -27,13 +27,6 @@ namespace PharIo\Phive {
          */
         public function getFilename() {
             return $this->filename;
-        }
-
-        /**
-         * @return string
-         */
-        public function getContent() {
-            return $this->content;
         }
 
         /**
@@ -55,6 +48,13 @@ namespace PharIo\Phive {
          */
         public function saveAs(Filename $filename) {
             file_put_contents($filename->asString(), $this->getContent());
+        }
+
+        /**
+         * @return string
+         */
+        public function getContent() {
+            return $this->content;
         }
     }
 

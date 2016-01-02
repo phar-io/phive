@@ -28,6 +28,5 @@ namespace PharIo\Phive {
 
     }
 
-
 }
 

@@ -9,12 +9,12 @@ namespace PharIo\Phive {
             $this->version = $version;
         }
 
-        public function getVersion() {
-            return $this->version;
-        }
-
         public function getVersionString() {
             return 'Phive ' . $this->getVersion() . " - Copyright (C) 2015 by Arne Blankerts and Sebastian Heuer";
+        }
+
+        public function getVersion() {
+            return $this->version;
         }
 
     }

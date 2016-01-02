@@ -17,6 +17,15 @@ namespace PharIo\Phive {
         }
 
         /**
+         * @param array $keyinfo
+         */
+        private function validate(array $keyinfo) {
+            if (!array_key_exists('summary', $keyinfo) || !array_key_exists('fingerprint', $keyinfo)) {
+                throw new \InvalidArgumentException('Keyinfo does not contain required data');
+            }
+        }
+
+        /**
          * @return string
          */
         public function getFingerprint() {
@@ -35,15 +44,6 @@ namespace PharIo\Phive {
          */
         public function wasVerificationSuccessful() {
             return ($this->verificationData['summary'] == 0);
-        }
-
-        /**
-         * @param array $keyinfo
-         */
-        private function validate(array $keyinfo) {
-            if (!array_key_exists('summary', $keyinfo) || !array_key_exists('fingerprint', $keyinfo)) {
-                throw new \InvalidArgumentException('Keyinfo does not contain required data');
-            }
         }
 
     }

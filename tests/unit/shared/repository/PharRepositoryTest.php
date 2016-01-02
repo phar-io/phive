@@ -6,18 +6,7 @@ namespace PharIo\Phive {
      */
     class PharRepositoryTest extends \PHPUnit_Framework_TestCase {
 
-        protected function setUp()
-        {
-            TestStreamWrapper::register('test', __DIR__ . '/fixtures/');
-        }
-
-        protected function tearDown()
-        {
-            TestStreamWrapper::unregister();
-        }
-
-        public function testReturnsExpectedUnusedPhars()
-        {
+        public function testReturnsExpectedUnusedPhars() {
             $repo = new PharRepository(new Filename(__DIR__ . '/fixtures/phars.xml'), new Directory(__DIR__ . '/fixtures'));
 
             $expected = [
@@ -27,6 +16,14 @@ namespace PharIo\Phive {
             $actual = $repo->getUnusedPhars();
 
             $this->assertEquals($expected, $actual);
+        }
+
+        protected function setUp() {
+            TestStreamWrapper::register('test', __DIR__ . '/fixtures/');
+        }
+
+        protected function tearDown() {
+            TestStreamWrapper::unregister();
         }
 
     }

@@ -27,6 +27,32 @@ namespace PharIo\Phive {
         }
 
         /**
+         *
+         */
+        private function init() {
+            $this->dom = new \DOMDocument('1.0', 'UTF-8');
+            $this->dom->preserveWhiteSpace = false;
+            $this->dom->formatOutput = true;
+            if ($this->filename->exists()) {
+                $this->dom->load($this->filename->asString());
+            } else {
+                $this->dom->appendChild($this->dom->createElementNS($this->getNamespace(), $this->getRootElementName()));
+            }
+            $this->xPath = new \DOMXPath($this->dom);
+            $this->xPath->registerNamespace('phive', $this->getNamespace());
+        }
+
+        /**
+         * @return string
+         */
+        abstract protected function getNamespace();
+
+        /**
+         * @return string
+         */
+        abstract protected function getRootElementName();
+
+        /**
          * @return \DOMDocument
          */
         protected function getDom() {
@@ -45,32 +71,6 @@ namespace PharIo\Phive {
          */
         protected function getXPath() {
             return $this->xPath;
-        }
-
-        /**
-         * @return string
-         */
-        abstract protected function getRootElementName();
-
-        /**
-         * @return string
-         */
-        abstract protected function getNamespace();
-
-        /**
-         *
-         */
-        private function init() {
-            $this->dom = new \DOMDocument('1.0', 'UTF-8');
-            $this->dom->preserveWhiteSpace = false;
-            $this->dom->formatOutput = true;
-            if ($this->filename->exists()) {
-                $this->dom->load($this->filename->asString());
-            } else {
-                $this->dom->appendChild($this->dom->createElementNS($this->getNamespace(), $this->getRootElementName()));
-            }
-            $this->xPath = new \DOMXPath($this->dom);
-            $this->xPath->registerNamespace('phive', $this->getNamespace());
         }
 
     }

@@ -11,7 +11,7 @@ namespace PharIo\Phive {
         /**
          * @dataProvider intProvider
          *
-         * @param int$count
+         * @param int $count
          */
         public function testGetCount($count) {
             $result = new KeyImportResult($count, null);
