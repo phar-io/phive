@@ -1,46 +1,46 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    use PharIo\Phive \ReleaseException;
+use PharIo\Phive \ReleaseException;
 
-    class ReleaseCollection {
+class ReleaseCollection {
 
-        /**
-         * @var Release[]
-         */
-        private $releases = [];
+    /**
+     * @var Release[]
+     */
+    private $releases = [];
 
-        /**
-         * @param Release $release
-         */
-        public function add(Release $release) {
-            $this->releases[] = $release;
-        }
+    /**
+     * @param Release $release
+     */
+    public function add(Release $release) {
+        $this->releases[] = $release;
+    }
 
-        /**
-         * @param VersionConstraint $versionConstraint
-         *
-         * @return Release
-         * @throws ReleaseException
-         */
-        public function getLatest(VersionConstraint $versionConstraint) {
-            /** @var null|Release $latest */
-            $latest = null;
-            foreach ($this->releases as $release) {
-                if (!$versionConstraint->complies($release->getVersion())) {
-                    continue;
-                }
-                if ($latest === null || $release->getVersion()->isGreaterThan($latest->getVersion())) {
-                    $latest = $release;
-                }
+    /**
+     * @param VersionConstraint $versionConstraint
+     *
+     * @return Release
+     * @throws ReleaseException
+     */
+    public function getLatest(VersionConstraint $versionConstraint) {
+        /** @var null|Release $latest */
+        $latest = null;
+        foreach ($this->releases as $release) {
+            if (!$versionConstraint->complies($release->getVersion())) {
+                continue;
             }
-            if ($latest === null) {
-                throw new ReleaseException('No matching release found');
+            if ($latest === null || $release->getVersion()->isGreaterThan($latest->getVersion())) {
+                $latest = $release;
             }
-            return $latest;
         }
-
+        if ($latest === null) {
+            throw new ReleaseException('No matching release found');
+        }
+        return $latest;
     }
 
 }
+
+
 

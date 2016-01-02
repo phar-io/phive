@@ -1,11 +1,11 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    use TheSeer\CLI;
+use TheSeer\CLI;
 
-    interface Output extends CLI\Output {
-
-    }
+interface Output extends CLI\Output {
 
 }
+
+
 

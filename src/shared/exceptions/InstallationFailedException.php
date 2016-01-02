@@ -1,9 +1,9 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    class InstallationFailedException extends \Exception {
-
-    }
+class InstallationFailedException extends \Exception {
 
 }
+
+
 

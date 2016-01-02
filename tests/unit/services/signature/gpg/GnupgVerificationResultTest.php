@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     /**
      * @covers PharIo\Phive\GnupgVerificationResult
@@ -70,5 +70,5 @@ namespace PharIo\Phive {
         }
     }
 
-}
+
 

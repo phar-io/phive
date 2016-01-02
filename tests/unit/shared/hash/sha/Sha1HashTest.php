@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     /**
      * @covers PharIo\Phive\Sha1Hash
@@ -43,5 +43,5 @@ namespace PharIo\Phive {
         }
     }
 
-}
+
 

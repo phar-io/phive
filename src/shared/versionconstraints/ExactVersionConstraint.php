@@ -1,17 +1,17 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    class ExactVersionConstraint extends AbstractVersionConstraint {
+class ExactVersionConstraint extends AbstractVersionConstraint {
 
-        /**
-         * @param Version $version
-         *
-         * @return bool
-         */
-        public function complies(Version $version) {
-            return $this->asString() == $version->getVersionString();
-        }
+    /**
+     * @param Version $version
+     *
+     * @return bool
+     */
+    public function complies(Version $version) {
+        return $this->asString() == $version->getVersionString();
     }
-
 }
+
+
 

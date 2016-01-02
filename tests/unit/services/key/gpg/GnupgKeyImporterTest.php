@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     class GnupgKeyImporterTest extends \PHPUnit_Framework_TestCase {
 
@@ -12,6 +12,6 @@ namespace PharIo\Phive {
 
     }
 
-}
+
 
 

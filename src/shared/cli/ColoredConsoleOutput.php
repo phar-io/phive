@@ -1,10 +1,10 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    use TheSeer\CLI;
+use TheSeer\CLI;
 
-    class ColoredConsoleOutput extends CLI\ColoredConsoleOutput implements Output {
-
-    }
+class ColoredConsoleOutput extends CLI\ColoredConsoleOutput implements Output {
 
 }
+
+

@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     /**
      * @covers PharIo\Phive\PurgeCommand
@@ -81,5 +81,5 @@ namespace PharIo\Phive {
         }
     }
 
-}
+
 

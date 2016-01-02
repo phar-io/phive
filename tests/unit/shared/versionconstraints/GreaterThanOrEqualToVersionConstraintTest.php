@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     /**
      * @covers PharIo\Phive\GreaterThanOrEqualToVersionConstraint
@@ -36,5 +36,5 @@ namespace PharIo\Phive {
 
     }
 
-}
+
 

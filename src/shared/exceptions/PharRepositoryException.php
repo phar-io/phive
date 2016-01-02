@@ -1,9 +1,9 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    class PharRepositoryException extends \Exception {
-
-    }
+class PharRepositoryException extends \Exception {
 
 }
+
+
 

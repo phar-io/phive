@@ -1,11 +1,11 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    interface KeyDownloader {
+interface KeyDownloader {
 
-        public function download($keyId);
-
-    }
+    public function download($keyId);
 
 }
+
+
 

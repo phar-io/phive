@@ -1,9 +1,9 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    class ResolveException extends \Exception {
-
-    }
+class ResolveException extends \Exception {
 
 }
+
+
 

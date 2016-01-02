@@ -1,10 +1,10 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    use TheSeer\CLI;
+use TheSeer\CLI;
 
-    class ConsoleOutput extends CLI\ConsoleOutput implements Output {
-
-    }
+class ConsoleOutput extends CLI\ConsoleOutput implements Output {
 
 }
+
+

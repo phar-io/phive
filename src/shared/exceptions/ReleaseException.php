@@ -1,9 +1,9 @@
 <?php
-namespace PharIo\Phive  {
+namespace PharIo\Phive ;
 
-    class ReleaseException extends \Exception {
-
-    }
+class ReleaseException extends \Exception {
 
 }
+
+
 

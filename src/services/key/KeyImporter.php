@@ -1,16 +1,16 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    interface KeyImporter {
+interface KeyImporter {
 
-        /**
-         * @param string $key
-         *
-         * @return KeyImportResult
-         */
-        public function importKey($key);
-
-    }
+    /**
+     * @param string $key
+     *
+     * @return KeyImportResult
+     */
+    public function importKey($key);
 
 }
+
+
 

@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     trait ScalarTestDataProvider {
 
@@ -40,4 +40,3 @@ namespace PharIo\Phive {
 
     }
 
-}

@@ -1,9 +1,9 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    class CurlException extends \Exception {
-
-    }
+class CurlException extends \Exception {
 
 }
+
+
 

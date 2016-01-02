@@ -1,27 +1,27 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    class UpdateRepositoryListCommand {
+class UpdateRepositoryListCommand {
 
-        /**
-         * @var PharIoRepositoryListFileLoader
-         */
-        private $loader;
+    /**
+     * @var PharIoRepositoryListFileLoader
+     */
+    private $loader;
 
-        /**
-         * @param PharIoRepositoryListFileLoader $loader
-         */
-        public function __construct(PharIoRepositoryListFileLoader $loader) {
-            $this->loader = $loader;
-        }
+    /**
+     * @param PharIoRepositoryListFileLoader $loader
+     */
+    public function __construct(PharIoRepositoryListFileLoader $loader) {
+        $this->loader = $loader;
+    }
 
-        /**
-         *
-         */
-        public function execute() {
-            $this->loader->downloadFromSource();
-        }
-
+    /**
+     *
+     */
+    public function execute() {
+        $this->loader->downloadFromSource();
     }
 
 }
+
+

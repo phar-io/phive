@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     /**
      * @covers PharIo\Phive\CurlConfig
@@ -64,4 +64,4 @@ namespace PharIo\Phive {
 
     }
 
-}
+

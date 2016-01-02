@@ -1,62 +1,62 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
+
+/**
+ * Class Filename
+ *
+ * @package shared
+ */
+class Filename {
 
     /**
-     * Class Filename
-     *
-     * @package shared
+     * @var string
      */
-    class Filename {
+    private $name;
 
-        /**
-         * @var string
-         */
-        private $name;
+    /**
+     * Filename constructor.
+     *
+     * @param string $name
+     */
+    public function __construct($name) {
+        $this->ensureString($name);
+        $this->name = $name;
+    }
 
-        /**
-         * Filename constructor.
-         *
-         * @param string $name
-         */
-        public function __construct($name) {
-            $this->ensureString($name);
-            $this->name = $name;
+    /**
+     * @param $name
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function ensureString($name) {
+        if (!is_string($name)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'String expected but "%s" received',
+                    is_object($name) ? get_class($name) : gettype($name)
+                )
+            );
         }
+    }
 
-        /**
-         * @param $name
-         *
-         * @throws \InvalidArgumentException
-         */
-        private function ensureString($name) {
-            if (!is_string($name)) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'String expected but "%s" received',
-                        is_object($name) ? get_class($name) : gettype($name)
-                    )
-                );
-            }
-        }
+    /**
+     * @return string
+     */
+    public function __toString() {
+        return $this->aSstring();
+    }
 
-        /**
-         * @return string
-         */
-        public function __toString() {
-            return $this->aSstring();
-        }
+    public function asString() {
+        return $this->name;
+    }
 
-        public function asString() {
-            return $this->name;
-        }
-
-        /**
-         * @return bool
-         */
-        public function exists() {
-            return file_exists($this->name);
-        }
-
+    /**
+     * @return bool
+     */
+    public function exists() {
+        return file_exists($this->name);
     }
 
 }
+
+

@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     use Prophecy\Prophecy\MethodProphecy;
     use TheSeer\CLI;
@@ -61,4 +61,4 @@ namespace PharIo\Phive {
 
     }
 
-}
+

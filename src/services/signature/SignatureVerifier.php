@@ -1,16 +1,16 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    interface SignatureVerifier {
+interface SignatureVerifier {
 
-        /**
-         * @param string $message
-         * @param string $signature
-         */
-        public function verify($message, $signature);
-
-    }
+    /**
+     * @param string $message
+     * @param string $signature
+     */
+    public function verify($message, $signature);
 
 }
+
+
 
 

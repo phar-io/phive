@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     use Prophecy\Argument;
     use Prophecy\Prophecy\ObjectProphecy;
@@ -71,4 +71,3 @@ namespace PharIo\Phive {
         }
     }
 
-}

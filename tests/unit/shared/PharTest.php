@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     /**
      * @covers PharIo\Phive\Phar
@@ -57,6 +57,6 @@ namespace PharIo\Phive {
 
     }
 
-}
+
 
 

@@ -1,16 +1,16 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    abstract class WritableXmlRepository extends XmlRepository {
+abstract class WritableXmlRepository extends XmlRepository {
 
-        /**
-         *
-         */
-        protected function save() {
-            $this->getDom()->save($this->getFilename());
-        }
-
+    /**
+     *
+     */
+    protected function save() {
+        $this->getDom()->save($this->getFilename());
     }
 
 }
+
+
 

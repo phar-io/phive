@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
     use TheSeer\CLI\CommandOptions;
 
@@ -33,5 +33,5 @@ namespace PharIo\Phive {
 
     }
 
-}
+
 

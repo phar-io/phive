@@ -1,16 +1,16 @@
 <?php
-namespace PharIo\Phive {
+namespace PharIo\Phive;
 
-    interface Hash {
+interface Hash {
 
-        public function asString();
+    public function asString();
 
-        /**
-         * @param Hash $otherHash
-         *
-         * @return bool
-         */
-        public function equals(Hash $otherHash);
-    }
+    /**
+     * @param Hash $otherHash
+     *
+     * @return bool
+     */
+    public function equals(Hash $otherHash);
 }
+
 
