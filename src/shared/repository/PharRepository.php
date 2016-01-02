@@ -26,8 +26,10 @@ class PharRepository extends WritableXmlRepository {
         $pharNode = $dom->createElement('phar');
         $pharNode->setAttribute('name', $phar->getName());
         $pharNode->setAttribute('version', $phar->getVersion()->getVersionString());
-        $pharNode->setAttribute('location',
-            $this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFile()->getFilename());
+        $pharNode->setAttribute(
+            'location',
+            $this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFile()->getFilename()
+        );
         $hashNode = $dom->createElement('hash', $phar->getFile()->getSha1Hash()->asString());
         $hashNode->setAttribute('type', 'sha1');
         $pharNode->appendChild($hashNode);
@@ -93,8 +95,11 @@ class PharRepository extends WritableXmlRepository {
      */
     public function getPhar($name, Version $version) {
         if (!$this->hasPhar($name, $version)) {
-            throw new PharRepositoryException(sprintf('Phar %s %s not found in database.', $name,
-                $version->getVersionString()));
+            throw new PharRepositoryException(sprintf(
+                'Phar %s %s not found in database.',
+                $name,
+                $version->getVersionString()
+            ));
         }
 
         return $this->nodetoPhar($this->getFirstMatchingPharNode($name, $version));
@@ -206,5 +211,3 @@ class PharRepository extends WritableXmlRepository {
     }
 
 }
-
-

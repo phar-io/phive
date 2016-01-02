@@ -11,6 +11,3 @@ abstract class WritableXmlRepository extends XmlRepository {
     }
 
 }
-
-
-

@@ -12,5 +12,3 @@ interface Hash {
      */
     public function equals(Hash $otherHash);
 }
-
-

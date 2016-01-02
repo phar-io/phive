@@ -12,6 +12,3 @@ class ExactVersionConstraint extends AbstractVersionConstraint {
         return $this->asString() == $version->getVersionString();
     }
 }
-
-
-

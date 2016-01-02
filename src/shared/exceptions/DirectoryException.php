@@ -7,5 +7,3 @@ class DirectoryException extends \Exception {
     const CreateFailed = 2;
     const ChmodFailed = 3;
 }
-
-

@@ -6,6 +6,3 @@ use TheSeer\CLI;
 interface Output extends CLI\Output {
 
 }
-
-
-

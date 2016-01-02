@@ -46,6 +46,3 @@ class SkelCommandConfig {
         return __DIR__ . '/../../../conf/phive.skeleton.xml';
     }
 }
-
-
-

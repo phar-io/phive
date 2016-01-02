@@ -48,5 +48,3 @@ class InstallCommand implements Command {
     }
 
 }
-
-

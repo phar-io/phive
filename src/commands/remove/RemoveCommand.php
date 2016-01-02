@@ -52,12 +52,12 @@ class RemoveCommand implements CLI\Command {
         if (!$this->repository->hasUsages($phar)) {
             $this->output->writeInfo(
                 sprintf(
-                    'Phar %s %s has no more known usages. You can run \'phive purge\' to remove unused Phars.', $phar->getName(), $phar->getVersion()->getVersionString()
+                    'Phar %s %s has no more known usages. You can run \'phive purge\' to remove unused Phars.',
+                    $phar->getName(),
+                    $phar->getVersion()->getVersionString()
                 )
             );
         }
     }
 
 }
-
-

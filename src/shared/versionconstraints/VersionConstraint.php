@@ -16,6 +16,3 @@ interface VersionConstraint {
     public function asString();
 
 }
-
-
-

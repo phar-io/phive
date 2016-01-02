@@ -112,5 +112,3 @@ class Directory {
         return $this->path;
     }
 }
-
-

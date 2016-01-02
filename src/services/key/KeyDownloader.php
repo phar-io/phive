@@ -6,6 +6,3 @@ interface KeyDownloader {
     public function download($keyId);
 
 }
-
-
-

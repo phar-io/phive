@@ -29,6 +29,3 @@ class GnupgKeyImporter implements KeyImporter {
     }
 
 }
-
-
-

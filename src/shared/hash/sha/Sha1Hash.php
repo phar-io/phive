@@ -44,6 +44,3 @@ class Sha1Hash implements Hash {
     }
 
 }
-
-
-

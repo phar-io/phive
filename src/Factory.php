@@ -92,7 +92,8 @@ class Factory {
      */
     private function getConfig() {
         return new Config(
-            $this->getEnvironment(), $this->getPhiveXmlConfig()
+            $this->getEnvironment(),
+            $this->getPhiveXmlConfig()
         );
     }
 
@@ -117,7 +118,8 @@ class Factory {
         if (null === $this->curl) {
             $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
             $config->addLocalSslCertificate(
-                'hkps.pool.sks-keyservers.net', __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+                'hkps.pool.sks-keyservers.net',
+                __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
             );
             $environment = $this->getEnvironment();
             if ($environment->hasProxy()) {
@@ -232,7 +234,9 @@ class Factory {
      */
     private function getPgpKeyDownloader() {
         return new GnupgKeyDownloader(
-            $this->getCurl(), include __DIR__ . '/../conf/pgp-keyservers.php', $this->getColoredConsoleOutput()
+            $this->getCurl(),
+            include __DIR__ . '/../conf/pgp-keyservers.php',
+            $this->getColoredConsoleOutput()
         );
     }
 
@@ -262,7 +266,8 @@ class Factory {
      */
     private function getPharInstaller() {
         return new PharInstaller(
-            $this->getConfig()->getHomeDirectory()->child('phars'), $this->getColoredConsoleOutput()
+            $this->getConfig()->getHomeDirectory()->child('phars'),
+            $this->getColoredConsoleOutput()
         );
     }
 
@@ -312,5 +317,3 @@ class Factory {
     }
 
 }
-
-

@@ -69,6 +69,3 @@ class SkelCommand implements Command {
     }
 
 }
-
-
-

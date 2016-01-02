@@ -76,8 +76,7 @@ class GnuPG {
                 '--no-tty',
                 '--lock-multiple',
                 '--no-permission-warning',
-            ], $params)
-        );
+            ], $params));
     }
 
     /**
@@ -209,5 +208,3 @@ class GnuPG {
     }
 
 }
-
-

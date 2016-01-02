@@ -20,6 +20,3 @@ class AnyVersionConstraint implements VersionConstraint {
     }
 
 }
-
-
-

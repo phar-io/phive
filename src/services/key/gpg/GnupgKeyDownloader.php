@@ -58,6 +58,3 @@ class GnupgKeyDownloader implements KeyDownloader {
     }
 
 }
-
-
-

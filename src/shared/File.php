@@ -57,5 +57,3 @@ class File {
         return $this->content;
     }
 }
-
-

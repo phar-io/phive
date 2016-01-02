@@ -23,6 +23,3 @@ abstract class AbstractVersionConstraint implements VersionConstraint {
     }
 
 }
-
-
-

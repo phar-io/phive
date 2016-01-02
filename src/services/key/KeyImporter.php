@@ -11,6 +11,3 @@ interface KeyImporter {
     public function importKey($key);
 
 }
-
-
-

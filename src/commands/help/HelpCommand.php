@@ -40,5 +40,3 @@ class HelpCommand implements Command {
     }
 
 }
-
-

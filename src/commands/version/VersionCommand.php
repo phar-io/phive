@@ -29,5 +29,3 @@ class VersionCommand implements Command {
     }
 
 }
-
-

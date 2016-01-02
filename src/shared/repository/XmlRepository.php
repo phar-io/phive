@@ -74,6 +74,3 @@ abstract class XmlRepository {
     }
 
 }
-
-
-

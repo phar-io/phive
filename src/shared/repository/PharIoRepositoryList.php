@@ -33,6 +33,3 @@ class PharIoRepositoryList extends XmlRepository {
     }
 
 }
-
-
-

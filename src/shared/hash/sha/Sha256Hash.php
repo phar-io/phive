@@ -44,6 +44,3 @@ class Sha256Hash implements Hash {
     }
 
 }
-
-
-

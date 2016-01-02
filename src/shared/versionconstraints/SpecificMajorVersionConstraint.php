@@ -27,6 +27,3 @@ class SpecificMajorVersionConstraint extends AbstractVersionConstraint {
     }
 
 }
-
-
-

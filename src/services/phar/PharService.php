@@ -163,6 +163,3 @@ class PharService {
         return $matches[1];
     }
 }
-
-
-

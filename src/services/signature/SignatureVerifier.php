@@ -10,7 +10,3 @@ interface SignatureVerifier {
     public function verify($message, $signature);
 
 }
-
-
-
-
