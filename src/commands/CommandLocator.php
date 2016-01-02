@@ -26,14 +26,15 @@ class CommandLocator implements CLI\CommandLocator {
     public function getCommandForRequest(CLI\Request $request) {
         $command = $request->getCommand();
         switch ($command) {
-            case 'help' : {
+            case 'help': {
                 return $this->factory->getHelpCommand();
             }
-            case 'version' : {
+
+            case 'version': {
                 return $this->factory->getVersionCommand();
             }
 
-            case 'install' : {
+            case 'install': {
                 return $this->factory->getInstallCommand($request->getCommandOptions());
             }
 
@@ -41,15 +42,15 @@ class CommandLocator implements CLI\CommandLocator {
                 return $this->factory->getPurgeCommand($request->getCommandOptions());
             }
 
-            case 'remove' : {
+            case 'remove': {
                 return $this->factory->getRemoveCommand($request->getCommandOptions());
             }
 
-            case 'skel' : {
+            case 'skel': {
                 return $this->factory->getSkelCommand($request->getCommandOptions());
             }
 
-            case 'update-repository-list' : {
+            case 'update-repository-list': {
                 return $this->factory->getUpdateRepositoryListCommand();
             }
 
