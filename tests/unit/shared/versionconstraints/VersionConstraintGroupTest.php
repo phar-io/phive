@@ -9,8 +9,8 @@ namespace PharIo\Phive {
 
         public function testReturnsFalseIfOneConstraintReturnsFalse()
         {
-            $firstConstraint = $this->getMock(VersionConstraintInterface::class);
-            $secondConstraint = $this->getMock(VersionConstraintInterface::class);
+            $firstConstraint = $this->getMock(VersionConstraint::class);
+            $secondConstraint = $this->getMock(VersionConstraint::class);
 
             $firstConstraint->expects($this->once())
                 ->method('complies')
@@ -20,14 +20,14 @@ namespace PharIo\Phive {
                 ->method('complies')
                 ->will($this->returnValue(false));
 
-            $group = new VersionConstraintGroup([$firstConstraint, $secondConstraint]);
+            $group = new VersionConstraintGroup('foo', [$firstConstraint, $secondConstraint]);
             $this->assertFalse($group->complies(new Version('1.0.0')));
         }
 
         public function testReturnsTrueIfAllConstraintsReturnsTrue()
         {
-            $firstConstraint = $this->getMock(VersionConstraintInterface::class);
-            $secondConstraint = $this->getMock(VersionConstraintInterface::class);
+            $firstConstraint = $this->getMock(VersionConstraint::class);
+            $secondConstraint = $this->getMock(VersionConstraint::class);
 
             $firstConstraint->expects($this->once())
                 ->method('complies')
@@ -37,7 +37,7 @@ namespace PharIo\Phive {
                 ->method('complies')
                 ->will($this->returnValue(true));
 
-            $group = new VersionConstraintGroup([$firstConstraint, $secondConstraint]);
+            $group = new VersionConstraintGroup('foo', [$firstConstraint, $secondConstraint]);
             $this->assertTrue($group->complies(new Version('1.0.0')));
         }
 

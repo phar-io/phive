@@ -15,9 +15,10 @@ namespace PharIo\Phive {
                 case '~':
                     $version = new Version(substr($value, 1));
                     return new VersionConstraintGroup(
+                        $value,
                         [
-                            new GreaterThanOrEqualToVersionConstraint($version),
-                            new SpecificMajorVersionConstraint($version->getMajor()->getValue())
+                            new GreaterThanOrEqualToVersionConstraint($value, $version),
+                            new SpecificMajorVersionConstraint($value, $version->getMajor()->getValue())
                         ]
                     );
             }
@@ -27,10 +28,10 @@ namespace PharIo\Phive {
                 return new AnyVersionConstraint();
             }
             if ($version->getMinor()->isAny()) {
-                return new SpecificMajorVersionConstraint($version->getMajor()->getValue());
+                return new SpecificMajorVersionConstraint($value, $version->getMajor()->getValue());
             }
             if ($version->getPatch()->isAny()) {
-                return new SpecificMajorAndMinorVersionConstraint($version->getMajor()->getValue(), $version->getMinor()->getValue());
+                return new SpecificMajorAndMinorVersionConstraint($value, $version->getMajor()->getValue(), $version->getMinor()->getValue());
             }
 
             return new ExactVersionConstraint($value);

@@ -1,18 +1,20 @@
 <?php
 namespace PharIo\Phive {
 
-    class VersionConstraintGroup implements VersionConstraintInterface
+    class VersionConstraintGroup extends AbstractVersionConstraint
     {
         /**
-         * @var VersionConstraintInterface[]
+         * @var VersionConstraint[]
          */
         private $constraints = [];
 
         /**
-         * @param VersionConstraintInterface[] $constraints
+         * @param string $originalValue
+         * @param VersionConstraint[] $constraints
          */
-        public function __construct(array $constraints)
+        public function __construct($originalValue, array $constraints)
         {
+            parent::__construct($originalValue);
             $this->constraints = $constraints;
         }
 

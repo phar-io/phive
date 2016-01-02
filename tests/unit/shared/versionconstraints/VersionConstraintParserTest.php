@@ -10,9 +10,9 @@ namespace PharIo\Phive {
          * @dataProvider versionStringProvider
          *
          * @param string                     $versionString
-         * @param VersionConstraintInterface $expectedConstraint
+         * @param VersionConstraint $expectedConstraint
          */
-        public function testReturnsExpectedConstraint($versionString, VersionConstraintInterface $expectedConstraint) {
+        public function testReturnsExpectedConstraint($versionString, VersionConstraint $expectedConstraint) {
             $parser = new VersionConstraintParser();
             $this->assertEquals($expectedConstraint, $parser->parse($versionString));
         }
@@ -23,14 +23,15 @@ namespace PharIo\Phive {
                 [
                     '~4.6',
                     new VersionConstraintGroup(
+                        '~4.6',
                         [
-                            new GreaterThanOrEqualToVersionConstraint(new Version('4.6')),
-                            new SpecificMajorVersionConstraint(4)
+                            new GreaterThanOrEqualToVersionConstraint('~4.6', new Version('4.6')),
+                            new SpecificMajorVersionConstraint('~4.6', 4)
                         ]
                     )
                 ],
-                ['5.1.*', new SpecificMajorAndMinorVersionConstraint(5, 1)],
-                ['5.*', new SpecificMajorVersionConstraint(5)],
+                ['5.1.*', new SpecificMajorAndMinorVersionConstraint('5.1.*', 5, 1)],
+                ['5.*', new SpecificMajorVersionConstraint('5.*', 5)],
                 ['*', new AnyVersionConstraint()]
             ];
         }

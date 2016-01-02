@@ -1,16 +1,25 @@
 <?php
-namespace PharIo\Phive;
+namespace PharIo\Phive {
 
-class AnyVersionConstraint implements VersionConstraintInterface
-{
-    /**
-     * @param Version $version
-     *
-     * @return bool
-     */
-    public function complies(Version $version)
-    {
-        return true;
+    class AnyVersionConstraint implements VersionConstraint {
+
+        /**
+         * @param Version $version
+         *
+         * @return bool
+         */
+        public function complies(Version $version) {
+            return true;
+        }
+
+        /**
+         * @return string
+         */
+        public function asString() {
+            return '*';
+        }
+
     }
 
 }
+

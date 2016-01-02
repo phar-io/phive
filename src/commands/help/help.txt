@@ -12,7 +12,8 @@ install <alias|url> [destination]
     alias/url       Installation via known alias or explicit download form given url
     destination     (optional) Target directory for the phar
 
-    --copy          Copy phar file instead of using symlink
+    -copy          Copy phar file instead of using symlink
+    -save          Add an entry in phive.xml for each installed phar
 
 purge
     Delete unused phars

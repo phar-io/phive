@@ -1,21 +1,8 @@
 <?php
 namespace PharIo\Phive {
 
-    class ExactVersionConstraint implements VersionConstraintInterface
+    class ExactVersionConstraint extends AbstractVersionConstraint
     {
-        /**
-         * @var string
-         */
-        private $value = '';
-
-        /**
-         * @param string $value
-         */
-        public function __construct($value)
-        {
-            $this->value = $value;
-        }
-
         /**
          * @param Version $version
          *
@@ -23,7 +10,7 @@ namespace PharIo\Phive {
          */
         public function complies(Version $version)
         {
-            return $this->value == $version->getVersionString();
+            return $this->asString() == $version->getVersionString();
         }
     }
 

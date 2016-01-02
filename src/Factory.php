@@ -68,8 +68,9 @@ namespace PharIo\Phive {
          */
         public function getInstallCommand(CLI\CommandOptions $options) {
             return new InstallCommand(
-                new InstallCommandConfig($options, $this->getConfig()),
-                $this->getPharService()
+                new InstallCommandConfig($options, $this->getConfig(), $this->getPhiveXmlConfig()),
+                $this->getPharService(),
+                $this->getPhiveXmlConfig()
             );
         }
 
@@ -261,8 +262,16 @@ namespace PharIo\Phive {
          */
         private function getConfig() {
             return new Config(
-                $this->getEnvironment(), new PhiveXmlConfig(new Filename(__DIR__ . '/../phive.xml'))
+                $this->getEnvironment(), $this->getPhiveXmlConfig()
             );
+        }
+
+        /**
+         * @return PhiveXmlConfig
+         */
+        private function getPhiveXmlConfig()
+        {
+            return new PhiveXmlConfig(new Filename(__DIR__ . '/../phive.xml'));
         }
 
         /**

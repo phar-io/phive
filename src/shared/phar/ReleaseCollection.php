@@ -18,12 +18,12 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @param VersionConstraintInterface $versionConstraint
+         * @param VersionConstraint $versionConstraint
          *
          * @return Release
          * @throws ReleaseException
          */
-        public function getLatest(VersionConstraintInterface $versionConstraint) {
+        public function getLatest(VersionConstraint $versionConstraint) {
             /** @var null|Release $latest */
             $latest = null;
             foreach ($this->releases as $release) {

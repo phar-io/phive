@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    class SpecificMajorVersionConstraint implements VersionConstraintInterface
+    class SpecificMajorVersionConstraint extends AbstractVersionConstraint
     {
         /**
          * @var int
@@ -9,9 +9,11 @@ namespace PharIo\Phive {
         private $major = 0;
 
         /**
+         * @param string $originalValue
          * @param int $major
          */
-        public function __construct($major) {
+        public function __construct($originalValue, $major) {
+            parent::__construct($originalValue);
             $this->major = $major;
         }
 

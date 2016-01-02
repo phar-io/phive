@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    interface VersionConstraintInterface
+    interface VersionConstraint
     {
 
         /**
@@ -10,6 +10,11 @@ namespace PharIo\Phive {
          * @return bool
          */
         public function complies(Version $version);
+
+        /**
+         * @return string
+         */
+        public function asString();
 
     }
 

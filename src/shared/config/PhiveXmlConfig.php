@@ -1,8 +1,26 @@
 <?php
 namespace PharIo\Phive;
 
-class PhiveXmlConfig extends XmlRepository
+class PhiveXmlConfig extends WritableXmlRepository
 {
+
+    /**
+     * @param RequestedPhar $requestedPhar
+     */
+    public function addPhar(RequestedPhar $requestedPhar)
+    {
+        $name = (string)$requestedPhar->getAlias();
+        if ($this->hasPharNode($name)) {
+            $pharNode = $this->getPharNode($name);
+        } else {
+            $pharNode = $this->getDom()->createElementNS($this->getNamespace(), 'phar');
+            $pharNode->setAttribute('name', $name);
+            $this->getDom()->firstChild->appendChild($pharNode);
+        }
+        $pharNode->setAttribute('version', $requestedPhar->getAlias()->getVersionConstraint()->asString());
+        $this->save();
+    }
+
     /**
      * @return RequestedPhar[]
      */
@@ -18,6 +36,26 @@ class PhiveXmlConfig extends XmlRepository
             }
         }
         return $phars;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \DOMNode
+     */
+    private function getPharNode($name)
+    {
+        return $this->getXPath()->query(sprintf('//phive:phar[@name="%s"]', mb_strtolower($name)))->item(0);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    private function hasPharNode($name)
+    {
+        return $this->getPharNode($name) !== null;
     }
 
     /**

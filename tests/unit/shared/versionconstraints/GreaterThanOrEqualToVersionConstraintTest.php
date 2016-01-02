@@ -14,7 +14,7 @@ namespace PharIo\Phive {
          * @param bool    $expectedResult
          */
         public function testReturnsTrueForCompliantVersions(Version $constraintVersion, Version $version, $expectedResult) {
-            $constraint = new GreaterThanOrEqualToVersionConstraint($constraintVersion);
+            $constraint = new GreaterThanOrEqualToVersionConstraint('foo', $constraintVersion);
             $this->assertSame($expectedResult, $constraint->complies($version));
         }
 

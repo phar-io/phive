@@ -16,14 +16,19 @@ namespace PharIo\Phive {
         private $config;
 
         /**
-         * InstallCommandConfig constructor.
-         *
-         * @param CLI\CommandOptions $options
-         * @param Config            $config
+         * @var PhiveXmlConfig
          */
-        public function __construct(CLI\CommandOptions $options, Config $config) {
+        private $phiveXmlConfig;
+
+        /**
+         * @param CLI\CommandOptions $options
+         * @param Config $config
+         * @param PhiveXmlConfig $phiveXmlConfig
+         */
+        public function __construct(CLI\CommandOptions $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
             $this->cliOptions = $options;
             $this->config = $config;
+            $this->phiveXmlConfig = $phiveXmlConfig;
         }
 
         /**
@@ -34,13 +39,13 @@ namespace PharIo\Phive {
         }
 
         /**
-         * @return array
+         * @return RequestedPhar[]
          * @throws CLI\CommandOptionsException
          */
         public function getRequestedPhars()
         {
             if ($this->cliOptions->getArgumentCount() == 0) {
-                return $this->config->getPhars();
+                return $this->phiveXmlConfig->getPhars();
             }
             return $this->getPharsFromCliArguments();
         }
@@ -50,6 +55,13 @@ namespace PharIo\Phive {
          */
         public function makeCopy() {
             return $this->cliOptions->isSwitch('copy');
+        }
+
+        /**
+         * @return bool
+         */
+        public function saveToPhiveXml() {
+            return $this->cliOptions->isSwitch('save');
         }
 
         /**

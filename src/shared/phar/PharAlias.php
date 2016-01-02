@@ -9,15 +9,15 @@ namespace PharIo\Phive {
         private $name = '';
 
         /**
-         * @var ExactVersionConstraint
+         * @var VersionConstraint
          */
         private $versionConstraint;
 
         /**
          * @param string                     $name
-         * @param VersionConstraintInterface $versionConstraint
+         * @param VersionConstraint $versionConstraint
          */
-        public function __construct($name, VersionConstraintInterface $versionConstraint) {
+        public function __construct($name, VersionConstraint $versionConstraint) {
             $this->name = $name;
             $this->versionConstraint = $versionConstraint;
         }

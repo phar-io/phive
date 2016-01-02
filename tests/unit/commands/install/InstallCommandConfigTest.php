@@ -18,7 +18,7 @@ namespace PharIo\Phive {
                 ->method('getWorkingDirectory')
                 ->willReturn($directory);
 
-            $commandConfig = new InstallCommandConfig($this->getOptionsMock(), $config);
+            $commandConfig = new InstallCommandConfig($this->getOptionsMock(), $config, $this->getPhiveXmlConfigMock());
             $this->assertSame($directory, $commandConfig->getWorkingDirectory());
         }
 
@@ -34,22 +34,22 @@ namespace PharIo\Phive {
                 ->with('copy')
                 ->willReturn($switch);
 
-            $commandConfig = new InstallCommandConfig($options, $this->getConfigMock());
+            $commandConfig = new InstallCommandConfig($options, $this->getConfigMock(), $this->getPhiveXmlConfigMock());
             $this->assertSame($switch, $commandConfig->makeCopy());
         }
 
-        public function testGetRequestedPharsFromConfig() {
+        public function testGetRequestedPharsFromPhiveXmlConfig() {
             $options = $this->getOptionsMock();
             $options->expects($this->once())
                 ->method('getArgumentCount')
                 ->willReturn(0);
 
-            $config = $this->getConfigMock();
-            $config->expects($this->once())
+            $phiveXmlConfig = $this->getPhiveXmlConfigMock();
+            $phiveXmlConfig->expects($this->once())
                 ->method('getPhars')
                 ->willReturn(['foo']);
 
-            $commandConfig = new InstallCommandConfig($options, $config);
+            $commandConfig = new InstallCommandConfig($options, $this->getConfigMock(), $phiveXmlConfig);
             $this->assertEquals(['foo'], $commandConfig->getRequestedPhars());
         }
 
@@ -73,7 +73,7 @@ namespace PharIo\Phive {
                 RequestedPhar::fromAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0'))),
             ];
 
-            $commandConfig = new InstallCommandConfig($options, $this->getConfigMock());
+            $commandConfig = new InstallCommandConfig($options, $this->getConfigMock(), $this->getPhiveXmlConfigMock());
             $this->assertEquals($expected, $commandConfig->getRequestedPhars());
         }
 
@@ -98,6 +98,14 @@ namespace PharIo\Phive {
          */
         private function getDirectoryMock() {
             return $this->getMockBuilder(Directory::class)
+                ->disableOriginalConstructor()->getMock();
+        }
+
+        /**
+         * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
+         */
+        private function getPhiveXmlConfigMock() {
+            return $this->getMockBuilder(PhiveXmlConfig::class)
                 ->disableOriginalConstructor()->getMock();
         }
 

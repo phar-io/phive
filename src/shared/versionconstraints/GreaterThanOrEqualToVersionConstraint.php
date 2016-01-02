@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive {
 
-    class GreaterThanOrEqualToVersionConstraint implements VersionConstraintInterface
+    class GreaterThanOrEqualToVersionConstraint extends AbstractVersionConstraint
     {
         /**
          * @var Version
@@ -9,9 +9,11 @@ namespace PharIo\Phive {
         private $minimalVersion;
 
         /**
+         * @param string $originalValue
          * @param Version $minimalVersion
          */
-        public function __construct(Version $minimalVersion) {
+        public function __construct($originalValue, Version $minimalVersion) {
+            parent::__construct($originalValue);
             $this->minimalVersion = $minimalVersion;
         }
 

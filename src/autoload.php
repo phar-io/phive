@@ -7,6 +7,7 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'phario\\phive\\abstractversionconstraint' => '/shared/versionconstraints/AbstractVersionConstraint.php',
                 'phario\\phive\\aliasresolver' => '/services/phar/AliasResolver.php',
                 'phario\\phive\\anyversionconstraint' => '/shared/versionconstraints/AnyVersionConstraint.php',
                 'phario\\phive\\checksumservice' => '/services/checksum/ChecksumService.php',
@@ -81,8 +82,8 @@ spl_autoload_register(
                 'phario\\phive\\verificationfailedexception' => '/shared/exceptions/VerificationFailedException.php',
                 'phario\\phive\\version' => '/shared/version/Version.php',
                 'phario\\phive\\versioncommand' => '/commands/version/VersionCommand.php',
+                'phario\\phive\\versionconstraint' => '/shared/versionconstraints/VersionConstraint.php',
                 'phario\\phive\\versionconstraintgroup' => '/shared/versionconstraints/VersionConstraintGroup.php',
-                'phario\\phive\\versionconstraintinterface' => '/shared/versionconstraints/VersionConstraintInterface.php',
                 'phario\\phive\\versionconstraintparser' => '/shared/versionconstraints/VersionConstraintParser.php',
                 'phario\\phive\\versionnumber' => '/shared/version/VersionNumber.php',
                 'phario\\phive\\writablexmlrepository' => '/shared/repository/WritableXmlRepository.php',
