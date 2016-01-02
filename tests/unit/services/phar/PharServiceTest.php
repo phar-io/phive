@@ -50,7 +50,7 @@ namespace PharIo\Phive {
         public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
             $url = new Url('https://example.com/foo-1.20.1.phar');
             $release = new Release(new Version('1.20.1'), $url, null);
-            $file = new File('foo.phar', 'bar');
+            $file = new File(new Filename('foo.phar'), 'bar');
             $requestedPhar = RequestedPhar::fromUrl($url);
 
             $expectedPhar = new Phar('foo', new Version('1.20.1'), $file);
@@ -83,7 +83,7 @@ namespace PharIo\Phive {
 
         public function testInstallByUrlGetsPharFromRepositoryAndInvokesInstaller() {
             $url = new Url('https://example.com/foo-1.20.1.phar');
-            $file = new File('foo.phar', 'bar');
+            $file = new File(new Filename('foo.phar'), 'bar');
             $requestedPhar = RequestedPhar::fromUrl($url);
 
             $phar = new Phar('foo', new Version('1.20.1'), $file);

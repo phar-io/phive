@@ -195,7 +195,7 @@ namespace PharIo\Phive {
          */
         private function loadPharFile($filename)
         {
-            return new File(pathinfo($filename, PATHINFO_BASENAME), file_get_contents($filename));
+            return new File(new Filename(pathinfo($filename, PATHINFO_BASENAME)), file_get_contents($filename));
         }
 
 

@@ -33,12 +33,12 @@ namespace PharIo\Phive {
             $url = new Url('https://example.com/foo.phar');
             $release = new Release(new Version('1.0.0'), $url, null);
             $signatureUrl = new Url('https://example.com/foo.phar.asc');
-            $this->fileDownloader->download($url)->willReturn(new File('foo.phar', 'foo'));
-            $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
+            $this->fileDownloader->download($url)->willReturn(new File(new Filename('foo.phar'), 'foo'));
+            $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
 
             $this->signatureService->verify('foo', 'bar')->willReturn(true);
 
-            $expected = new File('foo.phar', 'foo');
+            $expected = new File(new Filename('foo.phar'), 'foo');
 
             $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureService->reveal(), $this->checksumService->reveal());
             $this->assertEquals($expected, $downloader->download($release));
@@ -50,9 +50,9 @@ namespace PharIo\Phive {
             $release = new Release(new Version('1.0.0'), $url, $expectedHash);
             $signatureUrl = new Url('https://example.com/foo.phar.asc');
 
-            $pharFile = new File('foo.phar', 'foo');
+            $pharFile = new File(new Filename('foo.phar'), 'foo');
             $this->fileDownloader->download($url)->willReturn($pharFile);
-            $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
+            $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
 
             $this->signatureService->verify('foo', 'bar')->willReturn(true);
 
@@ -71,9 +71,9 @@ namespace PharIo\Phive {
             $release = new Release(new Version('1.0.0'), $url, $expectedHash);
             $signatureUrl = new Url('https://example.com/foo.phar.asc');
 
-            $pharFile = new File('foo.phar', 'foo');
+            $pharFile = new File(new Filename('foo.phar'), 'foo');
             $this->fileDownloader->download($url)->willReturn($pharFile);
-            $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
+            $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
 
             $this->signatureService->verify('foo', 'bar')->willReturn(false);
 
@@ -90,9 +90,9 @@ namespace PharIo\Phive {
             $release = new Release(new Version('1.0.0'), $url, $expectedHash);
             $signatureUrl = new Url('https://example.com/foo.phar.asc');
 
-            $pharFile = new File('foo.phar', 'foo');
+            $pharFile = new File(new Filename('foo.phar'), 'foo');
             $this->fileDownloader->download($url)->willReturn($pharFile);
-            $this->fileDownloader->download($signatureUrl)->willReturn(new File('foo.phar.asc', 'bar'));
+            $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
 
             $this->signatureService->verify('foo', 'bar')->willReturn(true);
 

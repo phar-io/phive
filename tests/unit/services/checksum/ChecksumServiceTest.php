@@ -12,7 +12,7 @@ namespace PharIo\Phive {
          * @expectedException \PharIo\Phive\InvalidHashException
          */
         public function testThrowsExceptionIfExpectedHashClassIsNotSupported() {
-            $file = new File('foo', 'bar');
+            $file = new File(new Filename('foo'), 'bar');
             $service = new ChecksumService();
             $service->verify(new UnsupportedHashStub(), $file);
         }

@@ -18,11 +18,11 @@ namespace PharIo\Phive {
 
         public function testReturnsExpectedUnusedPhars()
         {
-            $repo = new PharRepository(__DIR__ . '/fixtures/phars.xml', new Directory(__DIR__ . '/fixtures'));
+            $repo = new PharRepository(new Filename(__DIR__ . '/fixtures/phars.xml'), new Directory(__DIR__ . '/fixtures'));
 
             $expected = [
-                new Phar('phpunit', new Version('4.8.7'), new File('phpunit-4.8.7.phar.dummy', 'phpunit-4.8.7')),
-                new Phar('phpunit', new Version('4.8.6'), new File('phpunit-4.8.6.phar.dummy', 'phpunit-4.8.6')),
+                new Phar('phpunit', new Version('4.8.7'), new File(new Filename('phpunit-4.8.7.phar.dummy'), 'phpunit-4.8.7')),
+                new Phar('phpunit', new Version('4.8.6'), new File(new Filename('phpunit-4.8.6.phar.dummy'), 'phpunit-4.8.6')),
             ];
             $actual = $repo->getUnusedPhars();
 

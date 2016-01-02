@@ -14,7 +14,7 @@ namespace PharIo\Phive {
          */
         public function testGeneratesExpectedSha1Hash($content, $expectedHash) {
             $expectedHash = new Sha1Hash($expectedHash);
-            $file = new File('foo.phar', $content);
+            $file = new File(new Filename('foo.phar'), $content);
             $this->assertEquals($expectedHash, $file->getSha1Hash());
         }
 
@@ -33,7 +33,7 @@ namespace PharIo\Phive {
          */
         public function testGeneratesExpectedSha256Hash($content, $expectedHash) {
             $expectedHash = new Sha256Hash($expectedHash);
-            $file = new File('foo.phar', $content);
+            $file = new File(new Filename('foo.phar'), $content);
             $this->assertEquals($expectedHash, $file->getSha256Hash());
         }
 
@@ -45,12 +45,13 @@ namespace PharIo\Phive {
         }
 
         public function testFilename() {
-            $file = new File('foo.phar', 'bar');
-            $this->assertSame('foo.phar', $file->getFilename());
+            $filename = new Filename('foo.phar');
+            $file = new File($filename, 'bar');
+            $this->assertSame($filename, $file->getFilename());
         }
 
         public function testContent() {
-            $file = new File('foo.phar', 'bar');
+            $file = new File(new Filename('foo.phar'), 'bar');
             $this->assertSame('bar', $file->getContent());
         }
 

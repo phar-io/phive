@@ -14,7 +14,7 @@ namespace PharIo\Phive {
          * @param string $name
          */
         public function testGetName($name) {
-            $phar = new Phar($name, new Version('1.0.0'), new File('foo.phar', ''));
+            $phar = new Phar($name, new Version('1.0.0'), new File(new Filename('foo.phar'), ''));
             $this->assertSame($name, $phar->getName());
         }
 
@@ -24,7 +24,7 @@ namespace PharIo\Phive {
          * @param Version $version
          */
         public function testGetVersion(Version $version) {
-            $phar = new Phar('foo', $version, new File('bar.phar', ''));
+            $phar = new Phar('foo', $version, new File(new Filename('bar.phar'), ''));
             $this->assertEquals($version, $phar->getVersion());
         }
 
@@ -50,8 +50,8 @@ namespace PharIo\Phive {
 
         public function fileProvider() {
             return [
-                [new File('foo.phar', 'bar')],
-                [new File('bar.phar', 'baz')],
+                [new File(new Filename('foo.phar'), 'bar')],
+                [new File(new Filename('bar.phar'), 'baz')],
             ];
         }
 
