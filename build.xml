@@ -16,6 +16,22 @@
         <mkdir dir="${basedir}/build/phpab"/>
     </target>
 
+    <target name="lint">
+        <apply executable="php" failonerror="true">
+            <arg value="-l" />
+
+            <fileset dir="${basedir}/src">
+                <include name="**/*.php" />
+                <modified />
+            </fileset>
+
+            <fileset dir="${basedir}/tests/unit">
+                <include name="**/*.php" />
+                <modified />
+            </fileset>
+        </apply>
+    </target>
+
     <target name="phpab">
         <exec executable="phpab">
             <arg line="--cache ${basedir}/build/phpab/autoload.cache -1 -o src/autoload.php" />
