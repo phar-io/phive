@@ -38,7 +38,11 @@ class PurgeCommand implements CLI\Command {
         foreach ($this->repository->getUnusedPhars() as $unusedPhar) {
             $this->repository->removePhar($unusedPhar);
             $this->output->writeInfo(
-                sprintf('Phar %s %s has been deleted.', $unusedPhar->getName(), $unusedPhar->getVersion()->getVersionString())
+                sprintf(
+                    'Phar %s %s has been deleted.',
+                    $unusedPhar->getName(),
+                    $unusedPhar->getVersion()->getVersionString()
+                )
             );
         }
 

@@ -64,5 +64,3 @@ class CommandLocator implements CLI\CommandLocator {
     }
 
 }
-
-

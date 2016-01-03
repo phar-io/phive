@@ -27,10 +27,17 @@ class VersionConstraintParser {
             return new AnyVersionConstraint();
         }
         if ($version->getMinor()->isAny()) {
-            return new SpecificMajorVersionConstraint($value, $version->getMajor()->getValue());
+            return new SpecificMajorVersionConstraint(
+                $value,
+                $version->getMajor()->getValue()
+            );
         }
         if ($version->getPatch()->isAny()) {
-            return new SpecificMajorAndMinorVersionConstraint($value, $version->getMajor()->getValue(), $version->getMinor()->getValue());
+            return new SpecificMajorAndMinorVersionConstraint(
+                $value,
+                $version->getMajor()->getValue(),
+                $version->getMinor()->getValue()
+            );
         }
 
         return new ExactVersionConstraint($value);

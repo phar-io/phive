@@ -28,7 +28,10 @@ class Factory {
      * @return VersionCommand
      */
     public function getVersionCommand() {
-        return new VersionCommand($this->getPhiveVersion(), $this->getConsoleOutput());
+        return new VersionCommand(
+            $this->getPhiveVersion(),
+            $this->getConsoleOutput()
+        );
     }
 
     /**
@@ -49,7 +52,11 @@ class Factory {
      * @return HelpCommand
      */
     public function getHelpCommand() {
-        return new HelpCommand($this->getPhiveVersion(), $this->getEnvironment(), $this->getConsoleOutput());
+        return new HelpCommand(
+            $this->getPhiveVersion(),
+            $this->getEnvironment(),
+            $this->getConsoleOutput()
+        );
     }
 
     /**
@@ -65,7 +72,10 @@ class Factory {
      * @return SkelCommand
      */
     public function getSkelCommand(CLI\CommandOptions $options) {
-        return new SkelCommand(new SkelCommandConfig($options, getcwd()), $this->getPhiveVersion());
+        return new SkelCommand(
+            new SkelCommandConfig($options, getcwd()),
+            $this->getPhiveVersion()
+        );
     }
 
     /**
@@ -108,7 +118,10 @@ class Factory {
      * @return FileDownloader
      */
     private function getFileDownloader() {
-        return new FileDownloader($this->getCurl(), $this->getColoredConsoleOutput());
+        return new FileDownloader(
+            $this->getCurl(),
+            $this->getColoredConsoleOutput()
+        );
     }
 
     /**
@@ -179,7 +192,11 @@ class Factory {
      * @return PharDownloader
      */
     private function getPharDownloader() {
-        return new PharDownloader($this->getFileDownloader(), $this->getSignatureService(), $this->getChecksumService());
+        return new PharDownloader(
+            $this->getFileDownloader(),
+            $this->getSignatureService(),
+            $this->getChecksumService()
+        );
     }
 
     /**
@@ -297,7 +314,11 @@ class Factory {
      */
     public function getInstallCommand(CLI\CommandOptions $options) {
         return new InstallCommand(
-            new InstallCommandConfig($options, $this->getConfig(), $this->getPhiveXmlConfig()),
+            new InstallCommandConfig(
+                $options,
+                $this->getConfig(),
+                $this->getPhiveXmlConfig()
+            ),
             $this->getPharService(),
             $this->getPhiveXmlConfig()
         );
@@ -310,7 +331,10 @@ class Factory {
      */
     public function getPurgeCommand(CLI\CommandOptions $options) {
         return new PurgeCommand(
-            new PurgeCommandConfig($options, $this->getConfig()),
+            new PurgeCommandConfig(
+                $options,
+                $this->getConfig()
+            ),
             $this->getPharRepository(),
             $this->getColoredConsoleOutput()
         );

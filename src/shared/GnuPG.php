@@ -156,7 +156,7 @@ class GnuPG {
             $fingerprint = $parts[2];
 
             if (strpos($line, 'VALIDSIG') !== false) {
-                // [GNUPG:] VALIDSIG D8406D0D82947747293778314AA394086372C20A 2014-07-19 1405769272 0 4 0 1 10 00 D8406D0D82947747293778314AA394086372C20A
+                // [GNUPG:] VALIDSIG D8406D0D82947747{...}A394072C20A 2014-07-19 1405769272 0 4 0 1 10 00 D8{...}C20A
                 /*
                 VALIDSIG <args>
 

@@ -63,7 +63,9 @@ class SkelCommand implements Command {
     private function writeSkeletonFile($skeleton) {
         $destination = $this->config->getDestination();
         if (file_exists($destination) && !$this->config->allowOverwrite()) {
-            throw new IOException('A PHIVE configuration file already exists. Use the \'-force\' switch to overwrite it.');
+            throw new IOException(
+                'A PHIVE configuration file already exists. Use the "-force" switch to overwrite it.'
+            );
         }
         file_put_contents($this->config->getDestination(), $skeleton);
     }

@@ -55,7 +55,8 @@ class InstallCommandConfig {
      */
     private function getPharsFromCliArguments() {
         $phars = [];
-        for ($i = 0; $i < $this->cliOptions->getArgumentCount(); $i++) {
+        $argCount = $this->cliOptions->getArgumentCount();
+        for ($i = 0; $i < $argCount; $i++) {
             $argument = $this->cliOptions->getArgument($i);
             if (strpos($argument, 'https://') !== false) {
                 $phars[] = RequestedPhar::fromUrl(new Url($argument));
