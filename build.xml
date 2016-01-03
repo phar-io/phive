@@ -154,5 +154,5 @@
     </target>
 
 
-    <target name="build" depends="clean,parallelTasks,phpunit"/>
+    <target name="build" depends="clean,lint,parallelTasks,phpunit"/>
 </project>
