@@ -9,15 +9,15 @@ class FileDownloader {
     private $curl;
 
     /**
-     * @var Output
+     * @var Cli\Output
      */
     private $output;
 
     /**
      * @param Curl   $curl
-     * @param Output $output
+     * @param Cli\Output $output
      */
-    public function __construct(Curl $curl, Output $output) {
+    public function __construct(Curl $curl, Cli\Output $output) {
         $this->curl = $curl;
         $this->output = $output;
     }

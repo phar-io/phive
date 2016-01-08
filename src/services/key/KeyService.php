@@ -14,26 +14,26 @@ class KeyService {
     private $keyImporter;
 
     /**
-     * @var Output
+     * @var Cli\Output
      */
     private $output;
 
     /**
-     * @var Input
+     * @var Cli\Input
      */
     private $input;
 
     /**
      * @param KeyDownloader $keyDownloader
      * @param KeyImporter   $keyImporter
-     * @param Output        $output
-     * @param Input         $input
+     * @param Cli\Output        $output
+     * @param Cli\Input         $input
      */
     public function __construct(
         KeyDownloader $keyDownloader,
         KeyImporter $keyImporter,
-        Output $output,
-        Input $input
+        Cli\Output $output,
+        Cli\Input $input
     ) {
         $this->keyDownloader = $keyDownloader;
         $this->keyImporter = $keyImporter;

@@ -3,6 +3,7 @@ namespace PharIo\Phive;
 
     use Prophecy\Argument;
     use Prophecy\Prophecy\ObjectProphecy;
+    use PharIo\Phive\Cli;
 
     /**
      * @covers PharIo\Phive\KeyService
@@ -20,20 +21,20 @@ namespace PharIo\Phive;
         private $importer;
 
         /**
-         * @var Output|ObjectProphecy
+         * @var Cli\Output|ObjectProphecy
          */
         private $output;
 
         /**
-         * @var Input|ObjectProphecy
+         * @var Cli\Input|ObjectProphecy
          */
         private $input;
 
         public function setUp() {
             $this->downloader = $this->prophesize(KeyDownloader::class);
             $this->importer = $this->prophesize(KeyImporter::class);
-            $this->output = $this->prophesize(Output::class);
-            $this->input = $this->prophesize(Input::class);
+            $this->output = $this->prophesize(Cli\Output::class);
+            $this->input = $this->prophesize(Cli\Input::class);
         }
 
         public function testInvokesKeyDownloader() {

@@ -1,12 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI;
+use PharIo\Phive\Cli;
 
 class PurgeCommandConfig {
 
     /**
-     * @var CLI\CommandOptions
+     * @var CLI\Options
      */
     private $cliOptions;
 
@@ -18,10 +18,10 @@ class PurgeCommandConfig {
     /**
      * InstallCommandConfig constructor.
      *
-     * @param CLI\CommandOptions $options
-     * @param Config             $config
+     * @param CLI\Options $options
+     * @param Config      $config
      */
-    public function __construct(CLI\CommandOptions $options, Config $config) {
+    public function __construct(CLI\Options $options, Config $config) {
         $this->cliOptions = $options;
         $this->config = $config;
     }

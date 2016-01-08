@@ -70,13 +70,13 @@ class GnuPG {
 
     private function buildCLICommand(array $params) {
         return join(' ', array_merge([
-                $this->executable,
-                '--homedir ' . $this->homeDirectory,
-                '--status-fd 3',
-                '--no-tty',
-                '--lock-multiple',
-                '--no-permission-warning',
-            ], $params));
+            $this->executable,
+            '--homedir ' . $this->homeDirectory,
+            '--status-fd 3',
+            '--no-tty',
+            '--lock-multiple',
+            '--no-permission-warning',
+        ], $params));
     }
 
     /**

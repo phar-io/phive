@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI;
+use PharIo\Phive\Cli;
 
 class Factory {
 
@@ -14,7 +14,7 @@ class Factory {
      * @return CLI\Runner
      */
     public function getRunner() {
-        return new CLI\Runner($this->getCommandLocator());
+        return new CLI\Runner($this->getCommandLocator(), $this->getConsoleOutput(), $this->getPhiveVersion());
     }
 
     /**
@@ -42,10 +42,10 @@ class Factory {
     }
 
     /**
-     * @return Output
+     * @return CLI\Output
      */
     private function getConsoleOutput() {
-        return new ConsoleOutput(ConsoleOutput::VERBOSE_INFO);
+        return new CLI\ConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
     }
 
     /**
@@ -67,11 +67,11 @@ class Factory {
     }
 
     /**
-     * @param CLI\CommandOptions $options
+     * @param CLI\Options $options
      *
      * @return SkelCommand
      */
-    public function getSkelCommand(CLI\CommandOptions $options) {
+    public function getSkelCommand(CLI\Options $options) {
         return new SkelCommand(
             new SkelCommandConfig($options, getcwd()),
             $this->getPhiveVersion()
@@ -144,18 +144,18 @@ class Factory {
     }
 
     /**
-     * @return Output
+     * @return CLI\Output
      */
     private function getColoredConsoleOutput() {
-        return new ColoredConsoleOutput(ConsoleOutput::VERBOSE_INFO);
+        return new CLI\ColoredConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
     }
 
     /**
-     * @param CLI\CommandOptions $options
+     * @param CLI\Options $options
      *
      * @return RemoveCommand
      */
-    public function getRemoveCommand(CLI\CommandOptions $options) {
+    public function getRemoveCommand(CLI\Options $options) {
         return new RemoveCommand(
             new RemoveCommandConfig($options, $this->getConfig()),
             $this->getPharRepository(),
@@ -265,10 +265,10 @@ class Factory {
     }
 
     /**
-     * @return ConsoleInput
+     * @return CLI\ConsoleInput
      */
     private function getConsoleInput() {
-        return new ConsoleInput($this->getConsoleOutput());
+        return new CLI\ConsoleInput($this->getConsoleOutput());
     }
 
     /**
@@ -308,11 +308,11 @@ class Factory {
     }
 
     /**
-     * @param CLI\CommandOptions $options
+     * @param CLI\Options $options
      *
      * @return InstallCommand
      */
-    public function getInstallCommand(CLI\CommandOptions $options) {
+    public function getInstallCommand(CLI\Options $options) {
         return new InstallCommand(
             new InstallCommandConfig(
                 $options,
@@ -325,11 +325,11 @@ class Factory {
     }
 
     /**
-     * @param CLI\CommandOptions $options
+     * @param CLI\Options $options
      *
      * @return PurgeCommand
      */
-    public function getPurgeCommand(CLI\CommandOptions $options) {
+    public function getPurgeCommand(CLI\Options $options) {
         return new PurgeCommand(
             new PurgeCommandConfig(
                 $options,

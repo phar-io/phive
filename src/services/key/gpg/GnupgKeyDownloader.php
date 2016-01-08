@@ -16,16 +16,16 @@ class GnupgKeyDownloader implements KeyDownloader {
     private $keyServers = [];
 
     /**
-     * @var Output
+     * @var Cli\Output
      */
     private $output;
 
     /**
      * @param Curl   $curl
      * @param Url[]  $keyServers
-     * @param Output $output
+     * @param Cli\Output $output
      */
-    public function __construct(Curl $curl, array $keyServers, Output $output) {
+    public function __construct(Curl $curl, array $keyServers, Cli\Output $output) {
         $this->curl = $curl;
         $this->keyServers = $keyServers;
         $this->output = $output;

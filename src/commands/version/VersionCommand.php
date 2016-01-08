@@ -1,9 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI\Command;
+use PharIo\Phive\Cli;
 
-class VersionCommand implements Command {
+class VersionCommand implements Cli\Command {
 
     /**
      * @var PhiveVersion
@@ -11,15 +11,15 @@ class VersionCommand implements Command {
     private $version;
 
     /**
-     * @var Output
+     * @var Cli\Output
      */
     private $output;
 
     /**
      * @param PhiveVersion $version
-     * @param Output       $output
+     * @param Cli\Output       $output
      */
-    public function __construct(PhiveVersion $version, Output $output) {
+    public function __construct(PhiveVersion $version, Cli\Output $output) {
         $this->version = $version;
         $this->output = $output;
     }

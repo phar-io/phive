@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI;
+use PharIo\Phive\Cli;
 
 class PurgeCommand implements CLI\Command {
 
@@ -16,17 +16,17 @@ class PurgeCommand implements CLI\Command {
     private $repository;
 
     /**
-     * @var Output
+     * @var CLI\Output
      */
     private $output;
 
     /**
      * @param PurgeCommandConfig $config
      * @param PharRepository     $repository
-     * @param Output             $output
+     * @param CLI\Output         $output
      */
     public function __construct(
-        PurgeCommandConfig $config, PharRepository $repository, Output $output
+        PurgeCommandConfig $config, PharRepository $repository, CLI\Output $output
     ) {
         $this->config = $config;
         $this->repository = $repository;

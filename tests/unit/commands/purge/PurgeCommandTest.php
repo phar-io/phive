@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+    use PharIo\Phive\Cli;
+
     /**
      * @covers PharIo\Phive\PurgeCommand
      */
@@ -55,10 +57,10 @@ namespace PharIo\Phive;
         }
 
         /**
-         * @return \PHPUnit_Framework_MockObject_MockObject|Output
+         * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
          */
         private function getOutputMock() {
-            return $this->getMockBuilder(Output::class)
+            return $this->getMockBuilder(Cli\Output::class)
                 ->disableOriginalConstructor()->getMock();
         }
 

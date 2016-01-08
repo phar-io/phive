@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
     use Prophecy\Prophecy\MethodProphecy;
-    use TheSeer\CLI;
+    use PharIo\Phive\Cli;
 
     /**
      * @covers PharIo\Phive\CommandLocator
@@ -12,7 +12,7 @@ namespace PharIo\Phive;
         /**
          * @dataProvider commandProvider
          */
-        public function testValidCommandsAreReturned($command, $factoryMethod, CLI\CommandOptions $arguments = null) {
+        public function testValidCommandsAreReturned($command, $factoryMethod, Cli\Options $arguments = null) {
             $factory = $this->prophesize(Factory::class);
 
             if ($arguments != null) {
@@ -20,12 +20,12 @@ namespace PharIo\Phive;
             } else {
                 $method = new MethodProphecy($factory, $factoryMethod, []);
             }
-            $method->willReturn($this->prophesize(CLI\Command::class)->reveal());
+            $method->willReturn($this->prophesize(Cli\Command::class)->reveal());
 
             $factory->addMethodProphecy($method);
             $locator = new CommandLocator($factory->reveal());
 
-            $request = $this->prophesize(CLI\Request::class);
+            $request = $this->prophesize(Cli\Request::class);
             $request->getCommand()->willReturn($command)->shouldBeCalled();
             $request->getCommandOptions()->willReturn($arguments);
 
@@ -37,23 +37,23 @@ namespace PharIo\Phive;
             return [
                 'help'                   => ['help', 'getHelpCommand'],
                 'version'                => ['version', 'getVersionCommand'],
-                'skel'                   => ['skel', 'getSkelCommand', new CLI\CommandOptions([])],
-                'install'                => ['install', 'getInstallCommand', new CLI\CommandOptions([])],
-                'purge'                  => ['purge', 'getPurgeCommand', new CLI\CommandOptions([])],
-                'remove'                 => ['remove', 'getRemoveCommand', new CLI\CommandOptions([])],
+                'skel'                   => ['skel', 'getSkelCommand', new Cli\Options([])],
+                'install'                => ['install', 'getInstallCommand', new Cli\Options([])],
+                'purge'                  => ['purge', 'getPurgeCommand', new Cli\Options([])],
+                'remove'                 => ['remove', 'getRemoveCommand', new Cli\Options([])],
                 'update-repository-list' => ['update-repository-list', 'getUpdateRepositoryListCommand'],
             ];
         }
 
         /**
-         * @expectedException \TheSeer\CLI\CommandLocatorException
-         * @expectedExceptionCode \TheSeer\CLI\CommandLocatorException::UnknownCommand
+         * @expectedException \PharIo\Phive\Cli\CommandLocatorException
+         * @expectedExceptionCode \PharIo\Phive\Cli\CommandLocatorException::UnknownCommand
          */
         public function testRequestingAnUnknownCommandThrowsException() {
             $factory = $this->prophesize(Factory::class);
             $locator = new CommandLocator($factory->reveal());
 
-            $request = $this->prophesize(CLI\Request::class);
+            $request = $this->prophesize(Cli\Request::class);
             $request->getCommand()->willReturn('unknown');
 
             $locator->getCommandForRequest($request->reveal());

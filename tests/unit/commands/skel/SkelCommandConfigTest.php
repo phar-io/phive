@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
     use Prophecy\Prophecy\ObjectProphecy;
-    use TheSeer\CLI;
+    use PharIo\Phive\Cli;
 
     /**
      * @covers PharIo\Phive\SkelCommandConfig
@@ -10,12 +10,12 @@ namespace PharIo\Phive;
     class SkelCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
         /**
-         * @var CLI\CommandOptions|ObjectProphecy
+         * @var CLI\Options|ObjectProphecy
          */
         private $cliOptionsProphecy;
 
         protected function setUp() {
-            $this->cliOptionsProphecy = $this->prophesize(CLI\CommandOptions::class);
+            $this->cliOptionsProphecy = $this->prophesize(CLI\Options::class);
         }
 
         /**

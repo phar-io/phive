@@ -1,12 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI;
+use PharIo\Phive\Cli;
 
 class InstallCommandConfig {
 
     /**
-     * @var CLI\CommandOptions
+     * @var CLI\Options
      */
     private $cliOptions;
 
@@ -21,11 +21,11 @@ class InstallCommandConfig {
     private $phiveXmlConfig;
 
     /**
-     * @param CLI\CommandOptions $options
-     * @param Config             $config
-     * @param PhiveXmlConfig     $phiveXmlConfig
+     * @param CLI\Options    $options
+     * @param Config         $config
+     * @param PhiveXmlConfig $phiveXmlConfig
      */
-    public function __construct(CLI\CommandOptions $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
+    public function __construct(CLI\Options $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
         $this->cliOptions = $options;
         $this->config = $config;
         $this->phiveXmlConfig = $phiveXmlConfig;

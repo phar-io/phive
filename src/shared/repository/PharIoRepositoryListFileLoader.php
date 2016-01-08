@@ -19,7 +19,7 @@ class PharIoRepositoryListFileLoader {
     private $fileDownloader;
 
     /**
-     * @var Output
+     * @var Cli\Output
      */
     private $output;
 
@@ -27,13 +27,13 @@ class PharIoRepositoryListFileLoader {
      * @param Url            $sourceUrl
      * @param Filename       $filename
      * @param FileDownloader $fileDownloader
-     * @param Output         $output
+     * @param Cli\Output         $output
      */
     public function __construct(
         Url $sourceUrl,
         Filename $filename,
         FileDownloader $fileDownloader,
-        Output $output
+        Cli\Output $output
     ) {
         $this->sourceUrl = $sourceUrl;
         $this->filename = $filename;

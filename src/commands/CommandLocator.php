@@ -1,9 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI;
+use PharIo\Phive\Cli;
 
-class CommandLocator implements CLI\CommandLocator {
+class CommandLocator implements Cli\CommandLocator {
 
     /**
      * @var Factory
@@ -55,9 +55,9 @@ class CommandLocator implements CLI\CommandLocator {
             }
 
             default: {
-                throw new CLI\CommandLocatorException(
+                throw new Cli\CommandLocatorException(
                     sprintf('Command "%s" is not a valid command', $command),
-                    CLI\CommandLocatorException::UnknownCommand
+                    Cli\CommandLocatorException::UnknownCommand
                 );
             }
         }

@@ -24,7 +24,7 @@ class PharService {
     private $aliasResolver;
 
     /**
-     * @var Output
+     * @var Cli\Output
      */
     private $output;
 
@@ -38,7 +38,7 @@ class PharService {
      * @param PharInstaller           $installer
      * @param PharRepository          $repository
      * @param AliasResolver           $resolver
-     * @param Output                  $output
+     * @param Cli\Output                  $output
      * @param PharIoRepositoryFactory $pharIoRepositoryFactory
      */
     public function __construct(
@@ -46,7 +46,7 @@ class PharService {
         PharInstaller $installer,
         PharRepository $repository,
         AliasResolver $resolver,
-        Output $output,
+        Cli\Output $output,
         PharIoRepositoryFactory $pharIoRepositoryFactory
     ) {
         $this->downloader = $downloader;

@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI;
+use PharIo\Phive\Cli;
 
 class RemoveCommand implements CLI\Command {
 
@@ -21,7 +21,7 @@ class RemoveCommand implements CLI\Command {
     private $pharService;
 
     /**
-     * @var Output
+     * @varCli\Output
      */
     private $output;
 
@@ -29,10 +29,10 @@ class RemoveCommand implements CLI\Command {
      * @param RemoveCommandConfig $config
      * @param PharRepository      $repository
      * @param PharService         $pharService
-     * @param Output              $output
+     * @param Cli\Output          $output
      */
     public function __construct(
-        RemoveCommandConfig $config, PharRepository $repository, PharService $pharService, Output $output
+        RemoveCommandConfig $config, PharRepository $repository, PharService $pharService, Cli\Output $output
     ) {
         $this->config = $config;
         $this->repository = $repository;

@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-    use TheSeer\CLI\CommandOptions;
+    use \PharIo\Phive\Cli\Options;
 
     /**
      * @covers PharIo\Phive\InstallCommandConfig
@@ -39,10 +39,10 @@ namespace PharIo\Phive;
         }
 
         /**
-         * @return \PHPUnit_Framework_MockObject_MockObject|CommandOptions
+         * @return \PHPUnit_Framework_MockObject_MockObject|Options
          */
         private function getOptionsMock() {
-            return $this->getMockBuilder(CommandOptions::class)
+            return $this->getMockBuilder(Options::class)
                 ->disableOriginalConstructor()->getMock();
         }
 

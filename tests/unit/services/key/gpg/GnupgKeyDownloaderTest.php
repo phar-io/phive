@@ -3,6 +3,7 @@ namespace PharIo\Phive;
 
     use Prophecy\Argument;
     use Prophecy\Prophecy\ObjectProphecy;
+    use PharIo\Phive\Cli;
 
     class GnupgKeyDownloaderTest extends \PHPUnit_Framework_TestCase {
 
@@ -12,13 +13,13 @@ namespace PharIo\Phive;
         private $curl;
 
         /**
-         * @var Output|ObjectProphecy
+         * @var Cli\Output|ObjectProphecy
          */
         private $output;
 
         public function setUp() {
             $this->curl = $this->prophesize(Curl::class);
-            $this->output = $this->prophesize(Output::class);
+            $this->output = $this->prophesize(Cli\Output::class);
         }
 
         public function testInvokesCurlWithExpectedParams() {

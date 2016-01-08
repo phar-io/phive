@@ -2,6 +2,7 @@
 namespace PharIo\Phive;
 
     use Prophecy\Prophecy\ObjectProphecy;
+    use PharIo\Phive\Cli;
 
     /**
      * @covers PharIo\Phive\PharService
@@ -29,7 +30,7 @@ namespace PharIo\Phive;
         private $resolver;
 
         /**
-         * @var Output|ObjectProphecy
+         * @var Cli\Output|ObjectProphecy
          */
         private $output;
 
@@ -140,7 +141,7 @@ namespace PharIo\Phive;
             $this->installer = $this->prophesize(PharInstaller::class);
             $this->repository = $this->prophesize(PharRepository::class);
             $this->resolver = $this->prophesize(AliasResolver::class);
-            $this->output = $this->prophesize(Output::class);
+            $this->output = $this->prophesize(Cli\Output::class);
             $this->pharIoRepositoryFactory = $this->prophesize(PharIoRepositoryFactory::class);
         }
 

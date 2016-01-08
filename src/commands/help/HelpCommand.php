@@ -1,9 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI\Command;
+use PharIo\Phive\Cli;
 
-class HelpCommand implements Command {
+class HelpCommand implements Cli\Command {
 
     /**
      * @var PhiveVersion
@@ -16,16 +16,16 @@ class HelpCommand implements Command {
     private $environment;
 
     /**
-     * @var Output
+     * @var Cli\Output
      */
     private $output;
 
     /**
      * @param PhiveVersion $version
      * @param Environment  $environment
-     * @param Output       $output
+     * @param Cli\Output   $output
      */
-    public function __construct(PhiveVersion $version, Environment $environment, Output $output) {
+    public function __construct(PhiveVersion $version, Environment $environment, Cli\Output $output) {
         $this->version = $version;
         $this->environment = $environment;
         $this->output = $output;

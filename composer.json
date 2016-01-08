@@ -19,8 +19,7 @@
   },
   "require" : {
     "php" : ">=5.6.0",
-    "ext-dom" : "*",
-    "theseer/cli": "~0.2"
+    "ext-dom" : "*"
   },
   "suggest": {
     "ext-gnupg": "*"

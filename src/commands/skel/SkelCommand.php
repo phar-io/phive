@@ -1,9 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
-use TheSeer\CLI\Command;
+use PharIo\Phive\Cli;
 
-class SkelCommand implements Command {
+class SkelCommand implements CLI\Command {
 
     /**
      * @var SkelCommandConfig
