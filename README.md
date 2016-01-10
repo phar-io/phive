@@ -20,14 +20,14 @@ cluttered dependencies!
 
 Installation of PHIVE is easy and about the last time you have to do anything phar related manually.
 Grab your copy of PHIVE from the [releases](https://github.com/phar-io/phive/releases) section at our github page or
-follow these 5 simple steps:
+follow these simple steps:
 
     wget https://phar.io/releases/phive.phar
+    wget https://phar.io/releases/phive.phar.asc
     gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79
-    gpg --verify https://phar.io/releases/phive.phar.asc phive.phar
+    gpg --verify phive.phar.asc phive.phar
     chmod +x phive.phar
     sudo mv phive.phar /usr/bin/phive
-
 
 ##Sample Usages
 
