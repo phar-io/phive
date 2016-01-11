@@ -77,6 +77,13 @@ class InstallCommandConfig {
     /**
      * @return bool
      */
+    public function installGlobally() {
+        return $this->cliOptions->isSwitch('global');
+    }
+
+    /**
+     * @return bool
+     */
     public function makeCopy() {
         return $this->cliOptions->isSwitch('copy');
     }

@@ -21,26 +21,40 @@ class InstallCommand implements Cli\Command {
     private $phiveXmlConfig;
 
     /**
+     * @var Environment
+     */
+    private $environment;
+
+    /**
      * @param InstallCommandConfig $config
      * @param PharService          $pharService
      * @param PhiveXmlConfig       $phiveXmlConfig
+     * @param Environment          $environment
      */
     public function __construct(
         InstallCommandConfig $config,
         PharService $pharService,
-        PhiveXmlConfig $phiveXmlConfig
+        PhiveXmlConfig $phiveXmlConfig,
+        Environment $environment
     ) {
         $this->config = $config;
         $this->pharService = $pharService;
         $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->environment = $environment;
     }
 
     /**
      *
      */
     public function execute() {
+        if ($this->config->installGlobally()) {
+            $targetDirectory = dirname($this->environment->getBinaryName());
+        } else {
+            $targetDirectory = $this->config->getWorkingDirectory();
+        }
+
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
-            $this->pharService->install($requestedPhar, $this->config->getWorkingDirectory());
+            $this->pharService->install($requestedPhar, $targetDirectory);
             if ($this->config->saveToPhiveXml()) {
                 $this->phiveXmlConfig->addPhar($requestedPhar);
             }

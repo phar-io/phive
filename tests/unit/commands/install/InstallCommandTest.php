@@ -22,7 +22,7 @@ namespace PharIo\Phive;
                 ->method('getRequestedPhars')
                 ->will($this->returnValue([$requestedPhar1, $requestedPhar2]));
 
-            $command = new InstallCommand($config, $pharService, $this->getPhiveXmlConfigMock());
+            $command = new InstallCommand($config, $pharService, $this->getPhiveXmlConfigMock(), $this->getEnvironmentMock());
 
             $pharService->expects($this->at(0))
                 ->method('install')
@@ -68,6 +68,14 @@ namespace PharIo\Phive;
                 ->disableOriginalConstructor()->getMock();
         }
 
+        /**
+         * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+         */
+        private function getEnvironmentMock() {
+            return $this->getMockBuilder(Environment::class)
+                ->disableOriginalConstructor()->getMock();
+        }
+
         public function testSaveOption() {
             $config = $this->getCommandConfigMock();
             $pharService = $this->getPharServiceMock();
@@ -87,7 +95,7 @@ namespace PharIo\Phive;
                 ->method('addPhar')
                 ->with($requestedPhar);
 
-            $command = new InstallCommand($config, $pharService, $phiveXmlConfig);
+            $command = new InstallCommand($config, $pharService, $phiveXmlConfig, $this->getEnvironmentMock());
 
             $command->execute();
         }

@@ -70,6 +70,22 @@ namespace PharIo\Phive;
             $this->assertSame($switch, $commandConfig->makeCopy());
         }
 
+        /**
+         * @dataProvider boolProvider
+         *
+         * @param $switch
+         */
+        public function testInstallGlobally($switch) {
+            $options = $this->getOptionsMock();
+            $options->expects($this->once())
+                ->method('isSwitch')
+                ->with('global')
+                ->willReturn($switch);
+
+            $commandConfig = new InstallCommandConfig($options, $this->getConfigMock(), $this->getPhiveXmlConfigMock());
+            $this->assertSame($switch, $commandConfig->installGlobally());
+        }
+
         public function testGetRequestedPharsFromPhiveXmlConfig() {
             $options = $this->getOptionsMock();
             $options->expects($this->once())

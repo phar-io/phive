@@ -320,7 +320,8 @@ class Factory {
                 $this->getPhiveXmlConfig()
             ),
             $this->getPharService(),
-            $this->getPhiveXmlConfig()
+            $this->getPhiveXmlConfig(),
+            $this->getEnvironment()
         );
     }
 
