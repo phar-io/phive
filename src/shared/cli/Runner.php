@@ -21,10 +21,9 @@ class Runner {
     private $version;
 
     /**
-     * Runner constructor.
-     *
      * @param CommandLocator $locator
-     * @param ConsoleOutput  $output
+     * @param ConsoleOutput $output
+     * @param PhiveVersion $version
      */
     public function __construct(CommandLocator $locator, ConsoleOutput $output, PhiveVersion $version) {
         $this->locator = $locator;
@@ -54,7 +53,7 @@ class Runner {
     }
 
     /**
-     * @param $e
+     * @param string $error
      */
     private function showError($error) {
         $this->ouput->writeError(
