@@ -91,8 +91,8 @@ class InstallCommandConfig {
     /**
      * @return bool
      */
-    public function saveToPhiveXml() {
-        return $this->cliOptions->isSwitch('save');
+    public function doNotAddToPhiveXml() {
+        return $this->cliOptions->isSwitch('temporary');
     }
 
 }

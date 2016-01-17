@@ -37,7 +37,7 @@ Once installed, PHIVE is ready for action. Some example invocations are shown be
     phive install -copy phpdox
     phive install phpdox bin/phpdox
     phive install https://phar.phpunit.de/phpunit-4.8.6.phar
-    phive install -save phpunit@~5.0
+    phive install -temporary phpunit@~5.0
 
 ##How it works
 

@@ -76,7 +76,27 @@ namespace PharIo\Phive;
                 ->disableOriginalConstructor()->getMock();
         }
 
-        public function testSaveOption() {
+        public function testAddsEntryToPhiveXml() {
+            $config = $this->getCommandConfigMock();
+            $pharService = $this->getPharServiceMock();
+            $phiveXmlConfig = $this->getPhiveXmlConfigMock();
+
+            $requestedPhar = $this->getRequestedPharMock();
+
+            $config->expects($this->once())
+                ->method('getRequestedPhars')
+                ->will($this->returnValue([$requestedPhar]));
+
+            $phiveXmlConfig->expects($this->once())
+                ->method('addPhar')
+                ->with($requestedPhar);
+
+            $command = new InstallCommand($config, $pharService, $phiveXmlConfig, $this->getEnvironmentMock());
+
+            $command->execute();
+        }
+
+        public function testDoNotAddEntryToPhiveXml() {
             $config = $this->getCommandConfigMock();
             $pharService = $this->getPharServiceMock();
             $phiveXmlConfig = $this->getPhiveXmlConfigMock();
@@ -88,12 +108,11 @@ namespace PharIo\Phive;
                 ->will($this->returnValue([$requestedPhar]));
 
             $config->expects($this->once())
-                ->method('saveToPhiveXml')
+                ->method('doNotAddToPhiveXml')
                 ->willReturn(true);
 
-            $phiveXmlConfig->expects($this->once())
-                ->method('addPhar')
-                ->with($requestedPhar);
+            $phiveXmlConfig->expects($this->never())
+                ->method('addPhar');
 
             $command = new InstallCommand($config, $pharService, $phiveXmlConfig, $this->getEnvironmentMock());
 

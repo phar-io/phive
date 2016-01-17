@@ -125,6 +125,22 @@ namespace PharIo\Phive;
             $this->assertEquals($expected, $commandConfig->getRequestedPhars());
         }
 
+        /**
+         * @dataProvider boolProvider
+         *
+         * @param bool $switch
+         */
+        public function testDoNotAddToPhiveXml($switch)
+        {
+            $options = $this->getOptionsMock();
+            $options->expects($this->once())
+                ->method('isSwitch')
+                ->willReturn($switch);
+
+            $config = new InstallCommandConfig($options, $this->getConfigMock(), $this->getPhiveXmlConfigMock());
+            $this->assertSame($switch, $config->doNotAddToPhiveXml());
+        }
+
     }
 
 
