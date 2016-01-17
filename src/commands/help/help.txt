@@ -13,6 +13,7 @@ install <alias|url> [destination]
     destination     (optional) Target directory for the PHAR
 
     -copy          Copy PHAR file instead of using symlink
+    -global        Install PHAR globally (next to the phive binary)
     -save          Add an entry in phive.xml for each installed PHAR
 
 purge
