@@ -9,21 +9,21 @@ version:
 install <alias|url> [destination]
     Perform installation of a phar distributed application or library
 
-    alias/url       Installation via known alias or explicit download form given url
-    destination     (optional) Target directory for the phar
+    alias/url       Installation via known alias or explicit download form given URL
+    destination     (optional) Target directory for the PHAR
 
-    -copy          Copy phar file instead of using symlink
-    -save          Add an entry in phive.xml for each installed phar
+    -copy          Copy PHAR file instead of using symlink
+    -save          Add an entry in phive.xml for each installed PHAR
 
 purge
-    Delete unused phars
+    Delete unused PHARs
 
 remove <alias>
-    Remove installed phar from project
+    Remove installed PHAR from project
 
 skel
     Create a default configuration file
 
 update-repository-list
-    Update the alias list of known phar distributed applications and libraries
+    Update the alias list of known PHAR distributed applications and libraries
 
