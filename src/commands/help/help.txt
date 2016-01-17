@@ -14,7 +14,7 @@ install <alias|url> [destination]
 
     -copy          Copy PHAR file instead of using symlink
     -global        Install PHAR globally (next to the phive binary)
-    -save          Add an entry in phive.xml for each installed PHAR
+    -temporary     Do not add entries in phive.xml for installed PHARs
 
 purge
     Delete unused PHARs
