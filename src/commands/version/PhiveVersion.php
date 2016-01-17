@@ -10,7 +10,10 @@ class PhiveVersion {
     }
 
     public function getVersionString() {
-        return 'Phive ' . $this->getVersion() . " - Copyright (C) 2015-2016 by Arne Blankerts and Sebastian Heuer";
+        return sprintf(
+            'Phive %s - Copyright (C) 2015-2016 by Arne Blankerts, Sebastian Heuer and Contributors',
+            $this->getVersion()
+        );
     }
 
     public function getVersion() {
