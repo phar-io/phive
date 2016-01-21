@@ -6,7 +6,7 @@ use PharIo\Phive\Cli;
 class Factory {
 
     /**
-     * @var Curl
+     * @var HttpClient
      */
     private $curl;
 
@@ -125,7 +125,7 @@ class Factory {
     }
 
     /**
-     * @return Curl
+     * @return HttpClient
      */
     private function getCurl() {
         if (null === $this->curl) {

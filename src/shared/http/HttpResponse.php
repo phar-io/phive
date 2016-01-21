@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class CurlResponse {
+class HttpResponse {
 
     /**
      * @var string
@@ -9,38 +9,38 @@ class CurlResponse {
     private $responseBody = '';
 
     /**
-     * @var array
+     * @var int
      */
-    private $curlInfo = [];
+    private $httpCode = 0;
 
     /**
      * @var string
      */
-    private $curlError = '';
+    private $errorMessage = '';
 
     /**
      * @param string $responseBody
      * @param array  $curlInfo
      * @param string $curlError
      */
-    public function __construct($responseBody, array $curlInfo, $curlError) {
+    public function __construct($responseBody, $httpCode, $errorMessage) {
         $this->responseBody = $responseBody;
-        $this->curlInfo = $curlInfo;
-        $this->curlError = $curlError;
+        $this->httpCode = $httpCode;
+        $this->errorMessage = $errorMessage;
     }
 
     /**
      * @return int
      */
     public function getHttpCode() {
-        return $this->curlInfo['http_code'];
+        return $this->httpCode;
     }
 
     /**
      * @return string
      */
     public function getErrorMessage() {
-        return $this->curlError;
+        return $this->errorMessage;
     }
 
     /**

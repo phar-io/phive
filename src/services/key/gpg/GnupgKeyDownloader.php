@@ -6,9 +6,9 @@ class GnupgKeyDownloader implements KeyDownloader {
     const PATH = '/pks/lookup';
 
     /**
-     * @var Curl
+     * @var HttpClient
      */
-    private $curl;
+    private $httpClient;
 
     /**
      * @var Url[]
@@ -21,12 +21,12 @@ class GnupgKeyDownloader implements KeyDownloader {
     private $output;
 
     /**
-     * @param Curl   $curl
-     * @param Url[]  $keyServers
+     * @param HttpClient $httpClient
+     * @param Url[]      $keyServers
      * @param Cli\Output $output
      */
-    public function __construct(Curl $curl, array $keyServers, Cli\Output $output) {
-        $this->curl = $curl;
+    public function __construct(HttpClient $httpClient, array $keyServers, Cli\Output $output) {
+        $this->httpClient = $httpClient;
         $this->keyServers = $keyServers;
         $this->output = $output;
     }
@@ -45,7 +45,7 @@ class GnupgKeyDownloader implements KeyDownloader {
         ];
         foreach ($this->keyServers as $keyServer) {
             $this->output->writeInfo(sprintf('Trying %s', $keyServer));
-            $result = $this->curl->get(new Url($keyServer . self::PATH), $params);
+            $result = $this->httpClient->get(new Url($keyServer . self::PATH), $params);
             if ($result->getHttpCode() == 200) {
                 $this->output->writeInfo('Sucessfully downloaded key');
                 return $result->getBody();

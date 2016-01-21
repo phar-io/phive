@@ -12,7 +12,7 @@ spl_autoload_register(
                 'phario\\phive\\checksumservicetest' => '/unit/services/checksum/ChecksumServiceTest.php',
                 'phario\\phive\\commandlocatortest' => '/unit/CommandLocatorTest.php',
                 'phario\\phive\\curlconfigtest' => '/unit/shared/curl/CurlConfigTest.php',
-                'phario\\phive\\curlresponsetest' => '/unit/shared/curl/CurlResponseTest.php',
+                'phario\\phive\\curlresponsetest' => '/unit/shared/curl/HttpResponseTest.php',
                 'phario\\phive\\environmenttest' => '/unit/shared/EnvironmentTest.php',
                 'phario\\phive\\exactversionconstrainttest' => '/unit/shared/versionconstraints/ExactVersionConstraintTest.php',
                 'phario\\phive\\filetest' => '/unit/shared/FileTest.php',

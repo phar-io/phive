@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class Curl {
+class Curl implements HttpClient {
 
     /**
      * @var CurlConfig
@@ -23,7 +23,7 @@ class Curl {
      * @param Url   $url
      * @param array $params
      *
-     * @return CurlResponse
+     * @return HttpResponse
      */
     public function get(Url $url, array $params = []) {
         $ch = curl_init($url . '?' . http_build_query($params));
@@ -32,7 +32,7 @@ class Curl {
         if ($this->config->hasLocalSslCertificate($hostname)) {
             curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname));
         }
-        return new CurlResponse(curl_exec($ch), curl_getinfo($ch), curl_error($ch));
+        return new HttpResponse(curl_exec($ch), curl_getinfo($ch, CURLINFO_HTTP_CODE), curl_error($ch));
     }
 
 }

@@ -23,7 +23,7 @@ namespace PharIo\Phive;
         }
 
         public function testInvokesCurlWithExpectedParams() {
-            $response = $this->prophesize(CurlResponse::class);
+            $response = $this->prophesize(HttpResponse::class);
             $response->getHttpCode()->willReturn(200);
             $response->getBody()->willReturn('Some Key');
 
@@ -38,7 +38,7 @@ namespace PharIo\Phive;
         }
 
         public function testReturnsExpectedKey() {
-            $response = $this->prophesize(CurlResponse::class);
+            $response = $this->prophesize(HttpResponse::class);
             $response->getHttpCode()->willReturn(200);
             $response->getBody()->willReturn('Some Key String');
 
@@ -55,7 +55,7 @@ namespace PharIo\Phive;
          * @expectedException \PharIo\Phive\DownloadFailedException
          */
         public function testThrowsExceptionIfKeyWasNotFound() {
-            $response = $this->prophesize(CurlResponse::class);
+            $response = $this->prophesize(HttpResponse::class);
             $response->getHttpCode()->willReturn(404);
             $response->getErrorMessage()->willReturn('Not Found');
 

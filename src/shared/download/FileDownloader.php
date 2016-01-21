@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 class FileDownloader {
 
     /**
-     * @var Curl
+     * @var HttpClient
      */
     private $curl;
 
@@ -14,10 +14,10 @@ class FileDownloader {
     private $output;
 
     /**
-     * @param Curl   $curl
+     * @param HttpClient $curl
      * @param Cli\Output $output
      */
-    public function __construct(Curl $curl, Cli\Output $output) {
+    public function __construct(HttpClient $curl, Cli\Output $output) {
         $this->curl = $curl;
         $this->output = $output;
     }
