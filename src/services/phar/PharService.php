@@ -38,7 +38,7 @@ class PharService {
      * @param PharInstaller           $installer
      * @param PharRepository          $repository
      * @param AliasResolver           $resolver
-     * @param Cli\Output                  $output
+     * @param Cli\Output              $output
      * @param PharIoRepositoryFactory $pharIoRepositoryFactory
      */
     public function __construct(

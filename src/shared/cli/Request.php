@@ -38,10 +38,10 @@ class Request {
     }
 
     private function parse() {
-        if ($this->parsed === TRUE) {
+        if ($this->parsed === true) {
             return;
         }
-        $this->parsed = TRUE;
+        $this->parsed = true;
 
         // no parameters given?
         if (count($this->argv) == 1) {

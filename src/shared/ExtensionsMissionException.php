@@ -24,5 +24,4 @@ class ExtensionsMissionException extends \Exception {
         return $this->mising;
     }
 
-
 }

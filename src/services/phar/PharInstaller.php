@@ -14,8 +14,8 @@ class PharInstaller {
     private $output;
 
     /**
-     * @param Directory $pharDirectory
-     * @param Cli\Output    $output
+     * @param Directory  $pharDirectory
+     * @param Cli\Output $output
      */
     public function __construct(Directory $pharDirectory, Cli\Output $output) {
         $this->pharDirectory = $pharDirectory;

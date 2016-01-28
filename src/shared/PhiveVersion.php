@@ -24,7 +24,7 @@ class PhiveVersion {
             return $this->version;
         }
 
-        $path = realpath(__DIR__ .'/../../');
+        $path = realpath(__DIR__ . '/../../');
         if (!is_dir($path . '/.git')) {
             $this->version = $this->fallbackVersion;
             return $this->version;
@@ -33,7 +33,7 @@ class PhiveVersion {
         $devNull = strtolower(substr(PHP_OS, 0, 3)) == 'win' ? 'nul' : '/dev/null';
         $dir = getcwd();
         chdir($path);
-        $version = @exec('git describe --tags --always --dirty 2>'.$devNull, $output, $rc);
+        $version = @exec('git describe --tags --always --dirty 2>' . $devNull, $output, $rc);
         chdir($dir);
 
         if ($rc !== 0) {

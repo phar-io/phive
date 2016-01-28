@@ -17,7 +17,7 @@ class VersionCommand implements Cli\Command {
 
     /**
      * @param PhiveVersion $version
-     * @param Cli\Output       $output
+     * @param Cli\Output   $output
      */
     public function __construct(PhiveVersion $version, Cli\Output $output) {
         $this->version = $version;

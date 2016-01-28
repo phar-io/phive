@@ -26,8 +26,8 @@ class KeyService {
     /**
      * @param KeyDownloader $keyDownloader
      * @param KeyImporter   $keyImporter
-     * @param Cli\Output        $output
-     * @param Cli\Input         $input
+     * @param Cli\Output    $output
+     * @param Cli\Input     $input
      */
     public function __construct(
         KeyDownloader $keyDownloader,

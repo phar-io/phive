@@ -27,7 +27,7 @@ class PharIoRepositoryListFileLoader {
      * @param Url            $sourceUrl
      * @param Filename       $filename
      * @param FileDownloader $fileDownloader
-     * @param Cli\Output         $output
+     * @param Cli\Output     $output
      */
     public function __construct(
         Url $sourceUrl,
