@@ -70,7 +70,7 @@ spl_autoload_register(
                 'phario\\phive\\pharrepository' => '/shared/repository/PharRepository.php',
                 'phario\\phive\\pharrepositoryexception' => '/shared/exceptions/PharRepositoryException.php',
                 'phario\\phive\\pharservice' => '/services/phar/PharService.php',
-                'phario\\phive\\phiveversion' => '/commands/version/PhiveVersion.php',
+                'phario\\phive\\phiveversion' => '/shared/PhiveVersion.php',
                 'phario\\phive\\phivexmlconfig' => '/shared/config/PhiveXmlConfig.php',
                 'phario\\phive\\purgecommand' => '/commands/purge/PurgeCommand.php',
                 'phario\\phive\\purgecommandconfig' => '/commands/purge/PurgeCommandConfig.php',
