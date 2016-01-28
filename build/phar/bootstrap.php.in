@@ -1,5 +1,23 @@
 #!/usr/bin/env php
 <?php
+namespace PharIo\Phive;
+
+use PharIo\Phive\Cli;
+use Phar;
+
+if (!defined('HHVM_VERSION') && (version_compare(phpversion(), '5.6', 'lt'))) {
+    fwrite(
+        STDERR,
+        sprintf(
+            "Phive requires PHP 5.6 or later; " .
+            "Upgrading to the latest version of PHP is highly recommended. (Version used: %s)\n\n",
+            phpversion()
+        )
+    );
+
+    die(1);
+}
+
 spl_autoload_register(
   function ($class)
   {
@@ -21,8 +39,8 @@ spl_autoload_register(
 
 Phar::mapPhar('phive.phar');
 
-(new \PharIo\Phive\Factory())->getRunner()->run(
-    new TheSeer\CLI\Request($_SERVER['argv'])
+(new Factory(new PhiveVersion('___VERSION___')))->getRunner()->run(
+    new Cli\Request($_SERVER['argv'])
 );
 
 __HALT_COMPILER();

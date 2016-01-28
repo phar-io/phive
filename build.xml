@@ -132,7 +132,6 @@
             <arg value="--basedir" />
             <arg path="${basedir}" />
             <arg path="${source}" />
-            <arg path="${basedir}/vendor/theseer" />
             <arg path="${basedir}/conf" />
         </exec>
 
