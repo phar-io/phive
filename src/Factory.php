@@ -14,7 +14,12 @@ class Factory {
      * @return CLI\Runner
      */
     public function getRunner() {
-        return new CLI\Runner($this->getCommandLocator(), $this->getConsoleOutput(), $this->getPhiveVersion());
+        return new CLI\Runner(
+            $this->getCommandLocator(),
+            $this->getConsoleOutput(),
+            $this->getPhiveVersion(),
+            $this->getEnvironment()
+        );
     }
 
     /**

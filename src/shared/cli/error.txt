@@ -1,0 +1,10 @@
+An error occured while processing your request:
+
+          %s
+
+          Environment: %s
+          Phive Version: %s
+
+          This should not have happend and is most likely a bug.
+          Please report it at https://github.com/phar-io/phive/issues, make sure you include
+          the full output of this error message. Thank you!

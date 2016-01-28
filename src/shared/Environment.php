@@ -1,9 +1,6 @@
 <?php
 namespace PharIo\Phive;
 
-/**
- * Wrapper for CLI environment variables
- */
 class Environment {
 
     /**
@@ -64,6 +61,74 @@ class Environment {
      */
     public function getBinaryName() {
         return $this->server['_'];
+    }
+
+    /**
+     * @throws ExtensionsMissionException
+     */
+    public function ensureFitness() {
+        $this->ensureTimezoneSet();
+        $this->ensureRequiredExtensionsLoaded();
+        $this->disableXDebug();
+    }
+
+    /**
+     * @return string
+     */
+    public function getRuntimeString() {
+        return sprintf(
+            '%s %s',
+            $this->isHHVM() ? 'HHVM' : 'PHP',
+            $this->getRuntimeVersion()
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getRuntimeVersion() {
+        if ($this->isHHVM()) {
+            return HHVM_VERSION;
+        }
+        return PHP_VERSION;
+    }
+
+    private function isHHVM() {
+        return defined('HHVM_VERSION');
+    }
+
+    private function disableXDebug() {
+        if (!extension_loaded('xdebug')) {
+            return;
+        }
+        ini_set('xdebug.scream', 0);
+        ini_set('xdebug.max_nesting_level', 8192);
+        ini_set('xdebug.show_exception_trace', 0);
+        xdebug_disable();
+    }
+
+    private function ensureTimezoneSet() {
+        if (!ini_get('date.timezone')) {
+            date_default_timezone_set('UTC');
+        }
+    }
+
+    /**
+     * @throws ExtensionsMissionException
+     */
+    private function ensureRequiredExtensionsLoaded() {
+        $required = ['dom', 'mbstring', 'pcre', 'curl', 'phar'];
+        $missing = [];
+
+        foreach ($required as $test) {
+            if (!extension_loaded($test)) {
+                $missing[] = sprintf('ext/%s not installed/enabled', $test);
+            }
+        }
+
+        if (count($missing)) {
+            throw new ExtensionsMissionException($missing);
+        }
     }
 
 }
