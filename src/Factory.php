@@ -11,6 +11,20 @@ class Factory {
     private $curl;
 
     /**
+     * @var PhiveVersion
+     */
+    private $version;
+
+    /**
+     * Factory constructor.
+     *
+     * @param PhiveVersion $version
+     */
+    public function __construct(PhiveVersion $version = null) {
+        $this->version = $version;
+    }
+
+    /**
      * @return CLI\Runner
      */
     public function getRunner() {
@@ -43,7 +57,10 @@ class Factory {
      * @return PhiveVersion
      */
     private function getPhiveVersion() {
-        return new PhiveVersion();
+        if (!$this->version) {
+            $this->version = new PhiveVersion();
+        }
+        return $this->version;
     }
 
     /**
