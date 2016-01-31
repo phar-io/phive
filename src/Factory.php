@@ -350,6 +350,20 @@ class Factory {
     /**
      * @param CLI\Options $options
      *
+     * @return ListCommand
+     */
+    public function getListCommand(CLI\Options $options) {
+        return new ListCommand(
+            new PharIoRepositoryList(
+                $this->getPharIoRepositoryListFileLoader()->load()
+            ),
+            $this->getColoredConsoleOutput()
+        );
+    }
+
+    /**
+     * @param CLI\Options $options
+     *
      * @return PurgeCommand
      */
     public function getPurgeCommand(CLI\Options $options) {

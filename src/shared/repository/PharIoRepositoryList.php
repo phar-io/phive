@@ -19,6 +19,17 @@ class PharIoRepositoryList extends XmlRepository {
     }
 
     /**
+     * @return string[]
+     */
+    public function getAliases() {
+        $result = [];
+        foreach ($this->getDom()->getElementsByTagName('phar') as $node) {
+            $result[] = $node->attributes->getNamedItem('alias')->value;
+        }
+        return $result;
+    }
+
+    /**
      * @return string
      */
     protected function getRootElementName() {
