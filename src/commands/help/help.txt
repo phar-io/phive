@@ -6,6 +6,9 @@ help:
 version:
     Show release version and exit
 
+list:
+    Show a list of know PHAR aliases
+
 install <alias|url> [destination]
     Perform installation of a phar distributed application or library
 
