@@ -53,7 +53,7 @@ class KeyService {
     }
 
     /**
-     * @param string
+     * @param PublicKey
      *
      * @return mixed
      * @throws VerificationFailedException

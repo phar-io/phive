@@ -44,9 +44,7 @@ class GnupgKeyDownloader implements KeyDownloader {
             'options' => 'mr'
         ];
         $infoParams = array_merge($publicParams, [
-            'op'          => 'index',
-            'fingerprint' => 'on',
-            'exact'       => 'on'
+            'op'          => 'index'
         ]);
         foreach ($this->keyServers as $keyServer) {
             $this->output->writeInfo(sprintf('Trying %s', $keyServer));

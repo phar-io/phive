@@ -28,6 +28,10 @@ namespace PharIo\Phive;
             $response->getBody()->willReturn('Some Key');
 
             $this->curl->get(
+                'https://example.com/pks/lookup', ['search' => '0x12345678', 'op' => 'index', 'options' => 'mr']
+            )->shouldBeCalled()->willReturn($response->reveal());
+
+            $this->curl->get(
                 'https://example.com/pks/lookup', ['search' => '0x12345678', 'op' => 'get', 'options' => 'mr']
             )->shouldBeCalled()->willReturn($response->reveal());
 
@@ -40,7 +44,8 @@ namespace PharIo\Phive;
         public function testReturnsExpectedKey() {
             $response = $this->prophesize(HttpResponse::class);
             $response->getHttpCode()->willReturn(200);
-            $response->getBody()->willReturn('Some Key String');
+            $response->getBody()->willReturn('Some Key Info');
+            $response->getBody()->willReturn('Some Public Key Data');
 
             $this->curl->get(Argument::any(), Argument::any())
                 ->willReturn($response->reveal());
@@ -48,7 +53,9 @@ namespace PharIo\Phive;
             $downloader = new GnupgKeyDownloader(
                 $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
             );
-            $this->assertSame('Some Key String', $downloader->download('12345678'));
+
+            $key = new PublicKey('12345678', 'Some Key Info', 'Some Public Key Data');
+            $this->assertEquals($key, $downloader->download('12345678'));
         }
 
         /**

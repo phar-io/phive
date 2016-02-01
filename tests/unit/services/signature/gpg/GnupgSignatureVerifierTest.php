@@ -33,7 +33,7 @@ namespace PharIo\Phive;
         }
 
         public function testReturnsExpectedVerificationResult() {
-            $verificationData = ['summary' => 128, 'fingerprint' => 'foo'];
+            $verificationData = ['summary' => 1, 'fingerprint' => 'foo'];
             $this->gnupg->verify('foo', 'bar')->willReturn([$verificationData]);
             $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
             $actual = $verifier->verify('foo', 'bar');
