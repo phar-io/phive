@@ -61,27 +61,29 @@ class PharService {
      * @param RequestedPhar $requestedPhar
      * @param string        $destination
      * @param bool          $makeCopy
-     *
-     * @return File
-     * @throws DownloadFailedException
-     * @throws PharRepositoryException
-     * @throws VerificationFailedException
-     *
      */
     public function install(RequestedPhar $requestedPhar, $destination, $makeCopy = false) {
-        $release = $this->getRelease($requestedPhar);
+        try {
+            $release = $this->getRelease($requestedPhar);
 
-        $name = $this->getPharName($release->getUrl());
-        $version = $this->getPharVersion($release->getUrl());
-        if (!$this->repository->hasPhar($name, $version)) {
-            $phar = new Phar($name, $version, $this->downloader->download($release));
-            $this->repository->addPhar($phar);
-        } else {
-            $phar = $this->repository->getPhar($name, $version);
+            $name = $this->getPharName($release->getUrl());
+            $version = $this->getPharVersion($release->getUrl());
+            if (!$this->repository->hasPhar($name, $version)) {
+                $phar = new Phar($name, $version, $this->downloader->download($release));
+                $this->repository->addPhar($phar);
+            } else {
+                $phar = $this->repository->getPhar($name, $version);
+            }
+            $destination = $destination . '/' . $phar->getName();
+            $this->installer->install($phar->getFile(), $destination, $makeCopy);
+            $this->repository->addUsage($phar, $destination);
+        } catch (DownloadFailedException $e) {
+            $this->output->writeError($e->getMessage());
+        } catch (PharRepositoryException $e) {
+            $this->output->writeError($e->getMessage());
+        } catch (VerificationFailedException $e) {
+            $this->output->writeError($e->getMessage());
         }
-        $destination = $destination . '/' . $phar->getName();
-        $this->installer->install($phar->getFile(), $destination, $makeCopy);
-        $this->repository->addUsage($phar, $destination);
     }
 
     /**
@@ -116,7 +118,7 @@ class PharService {
         foreach ($this->aliasResolver->resolve($alias) as $repoUrl) {
             try {
                 $repo = $this->pharIoRepositoryFactory->getRepository($repoUrl);
-                $releases = $repo->getReleases($alias);
+                $releases = $repo->getReleasesByAlias($alias);
                 return $releases->getLatest($alias->getVersionConstraint());
             } catch (ResolveException $e) {
                 $this->output->writeWarning(

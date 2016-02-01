@@ -72,6 +72,7 @@ spl_autoload_register(
                 'phario\\phive\\pharservice' => '/services/phar/PharService.php',
                 'phario\\phive\\phiveversion' => '/shared/PhiveVersion.php',
                 'phario\\phive\\phivexmlconfig' => '/shared/config/PhiveXmlConfig.php',
+                'phario\\phive\\publickey' => '/services/key/PublicKey.php',
                 'phario\\phive\\purgecommand' => '/commands/purge/PurgeCommand.php',
                 'phario\\phive\\purgecommandconfig' => '/commands/purge/PurgeCommandConfig.php',
                 'phario\\phive\\release' => '/shared/phar/Release.php',

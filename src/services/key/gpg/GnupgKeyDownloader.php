@@ -34,27 +34,43 @@ class GnupgKeyDownloader implements KeyDownloader {
     /**
      * @param string $keyId
      *
-     * @return string
+     * @return PublicKey
      * @throws DownloadFailedException
      */
     public function download($keyId) {
-        $params = [
+        $publicParams = [
             'search'  => '0x' . $keyId,
             'op'      => 'get',
             'options' => 'mr'
         ];
+        $infoParams = array_merge($publicParams, [
+            'op'          => 'index',
+            'fingerprint' => 'on',
+            'exact'       => 'on'
+        ]);
         foreach ($this->keyServers as $keyServer) {
             $this->output->writeInfo(sprintf('Trying %s', $keyServer));
-            $result = $this->httpClient->get(new Url($keyServer . self::PATH), $params);
-            if ($result->getHttpCode() == 200) {
-                $this->output->writeInfo('Sucessfully downloaded key');
-                return $result->getBody();
+
+            $keyInfo = $this->httpClient->get(new Url($keyServer . self::PATH), $infoParams);
+            if ($keyInfo->getHttpCode() != 200) {
+                $this->output->writeWarning(
+                    sprintf('Failed with status code %s: %s', $keyInfo->getHttpCode(), $keyInfo->getErrorMessage())
+                );
+                continue;
             }
-            $this->output->writeWarning(
-                sprintf('Failed with status code %s: %s', $result->getHttpCode(), $result->getErrorMessage())
-            );
+
+            $publicKey = $this->httpClient->get(new Url($keyServer . self::PATH), $publicParams);
+            if ($publicKey->getHttpCode() != 200) {
+                $this->output->writeWarning(
+                    sprintf('Failed with status code %s: %s', $publicKey->getHttpCode(), $publicKey->getErrorMessage())
+                );
+                continue;
+            }
+
+            $this->output->writeInfo('Sucessfully downloaded key');
+            return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
         }
-        throw new DownloadFailedException(sprintf('Key %s not found on key servers', $keyId));
+        throw new DownloadFailedException(sprintf('PublicKey %s not found on key servers', $keyId));
     }
 
 }
