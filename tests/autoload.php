@@ -27,7 +27,7 @@ spl_autoload_register(
                 'phario\\phive\\keyservicetest' => '/unit/services/key/KeyServiceTest.php',
                 'phario\\phive\\pharaliastest' => '/unit/shared/PharAliasTest.php',
                 'phario\\phive\\phardownloadertest' => '/unit/services/phar/PharDownloaderTest.php',
-                'phario\\phive\\phariorepositorylisttest' => '/unit/shared/PharIoRepositoryListTest.php',
+                'phario\\phive\\pharrepositorylisttest' => '/unit/shared/PharRepositoryListTest.php',
                 'phario\\phive\\pharrepositorytest' => '/unit/shared/repository/PharRepositoryTest.php',
                 'phario\\phive\\pharservicetest' => '/unit/services/phar/PharServiceTest.php',
                 'phario\\phive\\phartest' => '/unit/shared/PharTest.php',

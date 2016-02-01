@@ -316,7 +316,7 @@ class Factory {
     private function getAliasResolver() {
 
         return new AliasResolver(
-            new PharIoRepositoryList(
+            new PharRepositoryList(
                 $this->getPharIoRepositoryListFileLoader()->load()
             )
         );

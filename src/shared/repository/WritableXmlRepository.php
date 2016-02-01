@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-abstract class WritableXmlRepository extends XmlRepository {
+abstract class WritableXmlRepository extends XmlFileWrapper {
 
     /**
      *

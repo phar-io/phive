@@ -7,14 +7,14 @@ namespace PharIo\Phive;
 class AliasResolver {
 
     /**
-     * @var PharIoRepositoryList
+     * @var PharRepositoryList
      */
     private $repositoryList;
 
     /**
-     * @param PharIoRepositoryList $repositoryList
+     * @param PharRepositoryList $repositoryList
      */
-    public function __construct(PharIoRepositoryList $repositoryList) {
+    public function __construct(PharRepositoryList $repositoryList) {
         $this->repositoryList = $repositoryList;
     }
 

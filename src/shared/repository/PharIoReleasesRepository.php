@@ -1,14 +1,14 @@
 <?php
 namespace PharIo\Phive;
 
-class PharIoRepository extends XmlRepository {
+class PharIoReleasesRepository extends XmlFileWrapper implements ReleasesRepository {
 
     /**
      * @param PharAlias $alias
      *
      * @return ReleaseCollection
      */
-    public function getReleases(PharAlias $alias) {
+    public function getReleasesByAlias(PharAlias $alias) {
         $releases = new ReleaseCollection();
         $query = sprintf('//phive:phar[@name="%s"]/phive:release', $alias);
         foreach ($this->getXPath()->query($query) as $releaseNode) {

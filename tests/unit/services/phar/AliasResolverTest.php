@@ -9,7 +9,7 @@ namespace PharIo\Phive;
     class AliasResolverTest extends \PHPUnit_Framework_TestCase {
 
         /**
-         * @var PharIoRepositoryList|ObjectProphecy
+         * @var PharRepositoryList|ObjectProphecy
          */
         private $repositoryList;
 
@@ -43,7 +43,7 @@ namespace PharIo\Phive;
         }
 
         protected function setUp() {
-            $this->repositoryList = $this->prophesize(PharIoRepositoryList::class);
+            $this->repositoryList = $this->prophesize(PharRepositoryList::class);
         }
 
     }

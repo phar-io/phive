@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class PharIoRepositoryList extends XmlRepository {
+class PharRepositoryList extends XmlFileWrapper {
 
     /**
      * @param PharAlias $alias

@@ -18,14 +18,14 @@ class PharIoRepositoryFactory {
     /**
      * @param Url $url
      *
-     * @return PharIoRepository
+     * @return ReleasesRepository
      * @throws DownloadFailedException
      */
     public function getRepository(Url $url) {
         $repositoryXml = $this->downloader->download($url);
         $filename = new Filename(tempnam('/tmp', 'repo_'));
         $repositoryXml->saveAs($filename);
-        return new PharIoRepository($filename);
+        return new PharIoReleasesRepository($filename);
     }
 
 }

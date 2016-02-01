@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-abstract class XmlRepository {
+abstract class XmlFileWrapper {
 
     /**
      * @var string
@@ -23,13 +23,16 @@ abstract class XmlRepository {
      */
     public function __construct(Filename $filename) {
         $this->filename = $filename;
-        $this->init();
     }
 
     /**
      *
      */
     private function init() {
+        if ($this->dom instanceof \DOMDocument) {
+            return;
+        }
+
         $this->dom = new \DOMDocument('1.0', 'UTF-8');
         $this->dom->preserveWhiteSpace = false;
         $this->dom->formatOutput = true;
@@ -56,6 +59,7 @@ abstract class XmlRepository {
      * @return \DOMDocument
      */
     protected function getDom() {
+        $this->init();
         return $this->dom;
     }
 
@@ -70,6 +74,7 @@ abstract class XmlRepository {
      * @return \DOMXPath
      */
     protected function getXPath() {
+        $this->init();
         return $this->xPath;
     }
 

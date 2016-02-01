@@ -37,7 +37,7 @@ class TestStreamWrapper {
     protected $_position = 0;
 
     /**
-     * Key of Slot
+     * PublicKey of Slot
      *
      * @var string
      */

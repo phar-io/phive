@@ -25,7 +25,7 @@ namespace PharIo\Phive;
         public function testInvokesCurlWithExpectedParams() {
             $response = $this->prophesize(HttpResponse::class);
             $response->getHttpCode()->willReturn(200);
-            $response->getBody()->willReturn('Some Key');
+            $response->getBody()->willReturn('Some PublicKey');
 
             $this->curl->get(
                 'https://example.com/pks/lookup', ['search' => '0x12345678', 'op' => 'index', 'options' => 'mr']
