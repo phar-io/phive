@@ -22,6 +22,7 @@ class Directory {
     public function __construct($path, $mode = 0775) {
         $this->ensureModeIsInteger($mode);
         $this->ensureExists($path);
+        $this->ensureIsDirecotry($path);
         $this->ensureMode($path, $mode);
         $this->path = $path;
         $this->mode = $mode;
@@ -53,6 +54,7 @@ class Directory {
         }
         try {
             mkdir($path, 0777, true);
+            clearstatcache(true, $path);
         } catch (\ErrorException $e) {
             throw new DirectoryException(
                 sprintf('Creating directory "%s" failed.', $path),
@@ -69,11 +71,15 @@ class Directory {
      * @throws DirectoryException
      */
     private function ensureMode($path, $mode) {
-        if (fileperms($path) === $mode) {
+        if (octdec(substr(sprintf('%o', fileperms($path)), -4)) === $mode) {
             return;
         }
         try {
-            chmod($path, $mode);
+            $rc = chmod($path, $mode);
+            if (!$rc) {
+                throw new \ErrorException('Chmod call returned false.');
+            };
+            clearstatcache(true, $path);
         } catch (\ErrorException $e) {
             throw new DirectoryException(
                 sprintf('Setting mode for directory "%s" failed.', $path),
@@ -110,5 +116,15 @@ class Directory {
      */
     public function __toString() {
         return $this->path;
+    }
+
+    private function ensureIsDirecotry($path) {
+        if (is_dir($path)) {
+            return;
+        }
+        throw new DirectoryException(
+            sprintf('Path %s exists but is not a directory', $path),
+            DirectoryException::InvalidType
+        );
     }
 }
