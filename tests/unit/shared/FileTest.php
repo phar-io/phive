@@ -55,6 +55,18 @@ class FileTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame('bar', $file->getContent());
     }
 
+    /**
+     * @uses PharIo\Phive\Filename
+     */
+    public function testSaveAs() {
+        $target = sys_get_temp_dir() . '/testfile';
+        $file = new File(new Filename('foo.phar'), 'bar');
+        $file->saveAs( new Filename($target) );
+
+        $this->assertFileExists($target);
+        $this->assertSame('bar', file_get_contents($target));
+        unlink($target);
+    }
 }
 
 
