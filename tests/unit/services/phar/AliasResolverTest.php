@@ -1,52 +1,52 @@
 <?php
 namespace PharIo\Phive;
 
-    use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
+
+/**
+ * @covers PharIo\Phive\AliasResolver
+ */
+class AliasResolverTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @covers PharIo\Phive\AliasResolver
+     * @var PharRepositoryList|ObjectProphecy
      */
-    class AliasResolverTest extends \PHPUnit_Framework_TestCase {
+    private $repositoryList;
 
-        /**
-         * @var PharRepositoryList|ObjectProphecy
-         */
-        private $repositoryList;
+    /**
+     * @expectedException \PharIo\Phive\ResolveException
+     */
+    public function testThrowsExceptionIfListReturnsEmptyArray() {
+        $alias = new PharAlias('phpunit', new AnyVersionConstraint());
+        $this->repositoryList->getRepositoryUrls($alias)
+            ->shouldBeCalled()
+            ->willReturn([]);
 
-        /**
-         * @expectedException \PharIo\Phive\ResolveException
-         */
-        public function testThrowsExceptionIfListReturnsEmptyArray() {
-            $alias = new PharAlias('phpunit', new AnyVersionConstraint());
-            $this->repositoryList->getRepositoryUrls($alias)
-                ->shouldBeCalled()
-                ->willReturn([]);
-
-            $resolver = new AliasResolver($this->repositoryList->reveal());
-            $resolver->resolve($alias);
-        }
-
-        public function testReturnsExpectedArrayOfUrls() {
-            $alias = new PharAlias('phpunit', new AnyVersionConstraint());
-
-            $urls = [
-                new Url('https://example.com/foo'),
-                new Url('https://example.com/bar'),
-            ];
-
-            $this->repositoryList->getRepositoryUrls($alias)
-                ->shouldBeCalled()
-                ->willReturn($urls);
-
-            $resolver = new AliasResolver($this->repositoryList->reveal());
-            $this->assertEquals($urls, $resolver->resolve($alias));
-        }
-
-        protected function setUp() {
-            $this->repositoryList = $this->prophesize(PharRepositoryList::class);
-        }
-
+        $resolver = new AliasResolver($this->repositoryList->reveal());
+        $resolver->resolve($alias);
     }
+
+    public function testReturnsExpectedArrayOfUrls() {
+        $alias = new PharAlias('phpunit', new AnyVersionConstraint());
+
+        $urls = [
+            new Url('https://example.com/foo'),
+            new Url('https://example.com/bar'),
+        ];
+
+        $this->repositoryList->getRepositoryUrls($alias)
+            ->shouldBeCalled()
+            ->willReturn($urls);
+
+        $resolver = new AliasResolver($this->repositoryList->reveal());
+        $this->assertEquals($urls, $resolver->resolve($alias));
+    }
+
+    protected function setUp() {
+        $this->repositoryList = $this->prophesize(PharRepositoryList::class);
+    }
+
+}
 
 
 
