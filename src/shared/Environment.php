@@ -60,7 +60,10 @@ class Environment {
      * @return string
      */
     public function getBinaryName() {
-        return $this->server['_'];
+        if ($this->isHHVM()) {
+            return getenv('PHP_BINARY');
+        }
+        return PHP_BINARY;
     }
 
     /**
