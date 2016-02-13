@@ -4,14 +4,14 @@ namespace PharIo\Phive\Cli;
 class ConsoleInput implements Input {
 
     /**
-     * @var Cli\Output
+     * @var Output
      */
     private $output;
 
     /**
      * ConsoleInput constructor.
      *
-     * @param Cli\Output $output
+     * @param Output $output
      */
     public function __construct(Output $output) {
         $this->output = $output;
@@ -23,8 +23,11 @@ class ConsoleInput implements Input {
      * @return bool
      */
     public function confirm($message) {
-        $this->output->writeText(rtrim($message) . ' [Y|n] ');
-        $response = fgetc(STDIN);
-        return (trim($response) === '' || strpos('Yy', $response[0]) !== false);
+        do {
+            $this->output->writeText(rtrim($message) . ' [Y|n] ');
+            $response = strtolower(rtrim(fgets(STDIN)));
+        } while (!in_array($response, ['y','n']));
+
+        return ($response === 'y');
     }
 }
