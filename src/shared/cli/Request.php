@@ -66,7 +66,7 @@ class Request {
      */
     private function extractOptions() {
         $opts = [];
-        while (strpos($this->argv[0], '-') === 0) {
+        while (count($this->argv) && strpos($this->argv[0][0], '-') === 0) {
             $opts[] = array_shift($this->argv);
         }
         return $opts;

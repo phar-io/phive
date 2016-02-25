@@ -26,6 +26,8 @@ class CommandLocator implements Cli\CommandLocator {
     public function getCommandForRequest(CLI\Request $request) {
         $command = $request->getCommand();
         switch ($command) {
+
+            case '':
             case 'help': {
                 return $this->factory->getHelpCommand();
             }

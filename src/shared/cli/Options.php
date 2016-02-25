@@ -38,8 +38,12 @@ class Options {
                     $this->options[$key] = $value;
                     continue;
                 }
-                $this->options[ltrim($option, '-')] = $options[$idx + 1];
-                $skipNext = true;
+                if (isset($options[$idx + 1])) {
+                    $this->options[ltrim($option, '-')] = $options[$idx + 1];
+                    $skipNext = true;
+                } else {
+                    $this->options[ltrim($option, '-')] = true;
+                }
                 continue;
             }
             if (strpos($option, '-') === 0) {
