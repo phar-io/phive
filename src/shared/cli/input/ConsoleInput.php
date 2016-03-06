@@ -26,7 +26,7 @@ class ConsoleInput implements Input {
         do {
             $this->output->writeText(rtrim($message) . ' [Y|n] ');
             $response = strtolower(rtrim(fgets(STDIN)));
-        } while (!in_array($response, ['y','n']));
+        } while (!in_array($response, ['y', 'n']));
 
         return ($response === 'y');
     }

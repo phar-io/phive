@@ -60,7 +60,7 @@ class PublicKey {
         $info = [];
         $info[] = "\tFingerprint: " . $this->fingerprint;
         $info[] = '';
-        foreach($this->uids as $uid => $time) {
+        foreach ($this->uids as $uid => $time) {
             /** @var $time \DateTimeImmutable */
             $info[] = sprintf("\t%s (%s)", $uid, $time->format('Y-m-d'));
         }
@@ -77,9 +77,9 @@ class PublicKey {
     }
 
     private function parseInfo($info) {
-        foreach(explode("\n", $info) as $line) {
+        foreach (explode("\n", $info) as $line) {
             $parts = explode(':', $line);
-            switch($parts[0]) {
+            switch ($parts[0]) {
                 default: {
                     continue;
                 }

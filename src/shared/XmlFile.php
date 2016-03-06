@@ -56,8 +56,8 @@ class XmlFile {
      *
      * @return \DOMNodeList
      */
-    public function query($xpath, \DOMNode $ctx = NULL) {
-        if ($ctx === NULL) {
+    public function query($xpath, \DOMNode $ctx = null) {
+        if ($ctx === null) {
             $ctx = $this->getDom()->documentElement;
         }
         return $this->getXPath()->query($xpath, $ctx);

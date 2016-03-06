@@ -199,5 +199,5 @@ class PhiveInstallDB {
         }
         return $unusedPhars;
     }
-    
+
 }

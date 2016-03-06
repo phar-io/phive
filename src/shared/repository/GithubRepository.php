@@ -23,13 +23,13 @@ class GithubRepository implements SourceRepository {
     public function getReleasesByAlias(PharAlias $alias) {
         $releases = new ReleaseCollection();
 
-        foreach($this->jsonData->getParsed() as $entry) {
+        foreach ($this->jsonData->getParsed() as $entry) {
             $version = new Version($entry->tag_name);
 
             $pharUrl = null;
-            foreach($entry->assets as $asset) {
+            foreach ($entry->assets as $asset) {
                 $url = $asset->browser_download_url;
-                if (substr($url, -5,5) == '.phar') {
+                if (substr($url, -5, 5) == '.phar') {
                     $pharUrl = new Url($url);
                     break;
                 }
@@ -41,7 +41,7 @@ class GithubRepository implements SourceRepository {
             }
 
             $releases->add(
-                // Github doesn't publish any hashes for the files :-(
+            // Github doesn't publish any hashes for the files :-(
                 new Release($version, $pharUrl)
             );
 

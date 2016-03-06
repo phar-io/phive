@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-use \InvalidArgumentException;
+use InvalidArgumentException;
 
 class JsonData {
 
@@ -41,7 +41,5 @@ class JsonData {
     public function getParsed() {
         return $this->parsed;
     }
-
-
 
 }

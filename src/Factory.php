@@ -198,7 +198,7 @@ class Factory {
     private function getPhveInstallDB() {
         return new PhiveInstallDB(
             new XmlFile(
-                $this->getConfig()->getHomeDirectory()->file('/phars.xml')  ,
+                $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
                 'phars',
                 ''
             ),

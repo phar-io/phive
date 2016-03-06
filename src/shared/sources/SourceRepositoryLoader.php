@@ -28,7 +28,7 @@ class SourceRepositoryLoader {
         $filename = new Filename(tempnam(sys_get_temp_dir(), 'repo_'));
         $dataFile->saveAs($filename);
 
-        switch($source->getType()) {
+        switch ($source->getType()) {
             case 'phar.io': {
                 return new PharIoRepository(
                     new XmlFile(
