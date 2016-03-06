@@ -5,6 +5,7 @@ use PharIo\Phive\Environment;
 use PharIo\Phive\ErrorException;
 use PharIo\Phive\ExtensionsMissingException;
 use PharIo\Phive\PhiveVersion;
+use PharIo\Phive\Exception;
 
 class Runner {
 
@@ -16,7 +17,7 @@ class Runner {
     /**
      * @var Output
      */
-    private $ouput;
+    private $output;
 
     /**
      * @var PhiveVersion
@@ -36,7 +37,7 @@ class Runner {
      */
     public function __construct(CommandLocator $locator, Output $output, PhiveVersion $version, Environment $env) {
         $this->locator = $locator;
-        $this->ouput = $output;
+        $this->output = $output;
         $this->version = $version;
         $this->environment = $env;
     }
@@ -48,9 +49,11 @@ class Runner {
         try {
             $this->environment->ensureFitness();
             $this->setupRuntime();
+            $this->showHeader();
             $this->locator->getCommandForRequest($request)->execute();
+            $this->showFooter();
         } catch (ExtensionsMissingException $e) {
-            $this->ouput->writeError(
+            $this->output->writeError(
                 sprintf(
                     "Vour environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
                     join("\n          ", $e->getMissing())
@@ -58,12 +61,14 @@ class Runner {
             );
         } catch (CommandLocatorException $e) {
             if ($e->getCode() == CommandLocatorException::UnknownCommand) {
-                $this->ouput->writeError(
+                $this->output->writeError(
                     sprintf("Unknown command '%s'\n\n", $request->getCommand())
                 );
             } else {
                 $this->showError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
             }
+        } catch (Exception $e) {
+            $this->output->writeError($e->getMessage());
         } catch (\Exception $e) {
             $this->showError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
         } catch (\Throwable $t) {
@@ -105,7 +110,7 @@ class Runner {
             }
             $message[] = sprintf('#%d {main}', count($trace) + 1);
         }
-        $this->ouput->writeError(
+        $this->output->writeError(
             sprintf(
                 file_get_contents(__DIR__ . '/error.txt'),
                 join("\n          ", $message),
@@ -141,6 +146,14 @@ class Runner {
         ini_set('display_errors', false);
         set_error_handler([$this, 'errorHandler']);
         register_shutdown_function([$this, 'shutdownHandler']);
+    }
+
+    private function showHeader() {
+        $this->output->writeText($this->version->getVersionString() . "\n\n");
+    }
+
+    private function showFooter() {
+        $this->output->writeText("\n\n");
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 namespace PharIo\Phive;
 
-class DownloadFailedException extends \Exception {
+class DownloadFailedException extends \Exception implements Exception {
 
 }

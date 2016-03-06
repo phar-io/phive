@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class ErrorException extends \ErrorException {
+class ErrorException extends \ErrorException implements Exception {
 
     /**
      * @var array

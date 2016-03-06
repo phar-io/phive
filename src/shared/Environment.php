@@ -68,7 +68,7 @@ class Environment {
     }
 
     /**
-     * @throws ExtensionsMissionException
+     * @throws ExtensionsMissingException
      */
     public function ensureFitness() {
         $this->ensureTimezoneSet();
@@ -118,7 +118,7 @@ class Environment {
     }
 
     /**
-     * @throws ExtensionsMissionException
+     * @throws ExtensionsMissingException
      */
     private function ensureRequiredExtensionsLoaded() {
         $required = ['dom', 'mbstring', 'pcre', 'curl', 'phar'];
@@ -131,7 +131,7 @@ class Environment {
         }
 
         if (count($missing)) {
-            throw new ExtensionsMissionException($missing);
+            throw new ExtensionsMissingException($missing);
         }
     }
 

@@ -35,6 +35,7 @@ spl_autoload_register(
                 'phario\\phive\\environment' => '/shared/Environment.php',
                 'phario\\phive\\errorexception' => '/shared/exceptions/ErrorException.php',
                 'phario\\phive\\exactversionconstraint' => '/shared/versionconstraints/ExactVersionConstraint.php',
+                'phario\\phive\\exception' => '/shared/exceptions/Exception.php',
                 'phario\\phive\\extensionsmissingexception' => '/shared/exceptions/ExtensionsMissingException.php',
                 'phario\\phive\\factory' => '/Factory.php',
                 'phario\\phive\\file' => '/shared/File.php',

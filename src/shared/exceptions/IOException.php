@@ -1,6 +1,6 @@
 <?php
 namespace PharIo\Phive;
 
-class IOException extends \Exception {
+class IOException extends \Exception implements Exception {
 
 }

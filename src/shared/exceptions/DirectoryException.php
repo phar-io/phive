@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class DirectoryException extends \Exception {
+class DirectoryException extends \Exception implements Exception {
 
     const InvalidMode = 1;
     const CreateFailed = 2;
