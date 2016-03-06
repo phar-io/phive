@@ -16,7 +16,7 @@ install <alias|url> [destination]
     destination     (optional) Target directory for the PHAR
 
     -copy          Copy PHAR file instead of using symlink
-    -global        Install PHAR globally (next to the phive binary)
+    -global        Install PHAR globally (likely to require root privileges)
     -temporary     Do not add entries in phive.xml for installed PHARs
 
 purge
