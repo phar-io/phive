@@ -56,6 +56,10 @@ class Environment {
         return array_key_exists('https_proxy', $this->server);
     }
 
+    public function getPhiveCommandPath() {
+        return $this->server['PHP_SELF'];
+    }
+
     /**
      * @return string
      */
