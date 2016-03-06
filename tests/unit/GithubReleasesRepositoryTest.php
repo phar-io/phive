@@ -10,7 +10,7 @@ class GithubReleasesRepositoryTest extends \PHPUnit_Framework_TestCase {
 
         $alias = new PharAlias('phive', new AnyVersionConstraint());
 
-        $repo = new GithubReleasesRepository($json);
+        $repo = new GithubRepository($json);
         $result = $repo->getReleasesByAlias($alias);
 
         $this->assertInstanceOf(ReleaseCollection::class, $result);

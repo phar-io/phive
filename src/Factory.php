@@ -108,11 +108,11 @@ class Factory {
     }
 
     /**
-     * @return PharIoRepositoryListFileLoader
+     * @return SourcesListFileLoader
      */
     private function getPharIoRepositoryListFileLoader() {
-        return new PharIoRepositoryListFileLoader(
-            $this->getConfig()->getRepositoryListUrl(),
+        return new SourcesListFileLoader(
+            $this->getConfig()->getSourcesListUrl(),
             $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
             $this->getFileDownloader(),
             $this->getColoredConsoleOutput()
@@ -133,7 +133,13 @@ class Factory {
      * @return PhiveXmlConfig
      */
     private function getPhiveXmlConfig() {
-        return new PhiveXmlConfig(new Filename(__DIR__ . '/../phive.xml'));
+        return new PhiveXmlConfig(
+            new XmlFile(
+                new Filename(__DIR__ . '/../phive.xml'),
+                'https://phar.io/phive',
+                'phive'
+            )
+        );
     }
 
     /**
@@ -180,18 +186,22 @@ class Factory {
     public function getRemoveCommand(CLI\Options $options) {
         return new RemoveCommand(
             new RemoveCommandConfig($options, $this->getConfig()),
-            $this->getPharRepository(),
+            $this->getPhveInstallDB(),
             $this->getPharService(),
             $this->getColoredConsoleOutput()
         );
     }
 
     /**
-     * @return PharRepository
+     * @return PhiveInstallDB
      */
-    private function getPharRepository() {
-        return new PharRepository(
-            $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
+    private function getPhveInstallDB() {
+        return new PhiveInstallDB(
+            new XmlFile(
+                $this->getConfig()->getHomeDirectory()->file('/phars.xml')  ,
+                'phars',
+                ''
+            ),
             $this->getConfig()->getHomeDirectory()->child('phars')
         );
     }
@@ -203,7 +213,7 @@ class Factory {
         return new PharService(
             $this->getPharDownloader(),
             $this->getPharInstaller(),
-            $this->getPharRepository(),
+            $this->getPhveInstallDB(),
             $this->getAliasResolver(),
             $this->getColoredConsoleOutput(),
             $this->getPharIoRepositoryFactory()
@@ -316,17 +326,15 @@ class Factory {
     private function getAliasResolver() {
 
         return new AliasResolver(
-            new PharRepositoryList(
-                $this->getPharIoRepositoryListFileLoader()->load()
-            )
+            $this->getSourcesList()
         );
     }
 
     /**
-     * @return PharIoRepositoryFactory
+     * @return SourceRepositoryLoader
      */
     private function getPharIoRepositoryFactory() {
-        return new PharIoRepositoryFactory($this->getFileDownloader());
+        return new SourceRepositoryLoader($this->getFileDownloader());
     }
 
     /**
@@ -354,9 +362,7 @@ class Factory {
      */
     public function getListCommand(CLI\Options $options) {
         return new ListCommand(
-            new PharRepositoryList(
-                $this->getPharIoRepositoryListFileLoader()->load()
-            ),
+            $this->getSourcesList(),
             $this->getColoredConsoleOutput()
         );
     }
@@ -372,8 +378,21 @@ class Factory {
                 $options,
                 $this->getConfig()
             ),
-            $this->getPharRepository(),
+            $this->getPhveInstallDB(),
             $this->getColoredConsoleOutput()
+        );
+    }
+
+    /**
+     * @return SourcesList
+     */
+    private function getSourcesList() {
+        return new SourcesList(
+            new XmlFile(
+                $this->getPharIoRepositoryListFileLoader()->load(),
+                'https://phar.io/repository-list',
+                'repositories'
+            )
         );
     }
 

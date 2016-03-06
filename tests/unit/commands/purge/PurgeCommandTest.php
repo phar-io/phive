@@ -40,10 +40,10 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharRepository
+     * @return \PHPUnit_Framework_MockObject_MockObject|PhiveInstallDB
      */
     private function getPharRepositoryMock() {
-        return $this->getMockBuilder(PharRepository::class)
+        return $this->getMockBuilder(PhiveInstallDB::class)
             ->disableOriginalConstructor()->getMock();
     }
 

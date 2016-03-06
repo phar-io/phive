@@ -1,7 +1,21 @@
 <?php
 namespace PharIo\Phive;
 
-class PharIoReleasesRepository extends XmlFileWrapper implements ReleasesRepository {
+class PharIoRepository implements SourceRepository {
+
+    /**
+     * @var XmlFile
+     */
+    private $xmlFile;
+
+    /**
+     * PharIoRepository constructor.
+     *
+     * @param XmlFile $xmlFile
+     */
+    public function __construct(XmlFile $xmlFile) {
+        $this->xmlFile = $xmlFile;
+    }
 
     /**
      * @param PharAlias $alias
@@ -11,7 +25,7 @@ class PharIoReleasesRepository extends XmlFileWrapper implements ReleasesReposit
     public function getReleasesByAlias(PharAlias $alias) {
         $releases = new ReleaseCollection();
         $query = sprintf('//phive:phar[@name="%s"]/phive:release', $alias);
-        foreach ($this->getXPath()->query($query) as $releaseNode) {
+        foreach ($this->xmlFile->query($query) as $releaseNode) {
             /** @var \DOMElement $releaseNode */
             $releases->add(
                 new Release(
@@ -41,20 +55,6 @@ class PharIoReleasesRepository extends XmlFileWrapper implements ReleasesReposit
                 return new Sha256Hash($hashNode->getAttribute('value'));
         }
         throw new InvalidHashException(sprintf('Unsupported Hash Type %s', $type));
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRootElementName() {
-        return 'repository';
-    }
-
-    /**
-     * @return string
-     */
-    protected function getNamespace() {
-        return 'https://phar.io/repository';
     }
 
 }

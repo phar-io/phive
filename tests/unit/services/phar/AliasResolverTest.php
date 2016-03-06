@@ -9,7 +9,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 class AliasResolverTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @var PharRepositoryList|ObjectProphecy
+     * @var SourcesList|ObjectProphecy
      */
     private $repositoryList;
 
@@ -43,7 +43,7 @@ class AliasResolverTest extends \PHPUnit_Framework_TestCase {
     }
 
     protected function setUp() {
-        $this->repositoryList = $this->prophesize(PharRepositoryList::class);
+        $this->repositoryList = $this->prophesize(SourcesList::class);
     }
 
 }

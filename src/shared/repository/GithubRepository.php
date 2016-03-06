@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class GithubReleasesRepository implements ReleasesRepository {
+class GithubRepository implements SourceRepository {
 
     /**
      * @var JsonData

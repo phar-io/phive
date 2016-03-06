@@ -14,7 +14,7 @@ class PharService {
     private $installer;
 
     /**
-     * @var PharRepository
+     * @var PhiveInstallDB
      */
     private $repository;
 
@@ -29,32 +29,32 @@ class PharService {
     private $output;
 
     /**
-     * @var PharIoRepositoryFactory
+     * @var SourceRepositoryLoader
      */
-    private $pharIoRepositoryFactory;
+    private $sourceRepositoryLoader;
 
     /**
-     * @param PharDownloader          $downloader
-     * @param PharInstaller           $installer
-     * @param PharRepository          $repository
-     * @param AliasResolver           $resolver
-     * @param Cli\Output              $output
-     * @param PharIoRepositoryFactory $pharIoRepositoryFactory
+     * @param PharDownloader         $downloader
+     * @param PharInstaller          $installer
+     * @param PhiveInstallDB         $repository
+     * @param AliasResolver          $resolver
+     * @param Cli\Output             $output
+     * @param SourceRepositoryLoader $sourceRepositoryLoader
      */
     public function __construct(
         PharDownloader $downloader,
         PharInstaller $installer,
-        PharRepository $repository,
+        PhiveInstallDB $repository,
         AliasResolver $resolver,
         Cli\Output $output,
-        PharIoRepositoryFactory $pharIoRepositoryFactory
+        SourceRepositoryLoader $sourceRepositoryLoader
     ) {
         $this->downloader = $downloader;
         $this->installer = $installer;
         $this->repository = $repository;
         $this->aliasResolver = $resolver;
         $this->output = $output;
-        $this->pharIoRepositoryFactory = $pharIoRepositoryFactory;
+        $this->sourceRepositoryLoader = $sourceRepositoryLoader;
     }
 
     /**
@@ -82,6 +82,8 @@ class PharService {
         } catch (PharRepositoryException $e) {
             $this->output->writeError($e->getMessage());
         } catch (VerificationFailedException $e) {
+            $this->output->writeError($e->getMessage());
+        } catch (ResolveException $e) {
             $this->output->writeError($e->getMessage());
         }
     }
@@ -115,14 +117,14 @@ class PharService {
      *
      */
     private function resolveAlias(PharAlias $alias) {
-        foreach ($this->aliasResolver->resolve($alias) as $repoUrl) {
+        foreach ($this->aliasResolver->resolve($alias) as $source) {
             try {
-                $repo = $this->pharIoRepositoryFactory->getRepository($repoUrl);
+                $repo = $this->sourceRepositoryLoader->loadRepository($source);
                 $releases = $repo->getReleasesByAlias($alias);
                 return $releases->getLatest($alias->getVersionConstraint());
             } catch (ResolveException $e) {
                 $this->output->writeWarning(
-                    sprintf('Resolving alias %s with repository %s failed: %s', $alias, $repoUrl, $e->getMessage())
+                    sprintf('Resolving alias %s with repository %s failed: %s', $alias, $source->getUrl(), $e->getMessage())
                 );
                 continue;
             }

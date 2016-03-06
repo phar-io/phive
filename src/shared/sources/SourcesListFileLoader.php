@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class PharIoRepositoryListFileLoader {
+class SourcesListFileLoader {
 
     /**
      * @var Url

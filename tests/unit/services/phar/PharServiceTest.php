@@ -20,7 +20,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     private $installer;
 
     /**
-     * @var PharRepository|ObjectProphecy
+     * @var PhiveInstallDB|ObjectProphecy
      */
     private $repository;
 
@@ -35,7 +35,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     private $output;
 
     /**
-     * @var PharIoRepositoryFactory|ObjectProphecy
+     * @var SourceRepositoryLoader|ObjectProphecy
      */
     private $pharIoRepositoryFactory;
 
@@ -142,10 +142,10 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         $this->downloader = $this->prophesize(PharDownloader::class);
         $this->installer = $this->prophesize(PharInstaller::class);
-        $this->repository = $this->prophesize(PharRepository::class);
+        $this->repository = $this->prophesize(PhiveInstallDB::class);
         $this->resolver = $this->prophesize(AliasResolver::class);
         $this->output = $this->prophesize(Cli\Output::class);
-        $this->pharIoRepositoryFactory = $this->prophesize(PharIoRepositoryFactory::class);
+        $this->pharIoRepositoryFactory = $this->prophesize(SourceRepositoryLoader::class);
     }
 
 }

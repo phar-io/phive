@@ -6,7 +6,7 @@ use PharIo\Phive\Cli;
 class ListCommand implements Cli\Command {
 
     /**
-     * @var PharRepositoryList
+     * @var SourcesList
      */
     private $pharRepositoryList;
 
@@ -16,11 +16,11 @@ class ListCommand implements Cli\Command {
     private $output;
 
     /**
-     * @param PharRepositoryList $pharRepositoryList
-     * @param Cli\Output $output
+     * @param SourcesList $pharRepositoryList
+     * @param Cli\Output  $output
      */
     public function __construct(
-        PharRepositoryList $pharRepositoryList,
+        SourcesList $pharRepositoryList,
         Cli\Output $output
     ) {
         $this->pharRepositoryList = $pharRepositoryList;

@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class PharRepository extends WritableXmlRepository {
+class PhiveInstallDB {
 
     /**
      * @var Directory
@@ -9,12 +9,17 @@ class PharRepository extends WritableXmlRepository {
     private $pharDirectory;
 
     /**
+     * @var XmlFile
+     */
+    private $dbFile;
+
+    /**
      * @param Filename  $filename
      * @param Directory $pharDirectory
      */
-    public function __construct(Filename $filename, Directory $pharDirectory) {
+    public function __construct(XmlFile $xmlFile, Directory $pharDirectory) {
+        $this->dbFile = $xmlFile;
         $this->pharDirectory = $pharDirectory;
-        parent::__construct($filename);
     }
 
     /**
@@ -22,18 +27,17 @@ class PharRepository extends WritableXmlRepository {
      */
     public function addPhar(Phar $phar) {
         $this->savePhar($phar->getFile());
-        $dom = $this->getDom();
-        $pharNode = $dom->createElement('phar');
+        $pharNode = $this->dbFile->createElement('phar');
         $pharNode->setAttribute('name', $phar->getName());
         $pharNode->setAttribute('version', $phar->getVersion()->getVersionString());
         $pharNode->setAttribute(
             'location',
             $this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFile()->getFilename()
         );
-        $hashNode = $dom->createElement('hash', $phar->getFile()->getSha1Hash()->asString());
+        $hashNode = $this->dbFile->createElement('hash', $phar->getFile()->getSha1Hash()->asString());
         $hashNode->setAttribute('type', 'sha1');
         $pharNode->appendChild($hashNode);
-        $dom->firstChild->appendChild($pharNode);
+        $this->dbFile->addElement($pharNode);
         $this->save();
     }
 
@@ -63,15 +67,15 @@ class PharRepository extends WritableXmlRepository {
      */
     public function addUsage(Phar $phar, $destination) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        if ($this->getXPath()->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->length
+        if ($this->dbFile->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->length
             !== 0
         ) {
             return;
         }
-        $usageNode = $this->getDom()->createElement('usage');
+        $usageNode = $this->dbFile->createElement('usage');
         $usageNode->setAttribute('destination', $destination);
         $pharNode->appendChild($usageNode);
-        $this->save();
+        $this->dbFile->save();
     }
 
     /**
@@ -83,7 +87,7 @@ class PharRepository extends WritableXmlRepository {
     private function getFirstMatchingPharNode($name, Version $version) {
         $query = sprintf('//phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
 
-        return $this->getXPath()->query($query)->item(0);
+        return $this->dbFile->query($query)->item(0);
     }
 
     /**
@@ -144,7 +148,7 @@ class PharRepository extends WritableXmlRepository {
      * @throws PharRepositoryException
      */
     public function getByUsage($filename) {
-        $pharNode = $this->getXPath()->query(sprintf('//phar[usage/@destination="%s"]', $filename))->item(0);
+        $pharNode = $this->dbFile->query(sprintf('//phar[usage/@destination="%s"]', $filename))->item(0);
         if (null === $pharNode) {
             throw new PharRepositoryException(sprintf('No phar with usage %s found', $filename));
         }
@@ -159,9 +163,9 @@ class PharRepository extends WritableXmlRepository {
      */
     public function removeUsage(Phar $phar, $destination) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        $usageNode = $this->getXPath()->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->item(0);
+        $usageNode = $this->dbFile->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->item(0);
         $pharNode->removeChild($usageNode);
-        $this->save();
+        $this->dbFile->save();
     }
 
     /**
@@ -171,7 +175,7 @@ class PharRepository extends WritableXmlRepository {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
         unlink($this->getPharDestination($phar->getFile()));
         $pharNode->parentNode->removeChild($pharNode);
-        $this->save();
+        $this->dbFile->save();
     }
 
     /**
@@ -182,7 +186,7 @@ class PharRepository extends WritableXmlRepository {
     public function hasUsages(Phar $phar) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
 
-        return $this->getXPath()->query('//usage', $pharNode)->length > 0;
+        return $this->dbFile->query('//usage', $pharNode)->length > 0;
     }
 
     /**
@@ -190,24 +194,10 @@ class PharRepository extends WritableXmlRepository {
      */
     public function getUnusedPhars() {
         $unusedPhars = [];
-        foreach ($this->getXPath()->query('//phar[count(usage) = 0]') as $pharNode) {
+        foreach ($this->dbFile->query('//phar[count(usage) = 0]') as $pharNode) {
             $unusedPhars[] = $this->nodetoPhar($pharNode);
         }
         return $unusedPhars;
     }
-
-    /**
-     * @return string
-     */
-    protected function getRootElementName() {
-        return 'phars';
-    }
-
-    /**
-     * @return string
-     */
-    protected function getNamespace() {
-        return '';
-    }
-
+    
 }

@@ -39,7 +39,7 @@ class Config {
     /**
      * @return Url
      */
-    public function getRepositoryListUrl() {
+    public function getSourcesListUrl() {
         return new Url('https://phar.io/data/repositories.xml');
     }
 

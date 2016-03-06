@@ -7,7 +7,7 @@ namespace PharIo\Phive;
 class PharRepositoryTest extends \PHPUnit_Framework_TestCase {
 
     public function testReturnsExpectedUnusedPhars() {
-        $repo = new PharRepository(new Filename(__DIR__ . '/fixtures/phars.xml'), new Directory(__DIR__ . '/fixtures'));
+        $repo = new PhiveInstallDB(new Filename(__DIR__ . '/fixtures/phars.xml'), new Directory(__DIR__ . '/fixtures'));
 
         $expected = [
             new Phar('phpunit', new Version('4.8.7'), new File(new Filename('phpunit-4.8.7.phar.dummy'), 'phpunit-4.8.7')),

@@ -1,7 +1,21 @@
 <?php
 namespace PharIo\Phive;
 
-class PhiveXmlConfig extends WritableXmlRepository {
+class PhiveXmlConfig {
+
+    /**
+     * @var XmlFile
+     */
+    private $configFile;
+
+    /**
+     * PhiveXmlConfig constructor.
+     *
+     * @param XmlFile $configFile
+     */
+    public function __construct(XmlFile $configFile) {
+        $this->configFile = $configFile;
+    }
 
     /**
      * @param RequestedPhar $requestedPhar
@@ -11,12 +25,12 @@ class PhiveXmlConfig extends WritableXmlRepository {
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
         } else {
-            $pharNode = $this->getDom()->createElementNS($this->getNamespace(), 'phar');
+            $pharNode = $this->configFile->createElement('phar');
             $pharNode->setAttribute('name', $name);
-            $this->getDom()->firstChild->appendChild($pharNode);
+            $this->configFile->addElement($pharNode);
         }
         $pharNode->setAttribute('version', $requestedPhar->getAlias()->getVersionConstraint()->asString());
-        $this->save();
+        $this->configFile->save();
     }
 
     /**
@@ -34,14 +48,7 @@ class PhiveXmlConfig extends WritableXmlRepository {
      * @return \DOMNode
      */
     private function getPharNode($name) {
-        return $this->getXPath()->query(sprintf('//phive:phar[@name="%s"]', mb_strtolower($name)))->item(0);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getNamespace() {
-        return 'https://phar.io/phive';
+        return $this->configFile->query(sprintf('//phive:phar[@name="%s"]', mb_strtolower($name)))->item(0);
     }
 
     /**
@@ -50,7 +57,7 @@ class PhiveXmlConfig extends WritableXmlRepository {
     public function getPhars() {
         $phars = [];
         /** @var \DOMElement $pharNode */
-        foreach ($this->getXPath()->query('//phive:phar') as $pharNode) {
+        foreach ($this->configFile->query('//phive:phar') as $pharNode) {
             if ($pharNode->hasAttribute('url')) {
                 $phars[] = RequestedPhar::fromUrl(new Url($pharNode->getAttribute('url')));
             } else {
@@ -73,13 +80,6 @@ class PhiveXmlConfig extends WritableXmlRepository {
             $version = new AnyVersionConstraint();
         }
         return new PharAlias($element->getAttribute('name'), $version);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRootElementName() {
-        return 'phive';
     }
 
 }

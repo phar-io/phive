@@ -7,29 +7,29 @@ namespace PharIo\Phive;
 class AliasResolver {
 
     /**
-     * @var PharRepositoryList
+     * @var SourcesList
      */
-    private $repositoryList;
+    private $sources;
 
     /**
-     * @param PharRepositoryList $repositoryList
+     * @param SourcesList $repositoryList
      */
-    public function __construct(PharRepositoryList $repositoryList) {
-        $this->repositoryList = $repositoryList;
+    public function __construct(SourcesList $sourcesList) {
+        $this->sources = $sourcesList;
     }
 
     /**
      * @param PharAlias $alias
      *
-     * @return Url[]
+     * @return Source[]
      * @throws ResolveException
      */
     public function resolve(PharAlias $alias) {
-        $urls = $this->repositoryList->getRepositoryUrls($alias);
-        if (empty($urls)) {
+        $sources = $this->sources->getSourcesForAlias($alias);
+        if (empty($sources)) {
             throw new ResolveException(sprintf('Could not resolve alias %s', $alias));
         }
-        return $urls;
+        return $sources;
     }
 
 }

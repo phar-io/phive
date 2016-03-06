@@ -4,14 +4,14 @@ namespace PharIo\Phive;
 class UpdateRepositoryListCommand {
 
     /**
-     * @var PharIoRepositoryListFileLoader
+     * @var SourcesListFileLoader
      */
     private $loader;
 
     /**
-     * @param PharIoRepositoryListFileLoader $loader
+     * @param SourcesListFileLoader $loader
      */
-    public function __construct(PharIoRepositoryListFileLoader $loader) {
+    public function __construct(SourcesListFileLoader $loader) {
         $this->loader = $loader;
     }
 

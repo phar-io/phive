@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-interface ReleasesRepository {
+interface SourceRepository {
 
     /**
      * @param PharAlias $alias
