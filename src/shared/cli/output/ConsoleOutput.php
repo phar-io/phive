@@ -64,4 +64,3 @@ class ConsoleOutput implements Output {
     }
 
 }
-

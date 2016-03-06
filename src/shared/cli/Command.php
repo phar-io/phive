@@ -6,4 +6,3 @@ interface Command {
     public function execute();
 
 }
-

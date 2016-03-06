@@ -124,7 +124,12 @@ class PharService {
                 return $releases->getLatest($alias->getVersionConstraint());
             } catch (ResolveException $e) {
                 $this->output->writeWarning(
-                    sprintf('Resolving alias %s with repository %s failed: %s', $alias, $source->getUrl(), $e->getMessage())
+                    sprintf(
+                        'Resolving alias %s with repository %s failed: %s',
+                        $alias,
+                        $source->getUrl(),
+                        $e->getMessage()
+                    )
                 );
                 continue;
             }

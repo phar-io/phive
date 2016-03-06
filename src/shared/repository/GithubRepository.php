@@ -41,7 +41,7 @@ class GithubRepository implements SourceRepository {
             }
 
             $releases->add(
-            // Github doesn't publish any hashes for the files :-(
+                // Github doesn't publish any hashes for the files :-(
                 new Release($version, $pharUrl)
             );
 
