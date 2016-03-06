@@ -3,7 +3,7 @@ namespace PharIo\Phive\Cli;
 
 use PharIo\Phive\Environment;
 use PharIo\Phive\ErrorException;
-use PharIo\Phive\ExtensionsMissionException;
+use PharIo\Phive\ExtensionsMissingException;
 use PharIo\Phive\PhiveVersion;
 
 class Runner {
@@ -49,11 +49,11 @@ class Runner {
             $this->environment->ensureFitness();
             $this->setupRuntime();
             $this->locator->getCommandForRequest($request)->execute();
-        } catch (ExtensionsMissionException $e) {
+        } catch (ExtensionsMissingException $e) {
             $this->ouput->writeError(
                 sprintf(
                     "Vour environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
-                    join("\n          ", $e->getMising())
+                    join("\n          ", $e->getMissing())
                 )
             );
         } catch (CommandLocatorException $e) {
