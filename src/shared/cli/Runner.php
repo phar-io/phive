@@ -69,6 +69,7 @@ class Runner {
             }
         } catch (Exception $e) {
             $this->output->writeError($e->getMessage());
+            $this->showFooter();
         } catch (\Exception $e) {
             $this->showError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
         } catch (\Throwable $t) {
