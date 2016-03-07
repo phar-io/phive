@@ -11,39 +11,39 @@ class AliasResolverTest extends \PHPUnit_Framework_TestCase {
     /**
      * @var SourcesList|ObjectProphecy
      */
-    private $repositoryList;
+    private $sourcesList;
 
     /**
      * @expectedException \PharIo\Phive\ResolveException
      */
     public function testThrowsExceptionIfListReturnsEmptyArray() {
         $alias = new PharAlias('phpunit', new AnyVersionConstraint());
-        $this->repositoryList->getRepositoryUrls($alias)
+        $this->sourcesList->getSourcesForAlias($alias)
             ->shouldBeCalled()
             ->willReturn([]);
 
-        $resolver = new AliasResolver($this->repositoryList->reveal());
+        $resolver = new AliasResolver($this->sourcesList->reveal());
         $resolver->resolve($alias);
     }
 
     public function testReturnsExpectedArrayOfUrls() {
         $alias = new PharAlias('phpunit', new AnyVersionConstraint());
 
-        $urls = [
-            new Url('https://example.com/foo'),
-            new Url('https://example.com/bar'),
+        $sources = [
+            new Source('phar.io', new Url('https://example.com/foo')),
+            new Source('phar.io', new Url('https://example.com/bar')),
         ];
 
-        $this->repositoryList->getRepositoryUrls($alias)
+        $this->sourcesList->getSourcesForAlias($alias)
             ->shouldBeCalled()
-            ->willReturn($urls);
+            ->willReturn($sources);
 
-        $resolver = new AliasResolver($this->repositoryList->reveal());
-        $this->assertEquals($urls, $resolver->resolve($alias));
+        $resolver = new AliasResolver($this->sourcesList->reveal());
+        $this->assertEquals($sources, $resolver->resolve($alias));
     }
 
     protected function setUp() {
-        $this->repositoryList = $this->prophesize(SourcesList::class);
+        $this->sourcesList = $this->prophesize(SourcesList::class);
     }
 
 }

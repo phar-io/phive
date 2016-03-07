@@ -2,12 +2,18 @@
 namespace PharIo\Phive;
 
 /**
- * @covers PharIo\Phive\PharRepository
+ * @covers PharIo\Phive\PhiveInstallDB
  */
-class PharRepositoryTest extends \PHPUnit_Framework_TestCase {
+class PhiveInstallDBTest extends \PHPUnit_Framework_TestCase {
 
     public function testReturnsExpectedUnusedPhars() {
-        $repo = new PhiveInstallDB(new Filename(__DIR__ . '/fixtures/phars.xml'), new Directory(__DIR__ . '/fixtures'));
+        $repo = new PhiveInstallDB(
+            new XmlFile(
+                new Filename(__DIR__ . '/fixtures/phars.xml'),
+                'https://phar.io/phive/installdb',
+                'phars'
+            ),
+            new Directory(__DIR__ . '/fixtures'));
 
         $expected = [
             new Phar('phpunit', new Version('4.8.7'), new File(new Filename('phpunit-4.8.7.phar.dummy'), 'phpunit-4.8.7')),
