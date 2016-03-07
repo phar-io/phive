@@ -38,7 +38,7 @@ class PhiveInstallDB {
         $hashNode->setAttribute('type', 'sha1');
         $pharNode->appendChild($hashNode);
         $this->dbFile->addElement($pharNode);
-        $this->save();
+        $this->dbFile->save();
     }
 
     /**
@@ -67,7 +67,7 @@ class PhiveInstallDB {
      */
     public function addUsage(Phar $phar, $destination) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        if ($this->dbFile->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->length
+        if ($this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $destination), $pharNode)->length
             !== 0
         ) {
             return;
@@ -85,7 +85,7 @@ class PhiveInstallDB {
      * @return \DOMElement
      */
     private function getFirstMatchingPharNode($name, Version $version) {
-        $query = sprintf('//phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
+        $query = sprintf('//phive:phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
 
         return $this->dbFile->query($query)->item(0);
     }
@@ -148,7 +148,7 @@ class PhiveInstallDB {
      * @throws PharRepositoryException
      */
     public function getByUsage($filename) {
-        $pharNode = $this->dbFile->query(sprintf('//phar[usage/@destination="%s"]', $filename))->item(0);
+        $pharNode = $this->dbFile->query(sprintf('//phive:phar[phive:usage/@destination="%s"]', $filename))->item(0);
         if (null === $pharNode) {
             throw new PharRepositoryException(sprintf('No phar with usage %s found', $filename));
         }
@@ -163,7 +163,7 @@ class PhiveInstallDB {
      */
     public function removeUsage(Phar $phar, $destination) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        $usageNode = $this->dbFile->query(sprintf('//usage[@destination="%s"]', $destination), $pharNode)->item(0);
+        $usageNode = $this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $destination), $pharNode)->item(0);
         $pharNode->removeChild($usageNode);
         $this->dbFile->save();
     }
@@ -186,7 +186,7 @@ class PhiveInstallDB {
     public function hasUsages(Phar $phar) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
 
-        return $this->dbFile->query('//usage', $pharNode)->length > 0;
+        return $this->dbFile->query('//phive:usage', $pharNode)->length > 0;
     }
 
     /**
@@ -194,7 +194,7 @@ class PhiveInstallDB {
      */
     public function getUnusedPhars() {
         $unusedPhars = [];
-        foreach ($this->dbFile->query('//phar[count(usage) = 0]') as $pharNode) {
+        foreach ($this->dbFile->query('//phive:phar[count(usage) = 0]') as $pharNode) {
             $unusedPhars[] = $this->nodetoPhar($pharNode);
         }
         return $unusedPhars;

@@ -42,12 +42,13 @@ class XmlFile {
     }
 
     /**
-     * @param $name
+     * @param string $name
+     * @param string $text
      *
      * @return \DOMElement
      */
-    public function createElement($name) {
-        return $this->getDom()->createElementNS($this->namespace, $name);
+    public function createElement($name, $text = null) {
+        return $this->getDom()->createElementNS($this->namespace, $name, $text);
     }
 
     /**
