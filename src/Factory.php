@@ -199,8 +199,8 @@ class Factory {
         return new PhiveInstallDB(
             new XmlFile(
                 $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
-                'phars',
-                ''
+                'https://phar.io/phive/installdb',
+                'phars'
             ),
             $this->getConfig()->getHomeDirectory()->child('phars')
         );
