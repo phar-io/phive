@@ -4,47 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "044456fe7853c18e10313eeeffd6ce19",
-    "content-hash": "39399dad268976a22148452a863cc150",
-    "packages": [
-        {
-            "name": "theseer/cli",
-            "version": "0.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/theseer/CLI.git",
-                "reference": "7391f4ec4b8fe5306ddb93c0e8eb133dc1ac1a29"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/theseer/CLI/zipball/7391f4ec4b8fe5306ddb93c0e8eb133dc1ac1a29",
-                "reference": "7391f4ec4b8fe5306ddb93c0e8eb133dc1ac1a29",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~1.5"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD License"
-            ],
-            "authors": [
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de"
-                }
-            ],
-            "description": "A simplistic CLI micro framework to ease development of command based CLI applications in PHP.",
-            "time": "2015-09-23 15:52:25"
-        }
-    ],
+    "hash": "083b5236a2f281aa4338b2d2535a68f4",
+    "packages": [],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
