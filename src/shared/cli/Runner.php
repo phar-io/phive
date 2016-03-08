@@ -55,7 +55,7 @@ class Runner {
         } catch (ExtensionsMissingException $e) {
             $this->output->writeError(
                 sprintf(
-                    "Vour environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
+                    "Your environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
                     join("\n          ", $e->getMissing())
                 )
             );
