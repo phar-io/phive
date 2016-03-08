@@ -28,8 +28,7 @@ class UpdateCommandConfig
         Cli\Options $cliOptions,
         Config $config,
         PhiveXmlConfig $phiveXmlConfig
-    )
-    {
+    ) {
         $this->cliOptions = $cliOptions;
         $this->config = $config;
         $this->phiveXmlConfig = $phiveXmlConfig;
@@ -38,8 +37,7 @@ class UpdateCommandConfig
     /**
      * @return RequestedPhar[]
      */
-    public function getRequestedPhars()
-    {
+    public function getRequestedPhars() {
         $filter = $this->getPharsFromCliArguments();
         return $this->getPharAliasesFromPhiveXmlConfig($filter);
     }
@@ -56,8 +54,7 @@ class UpdateCommandConfig
      *
      * @return RequestedPhar[]
      */
-    private function getPharAliasesFromPhiveXmlConfig(array $filter)
-    {
+    private function getPharAliasesFromPhiveXmlConfig(array $filter) {
         $phars = [];
         foreach ($this->phiveXmlConfig->getPhars() as $phar) {
             if (!empty($filter) && !in_array((string)($phar->getAlias()), $filter)) {
