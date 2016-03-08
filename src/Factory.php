@@ -358,6 +358,23 @@ class Factory {
     /**
      * @param CLI\Options $options
      *
+     * @return UpdateCommand
+     */
+    public function getUpdateCommand(CLI\Options $options) {
+        return new UpdateCommand(
+            new UpdateCommandConfig(
+                $options,
+                $this->getConfig(),
+                $this->getPhiveXmlConfig()
+            ),
+            $this->getPharService(),
+            $this->getPhiveXmlConfig()
+        );
+    }
+
+    /**
+     * @param CLI\Options $options
+     *
      * @return ListCommand
      */
     public function getListCommand(CLI\Options $options) {

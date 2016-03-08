@@ -53,6 +53,9 @@ class PharInstaller {
      * @param string $destination
      */
     private function link(File $phar, $destination) {
+        if (file_exists($destination)) {
+            unlink($destination);
+        }
         $this->output->writeInfo(sprintf('Symlinking %s to %s', $phar->getFilename(), $destination));
         symlink($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
     }

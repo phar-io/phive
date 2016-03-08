@@ -95,6 +95,8 @@ spl_autoload_register(
                 'phario\\phive\\sourceslistfileloader' => '/shared/sources/SourcesListFileLoader.php',
                 'phario\\phive\\specificmajorandminorversionconstraint' => '/shared/versionconstraints/SpecificMajorAndMinorVersionConstraint.php',
                 'phario\\phive\\specificmajorversionconstraint' => '/shared/versionconstraints/SpecificMajorVersionConstraint.php',
+                'phario\\phive\\updatecommand' => '/commands/update/UpdateCommand.php',
+                'phario\\phive\\updatecommandconfig' => '/commands/update/UpdateCommandConfig.php',
                 'phario\\phive\\updaterepositorylistcommand' => '/commands/update-repository-list/UpdateRepositoryListCommand.php',
                 'phario\\phive\\url' => '/shared/Url.php',
                 'phario\\phive\\verificationfailedexception' => '/shared/exceptions/VerificationFailedException.php',

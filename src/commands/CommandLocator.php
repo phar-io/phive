@@ -56,6 +56,10 @@ class CommandLocator implements Cli\CommandLocator {
                 return $this->factory->getSkelCommand($request->getCommandOptions());
             }
 
+            case 'update': {
+                return $this->factory->getUpdateCommand($request->getCommandOptions());
+            }
+
             case 'update-repository-list': {
                 return $this->factory->getUpdateRepositoryListCommand();
             }

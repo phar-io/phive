@@ -1,12 +1,12 @@
 Usage: %phive <command> [arguments]
 
-help:
+help
     Show this help output and exit
 
-version:
+version
     Show release version and exit
 
-list:
+list
     Show a list of know PHAR aliases
 
 install <alias|url> [destination]
@@ -15,9 +15,9 @@ install <alias|url> [destination]
     alias/url       Installation via known alias or explicit download form given URL
     destination     (optional) Target directory for the PHAR
 
-    -copy          Copy PHAR file instead of using symlink
-    -global        Install PHAR globally (likely to require root privileges)
-    -temporary     Do not add entries in phive.xml for installed PHARs
+    -copy           Copy PHAR file instead of using symlink
+    -global         Install PHAR globally (likely to require root privileges)
+    -temporary      Do not add entries in phive.xml for installed PHARs
 
 purge
     Delete unused PHARs
@@ -27,6 +27,11 @@ remove <alias>
 
 skel
     Create a default configuration file
+
+update [<alias1> <alias2> ...]
+    Update PHARs configured in the project's phive.xml to the newest applicable version.
+
+    alias    If one or more aliases are provided, only those will be updated
 
 update-repository-list
     Update the alias list of known PHAR distributed applications and libraries
