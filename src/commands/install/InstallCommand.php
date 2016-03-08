@@ -54,7 +54,7 @@ class InstallCommand implements Cli\Command {
         }
 
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
-            $this->pharService->install($requestedPhar, $targetDirectory);
+            $this->pharService->install($requestedPhar, $targetDirectory, $this->config->makeCopy());
             if ($this->config->doNotAddToPhiveXml()) {
                 continue;
             }

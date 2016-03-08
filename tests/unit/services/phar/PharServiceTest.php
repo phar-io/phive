@@ -2,6 +2,7 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
+use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -115,28 +116,152 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->getPharService()->install($requestedPhar, '/tmp', true);
     }
 
-    /**
-     * @dataProvider invalidUrlProvider
-     * @expectedException \PharIo\Phive\DownloadFailedException
-     *
-     * @param $urlString
-     */
-    public function testInstallByUrlThrowsExceptionIfUrlDoesNotContainValidPharName($urlString) {
-        $this->markTestSkipped('Logic changed, @todo');
-        /*
-        $url = new Url($urlString);
+    public function testUpdate()
+    {
+        $url = new Url('https://example.com/foo-1.20.1.phar');
+        $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = RequestedPhar::fromUrl($url);
-        $this->getPharService()->install($requestedPhar, '/tmp', true);
-        */
+
+        $phar = new Phar('foo', new Version('1.20.1'), $file);
+
+        $this->repository->hasPhar('foo', new Version('1.20.1'))
+            ->shouldBeCalled()
+            ->willReturn(true);
+
+        $this->repository->getPhar('foo', new Version('1.20.1'))
+            ->shouldBeCalled()
+            ->willReturn($phar);
+
+        $this->repository->addUsage(
+            $phar,
+            '/tmp/foo'
+        )->shouldBeCalled();
+
+        $this->installer->install(
+            $file,
+            '/tmp/foo',
+            false
+        )->shouldBeCalled();
+
+        $this->getPharService()->update($requestedPhar, '/tmp');
     }
 
-    public function invalidUrlProvider() {
-        return [
-            ['https://example.com/foo.phar'],
-            ['https://example.com/bar120.phar'],
-            ['https://example.com/foo-1.2.phar'],
-            ['https://example.com/foo1.2.0.phar'],
-        ];
+    public function testInstallSkipsPharIfAlreadyInstalled()
+    {
+        $url = new Url('https://example.com/phpunit-5.2.10.phar');
+        $requestedPhar = RequestedPhar::fromUrl($url);
+
+        $this->repository->hasPhar(
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $this->repository->getPhar(
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $this->output->writeInfo(
+            Argument::any()
+        )->shouldBeCalled();
+
+        $this->repository->addUsage(
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $this->installer->install(
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $this->getPharService()->install($requestedPhar, __DIR__ .'/fixtures/tools', false);
+    }
+
+    public function testInstallHandlesDownloadFailedException()
+    {
+        $url = new Url('https://example.com/phpunit-5.2.10.phar');
+        $requestedPhar = RequestedPhar::fromUrl($url);
+
+        $this->repository->hasPhar(
+            Argument::cetera()
+        )->willReturn(false);
+
+        $this->downloader->download(
+            Argument::cetera()
+        )->willThrow(new DownloadFailedException());
+
+        $this->output->writeError(
+            Argument::any()
+        )->shouldBeCalled();
+
+        $this->installer->install(
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $this->getPharService()->install($requestedPhar, '/tmp', false);
+    }
+
+    public function testInstallHandlesPharRepositoryException()
+    {
+        $url = new Url('https://example.com/phpunit-5.2.10.phar');
+        $requestedPhar = RequestedPhar::fromUrl($url);
+
+        $this->repository->hasPhar(
+            Argument::cetera()
+        )->willReturn(true);
+
+        $this->repository->getPhar(
+            Argument::cetera()
+        )->willThrow(new PharRepositoryException());
+
+        $this->output->writeError(
+            Argument::any()
+        )->shouldBeCalled();
+
+        $this->installer->install(
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $this->getPharService()->install($requestedPhar, '/tmp', false);
+    }
+
+    public function testInstallHandlesVerificationFailedException()
+    {
+        $url = new Url('https://example.com/phpunit-5.2.10.phar');
+        $requestedPhar = RequestedPhar::fromUrl($url);
+
+        $this->repository->hasPhar(
+            Argument::cetera()
+        )->willReturn(false);
+
+        $this->downloader->download(
+            Argument::cetera()
+        )->willThrow(new VerificationFailedException());
+
+        $this->output->writeError(
+            Argument::any()
+        )->shouldBeCalled();
+
+        $this->installer->install(
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $this->getPharService()->install($requestedPhar, '/tmp', false);
+    }
+
+    public function testInstallHandlesResolveException()
+    {
+        $requestedPhar = RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
+
+        $this->resolver->resolve($requestedPhar->getAlias())
+            ->willThrow(new ResolveException());
+
+        $this->output->writeError(
+            Argument::any()
+        )->shouldBeCalled();
+
+        $this->installer->install(
+            Argument::cetera()
+        )->shouldNotBeCalled();
+
+        $this->getPharService()->install($requestedPhar, '/tmp', false);
     }
 
     protected function setUp() {

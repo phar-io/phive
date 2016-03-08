@@ -16,7 +16,7 @@ class PharService {
     /**
      * @var PhiveInstallDB
      */
-    private $repository;
+    private $installDB;
 
     /**
      * @var AliasResolver
@@ -36,7 +36,7 @@ class PharService {
     /**
      * @param PharDownloader         $downloader
      * @param PharInstaller          $installer
-     * @param PhiveInstallDB         $repository
+     * @param PhiveInstallDB         $installDB
      * @param AliasResolver          $resolver
      * @param Cli\Output             $output
      * @param SourceRepositoryLoader $sourceRepositoryLoader
@@ -44,14 +44,14 @@ class PharService {
     public function __construct(
         PharDownloader $downloader,
         PharInstaller $installer,
-        PhiveInstallDB $repository,
+        PhiveInstallDB $installDB,
         AliasResolver $resolver,
         Cli\Output $output,
         SourceRepositoryLoader $sourceRepositoryLoader
     ) {
         $this->downloader = $downloader;
         $this->installer = $installer;
-        $this->repository = $repository;
+        $this->installDB = $installDB;
         $this->aliasResolver = $resolver;
         $this->output = $output;
         $this->sourceRepositoryLoader = $sourceRepositoryLoader;
@@ -59,24 +59,49 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param string        $destination
-     * @param bool          $makeCopy
+     * @param string $destination
+     * @param bool $makeCopy
      */
-    public function install(RequestedPhar $requestedPhar, $destination, $makeCopy = false) {
+    public function install(RequestedPhar $requestedPhar, $destination, $makeCopy) {
+        $this->doInstall($requestedPhar, $destination, $makeCopy, false);
+    }
+
+    /**
+     * @param RequestedPhar $requestedPhar
+     * @param string $destination
+     */
+    public function update(RequestedPhar $requestedPhar, $destination)
+    {
+        $this->doInstall($requestedPhar, $destination, false, true);
+    }
+
+    /**
+     * @param RequestedPhar $requestedPhar
+     * @param string $destination
+     * @param bool $makeCopy
+     * @param bool $replaceExisting
+     */
+    private function doInstall(RequestedPhar $requestedPhar, $destination, $makeCopy, $replaceExisting) {
         try {
             $release = $this->getRelease($requestedPhar);
 
             $name = $this->getPharName($release->getUrl());
             $version = $this->getPharVersion($release->getUrl());
-            if (!$this->repository->hasPhar($name, $version)) {
-                $phar = new Phar($name, $version, $this->downloader->download($release));
-                $this->repository->addPhar($phar);
-            } else {
-                $phar = $this->repository->getPhar($name, $version);
+
+            $destination = $destination . '/' . $name;
+            if (file_exists($destination) && !$replaceExisting) {
+                $this->output->writeInfo(sprintf('%s is already installed, skipping.', $name));
+                return;
             }
-            $destination = $destination . '/' . $phar->getName();
+
+            if (!$this->installDB->hasPhar($name, $version)) {
+                $phar = new Phar($name, $version, $this->downloader->download($release));
+                $this->installDB->addPhar($phar);
+            } else {
+                $phar = $this->installDB->getPhar($name, $version);
+            }
             $this->installer->install($phar->getFile(), $destination, $makeCopy);
-            $this->repository->addUsage($phar, $destination);
+            $this->installDB->addUsage($phar, $destination);
         } catch (DownloadFailedException $e) {
             $this->output->writeError($e->getMessage());
         } catch (PharRepositoryException $e) {

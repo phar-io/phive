@@ -25,11 +25,11 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $command = new UpdateCommand($config, $pharService, $this->getPhiveXmlConfigMock());
 
         $pharService->expects($this->at(0))
-            ->method('install')
+            ->method('update')
             ->with($requestedPhar1, '/foo');
 
         $pharService->expects($this->at(1))
-            ->method('install')
+            ->method('update')
             ->with($requestedPhar2, '/foo');
 
         $command->execute();
