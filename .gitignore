@@ -7,4 +7,5 @@
 /phpunit.xml
 /tools
 /vendor
+/composer.phar
 cache.properties
