@@ -194,7 +194,7 @@ class PhiveInstallDB {
      */
     public function getUnusedPhars() {
         $unusedPhars = [];
-        foreach ($this->dbFile->query('//phive:phar[count(usage) = 0]') as $pharNode) {
+        foreach ($this->dbFile->query('//phive:phar[not(phive:usage)]') as $pharNode) {
             $unusedPhars[] = $this->nodetoPhar($pharNode);
         }
         return $unusedPhars;
