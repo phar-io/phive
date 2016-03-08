@@ -80,7 +80,7 @@ spl_autoload_register(
                 'phario\\phive\\releasecollection' => '/shared/phar/ReleaseCollection.php',
                 'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
                 'phario\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
-                'phario\\phive\\requestedphar' => '/commands/install/RequestedPhar.php',
+                'phario\\phive\\requestedphar' => '/shared/phar/RequestedPhar.php',
                 'phario\\phive\\resolveexception' => '/shared/exceptions/ResolveException.php',
                 'phario\\phive\\sha1hash' => '/shared/hash/sha/Sha1Hash.php',
                 'phario\\phive\\sha256hash' => '/shared/hash/sha/Sha256Hash.php',
