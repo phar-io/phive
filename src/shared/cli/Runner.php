@@ -9,6 +9,13 @@ use PharIo\Phive\Exception;
 
 class Runner {
 
+    const RC_OK = 0;
+    // OUTDATED PHP VERSION = 1
+    const RC_EXT_MISSING = 2;
+    const RC_UNKNOWN_COMMAND = 3;
+    const RC_ERROR = 4;
+    const RC_BUG_FOUND = 5;
+
     /**
      * @var CommandLocator
      */
@@ -44,6 +51,8 @@ class Runner {
 
     /**
      * @param Request $request
+     *
+     * @return int
      */
     public function run(Request $request) {
         try {
@@ -52,6 +61,7 @@ class Runner {
             $this->showHeader();
             $this->locator->getCommandForRequest($request)->execute();
             $this->showFooter();
+            return self::RC_OK;
         } catch (ExtensionsMissingException $e) {
             $this->output->writeError(
                 sprintf(
@@ -59,21 +69,27 @@ class Runner {
                     join("\n          ", $e->getMissing())
                 )
             );
+            return self::RC_EXT_MISSING;
         } catch (CommandLocatorException $e) {
             if ($e->getCode() == CommandLocatorException::UnknownCommand) {
                 $this->output->writeError(
                     sprintf("Unknown command '%s'\n\n", $request->getCommand())
                 );
+                return self::RC_UNKNOWN_COMMAND;
             } else {
                 $this->showError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
+                return self::RC_ERROR;
             }
         } catch (Exception $e) {
             $this->output->writeError($e->getMessage());
             $this->showFooter();
+            return self::RC_ERROR;
         } catch (\Exception $e) {
             $this->showError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
+            return self::RC_BUG_FOUND;
         } catch (\Throwable $t) {
             $this->showError($t->getMessage(), $t->getFile(), $t->getLine(), $t->getTrace());
+            return self::RC_BUG_FOUND;
         }
     }
 
@@ -84,6 +100,7 @@ class Runner {
      * @param array|null $trace
      */
     private function showError($error, $file, $line, array $trace = null) {
+        
         $baseLen = strlen(realpath(__DIR__ . '/../../..')) + 1;
 
         $message = [$error];

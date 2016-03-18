@@ -82,35 +82,25 @@ class PharService {
      * @param bool $replaceExisting
      */
     private function doInstall(RequestedPhar $requestedPhar, $destination, $makeCopy, $replaceExisting) {
-        try {
-            $release = $this->getRelease($requestedPhar);
+        $release = $this->getRelease($requestedPhar);
 
-            $name = $this->getPharName($release->getUrl());
-            $version = $this->getPharVersion($release->getUrl());
+        $name = $this->getPharName($release->getUrl());
+        $version = $this->getPharVersion($release->getUrl());
 
-            $destination = $destination . '/' . $name;
-            if (file_exists($destination) && !$replaceExisting) {
-                $this->output->writeInfo(sprintf('%s is already installed, skipping.', $name));
-                return;
-            }
-
-            if (!$this->installDB->hasPhar($name, $version)) {
-                $phar = new Phar($name, $version, $this->downloader->download($release));
-                $this->installDB->addPhar($phar);
-            } else {
-                $phar = $this->installDB->getPhar($name, $version);
-            }
-            $this->installer->install($phar->getFile(), $destination, $makeCopy);
-            $this->installDB->addUsage($phar, $destination);
-        } catch (DownloadFailedException $e) {
-            $this->output->writeError($e->getMessage());
-        } catch (PharRepositoryException $e) {
-            $this->output->writeError($e->getMessage());
-        } catch (VerificationFailedException $e) {
-            $this->output->writeError($e->getMessage());
-        } catch (ResolveException $e) {
-            $this->output->writeError($e->getMessage());
+        $destination = $destination . '/' . $name;
+        if (file_exists($destination) && !$replaceExisting) {
+            $this->output->writeInfo(sprintf('%s is already installed, skipping.', $name));
+            return;
         }
+
+        if (!$this->installDB->hasPhar($name, $version)) {
+            $phar = new Phar($name, $version, $this->downloader->download($release));
+            $this->installDB->addPhar($phar);
+        } else {
+            $phar = $this->installDB->getPhar($name, $version);
+        }
+        $this->installer->install($phar->getFile(), $destination, $makeCopy);
+        $this->installDB->addUsage($phar, $destination);
     }
 
     /**
