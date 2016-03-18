@@ -67,7 +67,7 @@ class Factory {
      * @return CLI\Output
      */
     private function getConsoleOutput() {
-        return new CLI\ConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
+        return new CLI\ColoredConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
     }
 
     /**
