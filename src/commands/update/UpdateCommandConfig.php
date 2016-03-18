@@ -1,8 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class UpdateCommandConfig
-{
+class UpdateCommandConfig {
 
     /**
      * @var Cli\Options
@@ -20,8 +19,8 @@ class UpdateCommandConfig
     private $phiveXmlConfig;
 
     /**
-     * @param Cli\Options $cliOptions
-     * @param Config $config
+     * @param Cli\Options    $cliOptions
+     * @param Config         $config
      * @param PhiveXmlConfig $phiveXmlConfig
      */
     public function __construct(

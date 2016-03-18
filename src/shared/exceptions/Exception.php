@@ -2,4 +2,5 @@
 namespace PharIo\Phive;
 
 interface Exception {
+
 }

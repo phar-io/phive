@@ -1,8 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class UpdateCommand implements Cli\Command
-{
+class UpdateCommand implements Cli\Command {
 
     /**
      * @var UpdateCommandConfig
@@ -21,8 +20,8 @@ class UpdateCommand implements Cli\Command
 
     /**
      * @param UpdateCommandConfig $updateCommandConfig
-     * @param PharService $pharService
-     * @param PhiveXmlConfig $phiveXmlConfig
+     * @param PharService         $pharService
+     * @param PhiveXmlConfig      $phiveXmlConfig
      */
     public function __construct(
         UpdateCommandConfig $updateCommandConfig,

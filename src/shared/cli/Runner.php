@@ -3,9 +3,9 @@ namespace PharIo\Phive\Cli;
 
 use PharIo\Phive\Environment;
 use PharIo\Phive\ErrorException;
+use PharIo\Phive\Exception;
 use PharIo\Phive\ExtensionsMissingException;
 use PharIo\Phive\PhiveVersion;
-use PharIo\Phive\Exception;
 
 class Runner {
 
@@ -100,7 +100,7 @@ class Runner {
      * @param array|null $trace
      */
     private function showError($error, $file, $line, array $trace = null) {
-        
+
         $baseLen = strlen(realpath(__DIR__ . '/../../..')) + 1;
 
         $message = [$error];

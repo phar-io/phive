@@ -14,7 +14,7 @@ class PhiveInstallDB {
     private $dbFile;
 
     /**
-     * @param XmlFile $xmlFile
+     * @param XmlFile   $xmlFile
      * @param Directory $pharDirectory
      */
     public function __construct(XmlFile $xmlFile, Directory $pharDirectory) {

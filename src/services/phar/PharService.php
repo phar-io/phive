@@ -59,8 +59,8 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param string $destination
-     * @param bool $makeCopy
+     * @param string        $destination
+     * @param bool          $makeCopy
      */
     public function install(RequestedPhar $requestedPhar, $destination, $makeCopy) {
         $this->doInstall($requestedPhar, $destination, $makeCopy, false);
@@ -68,18 +68,17 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param string $destination
+     * @param string        $destination
      */
-    public function update(RequestedPhar $requestedPhar, $destination)
-    {
+    public function update(RequestedPhar $requestedPhar, $destination) {
         $this->doInstall($requestedPhar, $destination, false, true);
     }
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param string $destination
-     * @param bool $makeCopy
-     * @param bool $replaceExisting
+     * @param string        $destination
+     * @param bool          $makeCopy
+     * @param bool          $replaceExisting
      */
     private function doInstall(RequestedPhar $requestedPhar, $destination, $makeCopy, $replaceExisting) {
         $release = $this->getRelease($requestedPhar);
