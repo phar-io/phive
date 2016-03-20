@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class FileDownloader {
+class FileDownloader implements HttpProgressHandler {
 
     /**
      * @var HttpClient
@@ -29,8 +29,11 @@ class FileDownloader {
      * @throws DownloadFailedException
      */
     public function download(Url $url) {
-        $this->output->writeInfo(sprintf('Downloading %s', $url));
-        $response = $this->curl->get($url);
+
+        // force new line for progress update
+        $this->output->writeInfo('');
+
+        $response = $this->curl->get($url, [], $this);
         if ($response->getHttpCode() !== 200) {
             throw new DownloadFailedException(
                 sprintf(
@@ -53,6 +56,26 @@ class FileDownloader {
      */
     private function getFilename(Url $url) {
         return new Filename(pathinfo($url, PATHINFO_BASENAME));
+    }
+
+    public function handleUpdate(HttpProgressUpdate $update) {
+        $total = $update->getExpectedUploadSize();
+        if ($total === 0) {
+            return;
+        }
+        $template = sprintf(
+            'Downloading %%s [ %%%dd / %%%dd - %%3d%%%% ]',
+            strlen($total),
+            strlen($total)
+        );
+        $progress = sprintf(
+            $template,
+            $update->getUrl(),
+            $update->getBytesReceived(),
+            $total,
+            $update->getDownloadPercent()
+        );
+        $this->output->writeInfo(sprintf("\e[1A%s", $progress));
     }
 
 }
