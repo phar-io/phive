@@ -9,5 +9,6 @@ interface HttpClient {
      *
      * @return HttpResponse
      */
-    public function get(Url $url, array $params = []);
+    public function get(Url $url, array $params = [], HttpProgressHandler $handler = null);
+    
 }

@@ -1,0 +1,91 @@
+<?php
+namespace PharIo\Phive;
+
+class HttpProgressUpdate {
+
+    /**
+     * @var Url
+     */
+    private $url;
+
+    /**
+     * @var int
+     */
+    private $expectedDown;
+
+    /**
+     * @var int
+     */
+    private $received;
+
+    /**
+     * @var int
+     */
+    private $expectedUp;
+
+    /**
+     * @var int
+     */
+    private $sent;
+
+    /**
+     * HttpProgressUpdate constructor.
+     *
+     * @param Url $url
+     * @param int $expectedDown
+     * @param int $received
+     * @param int $expectedUp
+     * @param int $sent
+     */
+    public function __construct(Url $url, $expectedDown, $received, $expectedUp, $sent) {
+        $this->url = $url;
+        $this->expectedDown = $expectedDown;
+        $this->received = $received;
+        $this->expectedUp = $expectedUp;
+        $this->sent = $sent;
+    }
+
+    /**
+     * @return Url
+     */
+    public function getUrl() {
+        return $this->url;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpectedDownloadSize() {
+        return $this->expectedDown;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBytesReceived() {
+        return $this->received;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExpectedUploadSize() {
+        return $this->expectedUp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBytesSent() {
+        return $this->sent;
+    }
+
+    public function getDownloadPercent() {
+        return round($this->getBytesReceived() / ($this->getExpectedDownloadSize() / 100));
+    }
+
+    public function getUploadPercent() {
+        return round($this->getBytesSent() / ($this->getExpectedUploadSize() / 100));
+    }
+
+}

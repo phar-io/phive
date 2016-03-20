@@ -51,6 +51,8 @@ spl_autoload_register(
                 'phario\\phive\\hash' => '/shared/hash/Hash.php',
                 'phario\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
                 'phario\\phive\\httpclient' => '/shared/http/HttpClient.php',
+                'phario\\phive\\httpprogresshandler' => '/shared/http/HttpProgressHandler.php',
+                'phario\\phive\\httpprogressupdate' => '/shared/http/HttpProgressUpdate.php',
                 'phario\\phive\\httpresponse' => '/shared/http/HttpResponse.php',
                 'phario\\phive\\installationfailedexception' => '/shared/exceptions/InstallationFailedException.php',
                 'phario\\phive\\installcommand' => '/commands/install/InstallCommand.php',
