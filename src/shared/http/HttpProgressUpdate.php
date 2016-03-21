@@ -81,11 +81,17 @@ class HttpProgressUpdate {
     }
 
     public function getDownloadPercent() {
-        return round($this->getBytesReceived() / ($this->getExpectedDownloadSize() / 100));
+        if ($this->expectedDown === 0) {
+            return 0;
+        }
+        return round( $this->received / ($this->expectedDown / 100));
     }
 
     public function getUploadPercent() {
-        return round($this->getBytesSent() / ($this->getExpectedUploadSize() / 100));
+        if ($this->expectedUp === 0) {
+            return 0;
+        }
+        return round( $this->sent / ($this->expectedUp / 100));
     }
 
 }
