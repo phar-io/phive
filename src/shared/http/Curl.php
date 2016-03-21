@@ -9,7 +9,7 @@ class Curl implements HttpClient {
     private $config;
 
     /**
-     * @var callable
+     * @var HttpProgressHandler
      */
     private $progressHandler;
 
@@ -17,7 +17,7 @@ class Curl implements HttpClient {
      * @var Url
      */
     private $url;
-    
+
     /**
      * @param CurlConfig $curlConfig
      */
@@ -64,6 +64,6 @@ class Curl implements HttpClient {
 
         $this->progressHandler->handleUpdate(
             new HttpProgressUpdate($this->url, $expectedDown, $received, $expectedUp, $sent)
-        ) ? 0 : 1;
+        ) ? 1 : 0;
     }
 }
