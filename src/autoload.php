@@ -80,6 +80,7 @@ spl_autoload_register(
                 'phario\\phive\\purgecommandconfig' => '/commands/purge/PurgeCommandConfig.php',
                 'phario\\phive\\release' => '/shared/phar/Release.php',
                 'phario\\phive\\releasecollection' => '/shared/phar/ReleaseCollection.php',
+                'phario\\phive\\releaseexception' => '/shared/exceptions/ReleaseException.php',
                 'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
                 'phario\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
                 'phario\\phive\\requestedphar' => '/shared/phar/RequestedPhar.php',
@@ -97,6 +98,7 @@ spl_autoload_register(
                 'phario\\phive\\sourceslistfileloader' => '/shared/sources/SourcesListFileLoader.php',
                 'phario\\phive\\specificmajorandminorversionconstraint' => '/shared/versionconstraints/SpecificMajorAndMinorVersionConstraint.php',
                 'phario\\phive\\specificmajorversionconstraint' => '/shared/versionconstraints/SpecificMajorVersionConstraint.php',
+                'phario\\phive\\unsupportedversionconstraintexception' => '/shared/exceptions/UnsupportedVersionConstraintException.php',
                 'phario\\phive\\updatecommand' => '/commands/update/UpdateCommand.php',
                 'phario\\phive\\updatecommandconfig' => '/commands/update/UpdateCommandConfig.php',
                 'phario\\phive\\updaterepositorylistcommand' => '/commands/update-repository-list/UpdateRepositoryListCommand.php',
@@ -108,8 +110,7 @@ spl_autoload_register(
                 'phario\\phive\\versionconstraintgroup' => '/shared/versionconstraints/VersionConstraintGroup.php',
                 'phario\\phive\\versionconstraintparser' => '/shared/versionconstraints/VersionConstraintParser.php',
                 'phario\\phive\\versionnumber' => '/shared/version/VersionNumber.php',
-                'phario\\phive\\xmlfile' => '/shared/XmlFile.php',
-                'phario\\phive \\releaseexception' => '/shared/exceptions/ReleaseException.php'
+                'phario\\phive\\xmlfile' => '/shared/XmlFile.php'
             );
         }
         $cn = strtolower($class);

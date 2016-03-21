@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive ;
+namespace PharIo\Phive;
 
 class ReleaseException extends \Exception implements Exception {
 
