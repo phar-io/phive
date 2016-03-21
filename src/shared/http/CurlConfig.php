@@ -77,7 +77,7 @@ class CurlConfig {
      * @return array
      */
     public function asCurlOptArray() {
-        return [
+        $options = [
             CURLOPT_MAXREDIRS      => 5,
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_TIMEOUT        => 60,
@@ -86,11 +86,21 @@ class CurlConfig {
             CURLOPT_FAILONERROR    => true,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_PROTOCOLS      => CURLPROTO_HTTPS,
             CURLOPT_USERAGENT      => $this->userAgent,
             CURLOPT_PROXY          => $this->proxyUrl,
             CURLOPT_PROXYUSERPWD   => $this->proxyCredentials
         ];
+
+        /*
+         * CURLOPT_PROTOCOLS is not available in older versions of HHVM,
+         * so we explicitly have to check if it is defined.
+         * See https://github.com/facebook/hhvm/issues/3702
+         */
+        if (defined('CURLOPT_PROTOCOLS')) {
+            $options[CURLOPT_PROTOCOLS] = CURLPROTO_HTTPS;
+        }
+
+        return $options;
     }
 
 }
