@@ -59,23 +59,35 @@ class FileDownloader implements HttpProgressHandler {
     }
 
     public function handleUpdate(HttpProgressUpdate $update) {
-        $total = $update->getExpectedUploadSize();
-        if ($total === 0) {
-            return;
+        if ($update->getExpectedDownloadSize() === 0) {
+            return true;
         }
-        $template = sprintf(
-            'Downloading %%s [ %%%dd / %%%dd - %%3d%%%% ]',
-            strlen($total),
-            strlen($total)
-        );
+        $template = 'Downloading %s [ %s / %s - %3d%% ]';
         $progress = sprintf(
             $template,
             $update->getUrl(),
-            $update->getBytesReceived(),
-            $total,
+            $this->formatSize(
+                $update->getExpectedDownloadSize(),
+                $update->getBytesReceived()
+            ),
+            $this->formatSize(
+                $update->getExpectedDownloadSize(),
+                $update->getExpectedDownloadSize()
+            ),
             $update->getDownloadPercent()
         );
         $this->output->writeInfo(sprintf("\e[1A%s", $progress));
+        return true;
+    }
+
+    private function formatSize($expected, $current) {
+        if ($expected >= 1048576) { // MB
+            return number_format($current / 1048576, 2) . ' MB';
+        }
+        if ($expected >= 1024) { // KB
+            return number_format($current / 1024, 2) . ' KB';
+        }
+        return $current . ' B';
     }
 
 }
