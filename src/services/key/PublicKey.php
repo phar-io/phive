@@ -24,7 +24,7 @@ class PublicKey {
     private $public;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      */
     private $created;
 
@@ -81,7 +81,7 @@ class PublicKey {
             $parts = explode(':', $line);
             switch ($parts[0]) {
                 default: {
-                    continue;
+                    continue 2;
                 }
                 case 'uid': {
                     // 0   1                                      2
