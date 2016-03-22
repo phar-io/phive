@@ -124,8 +124,7 @@ class Factory {
      */
     private function getConfig() {
         return new Config(
-            $this->getEnvironment(),
-            $this->getPhiveXmlConfig()
+            $this->getEnvironment()
         );
     }
 
@@ -373,11 +372,9 @@ class Factory {
     }
 
     /**
-     * @param CLI\Options $options
-     *
      * @return ListCommand
      */
-    public function getListCommand(CLI\Options $options) {
+    public function getListCommand() {
         return new ListCommand(
             $this->getSourcesList(),
             $this->getColoredConsoleOutput()

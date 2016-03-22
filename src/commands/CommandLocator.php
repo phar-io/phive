@@ -41,7 +41,7 @@ class CommandLocator implements Cli\CommandLocator {
             }
 
             case 'list': {
-                return $this->factory->getListCommand($request->getCommandOptions());
+                return $this->factory->getListCommand();
             }
 
             case 'purge': {
