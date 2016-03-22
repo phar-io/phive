@@ -153,7 +153,7 @@ class Runner {
 
     public function shutdownHandler() {
         $error = error_get_last();
-        if (!$error) {
+        if ($error === null) {
             return;
         }
         $this->showError($error['message'], $error['file'], $error['line'], debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
