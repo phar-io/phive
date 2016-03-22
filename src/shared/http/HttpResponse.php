@@ -19,9 +19,9 @@ class HttpResponse {
     private $errorMessage = '';
 
     /**
-     * @param string $responseBody
-     * @param array  $curlInfo
-     * @param string $curlError
+     * @param string  $responseBody
+     * @param integer $httpCode
+     * @param string  $errorMessage
      */
     public function __construct($responseBody, $httpCode, $errorMessage) {
         $this->responseBody = $responseBody;

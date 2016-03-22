@@ -26,26 +26,34 @@ class Curl implements HttpClient {
     }
 
     /**
-     * @param Url   $url
-     * @param array $params
+     * @param Url                 $url
+     * @param array               $params
+     *
+     * @param HttpProgressHandler $progressHandler
      *
      * @return HttpResponse
+     * 
+     * @throws HttpException
      */
     public function get(Url $url, array $params = [], HttpProgressHandler $progressHandler = null) {
-        $this->progressHandler = $progressHandler;
-        $this->url = $url;
+        try {
+            $this->progressHandler = $progressHandler;
+            $this->url = $url;
 
-        $ch = curl_init($url . '?' . http_build_query($params));
-        curl_setopt_array($ch, $this->config->asCurlOptArray());
-        curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
+            $ch = curl_init($url . '?' . http_build_query($params));
+            curl_setopt_array($ch, $this->config->asCurlOptArray());
+            curl_setopt($ch, CURLOPT_NOPROGRESS, false);
+            curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
 
-        $hostname = parse_url((string)$url, PHP_URL_HOST);
-        if ($this->config->hasLocalSslCertificate($hostname)) {
-            curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname));
+            $hostname = $url->getHostname();
+            if ($this->config->hasLocalSslCertificate($hostname)) {
+                curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname));
+            }
+
+            return new HttpResponse(curl_exec($ch), curl_getinfo($ch, CURLINFO_HTTP_CODE), curl_error($ch));
+        } catch (CurlException $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
         }
-
-        return new HttpResponse(curl_exec($ch), curl_getinfo($ch, CURLINFO_HTTP_CODE), curl_error($ch));
     }
 
     /**
