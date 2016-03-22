@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 class File {
 
     /**
-     * @var string
+     * @var Filename
      */
     private $filename = '';
 
