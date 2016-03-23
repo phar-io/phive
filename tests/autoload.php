@@ -7,6 +7,7 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'phario\\phive\\abstractversionconstrainttest' => '/unit/shared/versionconstraints/AbstractVersionConstraintTest.php',
                 'phario\\phive\\aliasresolvertest' => '/unit/services/phar/AliasResolverTest.php',
                 'phario\\phive\\anyversionconstrainttest' => '/unit/shared/versionconstraints/AnyVersionConstraintTest.php',
                 'phario\\phive\\checksumservicetest' => '/unit/services/checksum/ChecksumServiceTest.php',
