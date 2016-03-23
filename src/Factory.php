@@ -85,7 +85,7 @@ class Factory {
      * @return Environment
      */
     private function getEnvironment() {
-        return new Environment($_SERVER);
+        return Environment::fromSuperGlobals();
     }
 
     /**

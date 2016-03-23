@@ -15,8 +15,14 @@ class Environment {
         $this->server = $server;
     }
 
+    public static function fromSuperGlobals() {
+        return new self($_SERVER);
+    }
+    
     /**
      * @return Directory
+     * @throws \PharIo\Phive\DirectoryException
+     * @throws \BadMethodCallException
      */
     public function getHomeDirectory() {
         if (!$this->hasHomeDirectory()) {
