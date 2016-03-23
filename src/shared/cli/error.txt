@@ -1,4 +1,4 @@
-An error occured while processing your request:
+An error occurred while processing your request:
 
           %s
 

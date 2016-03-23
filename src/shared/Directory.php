@@ -78,7 +78,7 @@ class Directory {
             $rc = chmod($path, $mode);
             if (!$rc) {
                 throw new \ErrorException('Chmod call returned false.');
-            };
+            }
             clearstatcache(true, $path);
         } catch (\ErrorException $e) {
             throw new DirectoryException(

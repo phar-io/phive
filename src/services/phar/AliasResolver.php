@@ -12,7 +12,8 @@ class AliasResolver {
     private $sources;
 
     /**
-     * @param SourcesList $repositoryList
+     * @param SourcesList $sourcesList
+     *
      */
     public function __construct(SourcesList $sourcesList) {
         $this->sources = $sourcesList;

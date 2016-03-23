@@ -56,7 +56,7 @@ class UpdateCommandConfig {
     private function getPharAliasesFromPhiveXmlConfig(array $filter) {
         $phars = [];
         foreach ($this->phiveXmlConfig->getPhars() as $phar) {
-            if (!empty($filter) && !in_array((string)($phar->getAlias()), $filter)) {
+            if (!empty($filter) && !in_array((string)$phar->getAlias(), $filter)) {
                 continue;
             }
             $phars[] = $phar;

@@ -12,9 +12,11 @@ class ExtensionsMissingException extends \Exception {
      * ExtensionsMissingException constructor.
      *
      * @param array $missing
+     *
      */
     public function __construct(array $missing) {
         $this->missing = $missing;
+        parent::__construct();
     }
 
     /**

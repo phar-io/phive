@@ -43,7 +43,7 @@ class Filename {
      * @return string
      */
     public function __toString() {
-        return $this->aSstring();
+        return $this->asString();
     }
 
     public function asString() {

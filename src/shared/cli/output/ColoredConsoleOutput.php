@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive\Cli;
 
-class ColoredConsoleOutput extends ConsoleOutput implements Output {
+class ColoredConsoleOutput extends ConsoleOutput {
 
     /**
      * @param string $errorMessage

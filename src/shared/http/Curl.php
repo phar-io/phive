@@ -32,7 +32,7 @@ class Curl implements HttpClient {
      * @param HttpProgressHandler $progressHandler
      *
      * @return HttpResponse
-     * 
+     *
      * @throws HttpException
      */
     public function get(Url $url, array $params = [], HttpProgressHandler $progressHandler = null) {
@@ -70,7 +70,7 @@ class Curl implements HttpClient {
             return 0;
         }
 
-        $this->progressHandler->handleUpdate(
+        return $this->progressHandler->handleUpdate(
             new HttpProgressUpdate($this->url, $expectedDown, $received, $expectedUp, $sent)
         ) ? 1 : 0;
     }

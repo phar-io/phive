@@ -87,7 +87,7 @@ class PharService {
         $version = $this->getPharVersion($release->getUrl());
 
         $destination = $destination . '/' . $name;
-        if (file_exists($destination) && !$replaceExisting) {
+        if (!$replaceExisting && file_exists($destination)) {
             $this->output->writeInfo(sprintf('%s is already installed, skipping.', $name));
             return;
         }

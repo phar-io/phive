@@ -62,7 +62,7 @@ class GnuPG {
 
     private function open(array $params, array $pipes = []) {
         $this->proc = proc_open(
-            $this->buildCliCommand($params),
+            $this->buildCLICommand($params),
             $this->buildPipes($pipes),
             $this->pipeHandles
         );
