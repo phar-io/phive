@@ -6,7 +6,7 @@ use PharIo\Phive\Cli;
 class PurgeCommandConfig {
 
     /**
-     * @var CLI\Options
+     * @var Cli\Options
      */
     private $cliOptions;
 
@@ -18,10 +18,10 @@ class PurgeCommandConfig {
     /**
      * InstallCommandConfig constructor.
      *
-     * @param CLI\Options $options
+     * @param Cli\Options $options
      * @param Config      $config
      */
-    public function __construct(CLI\Options $options, Config $config) {
+    public function __construct(Cli\Options $options, Config $config) {
         $this->cliOptions = $options;
         $this->config = $config;
     }

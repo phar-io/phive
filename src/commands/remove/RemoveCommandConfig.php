@@ -6,7 +6,7 @@ use PharIo\Phive\Cli;
 class RemoveCommandConfig {
 
     /**
-     * @var CLI\Options
+     * @var Cli\Options
      */
     private $cliOptions;
 
@@ -18,10 +18,10 @@ class RemoveCommandConfig {
     /**
      * InstallCommandConfig constructor.
      *
-     * @param CLI\Options $options
+     * @param Cli\Options $options
      * @param Config      $config
      */
-    public function __construct(CLI\Options $options, Config $config) {
+    public function __construct(Cli\Options $options, Config $config) {
         $this->cliOptions = $options;
         $this->config = $config;
     }
@@ -35,7 +35,7 @@ class RemoveCommandConfig {
 
     /**
      * @return string
-     * @throws CLI\CommandOptionsException
+     * @throws Cli\CommandOptionsException
      */
     public function getPharName() {
         return $this->cliOptions->getArgument(0);

@@ -6,7 +6,7 @@ use PharIo\Phive\Cli;
 class SkelCommandConfig {
 
     /**
-     * @var CLI\Options
+     * @var Cli\Options
      */
     private $cliOptions;
 
@@ -16,10 +16,10 @@ class SkelCommandConfig {
     private $workingDirectory = '';
 
     /**
-     * @param CLI\Options        $cliOptions
+     * @param Cli\Options        $cliOptions
      * @param                    $workingDirectory
      */
-    public function __construct(CLI\Options $cliOptions, $workingDirectory) {
+    public function __construct(Cli\Options $cliOptions, $workingDirectory) {
         $this->cliOptions = $cliOptions;
         $this->workingDirectory = rtrim($workingDirectory, '/');
 

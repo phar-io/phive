@@ -3,7 +3,7 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
 
-class RemoveCommand implements CLI\Command {
+class RemoveCommand implements Cli\Command {
 
     /**
      * @var RemoveCommandConfig

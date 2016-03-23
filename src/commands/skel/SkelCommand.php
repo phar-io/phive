@@ -3,7 +3,7 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
 
-class SkelCommand implements CLI\Command {
+class SkelCommand implements Cli\Command {
 
     /**
      * @var SkelCommandConfig

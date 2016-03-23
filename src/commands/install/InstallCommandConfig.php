@@ -6,7 +6,7 @@ use PharIo\Phive\Cli;
 class InstallCommandConfig {
 
     /**
-     * @var CLI\Options
+     * @var Cli\Options
      */
     private $cliOptions;
 
@@ -21,11 +21,11 @@ class InstallCommandConfig {
     private $phiveXmlConfig;
 
     /**
-     * @param CLI\Options    $options
+     * @param Cli\Options    $options
      * @param Config         $config
      * @param PhiveXmlConfig $phiveXmlConfig
      */
-    public function __construct(CLI\Options $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
+    public function __construct(Cli\Options $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
         $this->cliOptions = $options;
         $this->config = $config;
         $this->phiveXmlConfig = $phiveXmlConfig;
@@ -40,7 +40,7 @@ class InstallCommandConfig {
 
     /**
      * @return RequestedPhar[]
-     * @throws CLI\CommandOptionsException
+     * @throws Cli\CommandOptionsException
      */
     public function getRequestedPhars() {
         if ($this->cliOptions->getArgumentCount() == 0) {
@@ -51,7 +51,7 @@ class InstallCommandConfig {
 
     /**
      * @return RequestedPhar[]
-     * @throws CLI\CommandOptionsException
+     * @throws Cli\CommandOptionsException
      */
     private function getPharsFromCliArguments() {
         $phars = [];

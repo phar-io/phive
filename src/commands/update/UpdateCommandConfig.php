@@ -66,7 +66,7 @@ class UpdateCommandConfig {
 
     /**
      * @return string[]
-     * @throws CLI\CommandOptionsException
+     * @throws Cli\CommandOptionsException
      */
     private function getPharsFromCliArguments() {
         $phars = [];

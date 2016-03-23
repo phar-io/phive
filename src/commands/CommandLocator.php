@@ -18,12 +18,12 @@ class CommandLocator implements Cli\CommandLocator {
     }
 
     /**
-     * @param CLI\Request $request
+     * @param Cli\Request $request
      *
-     * @throws CLI\CommandLocatorException
-     * @return CLI\Command
+     * @throws Cli\CommandLocatorException
+     * @return Cli\Command
      */
-    public function getCommandForRequest(CLI\Request $request) {
+    public function getCommandForRequest(Cli\Request $request) {
         $command = $request->getCommand();
         switch ($command) {
 

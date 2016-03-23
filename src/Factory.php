@@ -25,10 +25,10 @@ class Factory {
     }
 
     /**
-     * @return CLI\Runner
+     * @return Cli\Runner
      */
     public function getRunner() {
-        return new CLI\Runner(
+        return new Cli\Runner(
             $this->getCommandLocator(),
             $this->getConsoleOutput(),
             $this->getPhiveVersion(),
@@ -64,10 +64,10 @@ class Factory {
     }
 
     /**
-     * @return CLI\Output
+     * @return Cli\Output
      */
     private function getConsoleOutput() {
-        return new CLI\ColoredConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
+        return new Cli\ColoredConsoleOutput(Cli\ConsoleOutput::VERBOSE_INFO);
     }
 
     /**
@@ -89,11 +89,11 @@ class Factory {
     }
 
     /**
-     * @param CLI\Options $options
+     * @param Cli\Options $options
      *
      * @return SkelCommand
      */
-    public function getSkelCommand(CLI\Options $options) {
+    public function getSkelCommand(Cli\Options $options) {
         return new SkelCommand(
             new SkelCommandConfig($options, getcwd()),
             $this->getPhiveVersion()
@@ -171,18 +171,18 @@ class Factory {
     }
 
     /**
-     * @return CLI\Output
+     * @return Cli\Output
      */
     private function getColoredConsoleOutput() {
-        return new CLI\ColoredConsoleOutput(CLI\ConsoleOutput::VERBOSE_INFO);
+        return new Cli\ColoredConsoleOutput(Cli\ConsoleOutput::VERBOSE_INFO);
     }
 
     /**
-     * @param CLI\Options $options
+     * @param Cli\Options $options
      *
      * @return RemoveCommand
      */
-    public function getRemoveCommand(CLI\Options $options) {
+    public function getRemoveCommand(Cli\Options $options) {
         return new RemoveCommand(
             new RemoveCommandConfig($options, $this->getConfig()),
             $this->getPhveInstallDB(),
@@ -296,10 +296,10 @@ class Factory {
     }
 
     /**
-     * @return CLI\ConsoleInput
+     * @return Cli\ConsoleInput
      */
     private function getConsoleInput() {
-        return new CLI\ConsoleInput($this->getConsoleOutput());
+        return new Cli\ConsoleInput($this->getConsoleOutput());
     }
 
     /**
@@ -337,11 +337,11 @@ class Factory {
     }
 
     /**
-     * @param CLI\Options $options
+     * @param Cli\Options $options
      *
      * @return InstallCommand
      */
-    public function getInstallCommand(CLI\Options $options) {
+    public function getInstallCommand(Cli\Options $options) {
         return new InstallCommand(
             new InstallCommandConfig(
                 $options,
@@ -355,11 +355,11 @@ class Factory {
     }
 
     /**
-     * @param CLI\Options $options
+     * @param Cli\Options $options
      *
      * @return UpdateCommand
      */
-    public function getUpdateCommand(CLI\Options $options) {
+    public function getUpdateCommand(Cli\Options $options) {
         return new UpdateCommand(
             new UpdateCommandConfig(
                 $options,
@@ -382,11 +382,11 @@ class Factory {
     }
 
     /**
-     * @param CLI\Options $options
+     * @param Cli\Options $options
      *
      * @return PurgeCommand
      */
-    public function getPurgeCommand(CLI\Options $options) {
+    public function getPurgeCommand(Cli\Options $options) {
         return new PurgeCommand(
             new PurgeCommandConfig(
                 $options,

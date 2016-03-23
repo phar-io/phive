@@ -3,7 +3,7 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
 
-class PurgeCommand implements CLI\Command {
+class PurgeCommand implements Cli\Command {
 
     /**
      * @var PurgeCommandConfig
@@ -16,17 +16,17 @@ class PurgeCommand implements CLI\Command {
     private $repository;
 
     /**
-     * @var CLI\Output
+     * @var Cli\Output
      */
     private $output;
 
     /**
      * @param PurgeCommandConfig $config
      * @param PhiveInstallDB     $repository
-     * @param CLI\Output         $output
+     * @param Cli\Output         $output
      */
     public function __construct(
-        PurgeCommandConfig $config, PhiveInstallDB $repository, CLI\Output $output
+        PurgeCommandConfig $config, PhiveInstallDB $repository, Cli\Output $output
     ) {
         $this->config = $config;
         $this->repository = $repository;
