@@ -2,7 +2,7 @@
 <phars xmlns="https://phar.io/phive/installdb">
     <phar name="phpunit" version="4.8.9" location="test://phars/phpunit-4.8.9.phar.dummy">
         <hash type="sha1">675c01c852a5894c62361953a9f096701e846da8</hash>
-        <usage destination="/vagrant/phive/tools/phpunit"/>
+        <usage destination="/vagrant/phpab/tools/phpunit"/>
     </phar>
     <phar name="phpunit" version="4.8.7" location="test://phars/phpunit-4.8.7.phar.dummy">
         <hash type="sha1">96c2092218c8eda5412a70c6346ec3ed0d15ecfa</hash>
@@ -14,7 +14,7 @@
         <hash type="sha1">52d12671f6ae24ca1096de34dd6f53ebc58609a6</hash>
         <usage destination="/vagrant/phive/tools/phpab"/>
     </phar>
-    <phar name="phpunit" version="5.2.10" location="/home/vagrant/.phive/phars/phpunit-5.2.10.phar">
+    <phar name="phpunit" version="5.2.10" location="test://phars/phpunit-5.2.10.phar.dummy">
         <hash type="sha1">69fc044185b869644bca10bf78d4c20f9d6f8cb5</hash>
         <usage destination="/vagrant/phive/tools/phpunit"/>
     </phar>

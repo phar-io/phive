@@ -39,8 +39,10 @@ class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
             'version'                => ['version', 'getVersionCommand'],
             'skel'                   => ['skel', 'getSkelCommand', new Cli\Options([])],
             'install'                => ['install', 'getInstallCommand', new Cli\Options([])],
+            'list'                   => ['list', 'getListCommand'],
             'purge'                  => ['purge', 'getPurgeCommand', new Cli\Options([])],
             'remove'                 => ['remove', 'getRemoveCommand', new Cli\Options([])],
+            'reset'                  => ['reset', 'getResetCommand', new Cli\Options([])],
             'update'                 => ['update', 'getUpdateCommand', new Cli\Options([])],
             'update-repository-list' => ['update-repository-list', 'getUpdateRepositoryListCommand'],
         ];

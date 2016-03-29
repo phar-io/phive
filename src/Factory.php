@@ -16,8 +16,6 @@ class Factory {
     private $version;
 
     /**
-     * Factory constructor.
-     *
      * @param PhiveVersion $version
      */
     public function __construct(PhiveVersion $version = null) {
@@ -185,7 +183,7 @@ class Factory {
     public function getRemoveCommand(Cli\Options $options) {
         return new RemoveCommand(
             new RemoveCommandConfig($options, $this->getConfig()),
-            $this->getPhveInstallDB(),
+            $this->getPhiveInstallDB(),
             $this->getPharService(),
             $this->getColoredConsoleOutput()
         );
@@ -194,7 +192,7 @@ class Factory {
     /**
      * @return PhiveInstallDB
      */
-    private function getPhveInstallDB() {
+    private function getPhiveInstallDB() {
         return new PhiveInstallDB(
             new XmlFile(
                 $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
@@ -212,7 +210,7 @@ class Factory {
         return new PharService(
             $this->getPharDownloader(),
             $this->getPharInstaller(),
-            $this->getPhveInstallDB(),
+            $this->getPhiveInstallDB(),
             $this->getAliasResolver(),
             $this->getColoredConsoleOutput(),
             $this->getPharIoRepositoryFactory()
@@ -242,6 +240,21 @@ class Factory {
      */
     public function getGnupgSignatureVerifier() {
         return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
+    }
+
+    /**
+     * @param Cli\Options $options
+     *
+     * @return ResetCommand
+     */
+    public function getResetCommand(Cli\Options $options) {
+        return new ResetCommand(
+            new ResetCommandConfig($options),
+            $this->getPhiveInstallDB(),
+            $this->getEnvironment(),
+            $this->getPharInstaller(),
+            $this->getColoredConsoleOutput()
+        );
     }
 
     /**
@@ -392,7 +405,7 @@ class Factory {
                 $options,
                 $this->getConfig()
             ),
-            $this->getPhveInstallDB(),
+            $this->getPhiveInstallDB(),
             $this->getColoredConsoleOutput()
         );
     }

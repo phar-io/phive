@@ -25,6 +25,11 @@ purge
 remove <alias>
     Remove installed PHAR from project
 
+reset [<alias1> <alias2> ...]
+    Reset symlinks to PHARs used in the project.
+
+    alias    If one or more aliases are provided, only those will be reset
+
 skel
     Create a default configuration file
 

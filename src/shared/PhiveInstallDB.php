@@ -200,4 +200,19 @@ class PhiveInstallDB {
         return $unusedPhars;
     }
 
+    /**
+     * @param Directory $destination
+     *
+     * @return Phar[]
+     */
+    public function getUsedPharsByDestination(Directory $destination) {
+        $usedPhars = [];
+        $query = sprintf('//phive:phar[contains(phive:usage/@destination, "%s")]', $destination);
+        foreach ($this->dbFile->query($query) as $pharNode) {
+            $usedPhars[] = $this->nodetoPhar($pharNode);
+        }
+
+        return $usedPhars;
+    }
+
 }
