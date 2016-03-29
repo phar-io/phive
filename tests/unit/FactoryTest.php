@@ -14,7 +14,9 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
      * @param string $expectedClass
      */
     public function testInstantiation($method, array $parameters, $expectedClass) {
-        $factory = new Factory();
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Factory $factory */
+        $factory = $this->getMockBuilder(Factory::class)->setMethods(['getSourcesList'])->getMock();
+        $factory->method('getSourcesList')->willReturn($this->getMockWithoutInvokingTheOriginalConstructor(SourcesList::class));
         $this->assertInstanceOf($expectedClass, call_user_func_array([$factory, $method], $parameters));
     }
 
