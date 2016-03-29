@@ -72,6 +72,6 @@ class Curl implements HttpClient {
 
         return $this->progressHandler->handleUpdate(
             new HttpProgressUpdate($this->url, $expectedDown, $received, $expectedUp, $sent)
-        ) ? 1 : 0;
+        ) ? 0 : 1;
     }
 }
