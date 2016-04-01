@@ -19,13 +19,19 @@ class JsonData {
      * JsonData constructor.
      *
      * @param string $raw
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct($raw) {
         $this->raw = $raw;
-        $this->parsed = json_decode($raw, false, 512, JSON_BIGINT_AS_STRING);
-        if (json_last_error() != JSON_ERROR_NONE) {
+        $parsed = json_decode($raw, false, 512, JSON_BIGINT_AS_STRING);
+        if (json_last_error() !== JSON_ERROR_NONE) {
             throw new InvalidArgumentException(json_last_error_msg(), json_last_error());
         }
+        if (!is_array($parsed)) {
+            throw new InvalidArgumentException('Given JSON string does not parse into array');
+        }
+        $this->parsed = $parsed;
     }
 
     /**
