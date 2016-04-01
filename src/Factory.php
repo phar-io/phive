@@ -45,10 +45,7 @@ class Factory {
      * @return VersionCommand
      */
     public function getVersionCommand() {
-        return new VersionCommand(
-            $this->getPhiveVersion(),
-            $this->getConsoleOutput()
-        );
+        return new VersionCommand;
     }
 
     /**

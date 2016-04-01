@@ -167,11 +167,11 @@ class Runner {
     }
 
     private function showHeader() {
-        $this->output->writeText($this->version->getVersionString() . "\n\n");
+        $this->output->writeText($this->version->getVersionString() . "\n");
     }
 
     private function showFooter() {
-        $this->output->writeText("\n\n");
+        $this->output->writeText("\n");
     }
 
 }
