@@ -44,27 +44,29 @@ class KeyService {
     /**
      * @param $keyId
      *
-     * @return PublicKey
-     */
-    public function downloadKey($keyId) {
-        $this->output->writeInfo(sprintf('Downloading key %s', $keyId));
-
-        return $this->keyDownloader->download($keyId);
-    }
-
-    /**
-     * @param PublicKey
-     *
      * @return mixed
      * @throws VerificationFailedException
      */
-    public function importKey(PublicKey $key) {
+    public function importKey($keyId) {
+        $key = $this->downloadKey($keyId);
+
         $this->output->writeText("\n" . $key->getInfo() . "\n\n");
         if (!$this->input->confirm('Import this key?')) {
             throw new VerificationFailedException(sprintf('User declined import of key %s', $key->getId()));
         }
 
         return $this->keyImporter->importKey($key->getKeyData());
+    }
+
+    /**
+     * @param $keyId
+     *
+     * @return PublicKey
+     */
+    private function downloadKey($keyId) {
+        $this->output->writeInfo(sprintf('Downloading key %s', $keyId));
+
+        return $this->keyDownloader->download($keyId);
     }
 
 }

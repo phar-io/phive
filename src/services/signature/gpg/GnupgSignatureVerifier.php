@@ -35,12 +35,11 @@ class GnupgSignatureVerifier implements SignatureVerifier {
     public function verify($message, $signature) {
         try {
             $result = new GnupgVerificationResult($this->gpg->verify($message, $signature)[0]);
-            if (!$result->wasVerificationSuccessful() && !$result->isKnownKey()) {
-                $this->keyService->importKey(
-                    $this->keyService->downloadKey($result->getFingerprint())
-                );
+            if (!$result->isKnownKey()) {
+                $this->keyService->importKey($result->getFingerprint());
+                $result = new GnupgVerificationResult($this->gpg->verify($message, $signature)[0]);
             }
-            return new GnupgVerificationResult($this->gpg->verify($message, $signature)[0]);
+            return $result;
         } catch (\Exception $e) {
             throw new VerificationFailedException($e->getMessage(), $e->getCode(), $e);
         }

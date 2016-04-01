@@ -38,10 +38,6 @@ class KeyServiceTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testInvokesKeyDownloader() {
-        $key = $this->prophesize(PublicKey::class)->reveal();
-        $this->downloader->download('foo')->willReturn($key);
-
-        $this->assertEquals($key, $this->getKeyService()->downloadKey('foo'));
     }
 
     public function testInvokesImporter() {
@@ -51,8 +47,9 @@ class KeyServiceTest extends \PHPUnit_Framework_TestCase {
         $key = $this->prophesize(PublicKey::class);
         $key->getInfo()->willReturn('keyinfo');
         $key->getKeyData()->willReturn('some key');
+        $this->downloader->download('foo')->willReturn($key);
 
-        $this->assertEquals(['keydata'], $this->getKeyService()->importKey($key->reveal()));
+        $this->assertEquals(['keydata'], $this->getKeyService()->importKey('foo'));
     }
 
     /**
