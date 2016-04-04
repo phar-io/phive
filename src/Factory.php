@@ -420,4 +420,23 @@ class Factory {
         );
     }
 
+    public function getComposerCommand(Cli\Options $options) {
+        return new ComposerCommand(
+            new ComposerCommandConfig(
+                $options,
+                $this->getConfig(),
+                $this->getPhiveXmlConfig()
+            ),
+            $this->getComposerService(),
+            $this->getPharService(),
+            $this->getPhiveXmlConfig(),
+            $this->getEnvironment(),
+            $this->getConsoleInput()
+        );
+    }
+
+    private function getComposerService() {
+        return new ComposerService($this->getSourcesList());
+    }
+
 }

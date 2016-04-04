@@ -35,6 +35,21 @@ class SourcesList {
         return $sources;
     }
 
+    public function getAliasForComposerAlias(ComposerAlias $alias) {
+        $query = sprintf('//phive:phar[@composer="%s"]', $alias);
+        $result = $this->sourcesFile->query($query);
+        if ($result->length === 0) {
+            throw new SourcesListException(
+                sprintf('No such composer alias "%s"', $alias),
+                SourcesListException::ComposerAliasNotFound
+            );
+        }
+
+        /** @var \DOMElement $pharNode */
+        $pharNode = $result->item(0);
+        return $pharNode->getAttribute('alias');
+    }
+
     /**
      * @return string[]
      */
