@@ -57,4 +57,11 @@ class Filename {
         return file_exists($this->name);
     }
 
+    public function read() {
+        if (!$this->exists()) {
+            throw new \RuntimeException('Cannot read - File does not (yet?) exist');
+        }
+        return new File($this, file_get_contents($this->asString()));
+    }
+
 }
