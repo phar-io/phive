@@ -11,7 +11,7 @@ class JsonData {
     private $raw;
 
     /**
-     * @var \StdClass
+     * @var array|\StdClass
      */
     private $parsed;
 
@@ -28,8 +28,8 @@ class JsonData {
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new InvalidArgumentException(json_last_error_msg(), json_last_error());
         }
-        if (!$parsed instanceof \StdClass) {
-            throw new InvalidArgumentException('Given JSON string does not parse into object');
+        if (!$parsed instanceof \StdClass && !is_array($parsed)) {
+            throw new InvalidArgumentException('Given JSON string does not parse into object or array');
         }
         $this->parsed = $parsed;
     }
