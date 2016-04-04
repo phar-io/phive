@@ -19,6 +19,9 @@ install <alias|url> [destination]
     -global         Install PHAR globally (likely to require root privileges)
     -temporary      Do not add entries in phive.xml for installed PHARs
 
+composer
+    Parse composer.json file for known aliases and suggest installation
+
 purge
     Delete unused PHARs
 
