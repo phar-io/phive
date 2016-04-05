@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class PhiveInstallDB {
+class PharRegistry {
 
     /**
      * @var Directory
@@ -95,11 +95,11 @@ class PhiveInstallDB {
      * @param Version $version
      *
      * @return Phar
-     * @throws PharRepositoryException
+     * @throws PharRegistryException
      */
     public function getPhar($name, Version $version) {
         if (!$this->hasPhar($name, $version)) {
-            throw new PharRepositoryException(sprintf(
+            throw new PharRegistryException(sprintf(
                 'Phar %s %s not found in database.',
                 $name,
                 $version->getVersionString()
@@ -145,12 +145,12 @@ class PhiveInstallDB {
      * @param string $filename
      *
      * @return Phar
-     * @throws PharRepositoryException
+     * @throws PharRegistryException
      */
     public function getByUsage($filename) {
         $pharNode = $this->dbFile->query(sprintf('//phive:phar[phive:usage/@destination="%s"]', $filename))->item(0);
         if (null === $pharNode) {
-            throw new PharRepositoryException(sprintf('No phar with usage %s found', $filename));
+            throw new PharRegistryException(sprintf('No phar with usage %s found', $filename));
         }
 
         /** @var \DOMElement $pharNode */

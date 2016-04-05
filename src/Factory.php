@@ -180,17 +180,17 @@ class Factory {
     public function getRemoveCommand(Cli\Options $options) {
         return new RemoveCommand(
             new RemoveCommandConfig($options, $this->getConfig()),
-            $this->getPhiveInstallDB(),
+            $this->getPharRegistry(),
             $this->getPharService(),
             $this->getColoredConsoleOutput()
         );
     }
 
     /**
-     * @return PhiveInstallDB
+     * @return PharRegistry
      */
-    private function getPhiveInstallDB() {
-        return new PhiveInstallDB(
+    private function getPharRegistry() {
+        return new PharRegistry(
             new XmlFile(
                 $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
                 'https://phar.io/phive/installdb',
@@ -207,7 +207,7 @@ class Factory {
         return new PharService(
             $this->getPharDownloader(),
             $this->getPharInstaller(),
-            $this->getPhiveInstallDB(),
+            $this->getPharRegistry(),
             $this->getAliasResolver(),
             $this->getColoredConsoleOutput(),
             $this->getPharIoRepositoryFactory()
@@ -247,7 +247,7 @@ class Factory {
     public function getResetCommand(Cli\Options $options) {
         return new ResetCommand(
             new ResetCommandConfig($options),
-            $this->getPhiveInstallDB(),
+            $this->getPharRegistry(),
             $this->getEnvironment(),
             $this->getPharInstaller(),
             $this->getColoredConsoleOutput()
@@ -402,7 +402,7 @@ class Factory {
                 $options,
                 $this->getConfig()
             ),
-            $this->getPhiveInstallDB(),
+            $this->getPharRegistry(),
             $this->getColoredConsoleOutput()
         );
     }

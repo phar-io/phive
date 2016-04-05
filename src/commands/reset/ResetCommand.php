@@ -9,9 +9,9 @@ class ResetCommand implements Cli\Command {
     private $config;
 
     /**
-     * @var PhiveInstallDB
+     * @var PharRegistry
      */
-    private $installDB;
+    private $pharRegistry;
 
     /**
      * @var Environment
@@ -25,18 +25,18 @@ class ResetCommand implements Cli\Command {
 
     /**
      * @param ResetCommandConfig $config
-     * @param PhiveInstallDB $installDB
+     * @param PharRegistry $pharRegistry
      * @param Environment $environment
      * @param PharInstaller $pharInstaller
      */
     public function __construct(
         ResetCommandConfig $config,
-        PhiveInstallDB $installDB,
+        PharRegistry $pharRegistry,
         Environment $environment,
         PharInstaller $pharInstaller
     ) {
         $this->config = $config;
-        $this->installDB = $installDB;
+        $this->pharRegistry = $pharRegistry;
         $this->environment = $environment;
         $this->pharInstaller = $pharInstaller;
     }
@@ -49,7 +49,7 @@ class ResetCommand implements Cli\Command {
         }
         
 
-        foreach ($this->installDB->getUsedPharsByDestination($this->environment->getWorkingDirectory()) as $phar) {
+        foreach ($this->pharRegistry->getUsedPharsByDestination($this->environment->getWorkingDirectory()) as $phar) {
             if (!empty($aliasFilter) && !in_array($phar->getName(), $aliasFilter)) {
                 continue;
             }

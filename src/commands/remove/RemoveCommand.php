@@ -11,7 +11,7 @@ class RemoveCommand implements Cli\Command {
     private $config;
 
     /**
-     * @var PhiveInstallDB
+     * @var PharRegistry
      */
     private $repository;
 
@@ -27,12 +27,12 @@ class RemoveCommand implements Cli\Command {
 
     /**
      * @param RemoveCommandConfig $config
-     * @param PhiveInstallDB      $repository
+     * @param PharRegistry      $repository
      * @param PharService         $pharService
      * @param Cli\Output          $output
      */
     public function __construct(
-        RemoveCommandConfig $config, PhiveInstallDB $repository, PharService $pharService, Cli\Output $output
+        RemoveCommandConfig $config, PharRegistry $repository, PharService $pharService, Cli\Output $output
     ) {
         $this->config = $config;
         $this->repository = $repository;

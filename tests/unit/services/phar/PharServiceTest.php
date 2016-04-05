@@ -21,9 +21,9 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     private $installer;
 
     /**
-     * @var PhiveInstallDB|ObjectProphecy
+     * @var PharRegistry|ObjectProphecy
      */
-    private $installDB;
+    private $pharRegistry;
 
     /**
      * @var AliasResolver|ObjectProphecy
@@ -48,18 +48,18 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $expectedPhar = new Phar('foo', new Version('1.20.1'), $file);
 
-        $this->installDB->hasPhar('foo', new Version('1.20.1'))
+        $this->pharRegistry->hasPhar('foo', new Version('1.20.1'))
             ->shouldBeCalled()
             ->willReturn(false);
 
-        $this->installDB->addPhar($expectedPhar)
+        $this->pharRegistry->addPhar($expectedPhar)
             ->shouldBeCalled();
 
         $this->downloader->download($release)
             ->shouldBeCalled()
             ->willReturn($file);
 
-        $this->installDB->addUsage(
+        $this->pharRegistry->addUsage(
             $expectedPhar,
             '/tmp/foo'
         )->shouldBeCalled();
@@ -80,7 +80,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         return new PharService(
             $this->downloader->reveal(),
             $this->installer->reveal(),
-            $this->installDB->reveal(),
+            $this->pharRegistry->reveal(),
             $this->resolver->reveal(),
             $this->output->reveal(),
             $this->pharIoRepositoryFactory->reveal()
@@ -94,15 +94,15 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $phar = new Phar('foo', new Version('1.20.1'), $file);
 
-        $this->installDB->hasPhar('foo', new Version('1.20.1'))
+        $this->pharRegistry->hasPhar('foo', new Version('1.20.1'))
             ->shouldBeCalled()
             ->willReturn(true);
 
-        $this->installDB->getPhar('foo', new Version('1.20.1'))
+        $this->pharRegistry->getPhar('foo', new Version('1.20.1'))
             ->shouldBeCalled()
             ->willReturn($phar);
 
-        $this->installDB->addUsage(
+        $this->pharRegistry->addUsage(
             $phar,
             '/tmp/foo'
         )->shouldBeCalled();
@@ -124,15 +124,15 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $phar = new Phar('foo', new Version('1.20.1'), $file);
 
-        $this->installDB->hasPhar('foo', new Version('1.20.1'))
+        $this->pharRegistry->hasPhar('foo', new Version('1.20.1'))
             ->shouldBeCalled()
             ->willReturn(true);
 
-        $this->installDB->getPhar('foo', new Version('1.20.1'))
+        $this->pharRegistry->getPhar('foo', new Version('1.20.1'))
             ->shouldBeCalled()
             ->willReturn($phar);
 
-        $this->installDB->addUsage(
+        $this->pharRegistry->addUsage(
             $phar,
             '/tmp/foo'
         )->shouldBeCalled();
@@ -157,11 +157,11 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->shouldBeCalled()->willReturn(new File(new Filename('phpunit-5.2.10.phar'),''));
 
-        $this->installDB->hasPhar(
+        $this->pharRegistry->hasPhar(
             Argument::cetera()
         )->shouldNotBeCalled();
 
-        $this->installDB->getPhar(
+        $this->pharRegistry->getPhar(
             Argument::cetera()
         )->shouldNotBeCalled();
 
@@ -169,7 +169,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::any()
         )->shouldBeCalled();
 
-        $this->installDB->addUsage(
+        $this->pharRegistry->addUsage(
             Argument::cetera()
         )->shouldNotBeCalled();
 
@@ -177,7 +177,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->shouldNotBeCalled();
 
-        $this->installDB->addPhar(
+        $this->pharRegistry->addPhar(
             Argument::cetera()
         )->shouldBeCalled();
 
@@ -189,7 +189,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
-        $this->installDB->hasPhar(
+        $this->pharRegistry->hasPhar(
             Argument::cetera()
         )->willReturn(false);
 
@@ -209,18 +209,18 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->getPharService()->install($requestedPhar, '/tmp', false);
     }
 
-    public function testInstallHandlesPharRepositoryException()
+    public function testInstallHandlesPharRegistryException()
     {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
-        $this->installDB->hasPhar(
+        $this->pharRegistry->hasPhar(
             Argument::cetera()
         )->willReturn(true);
 
-        $this->installDB->getPhar(
+        $this->pharRegistry->getPhar(
             Argument::cetera()
-        )->willThrow(new PharRepositoryException());
+        )->willThrow(new PharRegistryException());
 
         $this->output->writeError(
             Argument::any()
@@ -230,7 +230,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->shouldNotBeCalled();
 
-        $this->expectException(PharRepositoryException::class);
+        $this->expectException(PharRegistryException::class);
         $this->getPharService()->install($requestedPhar, '/tmp', false);
     }
 
@@ -239,7 +239,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
-        $this->installDB->hasPhar(
+        $this->pharRegistry->hasPhar(
             Argument::cetera()
         )->willReturn(false);
 
@@ -281,7 +281,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         $this->downloader = $this->prophesize(PharDownloader::class);
         $this->installer = $this->prophesize(PharInstaller::class);
-        $this->installDB = $this->prophesize(PhiveInstallDB::class);
+        $this->pharRegistry = $this->prophesize(PharRegistry::class);
         $this->resolver = $this->prophesize(AliasResolver::class);
         $this->output = $this->prophesize(Cli\Output::class);
         $this->pharIoRepositoryFactory = $this->prophesize(SourceRepositoryLoader::class);

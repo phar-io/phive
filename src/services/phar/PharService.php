@@ -14,9 +14,9 @@ class PharService {
     private $installer;
 
     /**
-     * @var PhiveInstallDB
+     * @var PharRegistry
      */
-    private $installDB;
+    private $pharRegistry;
 
     /**
      * @var AliasResolver
@@ -36,7 +36,7 @@ class PharService {
     /**
      * @param PharDownloader         $downloader
      * @param PharInstaller          $installer
-     * @param PhiveInstallDB         $installDB
+     * @param PharRegistry           $pharRegistry
      * @param AliasResolver          $resolver
      * @param Cli\Output             $output
      * @param SourceRepositoryLoader $sourceRepositoryLoader
@@ -44,14 +44,14 @@ class PharService {
     public function __construct(
         PharDownloader $downloader,
         PharInstaller $installer,
-        PhiveInstallDB $installDB,
+        PharRegistry $pharRegistry,
         AliasResolver $resolver,
         Cli\Output $output,
         SourceRepositoryLoader $sourceRepositoryLoader
     ) {
         $this->downloader = $downloader;
         $this->installer = $installer;
-        $this->installDB = $installDB;
+        $this->pharRegistry = $pharRegistry;
         $this->aliasResolver = $resolver;
         $this->output = $output;
         $this->sourceRepositoryLoader = $sourceRepositoryLoader;
@@ -92,14 +92,14 @@ class PharService {
             return;
         }
 
-        if (!$this->installDB->hasPhar($name, $version)) {
+        if (!$this->pharRegistry->hasPhar($name, $version)) {
             $phar = new Phar($name, $version, $this->downloader->download($release));
-            $this->installDB->addPhar($phar);
+            $this->pharRegistry->addPhar($phar);
         } else {
-            $phar = $this->installDB->getPhar($name, $version);
+            $phar = $this->pharRegistry->getPhar($name, $version);
         }
         $this->installer->install($phar->getFile(), $destination, $makeCopy);
-        $this->installDB->addUsage($phar, $destination);
+        $this->pharRegistry->addUsage($phar, $destination);
     }
 
     /**

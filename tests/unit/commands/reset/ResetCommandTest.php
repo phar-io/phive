@@ -8,13 +8,13 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallsExpectedPhars()
     {
-        $installDB = $this->getInstallDBMock();
+        $pharRegistry = $this->getPharRegistryMock();
         $environment = $this->getEnvironmentMock();
         $installer = $this->getPharInstallerMock();
         
         $command = new ResetCommand(
             $this->getConfigMock(),
-            $installDB,
+            $pharRegistry,
             $environment,
             $installer
         );
@@ -29,7 +29,7 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
             $this->getPharMock('bar', 'bar.phar')
         ];
 
-        $installDB->expects($this->once())
+        $pharRegistry->expects($this->once())
             ->method('getUsedPharsByDestination')
             ->with($directory)
             ->willReturn($phars);
@@ -43,13 +43,13 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
     public function testOnlyInstallsPharsMatchingProvidedAliases()
     {
         $config = $this->getConfigMock();
-        $installDB = $this->getInstallDBMock();
+        $pharRegistry = $this->getPharRegistryMock();
         $environment = $this->getEnvironmentMock();
         $installer = $this->getPharInstallerMock();
 
         $command = new ResetCommand(
             $config,
-            $installDB,
+            $pharRegistry,
             $environment,
             $installer
         );
@@ -71,7 +71,7 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
             $this->getPharMock('baz', 'baz.phar')
         ];
 
-        $installDB->expects($this->once())
+        $pharRegistry->expects($this->once())
             ->method('getUsedPharsByDestination')
             ->with($directory)
             ->willReturn($phars);
@@ -90,10 +90,10 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PhiveInstallDB
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
      */
-    private function getInstallDBMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PhiveInstallDB::class);
+    private function getPharRegistryMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PharRegistry::class);
     }
 
     /**

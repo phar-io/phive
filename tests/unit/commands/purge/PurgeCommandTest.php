@@ -10,7 +10,7 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
 
     public function testInvokesRepository() {
         $config = $this->getCommandConfigMock();
-        $repository = $this->getPharRepositoryMock();
+        $repository = $this->getPharRegistryMock();
 
         $phar1 = $this->getPharMock();
         $phar2 = $this->getPharMock();
@@ -40,10 +40,10 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PhiveInstallDB
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
      */
-    private function getPharRepositoryMock() {
-        return $this->getMockBuilder(PhiveInstallDB::class)
+    private function getPharRegistryMock() {
+        return $this->getMockBuilder(PharRegistry::class)
             ->disableOriginalConstructor()->getMock();
     }
 
@@ -66,7 +66,7 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
 
     public function testWritesToOutput() {
         $config = $this->getCommandConfigMock();
-        $repository = $this->getPharRepositoryMock();
+        $repository = $this->getPharRegistryMock();
         $output = $this->getOutputMock();
 
         $phar1 = $this->getPharMock();

@@ -2,12 +2,12 @@
 namespace PharIo\Phive;
 
 /**
- * @covers PharIo\Phive\PhiveInstallDB
+ * @covers PharIo\Phive\PharRegistry
  */
-class PhiveInstallDBTest extends \PHPUnit_Framework_TestCase {
+class PharRegistryTest extends \PHPUnit_Framework_TestCase {
 
     public function testReturnsExpectedUnusedPhars() {
-        $repo = new PhiveInstallDB(
+        $repo = new PharRegistry(
             new XmlFile(
                 new Filename(__DIR__ . '/fixtures/phars.xml'),
                 'https://phar.io/phive/installdb',
@@ -26,7 +26,7 @@ class PhiveInstallDBTest extends \PHPUnit_Framework_TestCase {
     }
     
     public function testReturnsExpectedUsedPharsByDestination() {
-        $repo = new PhiveInstallDB(
+        $repo = new PharRegistry(
             new XmlFile(
                 new Filename(__DIR__ . '/fixtures/phars.xml'),
                 'https://phar.io/phive/installdb',

@@ -11,7 +11,7 @@ class PurgeCommand implements Cli\Command {
     private $config;
 
     /**
-     * @var PhiveInstallDB
+     * @var PharRegistry
      */
     private $repository;
 
@@ -22,11 +22,11 @@ class PurgeCommand implements Cli\Command {
 
     /**
      * @param PurgeCommandConfig $config
-     * @param PhiveInstallDB     $repository
+     * @param PharRegistry     $repository
      * @param Cli\Output         $output
      */
     public function __construct(
-        PurgeCommandConfig $config, PhiveInstallDB $repository, Cli\Output $output
+        PurgeCommandConfig $config, PharRegistry $repository, Cli\Output $output
     ) {
         $this->config = $config;
         $this->repository = $repository;
