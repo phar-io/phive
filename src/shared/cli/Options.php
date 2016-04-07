@@ -100,4 +100,8 @@ class Options {
     public function hasArgument($index) {
         return isset($this->arguments[$index]);
     }
+
+    public function getArguments() {
+        return $this->arguments;
+    }
 }

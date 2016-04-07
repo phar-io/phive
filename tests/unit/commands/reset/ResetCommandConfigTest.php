@@ -10,14 +10,8 @@ class ResetCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $options = $this->getOptionsMock();
         $options->method('getArgumentCount')
             ->willReturn(3);
-        $options->method('getArgument')
-            ->willReturnMap(
-                [
-                    [0, 'foo'],
-                    [1, 'bar'],
-                    [2, 'baz']
-                ]
-            );
+        $options->method('getArguments')
+            ->willReturn(['foo', 'bar', 'baz']);
 
         $config = new ResetCommandConfig($options);
 

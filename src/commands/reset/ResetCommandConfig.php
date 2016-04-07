@@ -27,11 +27,7 @@ class ResetCommandConfig {
      * @throws Cli\CommandOptionsException
      */
     public function getAliases() {
-        $aliases = [];
-        for ($i = 0; $i < $this->cliOptions->getArgumentCount(); $i++) {
-            $aliases[] = $this->cliOptions->getArgument($i);
-        }
-        return $aliases;
+        return $this->cliOptions->getArguments();
     }
 
 }
