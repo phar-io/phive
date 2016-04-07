@@ -60,9 +60,11 @@ class ComposerCommandConfig {
         return $this->cliOptions->isSwitch('temporary');
     }
 
-
+    /**
+     * @return Filename
+     */
     public function getComposerFilename() {
-        return (new Directory(getcwd()))->file('composer.json');
+        return $this->getWorkingDirectory()->file('composer.json');
     }
 
 }
