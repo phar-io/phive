@@ -17,7 +17,7 @@ class KeyImportResult {
      * @param int    $count
      * @param string $fingerprint
      */
-    public function __construct($count, $fingerprint = null) {
+    public function __construct($count, $fingerprint = '') {
         $this->count = $count;
         $this->fingerprint = $fingerprint;
     }
