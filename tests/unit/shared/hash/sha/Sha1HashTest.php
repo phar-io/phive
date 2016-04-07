@@ -41,6 +41,16 @@ class Sha1HashTest extends \PHPUnit_Framework_TestCase {
         $hash = new Sha1Hash($hashValue);
         $this->assertSame($hashValue, $hash->asString());
     }
+
+    public function testEquals() {
+        $hash = new Sha1Hash('aa43f08c9402ca142f607fa2db0b1152cf248d49');
+        $otherHash = new Sha1Hash('aa43f08c9402ca142f607fa2db0b1152cf248d49');
+        $this->assertTrue($hash->equals($otherHash));
+
+        $hash = new Sha1Hash('174f7e679a514cf52fd63c96659b10d470e65ec0');
+        $otherHash = new Sha1Hash('aa43f08c9402ca142f607fa2db0b1152cf248d49');
+        $this->assertFalse($hash->equals($otherHash));
+    }
 }
 
 
