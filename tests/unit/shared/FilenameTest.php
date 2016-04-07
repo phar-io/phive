@@ -24,8 +24,20 @@ class FilenameTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testInvalidTypeForFilenameThrowsException() {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         new Filename(new \StdClass);
+    }
+
+    public function testReadThrowsExceptionIfFileDoesNotExist() {
+        $name = new Filename('/does/not/exist');
+        $this->expectException(\RuntimeException::class);
+        $name->read();
+    }
+
+    public function testReadReturnsExpectedFile() {
+        $name = new Filename(__DIR__ . '/fixtures/file.txt');
+        $expectedFile = new File($name, 'foo');
+        $this->assertEquals($expectedFile, $name->read());
     }
 
 }
