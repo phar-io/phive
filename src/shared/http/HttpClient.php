@@ -6,7 +6,6 @@ interface HttpClient {
     /**
      * @param Url                 $url
      * @param array               $params
-     *
      * @param HttpProgressHandler $handler
      *
      * @return HttpResponse

@@ -145,7 +145,7 @@ class GnuPG {
     /**
      * @param $status
      *
-     * @return array
+     * @return array|false
      */
     private function parseVerifyOutput($status) {
         $fingerprint = '';
