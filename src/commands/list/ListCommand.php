@@ -8,7 +8,7 @@ class ListCommand implements Cli\Command {
     /**
      * @var SourcesList
      */
-    private $pharRepositoryList;
+    private $sourcesList;
 
     /**
      * @var Cli\Output
@@ -16,14 +16,11 @@ class ListCommand implements Cli\Command {
     private $output;
 
     /**
-     * @param SourcesList $pharRepositoryList
+     * @param SourcesList $sourcesList
      * @param Cli\Output  $output
      */
-    public function __construct(
-        SourcesList $pharRepositoryList,
-        Cli\Output $output
-    ) {
-        $this->pharRepositoryList = $pharRepositoryList;
+    public function __construct(SourcesList $sourcesList, Cli\Output $output) {
+        $this->sourcesList = $sourcesList;
         $this->output = $output;
     }
 
@@ -32,7 +29,7 @@ class ListCommand implements Cli\Command {
      */
     public function execute() {
         $this->output->writeText("List of Aliases known to your system:\n");
-        foreach ($this->pharRepositoryList->getAliases() as $aliasName) {
+        foreach ($this->sourcesList->getAliases() as $aliasName) {
             $this->output->writeText("* {$aliasName}\n");
         }
     }
