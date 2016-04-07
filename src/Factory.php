@@ -70,7 +70,6 @@ class Factory {
      */
     public function getHelpCommand() {
         return new HelpCommand(
-            $this->getPhiveVersion(),
             $this->getEnvironment(),
             $this->getConsoleOutput()
         );

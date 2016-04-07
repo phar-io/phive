@@ -4,12 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli;
 
 class HelpCommand implements Cli\Command {
-
-    /**
-     * @var PhiveVersion
-     */
-    private $version;
-
+    
     /**
      * @var Environment
      */
@@ -21,12 +16,10 @@ class HelpCommand implements Cli\Command {
     private $output;
 
     /**
-     * @param PhiveVersion $version
      * @param Environment  $environment
      * @param Cli\Output   $output
      */
-    public function __construct(PhiveVersion $version, Environment $environment, Cli\Output $output) {
-        $this->version = $version;
+    public function __construct(Environment $environment, Cli\Output $output) {
         $this->environment = $environment;
         $this->output = $output;
     }
