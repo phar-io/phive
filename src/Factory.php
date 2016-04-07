@@ -255,8 +255,7 @@ class Factory {
             new ResetCommandConfig($options),
             $this->getPharRegistry(),
             $this->getEnvironment(),
-            $this->getPharInstaller(),
-            $this->getColoredConsoleOutput()
+            $this->getPharInstaller()
         );
     }
 
