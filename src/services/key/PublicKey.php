@@ -95,6 +95,7 @@ class PublicKey {
                     $this->fingerprint = trim(chunk_split($parts[1], 4, ' '));
                     $this->bits = $parts[3];
                     $this->created = new \DateTimeImmutable('@' . $parts[4]);
+                    break;
                 }
             }
         }
