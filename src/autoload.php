@@ -45,6 +45,8 @@ spl_autoload_register(
                 'phario\\phive\\file' => '/shared/File.php',
                 'phario\\phive\\filedownloader' => '/shared/download/FileDownloader.php',
                 'phario\\phive\\filename' => '/shared/Filename.php',
+                'phario\\phive\\git' => '/shared/Git.php',
+                'phario\\phive\\gitexception' => '/shared/exceptions/GitException.php',
                 'phario\\phive\\githubrepository' => '/shared/repository/GithubRepository.php',
                 'phario\\phive\\gnupg' => '/shared/GnuPG.php',
                 'phario\\phive\\gnupgkeydownloader' => '/services/key/gpg/GnupgKeyDownloader.php',

@@ -53,9 +53,16 @@ class Factory {
      */
     private function getPhiveVersion() {
         if (!$this->version) {
-            $this->version = new PhiveVersion();
+            $this->version = new PhiveVersion($this->getGit());
         }
         return $this->version;
+    }
+
+    /**
+     * @return Git
+     */
+    private function getGit() {
+        return new Git($this->getEnvironment()->getWorkingDirectory());
     }
 
     /**

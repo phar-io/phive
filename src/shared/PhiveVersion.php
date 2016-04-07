@@ -3,14 +3,33 @@ namespace PharIo\Phive;
 
 class PhiveVersion {
 
+    /**
+     * @var string
+     */
     private $fallbackVersion;
 
+    /**
+     * @var string
+     */
     private $version;
 
-    public function __construct($version = '0.1.0') {
+    /**
+     * @var Git
+     */
+    private $git;
+
+    /**
+     * @param Git $git
+     * @param string $version
+     */
+    public function __construct(Git $git, $version = '0.1.0') {
+        $this->git = $git;
         $this->fallbackVersion = $version;
     }
 
+    /**
+     * @return string
+     */
     public function getVersionString() {
         return sprintf(
             'Phive %s - Copyright (C) 2015-%d by Arne Blankerts, Sebastian Heuer and Contributors',
@@ -19,30 +38,28 @@ class PhiveVersion {
         );
     }
 
+    /**
+     * @return string
+     */
     public function getVersion() {
         if ($this->version !== null) {
             return $this->version;
         }
 
-        $path = realpath(__DIR__ . '/../../');
-        if (!is_dir($path . '/.git')) {
+        $phiveRoot = new Directory(realpath(__DIR__ . '/../../'));
+
+        if (!$this->git->isRepository($phiveRoot)) {
             $this->version = $this->fallbackVersion;
             return $this->version;
         }
-
-        $devNull = strtolower(substr(PHP_OS, 0, 3)) == 'win' ? 'nul' : '/dev/null';
-        $dir = getcwd();
-        chdir($path);
-        $version = @exec('git describe --tags --always --dirty 2>' . $devNull, $output, $rc);
-        chdir($dir);
-
-        if ($rc !== 0) {
+        
+        try {
+            $this->version = $this->git->getMostRecentTag($phiveRoot);
+        } catch (GitException $e) {
             $this->version = $this->fallbackVersion;
-            return $this->version;
         }
-
-        $this->version = $version;
-        return $version;
+        
+        return $this->version;
     }
 
 }
