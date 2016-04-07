@@ -74,8 +74,7 @@ class VersionConstraintParser {
      *
      * @return VersionConstraintGroup
      */
-    private function handleCaretOperator($value)
-    {
+    private function handleCaretOperator($value) {
         $version = new Version(substr($value, 1));
         return new VersionConstraintGroup(
             $value,

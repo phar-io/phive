@@ -49,7 +49,7 @@ class ComposerAlias {
      */
     private function ensureValidFormat($alias) {
         $check = strpos($alias, '/');
-        if ( $check === false || $check === 0 ) {
+        if ($check === false || $check === 0) {
             throw new \InvalidArgumentException(
                 sprintf('Invalid composer alias, must be of format "vendor/name", "%s" given', $alias)
             );
