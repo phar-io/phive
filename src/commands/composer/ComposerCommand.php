@@ -36,12 +36,12 @@ class ComposerCommand implements Cli\Command {
     private $phiveXmlConfig;
 
     /**
-     * ComposerCommand constructor.
-     *
      * @param ComposerCommandConfig $config
-     * @param ComposerService       $composerService
-     * @param PharService           $pharService
-     * @param Cli\Input             $input
+     * @param ComposerService $composerService
+     * @param PharService $pharService
+     * @param PhiveXmlConfig $phiveXmlConfig
+     * @param Environment $environment
+     * @param Cli\Input $input
      */
     public function __construct(ComposerCommandConfig $config, ComposerService $composerService, PharService $pharService, PhiveXmlConfig $phiveXmlConfig, Environment $environment, Cli\Input $input) {
         $this->config = $config;

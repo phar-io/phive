@@ -35,7 +35,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
             ['getInstallCommand', [$this->getOptionsMock()], InstallCommand::class],
             ['getUpdateCommand', [$this->getOptionsMock()], UpdateCommand::class],
             ['getListCommand', [$this->getOptionsMock()], ListCommand::class],
-            ['getPurgeCommand', [$this->getOptionsMock()], PurgeCommand::class]
+            ['getPurgeCommand', [$this->getOptionsMock()], PurgeCommand::class],
+            ['getComposerCommand', [$this->getOptionsMock()], ComposerCommand::class]
         ];
     }
 
