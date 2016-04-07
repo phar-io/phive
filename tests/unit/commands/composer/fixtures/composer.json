@@ -1,0 +1,9 @@
+{
+  "require": {
+    "foo/bar": "1.2.1",
+    "theseer/autoload": "1.20.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  }
+}
