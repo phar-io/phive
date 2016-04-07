@@ -29,8 +29,6 @@ class HttpProgressUpdate {
     private $sent;
 
     /**
-     * HttpProgressUpdate constructor.
-     *
      * @param Url $url
      * @param int $expectedDown
      * @param int $received

@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Curl implements HttpClient {
 
     /**
