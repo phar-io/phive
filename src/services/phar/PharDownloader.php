@@ -68,7 +68,9 @@ class PharDownloader {
      * @return bool
      */
     private function verifySignature(File $phar, File $signature) {
-        return $this->signatureService->verify($phar->getContent(), $signature->getContent());
+        return $this->signatureService->verify(
+            $phar->getContent(), $signature->getContent()
+        )->wasVerificationSuccessful();
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class GnupgVerificationResult {
+class GnupgVerificationResult implements VerificationResult {
 
     /**
      * @var array

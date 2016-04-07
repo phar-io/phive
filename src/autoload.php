@@ -114,6 +114,7 @@ spl_autoload_register(
                 'phario\\phive\\updaterepositorylistcommand' => '/commands/update-repository-list/UpdateRepositoryListCommand.php',
                 'phario\\phive\\url' => '/shared/Url.php',
                 'phario\\phive\\verificationfailedexception' => '/shared/exceptions/VerificationFailedException.php',
+                'phario\\phive\\verificationresult' => '/services/signature/VerificationResult.php',
                 'phario\\phive\\version' => '/shared/version/Version.php',
                 'phario\\phive\\versioncommand' => '/commands/version/VersionCommand.php',
                 'phario\\phive\\versionconstraint' => '/shared/versionconstraints/VersionConstraint.php',

@@ -19,7 +19,7 @@ class SignatureService {
      * @param string $message
      * @param string $signature
      *
-     * @return GnupgVerificationResult
+     * @return VerificationResult
      */
     public function verify($message, $signature) {
         return $this->signatureVerifier->verify($message, $signature);
