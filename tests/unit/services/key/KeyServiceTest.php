@@ -41,7 +41,7 @@ class KeyServiceTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testInvokesImporter() {
-        $this->input->confirm(Argument::any())->willReturn(true);
+        $this->input->confirm(Argument::any(), false)->willReturn(true);
         $this->importer->importKey('some key')->willReturn(['keydata']);
 
         $key = $this->prophesize(PublicKey::class);

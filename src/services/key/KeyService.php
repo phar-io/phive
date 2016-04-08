@@ -51,7 +51,7 @@ class KeyService {
         $key = $this->downloadKey($keyId);
 
         $this->output->writeText("\n" . $key->getInfo() . "\n\n");
-        if (!$this->input->confirm('Import this key?')) {
+        if (!$this->input->confirm('Import this key?', false)) {
             throw new VerificationFailedException(sprintf('User declined import of key %s', $key->getId()));
         }
 

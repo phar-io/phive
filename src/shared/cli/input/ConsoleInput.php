@@ -9,24 +9,36 @@ class ConsoleInput implements Input {
     private $output;
 
     /**
-     * ConsoleInput constructor.
-     *
-     * @param Output $output
+     * @var resource
      */
-    public function __construct(Output $output) {
+    private $inputStream;
+
+    /**
+     * @param Output $output
+     * @param $inputStreamHandle
+     */
+    public function __construct(Output $output, $inputStreamHandle = STDIN) {
         $this->output = $output;
+        $this->inputStream = $inputStreamHandle;
     }
 
     /**
      * @param string $message
+     * @param bool $default
      *
      * @return bool
      */
-    public function confirm($message) {
+    public function confirm($message, $default = true) {
+        $yesOption = $default === true ? 'Y' : 'y';
+        $noOption = $default === false ? 'N' : 'n';
         do {
-            $this->output->writeText(rtrim($message) . ' [Y|n] ');
-            $response = strtolower(rtrim(fgets(STDIN)));
-        } while (!in_array($response, ['y', 'n']));
+            $this->output->writeText(rtrim($message) . sprintf(' [%s|%s] ', $yesOption, $noOption));
+            $response = strtolower(rtrim(fgets($this->inputStream)));
+        } while (!in_array($response, ['y', 'n', '']));
+
+        if ($response === '') {
+            return $default;
+        }
 
         return ($response === 'y');
     }

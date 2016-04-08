@@ -5,9 +5,10 @@ interface Input {
 
     /**
      * @param string $message
+     * @param bool $default
      *
      * @return bool
      */
-    public function confirm($message);
+    public function confirm($message, $default = true);
 
 }
