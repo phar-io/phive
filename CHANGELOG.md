@@ -2,12 +2,20 @@
 
 ## phive 0.3.0 (?? ?? ????)
 
+* Add: Implement reset command (#9)
+* Add: Generate phive configuration file from composer.json (#10)
+* Add: Provide proper exit codes (#11)
+* Add: Implement update command (#14)
+* Change: Make CURL SSL Checks more secure (#15)
+* Add: Implement support for GitHub repositories (#22)
+* Add; Show download progress (#39)
+* Add: Support caret version operator (#41)
+
 ## phive 0.2.1 (08 Apr 2016)
 
 * Fix: Installing PHARs fails when phar.readonly is set in php.ini (#42)
 * Fix: PHIVE binary gets corrupted (#43)
 * Fix: Certificate for sks-keyservers.net cannot be loaded when PHIVE is run from a PHAR (#45)
->>>>>>> c9c96d7... update changelog
 
 ## phive 0.2.0 (25 Feb 2016)
 
