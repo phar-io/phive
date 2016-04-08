@@ -9,9 +9,9 @@ class LocalSslCertificate {
     private $hostname = '';
 
     /**
-     * @var string
+     * @var resource
      */
-    private $sourceFile = '';
+    private $temporaryCertificateFile;
 
     /**
      * @param string $hostname
@@ -19,7 +19,7 @@ class LocalSslCertificate {
      */
     public function __construct($hostname, $sourceFile) {
         $this->hostname = $hostname;
-        $this->sourceFile = $sourceFile;
+        $this->createTemporaryCertificateFile($sourceFile);
     }
 
     /**
@@ -33,7 +33,15 @@ class LocalSslCertificate {
      * @return string
      */
     public function getCertificateFile() {
-        return $this->sourceFile;
+        return stream_get_meta_data($this->temporaryCertificateFile)['uri'];
+    }
+
+    /**
+     * @param string $sourceFile
+     */
+    private function createTemporaryCertificateFile($sourceFile) {
+        $this->temporaryCertificateFile = tmpfile();
+        fwrite($this->temporaryCertificateFile, file_get_contents($sourceFile));
     }
 
 }

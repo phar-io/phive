@@ -48,7 +48,7 @@ class CurlConfigTest extends \PHPUnit_Framework_TestCase {
     public function testAddsLocalSslCertificate() {
         $config = new CurlConfig('foo');
         $url = 'example.com';
-        $certificate = new LocalSslCertificate($url, 'cert.pem');
+        $certificate = new LocalSslCertificate($url, __DIR__ . '/fixtures/foo.pem');
         $this->assertFalse($config->hasLocalSslCertificate($url));
         $config->addLocalSslCertificate($certificate);
         $this->assertTrue($config->hasLocalSslCertificate($url));

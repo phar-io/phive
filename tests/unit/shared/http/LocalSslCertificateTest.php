@@ -7,13 +7,15 @@ namespace PharIo\Phive;
 class LocalSslCertificateTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetHostname() {
-        $certificate = new LocalSslCertificate('example.com', 'foo.pem');
+        $certificate = new LocalSslCertificate('example.com', __DIR__ . '/fixtures/foo.pem');
         $this->assertSame('example.com', $certificate->getHostname());
     }
 
-    public function testGetCertificateFile() {
-        $certificate = new LocalSslCertificate('example.com', 'foo.pem');
-        $this->assertSame('foo.pem', $certificate->getCertificateFile());
+    public function testGetCertificateFileReturnsTemporaryFilename() {
+        $certificate = new LocalSslCertificate('example.com', __DIR__ . '/fixtures/foo.pem');
+        $actualFilename = $certificate->getCertificateFile();
+        $this->assertFileExists($actualFilename);
+        $this->assertFileEquals(__DIR__ . '/fixtures/foo.pem', $actualFilename);
     }
 
 }
