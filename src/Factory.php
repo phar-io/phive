@@ -53,7 +53,7 @@ class Factory {
      */
     private function getPhiveVersion() {
         if (!$this->version) {
-            $this->version = new PhiveVersion($this->getGit());
+            $this->version = new GitAwarePhiveVersion($this->getGit());
         }
         return $this->version;
     }
