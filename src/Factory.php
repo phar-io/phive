@@ -133,7 +133,7 @@ class Factory {
      * @return PhiveXmlConfig
      */
     private function getPhiveXmlConfig() {
-        return new PhiveXmlConfig(new Filename(__DIR__ . '/../phive.xml'));
+        return new PhiveXmlConfig($this->getEnvironment()->getWorkingDirectory()->file('phive.xml'));
     }
 
     /**
