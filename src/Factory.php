@@ -133,7 +133,7 @@ class Factory {
      * @return PhiveXmlConfig
      */
     private function getPhiveXmlConfig() {
-        return new PhiveXmlConfig($this->getEnvironment()->getWorkingDirectory()->file('phive.xml'));
+        return new PhiveXmlConfig($this->getEnvironment()->getWorkingDirectory()->parent()->file('phive.xml'));
     }
 
     /**
@@ -153,8 +153,10 @@ class Factory {
         if (null === $this->curl) {
             $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
             $config->addLocalSslCertificate(
-                'hkps.pool.sks-keyservers.net',
-                __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+                new LocalSslCertificate(
+                    'hkps.pool.sks-keyservers.net',
+                    __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+                )
             );
             $environment = $this->getEnvironment();
             if ($environment->hasProxy()) {

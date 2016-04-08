@@ -43,17 +43,16 @@ class CurlConfig {
     }
 
     /**
-     * @param string $hostname
-     * @param string $certFilename
+     * @param LocalSslCertificate $certificate
      */
-    public function addLocalSslCertificate($hostname, $certFilename) {
-        $this->localSslCertificates[$hostname] = $certFilename;
+    public function addLocalSslCertificate(LocalSslCertificate $certificate) {
+        $this->localSslCertificates[$certificate->getHostname()] = $certificate;
     }
 
     /**
      * @param string $hostname
      *
-     * @return string
+     * @return LocalSslCertificate
      * @throws CurlException
      */
     public function getLocalSslCertificate($hostname) {

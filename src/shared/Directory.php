@@ -103,6 +103,15 @@ class Directory {
     }
 
     /**
+     * @return Directory
+     */
+    public function parent() {
+        return new Directory(
+            $this->path . DIRECTORY_SEPARATOR . '/../'
+        );
+    }
+
+    /**
      * @param string $filename
      *
      * @return Filename
