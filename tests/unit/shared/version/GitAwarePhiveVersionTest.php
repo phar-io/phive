@@ -2,26 +2,28 @@
 namespace PharIo\Phive;
 
 /**
+ * @covers PharIo\Phive\GitAwarePhiveVersion
  * @covers PharIo\Phive\PhiveVersion
  */
-class PhiveVersionTest extends \PHPUnit_Framework_TestCase {
+class GitAwarePhiveVersionTest extends \PHPUnit_Framework_TestCase {
 
-    public function testGetVersionString() {
+    public function testGetVersionStringReturnsTagFromGit() {
         $git = $this->getGitMock();
-        $git->method('isRepository')->willReturn(false);
+        $git->method('isRepository')->willReturn(true);
+        $git->method('getMostRecentTag')->willReturn('0.2.0-67-gd2a5e31');
 
-        $version = new PhiveVersion($git, '0.3.2');
+        $version = new GitAwarePhiveVersion($git);
 
-        $this->assertContains('0.3.2', $version->getVersionString());
+        $this->assertContains('0.2.0-67-gd2a5e31', $version->getVersionString());
     }
     
     public function testGetVersionReturnsFallbackVersionIfNoGitRepositoryIsPresent() {
         $git = $this->getGitMock();
         $git->method('isRepository')->willReturn(false);
 
-        $version = new PhiveVersion($git, '1.4.1');
+        $version = new GitAwarePhiveVersion($git);
 
-        $this->assertEquals('1.4.1', $version->getVersion());
+        $this->assertEquals(GitAwarePhiveVersion::UNKNOWN_VERSION, $version->getVersion());
     }
 
     public function testGetVersionReturnsFallbackVersionIfGitThrowsException() {
@@ -29,9 +31,9 @@ class PhiveVersionTest extends \PHPUnit_Framework_TestCase {
         $git->method('isRepository')->willReturn(true);
         $git->method('getMostRecentTag')->willThrowException(new GitException());
 
-        $version = new PhiveVersion($git, '4.1.0');
+        $version = new GitAwarePhiveVersion($git);
 
-        $this->assertEquals('4.1.0', $version->getVersion());
+        $this->assertEquals(GitAwarePhiveVersion::UNKNOWN_VERSION, $version->getVersion());
     }
 
     public function testGetVersionReturnsTagFromGit() {
@@ -39,7 +41,7 @@ class PhiveVersionTest extends \PHPUnit_Framework_TestCase {
         $git->method('isRepository')->willReturn(true);
         $git->method('getMostRecentTag')->willReturn('0.2.0-67-gd2a5e31');
 
-        $version = new PhiveVersion($git, '4.1.0');
+        $version = new GitAwarePhiveVersion($git);
 
         $this->assertEquals('0.2.0-67-gd2a5e31', $version->getVersion());
     }
@@ -49,7 +51,7 @@ class PhiveVersionTest extends \PHPUnit_Framework_TestCase {
         $git->expects($this->once())->method('isRepository')->willReturn(true);
         $git->expects($this->once())->method('getMostRecentTag')->willReturn('0.2.0-67-gd2a5e31');
 
-        $version = new PhiveVersion($git, '4.1.0');
+        $version = new GitAwarePhiveVersion($git);
 
         $version->getVersion();
         $version->getVersion();
