@@ -10,8 +10,13 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
     use ScalarTestDataProvider;
 
-    public function testGetWorkingDirectory() {
+    public function testGetTargetDirectory() {
+        $childDirectory = $this->getDirectoryMock();
         $directory = $this->getDirectoryMock();
+        $directory->expects($this->once())
+            ->method('child')
+            ->willReturn($childDirectory);
+
         $config = $this->getConfigMock();
 
         $config->expects($this->once())
@@ -19,7 +24,8 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ->willReturn($directory);
 
         $commandConfig = new InstallCommandConfig($this->getOptionsMock(), $config, $this->getPhiveXmlConfigMock());
-        $this->assertSame($directory, $commandConfig->getWorkingDirectory());
+
+        $this->assertSame($childDirectory, $commandConfig->getTargetDirectory());
     }
 
     /**

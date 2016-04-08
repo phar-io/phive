@@ -34,8 +34,8 @@ class InstallCommandConfig {
     /**
      * @return Directory
      */
-    public function getWorkingDirectory() {
-        return $this->config->getWorkingDirectory();
+    public function getTargetDirectory() {
+        return $this->config->getWorkingDirectory()->child('tools');
     }
 
     /**
