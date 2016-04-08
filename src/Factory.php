@@ -62,7 +62,7 @@ class Factory {
      * @return Git
      */
     private function getGit() {
-        return new Git($this->getEnvironment()->getWorkingDirectory());
+        return new Git($this->getEnvironment()->getWorkingDirectory()->parent());
     }
 
     /**
@@ -135,7 +135,7 @@ class Factory {
     private function getPhiveXmlConfig() {
         return new PhiveXmlConfig(
             new XmlFile(
-                $this->getEnvironment()->getWorkingDirectory()->file('phive.xml'),
+                $this->getEnvironment()->getWorkingDirectory()->parent()->file('phive.xml'),
                 'https://phar.io/phive',
                 'phive'
             )
@@ -159,8 +159,10 @@ class Factory {
         if (null === $this->curl) {
             $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
             $config->addLocalSslCertificate(
-                'hkps.pool.sks-keyservers.net',
-                __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+                new LocalSslCertificate(
+                    'hkps.pool.sks-keyservers.net',
+                    __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+                )
             );
             $environment = $this->getEnvironment();
             if ($environment->hasProxy()) {

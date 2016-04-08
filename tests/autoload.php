@@ -24,6 +24,7 @@ spl_autoload_register(
                 'phario\\phive\\filedownloadertest' => '/unit/shared/download/FileDownloaderTest.php',
                 'phario\\phive\\filenametest' => '/unit/shared/FilenameTest.php',
                 'phario\\phive\\filetest' => '/unit/shared/FileTest.php',
+                'phario\\phive\\gitawarephiveversiontest' => '/unit/shared/version/GitAwarePhiveVersionTest.php',
                 'phario\\phive\\githubreleasesrepositorytest' => '/unit/GithubReleasesRepositoryTest.php',
                 'phario\\phive\\githubrepositorytest' => '/unit/shared/repository/GithubRepositoryTest.php',
                 'phario\\phive\\gnupgkeydownloadertest' => '/unit/services/key/gpg/GnupgKeyDownloaderTest.php',
@@ -45,7 +46,6 @@ spl_autoload_register(
                 'phario\\phive\\pharregistrytest' => '/unit/shared/PharRegistryTest.php',
                 'phario\\phive\\pharservicetest' => '/unit/services/phar/PharServiceTest.php',
                 'phario\\phive\\phartest' => '/unit/shared/phar/PharTest.php',
-                'phario\\phive\\phiveversiontest' => '/unit/shared/PhiveVersionTest.php',
                 'phario\\phive\\phivexmlconfigtest' => '/unit/shared/config/PhiveXmlConfigTest.php',
                 'phario\\phive\\purgecommandconfigtest' => '/unit/commands/purge/PurgeCommandConfigTest.php',
                 'phario\\phive\\purgecommandtest' => '/unit/commands/purge/PurgeCommandTest.php',
@@ -62,6 +62,7 @@ spl_autoload_register(
                 'phario\\phive\\sourceslisttest' => '/unit/shared/SourcesListTest.php',
                 'phario\\phive\\specificmajorandminorversionconstrainttest' => '/unit/shared/versionconstraints/SpecificMajorAndMinorVersionConstraintTest.php',
                 'phario\\phive\\specificmajorversionconstrainttest' => '/unit/shared/versionconstraints/SpecificMajorVersionConstraintTest.php',
+                'phario\\phive\\staticphiveversiontest' => '/unit/shared/version/StaticPhiveVersionTest.php',
                 'phario\\phive\\teststreamwrapper' => '/unit/TestStreamWrapper.php',
                 'phario\\phive\\unsupportedhashstub' => '/unit/services/checksum/stubs/UnsupportedHashStub.php',
                 'phario\\phive\\updatecommandconfigtest' => '/unit/commands/update/UpdateCommandConfigTest.php',
@@ -69,7 +70,7 @@ spl_autoload_register(
                 'phario\\phive\\urltest' => '/unit/shared/UrlTest.php',
                 'phario\\phive\\versionconstraintgrouptest' => '/unit/shared/versionconstraints/VersionConstraintGroupTest.php',
                 'phario\\phive\\versionconstraintparsertest' => '/unit/shared/versionconstraints/VersionConstraintParserTest.php',
-                'phario\\phive\\versiontest' => '/unit/shared/VersionTest.php'
+                'phario\\phive\\versiontest' => '/unit/shared/version/VersionTest.php'
             );
         }
         $cn = strtolower($class);

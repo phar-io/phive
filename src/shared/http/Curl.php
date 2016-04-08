@@ -50,7 +50,7 @@ class Curl implements HttpClient {
 
             $hostname = $url->getHostname();
             if ($this->config->hasLocalSslCertificate($hostname)) {
-                curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname));
+                curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname)->getCertificateFile());
             }
 
             return new HttpResponse(curl_exec($ch), curl_getinfo($ch, CURLINFO_HTTP_CODE), curl_error($ch));
