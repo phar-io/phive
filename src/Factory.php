@@ -135,7 +135,7 @@ class Factory {
     private function getPhiveXmlConfig() {
         return new PhiveXmlConfig(
             new XmlFile(
-                $this->getEnvironment()->getWorkingDirectory()->parent()->file('phive.xml'),
+                $this->getEnvironment()->getWorkingDirectory()->file('phive.xml'),
                 'https://phar.io/phive',
                 'phive'
             )

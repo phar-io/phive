@@ -41,7 +41,7 @@ class RemoveCommand implements Cli\Command {
     }
 
     public function execute() {
-        $destination = $this->config->getWorkingDirectory() . '/' . $this->config->getPharName();
+        $destination = $this->config->getTargetDirectory() . '/' . $this->config->getPharName();
         $phar = $this->repository->getByUsage($destination);
         $this->output->writeInfo(
             sprintf('Removing Phar %s %s', $phar->getName(), $phar->getVersion()->getVersionString())

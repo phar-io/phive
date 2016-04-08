@@ -42,7 +42,7 @@ class Environment {
      * @return Directory
      */
     public function getWorkingDirectory() {
-        return (new Directory(getcwd()))->child('tools');
+        return new Directory(getcwd());
     }
 
     /**

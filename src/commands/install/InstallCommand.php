@@ -50,7 +50,7 @@ class InstallCommand implements Cli\Command {
         if ($this->config->installGlobally()) {
             $targetDirectory = dirname($this->environment->getBinaryName());
         } else {
-            $targetDirectory = $this->config->getWorkingDirectory();
+            $targetDirectory = $this->config->getTargetDirectory();
         }
 
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {

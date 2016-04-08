@@ -15,8 +15,8 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
         $requestedPhar2 = $this->getRequestedPharMock();
 
         $config->expects($this->any())
-            ->method('getWorkingDirectory')
-            ->willReturn('/foo');
+            ->method('getTargetDirectory')
+            ->willReturn(new Directory(__DIR__));
 
         $config->expects($this->once())
             ->method('getRequestedPhars')
@@ -26,11 +26,11 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
 
         $pharService->expects($this->at(0))
             ->method('install')
-            ->with($requestedPhar1, '/foo');
+            ->with($requestedPhar1, new Directory(__DIR__));
 
         $pharService->expects($this->at(1))
             ->method('install')
-            ->with($requestedPhar2, '/foo');
+            ->with($requestedPhar2, new Directory(__DIR__));
 
         $command->execute();
 
