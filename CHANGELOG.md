@@ -1,11 +1,10 @@
 # Changelog of phive
 
-## phive 0.3.0 (?? ??? ????)
-
 ## phive 0.2.1 (08 Apr 2016)
 
 * Fix: Installing PHARs fails when phar.readonly is set in php.ini (#42)
-* Fix: phive binary gets corrupted (#43)
+* Fix: PHIVE binary gets corrupted (#43)
+* Fix: Certificate for sks-keyservers.net cannot be loaded when PHIVE is run from a PHAR (#45)
 
 ## phive 0.2.0 (25 Feb 2016)
 
