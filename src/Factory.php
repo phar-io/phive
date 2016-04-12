@@ -198,7 +198,7 @@ class Factory {
      * @return Git
      */
     private function getGit() {
-        return new Git($this->getEnvironment()->getWorkingDirectory()->parent());
+        return new Git($this->getEnvironment()->getWorkingDirectory());
     }
 
     /**
@@ -225,7 +225,8 @@ class Factory {
      */
     private function getConfig() {
         return new Config(
-            $this->getEnvironment()
+            $this->getEnvironment(),
+            $this->request->getCommandOptions()
         );
     }
 

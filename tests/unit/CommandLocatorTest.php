@@ -11,15 +11,16 @@ class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider commandProvider
+     *
+     * @param $command
+     * @param $factoryMethod
+     *
+     * @throws Cli\CommandLocatorException
      */
-    public function testValidCommandsAreReturned($command, $factoryMethod, Cli\Options $arguments = null) {
+    public function testValidCommandsAreReturned($command, $factoryMethod) {
         $factory = $this->prophesize(Factory::class);
 
-        if ($arguments != null) {
-            $method = new MethodProphecy($factory, $factoryMethod, [$arguments]);
-        } else {
-            $method = new MethodProphecy($factory, $factoryMethod, []);
-        }
+        $method = new MethodProphecy($factory, $factoryMethod, []);
         $method->willReturn($this->prophesize(Cli\Command::class)->reveal());
 
         $factory->addMethodProphecy($method);
@@ -27,7 +28,6 @@ class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
 
         $request = $this->prophesize(Cli\Request::class);
         $request->getCommand()->willReturn($command)->shouldBeCalled();
-        $request->getCommandOptions()->willReturn($arguments);
 
         $result = $locator->getCommandForRequest($request->reveal());
         $this->assertInstanceOf(CLI\Command::class, $result);
@@ -37,13 +37,13 @@ class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
         return [
             'help'                   => ['help', 'getHelpCommand'],
             'version'                => ['version', 'getVersionCommand'],
-            'skel'                   => ['skel', 'getSkelCommand', new Cli\Options([])],
-            'install'                => ['install', 'getInstallCommand', new Cli\Options([])],
+            'skel'                   => ['skel', 'getSkelCommand'],
+            'install'                => ['install', 'getInstallCommand'],
             'list'                   => ['list', 'getListCommand'],
-            'purge'                  => ['purge', 'getPurgeCommand', new Cli\Options([])],
-            'remove'                 => ['remove', 'getRemoveCommand', new Cli\Options([])],
-            'reset'                  => ['reset', 'getResetCommand', new Cli\Options([])],
-            'update'                 => ['update', 'getUpdateCommand', new Cli\Options([])],
+            'purge'                  => ['purge', 'getPurgeCommand'],
+            'remove'                 => ['remove', 'getRemoveCommand'],
+            'reset'                  => ['reset', 'getResetCommand'],
+            'update'                 => ['update', 'getUpdateCommand'],
             'update-repository-list' => ['update-repository-list', 'getUpdateRepositoryListCommand'],
         ];
     }

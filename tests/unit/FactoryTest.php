@@ -1,7 +1,6 @@
 <?php
 namespace PharIo\Phive;
 
-use PharIo\Phive\Cli\Options;
 use PharIo\Phive\Cli\Request;
 
 /**

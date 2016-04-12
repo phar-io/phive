@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\Phive\Cli\Options;
+
 class Config {
 
     /**
@@ -9,16 +11,26 @@ class Config {
     private $environment;
 
     /**
-     * @param Environment $environment
+     * @var Config
      */
-    public function __construct(Environment $environment) {
+    private $cliOptions;
+
+    /**
+     * @param Environment $environment
+     * @param Options $cliOptions
+     */
+    public function __construct(Environment $environment, Options $cliOptions) {
         $this->environment = $environment;
+        $this->cliOptions = $cliOptions;
     }
 
     /**
      * @return Directory
      */
     public function getHomeDirectory() {
+        if ($this->cliOptions->hasOption('home')) {
+            return new Directory($this->cliOptions->getOption('home'));
+        }
         return $this->environment->getHomeDirectory()->child('.phive');
     }
 

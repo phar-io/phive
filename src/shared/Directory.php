@@ -101,16 +101,7 @@ class Directory {
             $mode !== null ? $mode : $this->mode
         );
     }
-
-    /**
-     * @return Directory
-     */
-    public function parent() {
-        return new Directory(
-            $this->path . DIRECTORY_SEPARATOR . '/../'
-        );
-    }
-
+    
     /**
      * @param string $filename
      *
