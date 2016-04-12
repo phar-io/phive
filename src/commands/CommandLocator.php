@@ -37,7 +37,7 @@ class CommandLocator implements Cli\CommandLocator {
             }
 
             case 'install': {
-                return $this->factory->getInstallCommand($request->getCommandOptions());
+                return $this->factory->getInstallCommand();
             }
 
             case 'list': {
@@ -45,19 +45,19 @@ class CommandLocator implements Cli\CommandLocator {
             }
 
             case 'purge': {
-                return $this->factory->getPurgeCommand($request->getCommandOptions());
+                return $this->factory->getPurgeCommand();
             }
 
             case 'remove': {
-                return $this->factory->getRemoveCommand($request->getCommandOptions());
+                return $this->factory->getRemoveCommand();
             }
 
             case 'skel': {
-                return $this->factory->getSkelCommand($request->getCommandOptions());
+                return $this->factory->getSkelCommand();
             }
 
             case 'update': {
-                return $this->factory->getUpdateCommand($request->getCommandOptions());
+                return $this->factory->getUpdateCommand();
             }
 
             case 'update-repository-list': {
@@ -65,11 +65,11 @@ class CommandLocator implements Cli\CommandLocator {
             }
 
             case 'reset': {
-                return $this->factory->getResetCommand($request->getCommandOptions());
+                return $this->factory->getResetCommand();
             }
 
             case 'composer': {
-                return $this->factory->getComposerCommand($request->getCommandOptions());
+                return $this->factory->getComposerCommand();
             }
             
             default: {

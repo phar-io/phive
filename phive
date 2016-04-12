@@ -50,8 +50,6 @@ if (!defined('HHVM_VERSION') && (version_compare(phpversion(), '5.6', 'lt'))) {
 
 require __DIR__ . '/src/autoload.php';
 
-$rc = (new Factory())->getRunner()->run(
-    new Cli\Request($_SERVER['argv'])
-);
+$rc = (new Factory(new Cli\Request($_SERVER['argv'])))->getRunner()->run();
 
 die($rc);

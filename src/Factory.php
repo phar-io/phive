@@ -16,9 +16,16 @@ class Factory {
     private $version;
 
     /**
+     * @var Cli\Request
+     */
+    private $request;
+
+    /**
+     * @param Cli\Request $request
      * @param PhiveVersion $version
      */
-    public function __construct(PhiveVersion $version = null) {
+    public function __construct(Cli\Request $request, PhiveVersion $version = null) {
+        $this->request = $request;
         $this->version = $version;
     }
 
@@ -30,7 +37,8 @@ class Factory {
             $this->getCommandLocator(),
             $this->getConsoleOutput(),
             $this->getPhiveVersion(),
-            $this->getEnvironment()
+            $this->getEnvironment(),
+            $this->request
         );
     }
 
@@ -52,13 +60,11 @@ class Factory {
     }
 
     /**
-     * @param Cli\Options $options
-     *
      * @return SkelCommand
      */
-    public function getSkelCommand(Cli\Options $options) {
+    public function getSkelCommand() {
         return new SkelCommand(
-            new SkelCommandConfig($options, getcwd()),
+            new SkelCommandConfig($this->request->getCommandOptions(), getcwd()),
             $this->getPhiveVersion()
         );
     }
@@ -71,13 +77,11 @@ class Factory {
     }
 
     /**
-     * @param Cli\Options $options
-     *
      * @return RemoveCommand
      */
-    public function getRemoveCommand(Cli\Options $options) {
+    public function getRemoveCommand() {
         return new RemoveCommand(
-            new RemoveCommandConfig($options, $this->getConfig()),
+            new RemoveCommandConfig($this->request->getCommandOptions(), $this->getConfig()),
             $this->getPharRegistry(),
             $this->getPharService(),
             $this->getColoredConsoleOutput()
@@ -85,13 +89,11 @@ class Factory {
     }
 
     /**
-     * @param Cli\Options $options
-     *
      * @return ResetCommand
      */
-    public function getResetCommand(Cli\Options $options) {
+    public function getResetCommand() {
         return new ResetCommand(
-            new ResetCommandConfig($options),
+            new ResetCommandConfig($this->request->getCommandOptions()),
             $this->getPharRegistry(),
             $this->getEnvironment(),
             $this->getPharInstaller()
@@ -99,14 +101,12 @@ class Factory {
     }
 
     /**
-     * @param Cli\Options $options
-     *
      * @return InstallCommand
      */
-    public function getInstallCommand(Cli\Options $options) {
+    public function getInstallCommand() {
         return new InstallCommand(
             new InstallCommandConfig(
-                $options,
+                $this->request->getCommandOptions(),
                 $this->getConfig(),
                 $this->getPhiveXmlConfig()
             ),
@@ -117,14 +117,12 @@ class Factory {
     }
 
     /**
-     * @param Cli\Options $options
-     *
      * @return UpdateCommand
      */
-    public function getUpdateCommand(Cli\Options $options) {
+    public function getUpdateCommand() {
         return new UpdateCommand(
             new UpdateCommandConfig(
-                $options,
+                $this->request->getCommandOptions(),
                 $this->getConfig(),
                 $this->getPhiveXmlConfig()
             ),
@@ -144,14 +142,12 @@ class Factory {
     }
 
     /**
-     * @param Cli\Options $options
-     *
      * @return PurgeCommand
      */
-    public function getPurgeCommand(Cli\Options $options) {
+    public function getPurgeCommand() {
         return new PurgeCommand(
             new PurgeCommandConfig(
-                $options,
+                $this->request->getCommandOptions(),
                 $this->getConfig()
             ),
             $this->getPharRegistry(),
@@ -159,10 +155,10 @@ class Factory {
         );
     }
 
-    public function getComposerCommand(Cli\Options $options) {
+    public function getComposerCommand() {
         return new ComposerCommand(
             new ComposerCommandConfig(
-                $options,
+                $this->request->getCommandOptions(),
                 $this->getConfig(),
                 $this->getPhiveXmlConfig()
             ),

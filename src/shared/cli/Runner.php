@@ -37,29 +37,36 @@ class Runner {
     private $environment;
 
     /**
-     * @param CommandLocator $locator
-     * @param Output         $output
-     * @param PhiveVersion   $version
-     * @param Environment    $env
+     * @var Request
      */
-    public function __construct(CommandLocator $locator, Output $output, PhiveVersion $version, Environment $env) {
+    private $request;
+
+    /**
+     * @param CommandLocator $locator
+     * @param Output $output
+     * @param PhiveVersion $version
+     * @param Environment $env
+     * @param Request $request
+     */
+    public function __construct(
+        CommandLocator $locator, Output $output, PhiveVersion $version, Environment $env, Request $request
+    ) {
         $this->locator = $locator;
         $this->output = $output;
         $this->version = $version;
         $this->environment = $env;
+        $this->request = $request;
     }
 
     /**
-     * @param Request $request
-     *
      * @return int
      */
-    public function run(Request $request) {
+    public function run() {
         try {
             $this->environment->ensureFitness();
             $this->setupRuntime();
             $this->showHeader();
-            $this->locator->getCommandForRequest($request)->execute();
+            $this->locator->getCommandForRequest($this->request)->execute();
             $this->showFooter();
             return self::RC_OK;
         } catch (ExtensionsMissingException $e) {
@@ -73,7 +80,7 @@ class Runner {
         } catch (CommandLocatorException $e) {
             if ($e->getCode() == CommandLocatorException::UnknownCommand) {
                 $this->output->writeError(
-                    sprintf("Unknown command '%s'\n\n", $request->getCommand())
+                    sprintf("Unknown command '%s'\n\n", $this->request->getCommand())
                 );
                 return self::RC_UNKNOWN_COMMAND;
             } else {
