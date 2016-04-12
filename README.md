@@ -15,13 +15,13 @@ this very thing for every tool needed.
 Alternatively, you could have used composer. And cluttered your project's dependencies with the ones of your
 tools. And fight their potential dependency conflicts. 
 
-No more! Now you can rely on PHIVE to install and manage your projects tooling needs without all the hassle and without
+No more! Now you can rely on PHIVE to install and manage your project's tooling needs without all the hassle and without
 cluttered dependencies!
 
 ##Getting PHIVE
 
 Installation of PHIVE is easy and about the last time you have to do anything phar related manually.
-Grab your copy of PHIVE from the [releases](https://github.com/phar-io/phive/releases) section at our github page or
+Grab your copy of PHIVE from the [releases](https://github.com/phar-io/phive/releases) section at our GitHub page or
 follow these simple steps:
 
     wget https://phar.io/releases/phive.phar
@@ -53,6 +53,6 @@ be made in favor of symbolic links (use -copy).
 
 ##Contributing
 
-PHIVE and phar.io are open source projects relesaed under the BSD license. You are welcome to join the development
+PHIVE and phar.io are open source projects released under the BSD license. You are welcome to join the development
 team!  
 
