@@ -29,6 +29,7 @@ spl_autoload_register(
                 'phario\\phive\\composercommandconfig' => '/commands/composer/ComposerCommandConfig.php',
                 'phario\\phive\\composerservice' => '/commands/composer/ComposerService.php',
                 'phario\\phive\\config' => '/shared/config/Config.php',
+                'phario\\phive\\configexception' => '/shared/exceptions/ConfigException.php',
                 'phario\\phive\\curl' => '/shared/http/Curl.php',
                 'phario\\phive\\curlconfig' => '/shared/http/CurlConfig.php',
                 'phario\\phive\\curlexception' => '/shared/exceptions/CurlException.php',

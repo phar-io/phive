@@ -81,7 +81,9 @@ class Factory {
      */
     public function getRemoveCommand() {
         return new RemoveCommand(
-            new RemoveCommandConfig($this->request->getCommandOptions(), $this->getConfig()),
+            new RemoveCommandConfig(
+                $this->request->getCommandOptions(), $this->getConfig(), $this->getPhiveXmlConfig()
+            ),
             $this->getPharRegistry(),
             $this->getPharService(),
             $this->getColoredConsoleOutput()

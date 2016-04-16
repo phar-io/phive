@@ -35,7 +35,10 @@ class InstallCommandConfig {
      * @return Directory
      */
     public function getTargetDirectory() {
-        return $this->config->getWorkingDirectory()->child('tools');
+        if (!$this->phiveXmlConfig->hasToolsDirectory()) {
+            return $this->config->getToolsDirectory();
+        }
+        return $this->phiveXmlConfig->getToolsDirectory();
     }
 
     /**

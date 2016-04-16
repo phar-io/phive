@@ -10,22 +10,33 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
     use ScalarTestDataProvider;
 
-    public function testGetTargetDirectory() {
-        $childDirectory = $this->getDirectoryMock();
+    public function testGetTargetDirectoryReturnsDefault() {
         $directory = $this->getDirectoryMock();
-        $directory->expects($this->once())
-            ->method('child')
-            ->willReturn($childDirectory);
-
         $config = $this->getConfigMock();
 
         $config->expects($this->once())
-            ->method('getWorkingDirectory')
+            ->method('getToolsDirectory')
             ->willReturn($directory);
 
         $commandConfig = new InstallCommandConfig($this->getOptionsMock(), $config, $this->getPhiveXmlConfigMock());
 
-        $this->assertSame($childDirectory, $commandConfig->getTargetDirectory());
+        $this->assertSame($directory, $commandConfig->getTargetDirectory());
+    }
+
+    public function testGetTargetDirectoryReturnsDirectoryFromPhiveXmlConfig() {
+        $directory = $this->getDirectoryMock();
+
+        $xmlConfig = $this->getPhiveXmlConfigMock();
+        $xmlConfig->expects($this->once())
+            ->method('hasToolsDirectory')
+            ->willReturn(true);
+        $xmlConfig->expects($this->once())
+            ->method('getToolsDirectory')
+            ->willReturn($directory);
+
+        $commandConfig = new InstallCommandConfig($this->getOptionsMock(), $this->getConfigMock(), $xmlConfig);
+
+        $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
 
     /**

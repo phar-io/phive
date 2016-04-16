@@ -9,8 +9,6 @@ class PhiveXmlConfig {
     private $configFile;
 
     /**
-     * PhiveXmlConfig constructor.
-     *
      * @param XmlFile $configFile
      */
     public function __construct(XmlFile $configFile) {
@@ -82,4 +80,23 @@ class PhiveXmlConfig {
         return new PharAlias($element->getAttribute('name'), $version);
     }
 
+    /**
+     * @return bool
+     */
+    public function hasToolsDirectory() {
+        return $this->configFile->query('//phive:configuration/phive:toolsDirectory[1]')->item(0) !== null;
+    }
+
+    /**
+     * @return Directory
+     * @throws ConfigException
+     */
+    public function getToolsDirectory() {
+        $node = $this->configFile->query('//phive:configuration/phive:toolsDirectory[1]')->item(0);
+        if ($node === null) {
+            throw new ConfigException('Tools directory is not configured in phive.xml');
+        }
+        return new Directory($node->nodeValue);
+    }
+    
 }

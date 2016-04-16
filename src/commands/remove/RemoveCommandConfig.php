@@ -16,21 +16,29 @@ class RemoveCommandConfig {
     private $config;
 
     /**
-     * InstallCommandConfig constructor.
-     *
-     * @param Cli\Options $options
-     * @param Config      $config
+     * @var PhiveXmlConfig
      */
-    public function __construct(Cli\Options $options, Config $config) {
+    private $phiveXmlConfig;
+
+    /**
+     * @param Cli\Options $options
+     * @param Config $config
+     * @param PhiveXmlConfig $phiveXmlConfig
+     */
+    public function __construct(Cli\Options $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
         $this->cliOptions = $options;
         $this->config = $config;
+        $this->phiveXmlConfig = $phiveXmlConfig;
     }
 
     /**
      * @return Directory
      */
     public function getTargetDirectory() {
-        return $this->config->getWorkingDirectory()->child('tools');
+        if (!$this->phiveXmlConfig->hasToolsDirectory()) {
+            return $this->config->getToolsDirectory();
+        }
+        return $this->phiveXmlConfig->getToolsDirectory();
     }
 
     /**
