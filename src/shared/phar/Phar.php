@@ -27,7 +27,7 @@ class Phar {
      * @param string $name
      * @param Version $version
      * @param File $file
-     * @param string $signatureFingerprint
+     * @param string|null $signatureFingerprint
      */
     public function __construct($name, Version $version, File $file, $signatureFingerprint = null) {
         $this->name = $name;

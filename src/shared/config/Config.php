@@ -11,7 +11,7 @@ class Config {
     private $environment;
 
     /**
-     * @var Config
+     * @var Options
      */
     private $cliOptions;
 
