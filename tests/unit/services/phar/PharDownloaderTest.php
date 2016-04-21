@@ -39,16 +39,17 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/foo.phar');
         $release = new Release(new Version('1.0.0'), $url, null);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');
-        $this->fileDownloader->download($url)->willReturn(new File(new Filename('foo.phar'), 'foo'));
+        $downloadedFile = new File(new Filename('foo.phar'), 'foo');
+        $this->fileDownloader->download($url)->willReturn($downloadedFile);
         $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
 
         $this->verificationResult->wasVerificationSuccessful()->willReturn(true);
         $this->signatureVerifier->verify('foo', 'bar')->willReturn($this->verificationResult->reveal());
 
-        $expected = new File(new Filename('foo.phar'), 'foo');
+        $expected = new Phar('foo', new Version('1.0.0'), $downloadedFile);
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
-        $this->assertEquals($expected, $downloader->download($release));
+        $this->assertEquals($expected, $downloader->download('foo', $release));
     }
 
     public function testVerifiesChecksum() {
@@ -67,7 +68,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->checksumService->verify($expectedHash, $pharFile)->shouldBeCalled()->willReturn(true);
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
-        $downloader->download($release);
+        $downloader->download('foo', $release);
     }
 
     /**
@@ -86,7 +87,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->signatureVerifier->verify('foo', 'bar')->willReturn($this->verificationResult->reveal());
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
-        $downloader->download($release);
+        $downloader->download('foo', $release);
     }
 
     /**
@@ -108,7 +109,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->checksumService->verify($expectedHash, $pharFile)->shouldBeCalled()->willReturn(false);
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
-        $downloader->download($release);
+        $downloader->download('foo', $release);
     }
 
 }

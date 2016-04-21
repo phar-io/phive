@@ -55,9 +55,9 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->pharRegistry->addPhar($expectedPhar)
             ->shouldBeCalled();
 
-        $this->downloader->download($release)
+        $this->downloader->download('foo', $release)
             ->shouldBeCalled()
-            ->willReturn($file);
+            ->willReturn($expectedPhar);
 
         $this->pharRegistry->addUsage(
             $expectedPhar,

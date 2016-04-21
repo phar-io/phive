@@ -93,7 +93,7 @@ class PharService {
         }
 
         if (!$this->pharRegistry->hasPhar($name, $version)) {
-            $phar = new Phar($name, $version, $this->downloader->download($release));
+            $phar = $this->downloader->download($name, $release);
             $this->pharRegistry->addPhar($phar);
         } else {
             $phar = $this->pharRegistry->getPhar($name, $version);

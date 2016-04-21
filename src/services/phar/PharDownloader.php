@@ -32,13 +32,15 @@ class PharDownloader {
     }
 
     /**
+     * @param $name
      * @param Release $release
      *
-     * @return File
+     * @return Phar
      * @throws DownloadFailedException
+     * @throws InvalidHashException
      * @throws VerificationFailedException
      */
-    public function download(Release $release) {
+    public function download($name, Release $release) {
         $pharFile = $this->fileDownloader->download($release->getUrl());
         $signatureFile = $this->fileDownloader->download($this->getSignatureUrl($release->getUrl()));
         if (!$this->verifySignature($pharFile, $signatureFile)) {
@@ -49,7 +51,7 @@ class PharDownloader {
                 sprintf('Wrong checksum! Expected %s', $release->getExpectedHash()->asString())
             );
         }
-        return $pharFile;
+        return new Phar($name, $release->getVersion(), $pharFile);
     }
 
     /**
