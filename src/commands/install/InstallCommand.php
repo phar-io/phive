@@ -48,13 +48,17 @@ class InstallCommand implements Cli\Command {
      */
     public function execute() {
         if ($this->config->installGlobally()) {
-            $targetDirectory = dirname($this->environment->getBinaryName());
+            $targetDirectory = new Directory(dirname($this->environment->getBinaryName()));
         } else {
-            $targetDirectory = (string)$this->config->getTargetDirectory();
+            $targetDirectory = $this->config->getTargetDirectory();
+        }
+
+        if (!$this->phiveXmlConfig->hasTargetDirectory() && !$this->config->doNotAddToPhiveXml()) {
+            $this->phiveXmlConfig->setTargetDirectory($targetDirectory);
         }
 
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
-            $this->pharService->install($requestedPhar, $targetDirectory, $this->config->makeCopy());
+            $this->pharService->install($requestedPhar, (string)$targetDirectory, $this->config->makeCopy());
             if ($this->config->doNotAddToPhiveXml()) {
                 continue;
             }

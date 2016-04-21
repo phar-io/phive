@@ -83,20 +83,42 @@ class PhiveXmlConfig {
     /**
      * @return bool
      */
-    public function hasToolsDirectory() {
-        return $this->configFile->query('//phive:configuration/phive:toolsDirectory[1]')->item(0) !== null;
+    public function hasTargetDirectory() {
+        return $this->getTargetDirectoryNode() !== null;
     }
 
     /**
      * @return Directory
      * @throws ConfigException
      */
-    public function getToolsDirectory() {
-        $node = $this->configFile->query('//phive:configuration/phive:toolsDirectory[1]')->item(0);
+    public function getTargetDirectory() {
+        $node = $this->getTargetDirectoryNode();
         if ($node === null) {
             throw new ConfigException('Tools directory is not configured in phive.xml');
         }
         return new Directory($node->nodeValue);
     }
 
+    /**
+     * @param Directory $directory
+     */
+    public function setTargetDirectory(Directory $directory) {
+        if (($node = $this->getTargetDirectoryNode()) === null) {
+            $configurationNode = $this->configFile->query('//phive:configuration')->item(0);
+            if ($configurationNode === null) {
+                $configurationNode = $this->configFile->createElement('configuration');
+                $this->configFile->addElement($configurationNode);
+            }
+            $node = $this->configFile->createElement('targetDirectory');
+            $configurationNode->appendChild($node);
+        }
+        $node->nodeValue = (string)$directory;
+    }
+
+    /**
+     * @return \DOMNode
+     */
+    private function getTargetDirectoryNode() {
+        return $this->configFile->query('//phive:configuration/phive:targetDirectory[1]')->item(0);
+    }
 }

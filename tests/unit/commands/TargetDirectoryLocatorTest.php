@@ -40,10 +40,10 @@ class TargetDirectoryLocatorTest extends \PHPUnit_Framework_TestCase {
 
         $xmlConfig = $this->getPhiveXmlConfigMock();
         $xmlConfig->expects($this->once())
-            ->method('hasToolsDirectory')
+            ->method('hasTargetDirectory')
             ->willReturn(true);
         $xmlConfig->expects($this->once())
-            ->method('getToolsDirectory')
+            ->method('getTargetDirectory')
             ->willReturn($directory);
 
         $locator = new TargetDirectoryLocator($this->getConfigMock(), $xmlConfig, $this->getOptionsMock());
