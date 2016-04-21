@@ -81,9 +81,7 @@ class Factory {
      */
     public function getRemoveCommand() {
         return new RemoveCommand(
-            new RemoveCommandConfig(
-                $this->request->getCommandOptions(), $this->getConfig(), $this->getPhiveXmlConfig()
-            ),
+            new RemoveCommandConfig($this->request->getCommandOptions(), $this->getTargetDirectoryLocator()),
             $this->getPharRegistry(),
             $this->getPharService(),
             $this->getColoredConsoleOutput()
@@ -108,9 +106,7 @@ class Factory {
     public function getInstallCommand() {
         return new InstallCommand(
             new InstallCommandConfig(
-                $this->request->getCommandOptions(),
-                $this->getConfig(),
-                $this->getPhiveXmlConfig()
+                $this->request->getCommandOptions(), $this->getPhiveXmlConfig(), $this->getTargetDirectoryLocator()
             ),
             $this->getPharService(),
             $this->getPhiveXmlConfig(),
@@ -170,6 +166,14 @@ class Factory {
             $this->getEnvironment(),
             $this->getConsoleInput()
         );
+    }
+
+    /**
+     * @return TargetDirectoryLocator
+     */
+    private function getTargetDirectoryLocator()
+    {
+        return new TargetDirectoryLocator($this->getConfig(), $this->getPhiveXmlConfig(), $this->request->getCommandOptions());
     }
 
     /**

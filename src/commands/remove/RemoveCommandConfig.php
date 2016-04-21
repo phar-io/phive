@@ -11,34 +11,24 @@ class RemoveCommandConfig {
     private $cliOptions;
 
     /**
-     * @var Config
+     * @var TargetDirectoryLocator
      */
-    private $config;
+    private $targetDirectoryLocator;
 
     /**
-     * @var PhiveXmlConfig
+     * @param Cli\Options            $options
+     * @param TargetDirectoryLocator $targetDirectoryLocator
      */
-    private $phiveXmlConfig;
-
-    /**
-     * @param Cli\Options    $options
-     * @param Config         $config
-     * @param PhiveXmlConfig $phiveXmlConfig
-     */
-    public function __construct(Cli\Options $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
+    public function __construct(Cli\Options $options, TargetDirectoryLocator $targetDirectoryLocator) {
         $this->cliOptions = $options;
-        $this->config = $config;
-        $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->targetDirectoryLocator = $targetDirectoryLocator;
     }
 
     /**
      * @return Directory
      */
     public function getTargetDirectory() {
-        if (!$this->phiveXmlConfig->hasToolsDirectory()) {
-            return $this->config->getToolsDirectory();
-        }
-        return $this->phiveXmlConfig->getToolsDirectory();
+        return $this->targetDirectoryLocator->getTargetDirectory();
     }
 
     /**

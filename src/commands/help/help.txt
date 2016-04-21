@@ -9,11 +9,12 @@ version
 list
     Show a list of know PHAR aliases
 
-install <alias|url> [destination]
+install [--target bin/] <alias|url> [<alias|url> ...]
     Perform installation of a phar distributed application or library
 
     alias/url       Installation via known alias or explicit download form given URL
-    destination     (optional) Target directory for the PHAR
+
+    --target        Set custom target directory for the PHAR
 
     -copy           Copy PHAR file instead of using symlink
     -global         Install PHAR globally (likely to require root privileges)

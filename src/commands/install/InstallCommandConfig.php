@@ -9,36 +9,33 @@ class InstallCommandConfig {
      * @var Cli\Options
      */
     private $cliOptions;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
+    
     /**
      * @var PhiveXmlConfig
      */
     private $phiveXmlConfig;
 
     /**
-     * @param Cli\Options    $options
-     * @param Config         $config
-     * @param PhiveXmlConfig $phiveXmlConfig
+     * @var TargetDirectoryLocator
      */
-    public function __construct(Cli\Options $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
+    private $targetDirectoryLocator;
+
+    /**
+     * @param Cli\Options $options
+     * @param PhiveXmlConfig $phiveXmlConfig
+     * @param TargetDirectoryLocator $targetDirectoryLocator
+     */
+    public function __construct(Cli\Options $options, PhiveXmlConfig $phiveXmlConfig, TargetDirectoryLocator $targetDirectoryLocator) {
         $this->cliOptions = $options;
-        $this->config = $config;
         $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->targetDirectoryLocator = $targetDirectoryLocator;
     }
 
     /**
      * @return Directory
      */
     public function getTargetDirectory() {
-        if (!$this->phiveXmlConfig->hasToolsDirectory()) {
-            return $this->config->getToolsDirectory();
-        }
-        return $this->phiveXmlConfig->getToolsDirectory();
+        return $this->targetDirectoryLocator->getTargetDirectory();
     }
 
     /**

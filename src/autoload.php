@@ -114,6 +114,7 @@ spl_autoload_register(
                 'phario\\phive\\specificmajorandminorversionconstraint' => '/shared/versionconstraints/SpecificMajorAndMinorVersionConstraint.php',
                 'phario\\phive\\specificmajorversionconstraint' => '/shared/versionconstraints/SpecificMajorVersionConstraint.php',
                 'phario\\phive\\staticphiveversion' => '/shared/version/StaticPhiveVersion.php',
+                'phario\\phive\\targetdirectorylocator' => '/commands/TargetDirectoryLocator.php',
                 'phario\\phive\\unsupportedversionconstraintexception' => '/shared/exceptions/UnsupportedVersionConstraintException.php',
                 'phario\\phive\\updatecommand' => '/commands/update/UpdateCommand.php',
                 'phario\\phive\\updatecommandconfig' => '/commands/update/UpdateCommandConfig.php',

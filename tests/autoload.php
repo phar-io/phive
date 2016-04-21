@@ -64,6 +64,7 @@ spl_autoload_register(
                 'phario\\phive\\specificmajorandminorversionconstrainttest' => '/unit/shared/versionconstraints/SpecificMajorAndMinorVersionConstraintTest.php',
                 'phario\\phive\\specificmajorversionconstrainttest' => '/unit/shared/versionconstraints/SpecificMajorVersionConstraintTest.php',
                 'phario\\phive\\staticphiveversiontest' => '/unit/shared/version/StaticPhiveVersionTest.php',
+                'phario\\phive\\targetdirectorylocatortest' => '/unit/commands/TargetDirectoryLocatorTest.php',
                 'phario\\phive\\teststreamwrapper' => '/unit/TestStreamWrapper.php',
                 'phario\\phive\\unsupportedhashstub' => '/unit/services/checksum/stubs/UnsupportedHashStub.php',
                 'phario\\phive\\updatecommandconfigtest' => '/unit/commands/update/UpdateCommandConfigTest.php',
