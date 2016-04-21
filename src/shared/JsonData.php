@@ -42,7 +42,7 @@ class JsonData {
     }
 
     /**
-     * @return array
+     * @return array|\StdClass
      */
     public function getParsed() {
         return $this->parsed;
