@@ -42,7 +42,8 @@ class PharDownloader {
     public function download(Release $release) {
         $pharFile = $this->fileDownloader->download($release->getUrl());
         $signatureFile = $this->fileDownloader->download($this->getSignatureUrl($release->getUrl()));
-        if (!$this->verifySignature($pharFile, $signatureFile)) {
+        $signatureVerificationResult = $this->verifySignature($pharFile, $signatureFile);
+        if (!$signatureVerificationResult->wasVerificationSuccessful()) {
             throw new VerificationFailedException('Signature could not be verified');
         }
         if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $pharFile)) {
@@ -50,7 +51,7 @@ class PharDownloader {
                 sprintf('Wrong checksum! Expected %s', $release->getExpectedHash()->asString())
             );
         }
-        return new Phar($release->getName(), $release->getVersion(), $pharFile);
+        return new Phar($release->getName(), $release->getVersion(), $pharFile, $signatureVerificationResult->getFingerprint());
     }
 
     /**
@@ -66,11 +67,10 @@ class PharDownloader {
      * @param File $phar
      * @param File $signature
      *
-     * @return bool
+     * @return VerificationResult
      */
     private function verifySignature(File $phar, File $signature) {
-        return $this->signatureVerifier->verify($phar->getContent(), $signature->getContent())
-            ->wasVerificationSuccessful();
+        return $this->signatureVerifier->verify($phar->getContent(), $signature->getContent());
     }
 
 }

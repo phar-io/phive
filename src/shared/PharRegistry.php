@@ -37,6 +37,13 @@ class PharRegistry {
         $hashNode = $this->dbFile->createElement('hash', $phar->getFile()->getSha1Hash()->asString());
         $hashNode->setAttribute('type', 'sha1');
         $pharNode->appendChild($hashNode);
+
+        if ($phar->hasSignatureFingerprint()) {
+            $signatureNode = $this->dbFile->createElement('signature');
+            $signatureNode->setAttribute('fingerprint', $phar->getSignatureFingerprint());
+            $pharNode->appendChild($signatureNode);
+        }
+
         $this->dbFile->addElement($pharNode);
         $this->dbFile->save();
     }

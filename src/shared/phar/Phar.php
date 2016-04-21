@@ -19,14 +19,21 @@ class Phar {
     private $file;
 
     /**
-     * @param string  $name
-     * @param Version $version
-     * @param File    $file
+     * @var string|null
      */
-    public function __construct($name, Version $version, File $file) {
+    private $signatureFingerprint;
+
+    /**
+     * @param string $name
+     * @param Version $version
+     * @param File $file
+     * @param string $signatureFingerprint
+     */
+    public function __construct($name, Version $version, File $file, $signatureFingerprint = null) {
         $this->name = $name;
         $this->file = $file;
         $this->version = $version;
+        $this->signatureFingerprint = $signatureFingerprint;
     }
 
     /**
@@ -48,6 +55,20 @@ class Phar {
      */
     public function getFile() {
         return $this->file;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSignatureFingerprint() {
+        return $this->signatureFingerprint !== null;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSignatureFingerprint() {
+        return $this->signatureFingerprint;
     }
 
 }

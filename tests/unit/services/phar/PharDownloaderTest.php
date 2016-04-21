@@ -43,10 +43,11 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->fileDownloader->download($url)->willReturn($downloadedFile);
         $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
 
+        $this->verificationResult->getFingerprint()->willReturn('fooFingerprint');
         $this->verificationResult->wasVerificationSuccessful()->willReturn(true);
         $this->signatureVerifier->verify('foo', 'bar')->willReturn($this->verificationResult->reveal());
 
-        $expected = new Phar('foo', new Version('1.0.0'), $downloadedFile);
+        $expected = new Phar('foo', new Version('1.0.0'), $downloadedFile, 'fooFingerprint');
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
         $this->assertEquals($expected, $downloader->download($release));
@@ -62,6 +63,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->fileDownloader->download($url)->willReturn($pharFile);
         $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
 
+        $this->verificationResult->getFingerprint()->willReturn('foo');
         $this->verificationResult->wasVerificationSuccessful()->willReturn(true);
         $this->signatureVerifier->verify('foo', 'bar')->willReturn($this->verificationResult->reveal());
 
