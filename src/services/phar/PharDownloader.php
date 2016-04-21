@@ -9,9 +9,9 @@ class PharDownloader {
     private $fileDownloader;
 
     /**
-     * @var SignatureService
+     * @var SignatureVerifier
      */
-    private $signatureService;
+    private $signatureVerifier;
 
     /**
      * @var ChecksumService
@@ -20,14 +20,14 @@ class PharDownloader {
 
     /**
      * @param FileDownloader   $fileDownloader
-     * @param SignatureService $signatureService
+     * @param SignatureVerifier $signatureVerifier
      * @param ChecksumService  $checksumService
      */
     public function __construct(
-        FileDownloader $fileDownloader, SignatureService $signatureService, ChecksumService $checksumService
+        FileDownloader $fileDownloader, SignatureVerifier $signatureVerifier, ChecksumService $checksumService
     ) {
         $this->fileDownloader = $fileDownloader;
-        $this->signatureService = $signatureService;
+        $this->signatureVerifier = $signatureVerifier;
         $this->checksumService = $checksumService;
     }
 
@@ -68,9 +68,8 @@ class PharDownloader {
      * @return bool
      */
     private function verifySignature(File $phar, File $signature) {
-        return $this->signatureService->verify(
-            $phar->getContent(), $signature->getContent()
-        )->wasVerificationSuccessful();
+        return $this->signatureVerifier->verify($phar->getContent(), $signature->getContent())
+            ->wasVerificationSuccessful();
     }
 
 }

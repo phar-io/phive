@@ -60,7 +60,6 @@ spl_autoload_register(
                 'phario\\phive\\scalartestdataprovider' => '/unit/ScalarTestDataProvider.php',
                 'phario\\phive\\sha1hashtest' => '/unit/shared/hash/sha/Sha1HashTest.php',
                 'phario\\phive\\sha256hashtest' => '/unit/shared/hash/sha/Sha256HashTest.php',
-                'phario\\phive\\signatureservicetest' => '/unit/services/signature/SignatureServiceTest.php',
                 'phario\\phive\\skelcommandconfigtest' => '/unit/commands/skel/SkelCommandConfigTest.php',
                 'phario\\phive\\sourceslisttest' => '/unit/shared/SourcesListTest.php',
                 'phario\\phive\\specificmajorandminorversionconstrainttest' => '/unit/shared/versionconstraints/SpecificMajorAndMinorVersionConstraintTest.php',

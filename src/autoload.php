@@ -98,7 +98,6 @@ spl_autoload_register(
                 'phario\\phive\\resolveexception' => '/shared/exceptions/ResolveException.php',
                 'phario\\phive\\sha1hash' => '/shared/hash/sha/Sha1Hash.php',
                 'phario\\phive\\sha256hash' => '/shared/hash/sha/Sha256Hash.php',
-                'phario\\phive\\signatureservice' => '/services/signature/SignatureService.php',
                 'phario\\phive\\signatureverifier' => '/services/signature/SignatureVerifier.php',
                 'phario\\phive\\skelcommand' => '/commands/skel/SkelCommand.php',
                 'phario\\phive\\skelcommandconfig' => '/commands/skel/SkelCommandConfig.php',
