@@ -8,30 +8,35 @@ class ReleaseTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetVersion() {
         $version = $this->getVersionMock();
-        $release = new Release($version, $this->getUrlMock());
+        $release = new Release('foo', $version, $this->getUrlMock());
 
         $this->assertSame($version, $release->getVersion());
     }
 
     public function testGetUrl() {
         $url = $this->getUrlMock();
-        $release = new Release($this->getVersionMock(), $url);
+        $release = new Release('foo', $this->getVersionMock(), $url);
 
         $this->assertSame($url, $release->getUrl());
     }
 
+    public function testGetName() {
+        $release = new Release('bar', $this->getVersionMock(), $this->getUrlMock());
+        $this->assertSame('bar', $release->getName());
+    }
+
     public function testGetExpectedHash() {
         $hash = $this->getHashMock();
-        $release = new Release($this->getVersionMock(), $this->getUrlMock(), $hash);
+        $release = new Release('foo', $this->getVersionMock(), $this->getUrlMock(), $hash);
 
         $this->assertSame($hash, $release->getExpectedHash());
     }
 
     public function testHasExpectedHash() {
-        $release = new Release($this->getVersionMock(), $this->getUrlMock());
+        $release = new Release('foo', $this->getVersionMock(), $this->getUrlMock());
         $this->assertFalse($release->hasExpectedHash());
 
-        $release = new Release($this->getVersionMock(), $this->getUrlMock(), $this->getHashMock());
+        $release = new Release('foo', $this->getVersionMock(), $this->getUrlMock(), $this->getHashMock());
         $this->assertTrue($release->hasExpectedHash());
     }
 

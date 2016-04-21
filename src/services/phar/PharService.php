@@ -93,7 +93,7 @@ class PharService {
         }
 
         if (!$this->pharRegistry->hasPhar($name, $version)) {
-            $phar = $this->downloader->download($name, $release);
+            $phar = $this->downloader->download($release);
             $this->pharRegistry->addPhar($phar);
         } else {
             $phar = $this->pharRegistry->getPhar($name, $version);
@@ -115,11 +115,9 @@ class PharService {
             return $this->resolveAlias($requestedPhar->getAlias());
         }
 
-        return new Release(
-            $this->getPharVersion($requestedPhar->getPharUrl()),
-            $requestedPhar->getPharUrl(),
-            null
-        );
+        $url = $requestedPhar->getPharUrl();
+
+        return new Release($this->getPharName($url), $this->getPharVersion($url), $url, null);
     }
 
     /**

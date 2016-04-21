@@ -19,14 +19,21 @@ class Release {
     private $expectedHash;
 
     /**
-     * @param Version $version
-     * @param Url     $url
-     * @param Hash    $expectedHash
+     * @var string
      */
-    public function __construct(Version $version, Url $url, Hash $expectedHash = null) {
+    private $name = '';
+
+    /**
+     * @param string $name
+     * @param Version $version
+     * @param Url $url
+     * @param Hash $expectedHash
+     */
+    public function __construct($name, Version $version, Url $url, Hash $expectedHash = null) {
         $this->version = $version;
         $this->url = $url;
         $this->expectedHash = $expectedHash;
+        $this->name = $name;
     }
 
     /**
@@ -57,4 +64,10 @@ class Release {
         return null !== $this->expectedHash;
     }
 
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
 }

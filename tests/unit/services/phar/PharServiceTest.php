@@ -42,7 +42,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
         $url = new Url('https://example.com/foo-1.20.1.phar');
-        $release = new Release(new Version('1.20.1'), $url, null);
+        $release = new Release('foo', new Version('1.20.1'), $url, null);
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
@@ -55,7 +55,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->pharRegistry->addPhar($expectedPhar)
             ->shouldBeCalled();
 
-        $this->downloader->download('foo', $release)
+        $this->downloader->download($release)
             ->shouldBeCalled()
             ->willReturn($expectedPhar);
 
@@ -153,9 +153,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
-        $this->downloader->download(
-            Argument::cetera()
-        )->shouldBeCalled()->willReturn(new File(new Filename('phpunit-5.2.10.phar'),''));
+        $this->downloader->download()->shouldBeCalled()->willReturn(new File(new Filename('phpunit-5.2.10.phar'),''));
 
         $this->pharRegistry->hasPhar(
             Argument::cetera()
@@ -193,9 +191,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->willReturn(false);
 
-        $this->downloader->download(
-            Argument::cetera()
-        )->willThrow(new DownloadFailedException());
+        $this->downloader->download(Argument::cetera())->willThrow(new DownloadFailedException());
 
         $this->output->writeError(
             Argument::any()
@@ -243,9 +239,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->willReturn(false);
 
-        $this->downloader->download(
-            Argument::cetera()
-        )->willThrow(new VerificationFailedException());
+        $this->downloader->download(Argument::cetera())->willThrow(new VerificationFailedException());
 
         $this->output->writeError(
             Argument::any()

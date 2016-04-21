@@ -37,7 +37,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
 
     public function testReturnsExpectedPharFileIfStatusCodeIs200() {
         $url = new Url('https://example.com/foo.phar');
-        $release = new Release(new Version('1.0.0'), $url, null);
+        $release = new Release('foo', new Version('1.0.0'), $url, null);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');
         $downloadedFile = new File(new Filename('foo.phar'), 'foo');
         $this->fileDownloader->download($url)->willReturn($downloadedFile);
@@ -49,13 +49,13 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $expected = new Phar('foo', new Version('1.0.0'), $downloadedFile);
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
-        $this->assertEquals($expected, $downloader->download('foo', $release));
+        $this->assertEquals($expected, $downloader->download($release));
     }
 
     public function testVerifiesChecksum() {
         $url = new Url('https://example.com/foo.phar');
         $expectedHash = new Sha1Hash(sha1('foo'));
-        $release = new Release(new Version('1.0.0'), $url, $expectedHash);
+        $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');
 
         $pharFile = new File(new Filename('foo.phar'), 'foo');
@@ -68,7 +68,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->checksumService->verify($expectedHash, $pharFile)->shouldBeCalled()->willReturn(true);
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
-        $downloader->download('foo', $release);
+        $downloader->download($release);
     }
 
     /**
@@ -77,7 +77,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
     public function testThrowsExceptionIfSignatureVerificationFails() {
         $url = new Url('https://example.com/foo.phar');
         $expectedHash = new Sha1Hash(sha1('foo'));
-        $release = new Release(new Version('1.0.0'), $url, $expectedHash);
+        $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');
 
         $pharFile = new File(new Filename('foo.phar'), 'foo');
@@ -87,7 +87,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->signatureVerifier->verify('foo', 'bar')->willReturn($this->verificationResult->reveal());
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
-        $downloader->download('foo', $release);
+        $downloader->download($release);
     }
 
     /**
@@ -96,7 +96,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
     public function testThrowsExceptionIfChecksumVerificationFails() {
         $url = new Url('https://example.com/foo.phar');
         $expectedHash = new Sha1Hash(sha1('foo'));
-        $release = new Release(new Version('1.0.0'), $url, $expectedHash);
+        $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');
 
         $pharFile = new File(new Filename('foo.phar'), 'foo');
@@ -109,7 +109,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->checksumService->verify($expectedHash, $pharFile)->shouldBeCalled()->willReturn(false);
 
         $downloader = new PharDownloader($this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal());
-        $downloader->download('foo', $release);
+        $downloader->download($release);
     }
 
 }
