@@ -26,7 +26,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     private $pharRegistry;
 
     /**
-     * @var AliasResolver|ObjectProphecy
+     * @var AliasResolverService|ObjectProphecy
      */
     private $resolver;
 
@@ -276,7 +276,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->downloader = $this->prophesize(PharDownloader::class);
         $this->installer = $this->prophesize(PharInstaller::class);
         $this->pharRegistry = $this->prophesize(PharRegistry::class);
-        $this->resolver = $this->prophesize(PharIoAliasResolver::class);
+        $this->resolver = $this->prophesize(AliasResolverService::class);
         $this->output = $this->prophesize(Cli\Output::class);
         $this->pharIoRepositoryFactory = $this->prophesize(SourceRepositoryLoader::class);
     }
