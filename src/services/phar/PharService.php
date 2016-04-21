@@ -19,7 +19,7 @@ class PharService {
     private $pharRegistry;
 
     /**
-     * @var AliasResolver
+     * @var AliasResolverService
      */
     private $aliasResolver;
 
@@ -45,7 +45,7 @@ class PharService {
         PharDownloader $downloader,
         PharInstaller $installer,
         PharRegistry $pharRegistry,
-        AliasResolver $resolver,
+        AliasResolverService $resolver,
         Cli\Output $output,
         SourceRepositoryLoader $sourceRepositoryLoader
     ) {

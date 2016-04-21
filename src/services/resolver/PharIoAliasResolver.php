@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 /**
  * Resolves an alias to a list of Phar.io repository URLs
  */
-class AliasResolver {
+class PharIoAliasResolver extends AbstractAliasResolver {
 
     /**
      * @var SourcesList
@@ -27,10 +27,10 @@ class AliasResolver {
      */
     public function resolve(PharAlias $alias) {
         $sources = $this->sources->getSourcesForAlias($alias);
-        if (empty($sources)) {
-            throw new ResolveException(sprintf('Could not resolve alias %s', $alias));
+        if (count($sources) > 0) {
+            return $sources;
         }
-        return $sources;
+        return $this->tryNext($alias);
     }
 
 }

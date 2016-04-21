@@ -292,7 +292,7 @@ class Factory {
             $this->getPharDownloader(),
             $this->getPharInstaller(),
             $this->getPharRegistry(),
-            $this->getAliasResolver(),
+            $this->getAliasResolverService(),
             $this->getColoredConsoleOutput(),
             $this->getPharIoRepositoryFactory()
         );
@@ -393,11 +393,10 @@ class Factory {
     }
 
     /**
-     * @return AliasResolver
+     * @return PharIoAliasResolver
      */
-    private function getAliasResolver() {
-
-        return new AliasResolver(
+    private function getPharIoAliasResolver() {
+        return new PharIoAliasResolver(
             $this->getSourcesList()
         );
     }
@@ -437,6 +436,24 @@ class Factory {
 
     private function getComposerService() {
         return new ComposerService($this->getSourcesList());
+    }
+
+    private function getAliasResolverService() {
+        $service = new AliasResolverService();
+
+        $service->addResolver(
+            $this->getGithubAliasResolver()
+        );
+
+        $service->addResolver(
+            $this->getPharIoAliasResolver()
+        );
+        
+        return $service;
+    }
+
+    private function getGithubAliasResolver() {
+        return new GithubAliasResolver($this->getCurl());
     }
 
 }

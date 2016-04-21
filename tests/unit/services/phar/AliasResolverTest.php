@@ -22,7 +22,7 @@ class AliasResolverTest extends \PHPUnit_Framework_TestCase {
             ->shouldBeCalled()
             ->willReturn([]);
 
-        $resolver = new AliasResolver($this->sourcesList->reveal());
+        $resolver = new PharIoAliasResolver($this->sourcesList->reveal());
         $resolver->resolve($alias);
     }
 
@@ -38,7 +38,7 @@ class AliasResolverTest extends \PHPUnit_Framework_TestCase {
             ->shouldBeCalled()
             ->willReturn($sources);
 
-        $resolver = new AliasResolver($this->sourcesList->reveal());
+        $resolver = new PharIoAliasResolver($this->sourcesList->reveal());
         $this->assertEquals($sources, $resolver->resolve($alias));
     }
 

@@ -276,7 +276,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->downloader = $this->prophesize(PharDownloader::class);
         $this->installer = $this->prophesize(PharInstaller::class);
         $this->pharRegistry = $this->prophesize(PharRegistry::class);
-        $this->resolver = $this->prophesize(AliasResolver::class);
+        $this->resolver = $this->prophesize(PharIoAliasResolver::class);
         $this->output = $this->prophesize(Cli\Output::class);
         $this->pharIoRepositoryFactory = $this->prophesize(SourceRepositoryLoader::class);
     }

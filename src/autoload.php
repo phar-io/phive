@@ -7,8 +7,10 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'phario\\phive\\abstractaliasresolver' => '/services/resolver/AbstractAliasResolver.php',
                 'phario\\phive\\abstractversionconstraint' => '/shared/versionconstraints/AbstractVersionConstraint.php',
-                'phario\\phive\\aliasresolver' => '/services/phar/AliasResolver.php',
+                'phario\\phive\\aliasresolver' => '/services/resolver/AliasResolver.php',
+                'phario\\phive\\aliasresolverservice' => '/services/resolver/AliasResolverService.php',
                 'phario\\phive\\anyversionconstraint' => '/shared/versionconstraints/AnyVersionConstraint.php',
                 'phario\\phive\\checksumservice' => '/services/checksum/ChecksumService.php',
                 'phario\\phive\\cli\\coloredconsoleoutput' => '/shared/cli/output/ColoredConsoleOutput.php',
@@ -48,6 +50,7 @@ spl_autoload_register(
                 'phario\\phive\\git' => '/shared/Git.php',
                 'phario\\phive\\gitawarephiveversion' => '/shared/version/GitAwarePhiveVersion.php',
                 'phario\\phive\\gitexception' => '/shared/exceptions/GitException.php',
+                'phario\\phive\\githubaliasresolver' => '/services/resolver/GithubAliasResolver.php',
                 'phario\\phive\\githubrepository' => '/shared/repository/GithubRepository.php',
                 'phario\\phive\\gnupg' => '/shared/GnuPG.php',
                 'phario\\phive\\gnupgkeydownloader' => '/services/key/gpg/GnupgKeyDownloader.php',
@@ -78,6 +81,7 @@ spl_autoload_register(
                 'phario\\phive\\pharalias' => '/shared/phar/PharAlias.php',
                 'phario\\phive\\phardownloader' => '/services/phar/PharDownloader.php',
                 'phario\\phive\\pharinstaller' => '/services/phar/PharInstaller.php',
+                'phario\\phive\\pharioaliasresolver' => '/services/resolver/PharIoAliasResolver.php',
                 'phario\\phive\\phariorepository' => '/shared/repository/PharIoRepository.php',
                 'phario\\phive\\pharregistry' => '/shared/PharRegistry.php',
                 'phario\\phive\\pharregistryexception' => '/shared/exceptions/PharRegistryException.php',
