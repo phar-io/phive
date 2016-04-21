@@ -26,7 +26,6 @@ spl_autoload_register(
                 'phario\\phive\\filenametest' => '/unit/shared/FilenameTest.php',
                 'phario\\phive\\filetest' => '/unit/shared/FileTest.php',
                 'phario\\phive\\gitawarephiveversiontest' => '/unit/shared/version/GitAwarePhiveVersionTest.php',
-                'phario\\phive\\githubreleasesrepositorytest' => '/unit/GithubReleasesRepositoryTest.php',
                 'phario\\phive\\githubrepositorytest' => '/unit/shared/repository/GithubRepositoryTest.php',
                 'phario\\phive\\gnupgkeydownloadertest' => '/unit/services/key/gpg/GnupgKeyDownloaderTest.php',
                 'phario\\phive\\gnupgkeyimportertest' => '/unit/services/key/gpg/GnupgKeyImporterTest.php',

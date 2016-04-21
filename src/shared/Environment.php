@@ -18,7 +18,7 @@ class Environment {
     public static function fromSuperGlobals() {
         return new self($_SERVER);
     }
-    
+
     /**
      * @return Directory
      * @throws \PharIo\Phive\DirectoryException

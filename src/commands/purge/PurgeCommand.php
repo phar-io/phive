@@ -22,7 +22,7 @@ class PurgeCommand implements Cli\Command {
 
     /**
      * @param PurgeCommandConfig $config
-     * @param PharRegistry     $repository
+     * @param PharRegistry       $repository
      * @param Cli\Output         $output
      */
     public function __construct(

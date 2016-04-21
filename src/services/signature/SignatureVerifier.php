@@ -6,7 +6,7 @@ interface SignatureVerifier {
     /**
      * @param string $message
      * @param string $signature
-     * @param array $knownFingerprints
+     * @param array  $knownFingerprints
      *
      * @return VerificationResult
      */

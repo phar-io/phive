@@ -24,10 +24,10 @@ class PharDownloader {
     private $pharRegistry;
 
     /**
-     * @param FileDownloader $fileDownloader
+     * @param FileDownloader    $fileDownloader
      * @param SignatureVerifier $signatureVerifier
-     * @param ChecksumService $checksumService
-     * @param PharRegistry $pharRegistry
+     * @param ChecksumService   $checksumService
+     * @param PharRegistry      $pharRegistry
      */
     public function __construct(
         FileDownloader $fileDownloader,
@@ -78,8 +78,8 @@ class PharDownloader {
     }
 
     /**
-     * @param File $phar
-     * @param File $signature
+     * @param File  $phar
+     * @param File  $signature
      * @param array $knownFingerprints
      *
      * @return VerificationResult

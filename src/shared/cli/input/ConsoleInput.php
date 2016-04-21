@@ -15,7 +15,7 @@ class ConsoleInput implements Input {
 
     /**
      * @param Output $output
-     * @param $inputStreamHandle
+     * @param        $inputStreamHandle
      */
     public function __construct(Output $output, $inputStreamHandle = STDIN) {
         $this->output = $output;
@@ -24,7 +24,7 @@ class ConsoleInput implements Input {
 
     /**
      * @param string $message
-     * @param bool $default
+     * @param bool   $default
      *
      * @return bool
      */

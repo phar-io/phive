@@ -38,7 +38,6 @@ class ComposerCommandConfig {
         return $this->config->getWorkingDirectory();
     }
 
-
     /**
      * @return bool
      */

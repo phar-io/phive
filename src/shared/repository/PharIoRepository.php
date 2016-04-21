@@ -29,8 +29,8 @@ class PharIoRepository implements SourceRepository {
             /** @var \DOMElement $releaseNode */
             $releases->add(
                 new Release(
-                    (string)$alias, 
-                    new Version($releaseNode->getAttribute('version')), 
+                    (string)$alias,
+                    new Version($releaseNode->getAttribute('version')),
                     new Url($releaseNode->getAttribute('url')),
                     $this->getHash($releaseNode)
                 )

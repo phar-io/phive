@@ -21,7 +21,7 @@ class Factory {
     private $request;
 
     /**
-     * @param Cli\Request $request
+     * @param Cli\Request  $request
      * @param PhiveVersion $version
      */
     public function __construct(Cli\Request $request, PhiveVersion $version = null) {
@@ -448,7 +448,7 @@ class Factory {
         $service->addResolver(
             $this->getPharIoAliasResolver()
         );
-        
+
         return $service;
     }
 

@@ -37,11 +37,11 @@ class ComposerCommand implements Cli\Command {
 
     /**
      * @param ComposerCommandConfig $config
-     * @param ComposerService $composerService
-     * @param PharService $pharService
-     * @param PhiveXmlConfig $phiveXmlConfig
-     * @param Environment $environment
-     * @param Cli\Input $input
+     * @param ComposerService       $composerService
+     * @param PharService           $pharService
+     * @param PhiveXmlConfig        $phiveXmlConfig
+     * @param Environment           $environment
+     * @param Cli\Input             $input
      */
     public function __construct(ComposerCommandConfig $config, ComposerService $composerService, PharService $pharService, PhiveXmlConfig $phiveXmlConfig, Environment $environment, Cli\Input $input) {
         $this->config = $config;
@@ -61,7 +61,8 @@ class ComposerCommand implements Cli\Command {
 
         foreach ($this->composerService->findCandidates($this->config->getComposerFilename()) as $candidate) {
             if (!$this->input->confirm(
-                sprintf('Install %s ?', $candidate->getAlias()))) {
+                sprintf('Install %s ?', $candidate->getAlias()))
+            ) {
                 continue;
             }
 

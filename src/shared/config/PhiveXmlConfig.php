@@ -98,5 +98,5 @@ class PhiveXmlConfig {
         }
         return new Directory($node->nodeValue);
     }
-    
+
 }

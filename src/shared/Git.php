@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
 /**
- * @codeCoverageIgnore 
+ * @codeCoverageIgnore
  */
 class Git {
 

@@ -21,8 +21,8 @@ class RemoveCommandConfig {
     private $phiveXmlConfig;
 
     /**
-     * @param Cli\Options $options
-     * @param Config $config
+     * @param Cli\Options    $options
+     * @param Config         $config
      * @param PhiveXmlConfig $phiveXmlConfig
      */
     public function __construct(Cli\Options $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {

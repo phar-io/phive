@@ -55,10 +55,10 @@ class Curl implements HttpClient {
 
     /**
      * @param resource $ch
-     * @param int $expectedDown
-     * @param int $received
-     * @param int $expectedUp
-     * @param int $sent
+     * @param int      $expectedDown
+     * @param int      $received
+     * @param int      $expectedUp
+     * @param int      $sent
      *
      * @return int
      */

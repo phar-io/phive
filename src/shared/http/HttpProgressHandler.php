@@ -12,5 +12,5 @@ interface HttpProgressHandler {
      * @return bool
      */
     public function handleUpdate(HttpProgressUpdate $update);
-    
+
 }

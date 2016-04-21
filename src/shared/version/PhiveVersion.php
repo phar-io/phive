@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
 abstract class PhiveVersion {
-    
+
     /**
      * @return string
      */
@@ -18,5 +18,5 @@ abstract class PhiveVersion {
      * @return string
      */
     abstract public function getVersion();
-    
+
 }

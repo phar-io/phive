@@ -25,9 +25,9 @@ class ResetCommand implements Cli\Command {
 
     /**
      * @param ResetCommandConfig $config
-     * @param PharRegistry $pharRegistry
-     * @param Environment $environment
-     * @param PharInstaller $pharInstaller
+     * @param PharRegistry       $pharRegistry
+     * @param Environment        $environment
+     * @param PharInstaller      $pharInstaller
      */
     public function __construct(
         ResetCommandConfig $config,
@@ -47,7 +47,6 @@ class ResetCommand implements Cli\Command {
         if ($this->config->hasAliases()) {
             $aliasFilter = $this->config->getAliases();
         }
-        
 
         foreach ($this->pharRegistry->getUsedPharsByDestination($this->environment->getWorkingDirectory()) as $phar) {
             if (!empty($aliasFilter) && !in_array($phar->getName(), $aliasFilter)) {

@@ -82,14 +82,14 @@ class HttpProgressUpdate {
         if ($this->expectedDown === 0) {
             return 0;
         }
-        return round( $this->received / ($this->expectedDown / 100));
+        return round($this->received / ($this->expectedDown / 100));
     }
 
     public function getUploadPercent() {
         if ($this->expectedUp === 0) {
             return 0;
         }
-        return round( $this->sent / ($this->expectedUp / 100));
+        return round($this->sent / ($this->expectedUp / 100));
     }
 
 }

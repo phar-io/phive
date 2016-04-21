@@ -17,7 +17,7 @@ class Config {
 
     /**
      * @param Environment $environment
-     * @param Options $cliOptions
+     * @param Options     $cliOptions
      */
     public function __construct(Environment $environment, Options $cliOptions) {
         $this->environment = $environment;
@@ -47,7 +47,7 @@ class Config {
     public function getToolsDirectory() {
         return $this->getWorkingDirectory()->child('tools');
     }
-    
+
     /**
      * @return string
      */

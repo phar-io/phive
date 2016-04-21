@@ -24,9 +24,9 @@ class Phar {
     private $signatureFingerprint;
 
     /**
-     * @param string $name
-     * @param Version $version
-     * @param File $file
+     * @param string      $name
+     * @param Version     $version
+     * @param File        $file
      * @param string|null $signatureFingerprint
      */
     public function __construct($name, Version $version, File $file, $signatureFingerprint = null) {

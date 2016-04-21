@@ -27,7 +27,7 @@ class RemoveCommand implements Cli\Command {
 
     /**
      * @param RemoveCommandConfig $config
-     * @param PharRegistry      $repository
+     * @param PharRegistry        $repository
      * @param PharService         $pharService
      * @param Cli\Output          $output
      */

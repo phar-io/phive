@@ -101,7 +101,7 @@ class Directory {
             $mode !== null ? $mode : $this->mode
         );
     }
-    
+
     /**
      * @param string $filename
      *

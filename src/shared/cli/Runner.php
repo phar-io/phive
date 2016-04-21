@@ -43,10 +43,10 @@ class Runner {
 
     /**
      * @param CommandLocator $locator
-     * @param Output $output
-     * @param PhiveVersion $version
-     * @param Environment $env
-     * @param Request $request
+     * @param Output         $output
+     * @param PhiveVersion   $version
+     * @param Environment    $env
+     * @param Request        $request
      */
     public function __construct(
         CommandLocator $locator, Output $output, PhiveVersion $version, Environment $env, Request $request

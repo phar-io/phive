@@ -5,7 +5,7 @@ interface Input {
 
     /**
      * @param string $message
-     * @param bool $default
+     * @param bool   $default
      *
      * @return bool
      */

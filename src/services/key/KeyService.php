@@ -43,14 +43,14 @@ class KeyService {
 
     /**
      * @param string $keyId
-     * @param array $knownFingerprints
+     * @param array  $knownFingerprints
      *
      * @return mixed
      * @throws VerificationFailedException
      */
     public function importKey($keyId, array $knownFingerprints) {
         $key = $this->downloadKey($keyId);
-        
+
         if (!empty($knownFingerprints) && !in_array($key->getFingerprint(), $knownFingerprints)) {
             $this->output->writeWarning(
                 "This is NOT a key that has been used to install previous versions of this PHAR.\n"

@@ -24,10 +24,10 @@ class Release {
     private $name = '';
 
     /**
-     * @param string $name
+     * @param string  $name
      * @param Version $version
-     * @param Url $url
-     * @param Hash $expectedHash
+     * @param Url     $url
+     * @param Hash    $expectedHash
      */
     public function __construct($name, Version $version, Url $url, Hash $expectedHash = null) {
         $this->version = $version;

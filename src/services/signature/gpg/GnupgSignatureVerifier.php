@@ -15,9 +15,9 @@ class GnupgSignatureVerifier implements SignatureVerifier {
      * @var KeyService
      */
     private $keyService;
-    
+
     /**
-     * @param \Gnupg $gpg
+     * @param \Gnupg     $gpg
      * @param KeyService $keyService
      */
     public function __construct(\Gnupg $gpg, KeyService $keyService) {
@@ -28,7 +28,7 @@ class GnupgSignatureVerifier implements SignatureVerifier {
     /**
      * @param string $message
      * @param string $signature
-     * @param array $knownFingerprints
+     * @param array  $knownFingerprints
      *
      * @return GnupgVerificationResult
      * @throws VerificationFailedException

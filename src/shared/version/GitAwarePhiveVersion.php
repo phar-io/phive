@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 class GitAwarePhiveVersion extends PhiveVersion {
 
     const UNKNOWN_VERSION = 'unknown';
-    
+
     /**
      * @var Git
      */
@@ -14,7 +14,7 @@ class GitAwarePhiveVersion extends PhiveVersion {
      * @var string
      */
     private $version;
-    
+
     /**
      * @param Git $git
      */
@@ -29,7 +29,7 @@ class GitAwarePhiveVersion extends PhiveVersion {
         if ($this->version !== null) {
             return $this->version;
         }
-        
+
         $phiveRoot = new Directory(realpath(__DIR__ . '/../../../'));
 
         if (!$this->git->isRepository($phiveRoot)) {

@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli;
 
 class HelpCommand implements Cli\Command {
-    
+
     /**
      * @var Environment
      */
@@ -16,8 +16,8 @@ class HelpCommand implements Cli\Command {
     private $output;
 
     /**
-     * @param Environment  $environment
-     * @param Cli\Output   $output
+     * @param Environment $environment
+     * @param Cli\Output  $output
      */
     public function __construct(Environment $environment, Cli\Output $output) {
         $this->environment = $environment;
