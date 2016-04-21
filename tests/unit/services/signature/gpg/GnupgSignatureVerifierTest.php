@@ -29,7 +29,7 @@ class GnupgSignatureVerifierTest extends \PHPUnit_Framework_TestCase {
     public function testThrowsVerificationFailedExceptionIfGnuPgThrowsException() {
         $this->gnupg->verify('foo', 'bar')->willThrow(new \Exception());
         $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
-        $verifier->verify('foo', 'bar');
+        $verifier->verify('foo', 'bar', []);
     }
 
     public function testReturnsExpectedVerificationResult() {
@@ -37,7 +37,7 @@ class GnupgSignatureVerifierTest extends \PHPUnit_Framework_TestCase {
         $this->gnupg->verify('foo', 'bar')->willReturn([$verificationData]);
 
         $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
-        $actual = $verifier->verify('foo', 'bar');
+        $actual = $verifier->verify('foo', 'bar', []);
         $expected = new GnupgVerificationResult($verificationData);
         $this->assertEquals($expected, $actual);
     }
@@ -45,10 +45,10 @@ class GnupgSignatureVerifierTest extends \PHPUnit_Framework_TestCase {
     public function testTriesToImportMissingKey() {
         $verificationData = ['summary' => 128, 'fingerprint' => 'foo'];
         $this->gnupg->verify('foo', 'bar')->willReturn([$verificationData]);
-        $this->keyservice->importKey('foo')->shouldBeCalled();
+        $this->keyservice->importKey('foo', [])->shouldBeCalled();
 
         $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
-        $verifier->verify('foo', 'bar');
+        $verifier->verify('foo', 'bar', []);
     }
 
 }

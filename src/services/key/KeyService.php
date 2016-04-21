@@ -42,13 +42,21 @@ class KeyService {
     }
 
     /**
-     * @param $keyId
+     * @param string $keyId
+     * @param array $knownFingerprints
      *
      * @return mixed
      * @throws VerificationFailedException
      */
-    public function importKey($keyId) {
+    public function importKey($keyId, array $knownFingerprints) {
         $key = $this->downloadKey($keyId);
+        
+        if (!empty($knownFingerprints) && !in_array($key->getFingerprint(), $knownFingerprints)) {
+            $this->output->writeWarning(
+                "This is NOT a key that has been used to install previous versions of this PHAR.\n"
+                . "           While this can be pefectly valid (maybe the maintainer switched to a new key),\n"
+                . "           please make sure this key belongs to the maintainer of the PHAR you are going to install.");
+        }
 
         $this->output->writeText("\n" . $key->getInfo() . "\n\n");
         if (!$this->input->confirm('Import this key?', false)) {

@@ -222,4 +222,21 @@ class PharRegistry {
         return $usedPhars;
     }
 
+    /**
+     * @param string $alias
+     *
+     * @return array
+     */
+    public function getKnownSignatureFingerprints($alias) {
+        $fingerprints = [];
+        $query = sprintf('//phive:phar[@name="%s"]/phive:signature/@fingerprint', $alias);
+        foreach ($this->dbFile->query($query) as $fingerprintNode) {
+            if (in_array($fingerprintNode->nodeValue, $fingerprints)) {
+                continue;
+            }
+            $fingerprints[] = $fingerprintNode->nodeValue;
+        }
+        return array_unique($fingerprints);
+    }
+
 }

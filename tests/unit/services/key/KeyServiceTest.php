@@ -49,7 +49,7 @@ class KeyServiceTest extends \PHPUnit_Framework_TestCase {
         $key->getKeyData()->willReturn('some key');
         $this->downloader->download('foo')->willReturn($key);
 
-        $this->assertEquals(['keydata'], $this->getKeyService()->importKey('foo'));
+        $this->assertEquals(['keydata'], $this->getKeyService()->importKey('foo', []));
     }
 
     /**

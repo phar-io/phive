@@ -48,7 +48,25 @@ class PharRegistryTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($expected, $actual);
     }
- 
+
+    public function testReturnsExpectedFingerprints() {
+        $repo = new PharRegistry(
+            new XmlFile(
+                new Filename(__DIR__ . '/fixtures/phars.xml'),
+                'https://phar.io/phive/installdb',
+                'phars'
+            ),
+            new Directory(__DIR__ . '/fixtures')
+        );
+
+        $expected = [
+            'E8406D0D82947747293778314AA394086372C20A',
+            'D8406D0D82947747293778314AA394086372C20A'
+        ];
+        $actual = $repo->getKnownSignatureFingerprints('phpunit');
+
+        $this->assertEquals($expected, $actual);
+    }
     protected function setUp() {
         TestStreamWrapper::register('test', __DIR__ . '/fixtures/');
     }

@@ -305,7 +305,8 @@ class Factory {
         return new PharDownloader(
             $this->getFileDownloader(),
             $this->getGnupgSignatureVerifier(),
-            $this->getChecksumService()
+            $this->getChecksumService(),
+            $this->getPharRegistry()
         );
     }
 

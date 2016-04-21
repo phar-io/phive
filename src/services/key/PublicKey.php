@@ -76,6 +76,13 @@ class PublicKey {
         return $this->public;
     }
 
+    /**
+     * @return string
+     */
+    public function getFingerprint() {
+        return str_replace(' ', '', $this->fingerprint);
+    }
+
     private function parseInfo($info) {
         foreach (explode("\n", $info) as $line) {
             $parts = explode(':', $line);

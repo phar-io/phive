@@ -19,16 +19,26 @@ class PharDownloader {
     private $checksumService;
 
     /**
-     * @param FileDownloader   $fileDownloader
+     * @var PharRegistry
+     */
+    private $pharRegistry;
+
+    /**
+     * @param FileDownloader $fileDownloader
      * @param SignatureVerifier $signatureVerifier
-     * @param ChecksumService  $checksumService
+     * @param ChecksumService $checksumService
+     * @param PharRegistry $pharRegistry
      */
     public function __construct(
-        FileDownloader $fileDownloader, SignatureVerifier $signatureVerifier, ChecksumService $checksumService
+        FileDownloader $fileDownloader,
+        SignatureVerifier $signatureVerifier,
+        ChecksumService $checksumService,
+        PharRegistry $pharRegistry
     ) {
         $this->fileDownloader = $fileDownloader;
         $this->signatureVerifier = $signatureVerifier;
         $this->checksumService = $checksumService;
+        $this->pharRegistry = $pharRegistry;
     }
 
     /**
@@ -42,7 +52,11 @@ class PharDownloader {
     public function download(Release $release) {
         $pharFile = $this->fileDownloader->download($release->getUrl());
         $signatureFile = $this->fileDownloader->download($this->getSignatureUrl($release->getUrl()));
-        $signatureVerificationResult = $this->verifySignature($pharFile, $signatureFile);
+        $signatureVerificationResult = $this->verifySignature(
+            $pharFile,
+            $signatureFile,
+            $this->pharRegistry->getKnownSignatureFingerprints($release->getName())
+        );
         if (!$signatureVerificationResult->wasVerificationSuccessful()) {
             throw new VerificationFailedException('Signature could not be verified');
         }
@@ -66,11 +80,12 @@ class PharDownloader {
     /**
      * @param File $phar
      * @param File $signature
+     * @param array $knownFingerprints
      *
      * @return VerificationResult
      */
-    private function verifySignature(File $phar, File $signature) {
-        return $this->signatureVerifier->verify($phar->getContent(), $signature->getContent());
+    private function verifySignature(File $phar, File $signature, array $knownFingerprints) {
+        return $this->signatureVerifier->verify($phar->getContent(), $signature->getContent(), $knownFingerprints);
     }
 
 }

@@ -3,12 +3,15 @@
     <phar name="phpunit" version="4.8.9" location="test://phars/phpunit-4.8.9.phar.dummy">
         <hash type="sha1">675c01c852a5894c62361953a9f096701e846da8</hash>
         <usage destination="/vagrant/phpab/tools/phpunit"/>
+        <signature fingerprint="E8406D0D82947747293778314AA394086372C20A"/>
     </phar>
     <phar name="phpunit" version="4.8.7" location="test://phars/phpunit-4.8.7.phar.dummy">
         <hash type="sha1">96c2092218c8eda5412a70c6346ec3ed0d15ecfa</hash>
+        <signature fingerprint="E8406D0D82947747293778314AA394086372C20A"/>
     </phar>
     <phar name="phpunit" version="4.8.6" location="test://phars/phpunit-4.8.6.phar.dummy">
         <hash type="sha1">e07700281a2d2188de04775c537b6a1ee0f13456</hash>
+        <signature fingerprint="D8406D0D82947747293778314AA394086372C20A"/>
     </phar>
     <phar name="phpab" version="1.20.0" location="test://phars/phpab-1.20.0.phar.dummy">
         <hash type="sha1">52d12671f6ae24ca1096de34dd6f53ebc58609a6</hash>
