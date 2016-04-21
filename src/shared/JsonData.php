@@ -52,15 +52,15 @@ class JsonData {
         try {
             $this->getFragment($fragmentSpecification);
             return true;
-        } catch(\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             return false;
         }
     }
 
     public function getFragment($fragmentSpecification) {
         $data = $this->parsed;
-        foreach(explode('.', $fragmentSpecification) as $key) {
-            if (!property_exists($data,$key)) {
+        foreach (explode('.', $fragmentSpecification) as $key) {
+            if (!property_exists($data, $key)) {
                 throw new InvalidArgumentException(
                     sprintf('Fragment %s of %s not found', $key, $fragmentSpecification)
                 );

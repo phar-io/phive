@@ -26,7 +26,6 @@ class CommandLocator implements Cli\CommandLocator {
     public function getCommandForRequest(Cli\Request $request) {
         $command = $request->getCommand();
         switch ($command) {
-
             case '':
             case 'help': {
                 return $this->factory->getHelpCommand();
@@ -71,7 +70,7 @@ class CommandLocator implements Cli\CommandLocator {
             case 'composer': {
                 return $this->factory->getComposerCommand();
             }
-            
+
             default: {
                 throw new Cli\CommandLocatorException(
                     sprintf('Command "%s" is not a valid command', $command),

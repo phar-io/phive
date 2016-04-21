@@ -26,7 +26,7 @@ class ComposerService {
         $list = [];
         $parser = new VersionConstraintParser();
 
-        foreach($this->getRequires($composerFilename) as $required => $constraint) {
+        foreach ($this->getRequires($composerFilename) as $required => $constraint) {
             try {
                 $aliasName = $this->sourcesList->getAliasForComposerAlias(new ComposerAlias($required));
                 $versionConstraint = $parser->parse($constraint);
