@@ -92,7 +92,7 @@ class InstallCommandConfig {
      * @return bool
      */
     public function doNotAddToPhiveXml() {
-        return $this->cliOptions->isSwitch('temporary');
+        return $this->cliOptions->isSwitch('temporary') || $this->installGlobally();
     }
 
 }

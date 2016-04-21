@@ -98,7 +98,7 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDoNotAddToPhiveXml($switch) {
         $options = $this->getOptionsMock();
-        $options->expects($this->once())
+        $options->expects($this->any())
             ->method('isSwitch')
             ->willReturn($switch);
 
