@@ -37,7 +37,7 @@ class PharService {
      * @param PharDownloader         $downloader
      * @param PharInstaller          $installer
      * @param PharRegistry           $pharRegistry
-     * @param AliasResolver          $resolver
+     * @param AliasResolverService   $resolver
      * @param Cli\Output             $output
      * @param SourceRepositoryLoader $sourceRepositoryLoader
      */
@@ -157,9 +157,9 @@ class PharService {
      */
     private function getPharVersion(Url $url) {
         $filename = pathinfo((string)$url, PATHINFO_FILENAME);
-        preg_match('/-([0-9]+.[0-9]+.[0-9]+.*)/', $filename, $matches);
+        preg_match('/-([\d]+.[\d]+.[\d]+.*)/', $filename, $matches);
         if (count($matches) !== 2) {
-            preg_match('/\/([0-9]+.[0-9]+.[0-9]+.*)\//', (string)$url, $matches);
+            preg_match('/\/([\d]+.[\d]+.[\d]+.*)\//', (string)$url, $matches);
         }
         if (count($matches) !== 2) {
             throw new DownloadFailedException(sprintf('Could not extract PHAR version from %s', $url));
@@ -176,7 +176,7 @@ class PharService {
      */
     private function getPharName(Url $url) {
         $filename = pathinfo((string)$url, PATHINFO_FILENAME);
-        preg_match('/(.*)-[0-9]+.[0-9]+.[0-9]+.*/', $filename, $matches);
+        preg_match('/(.*)-[\d]+.[\d]+.[\d]+.*/', $filename, $matches);
         if (count($matches) !== 2) {
             $matches[1] = $filename;
         }
