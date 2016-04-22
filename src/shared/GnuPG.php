@@ -11,7 +11,7 @@ namespace PharIo\Phive;
 class GnuPG {
 
     /**
-     * @var string
+     * @var Filename
      */
     private $executable;
 
@@ -21,36 +21,35 @@ class GnuPG {
     private $homeDirectory;
 
     /**
-     * @var array
+     * @var PipeIO
      */
-    private $pipeDefinitions = [];
+    private $pipeIO;
 
     /**
-     * @var resource[]
-     */
-    private $pipeHandles = [];
-
-    /**
-     * @var resource
-     */
-    private $proc;
-
-    /**
-     * GnuPG constructor.
-     *
-     * @param string    $executable
+     * @param Filename $executable
      * @param Directory $homeDirectory
+     * @param PipeIO $pipeIO
      */
-    public function __construct($executable, Directory $homeDirectory) {
+    public function __construct(Filename $executable, Directory $homeDirectory, PipeIO $pipeIO) {
         $this->executable = $executable;
         $this->homeDirectory = $homeDirectory;
+        $this->pipeIO = $pipeIO;
     }
 
+    /**
+     * @param string $key
+     *
+     * @return array
+     */
     public function import($key) {
-        $this->open(['--import']);
-        $this->writeToPipe(0, $key);
-        $status = $this->readFromStatus();
-        $this->close();
+        $params = array_merge(
+            $this->getDefaultGpgParams(),
+            ['--import']
+        );        
+        $this->pipeIO->open($this->executable, $params);
+        $this->pipeIO->writeToPipe(PipeIO::PIPE_STDIN, $key);
+        $status = $this->pipeIO->readFromStatus();
+        $this->pipeIO->close();
         if (preg_match('=.*IMPORT_OK\s(\d+)\s(.*)=', $status, $matches)) {
             return [
                 'imported'    => (int)$matches[1],
@@ -60,85 +59,27 @@ class GnuPG {
         return ['imported' => 0];
     }
 
-    private function open(array $params, array $pipes = []) {
-        $this->proc = proc_open(
-            $this->buildCLICommand($params),
-            $this->buildPipes($pipes),
-            $this->pipeHandles
-        );
-    }
-
-    private function buildCLICommand(array $params) {
-        return join(' ', array_merge([
-            $this->executable,
-            '--homedir ' . $this->homeDirectory,
-            '--status-fd 3',
-            '--no-tty',
-            '--lock-multiple',
-            '--no-permission-warning',
-        ], $params));
-    }
-
     /**
-     * @param $pipes
+     * @param string $message
+     * @param string $signature
      *
-     * @return array
+     * @return array|false
      */
-    private function buildPipes(array $pipes) {
-        $this->pipeDefinitions = array_merge(
-            [
-                0 => ['pipe', 'r'], // STDIN (SIGNATURE)
-                1 => ['pipe', 'w'], // STDOUT
-                2 => ['pipe', 'w'], // STDERR
-                3 => ['pipe', 'w'], // FD-STATUS
-            ],
-            $pipes
-        );
-        return $this->pipeDefinitions;
-    }
-
-    private function writeToPipe($pipe, $content) {
-        fwrite($this->pipeHandles[$pipe], $content);
-        fflush($this->pipeHandles[$pipe]);
-        fclose($this->pipeHandles[$pipe]);
-        $this->pipeHandles[$pipe] = false;
-    }
-
-    private function readFromStatus() {
-        stream_set_blocking($this->pipeHandles[3], 0);
-        stream_set_read_buffer($this->pipeHandles[3], 0);
-        $status = '';
-        while (!feof($this->pipeHandles[3])) {
-            $status .= fread($this->pipeHandles[3], 1);
-        }
-        return $status;
-    }
-
-    /**
-     * @return int
-     */
-    private function close() {
-        foreach ($this->pipeHandles as $id => $pipe) {
-            if (is_resource($pipe)) {
-                fclose($pipe);
-                $this->pipeHandles[$id] = false;
-            }
-        }
-        return proc_close($this->proc);
-    }
-
     public function verify($message, $signature) {
-        $params = [
-            '--enable-special-filenames',
-            '--verify',
-            '-',
-            "'-&4'"
-        ];
-        $this->open($params, [['pipe', 'r']]);
-        $this->writeToPipe(0, $signature);
-        $this->writeToPipe(4, $message);
-        $status = $this->readFromStatus();
-        $this->close();
+        $params = array_merge(
+            $this->getDefaultGpgParams(),
+            [
+                '--enable-special-filenames',
+                '--verify',
+                '-',
+                "'-&4'"
+            ]
+        );
+        $this->pipeIO->open($this->executable, $params, [['pipe', 'r']]);
+        $this->pipeIO->writeToPipe(PipeIO::PIPE_STDIN, $signature);
+        $this->pipeIO->writeToPipe(4, $message);
+        $status = $this->pipeIO->readFromStatus();
+        $this->pipeIO->close();
         return $this->parseVerifyOutput($status);
     }
 
@@ -153,6 +94,9 @@ class GnuPG {
         $summary = false;
         foreach (explode("\n", $status) as $line) {
             $parts = explode(' ', $line);
+            if (count($parts) < 3) {
+                continue;
+            }
             $fingerprint = $parts[2];
 
             if (strpos($line, 'VALIDSIG') !== false) {
@@ -205,6 +149,19 @@ class GnuPG {
             'status'      => $status,
             'summary'     => $summary
         ]];
+    }
+
+    /**
+     * @return array
+     */
+    private function getDefaultGpgParams() {
+        return [
+            '--homedir ' . $this->homeDirectory,
+            '--status-fd 3',
+            '--no-tty',
+            '--lock-multiple',
+            '--no-permission-warning',
+        ];
     }
 
 }

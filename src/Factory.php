@@ -333,7 +333,8 @@ class Factory {
         } else {
             $gpg = new GnuPG(
                 $this->getConfig()->getGPGBinaryPath(),
-                $home
+                $home,
+                new PipeIO()
             );
             if (!class_exists('\Gnupg')) {
                 class_alias(GnuPG::class, '\Gnupg');

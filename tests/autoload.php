@@ -53,6 +53,7 @@ spl_autoload_register(
                 'phario\\phive\\purgecommandtest' => '/unit/commands/purge/PurgeCommandTest.php',
                 'phario\\phive\\releasecollectiontest' => '/unit/shared/phar/ReleaseCollectionTest.php',
                 'phario\\phive\\releasetest' => '/unit/shared/phar/ReleaseTest.php',
+                'phario\\phive\\removecommandconfigtest' => '/unit/commands/remove/RemoveCommandConfigTest.php',
                 'phario\\phive\\requestedphartest' => '/unit/shared/phar/RequestedPharTest.php',
                 'phario\\phive\\resetcommandconfigtest' => '/unit/commands/reset/ResetCommandConfigTest.php',
                 'phario\\phive\\resetcommandtest' => '/unit/commands/reset/ResetCommandTest.php',

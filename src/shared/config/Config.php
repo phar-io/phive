@@ -49,10 +49,28 @@ class Config {
     }
 
     /**
-     * @return string
+     * @return Filename
+     * @throws NoGPGBinaryFoundException
      */
     public function getGPGBinaryPath() {
-        return '/usr/bin/gpg';
+        $possiblePaths = [
+            '/usr/bin/gpg',         // Linux default
+            '/usr/local/bin/gpg'    // OSX default
+        ];
+        foreach ($possiblePaths as $possiblePath) {
+            $file = new Filename($possiblePath);
+            if (!$file->exists() || !$file->isExecutable()) {
+                continue;
+            }
+            return $file;
+        }
+        $message = sprintf(
+            "No executable gpg binary found in any of the following locations: \n"
+            . "%s \n"
+            . "Either install gpg or enable the gnupg extension in PHP.",
+            implode("\n", $possiblePaths)
+        );
+        throw new NoGPGBinaryFoundException($message);
     }
 
     /**

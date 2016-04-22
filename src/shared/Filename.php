@@ -1,11 +1,6 @@
 <?php
 namespace PharIo\Phive;
 
-/**
- * Class Filename
- *
- * @package shared
- */
 class Filename {
 
     /**
@@ -14,8 +9,6 @@ class Filename {
     private $name;
 
     /**
-     * Filename constructor.
-     *
      * @param string $name
      */
     public function __construct($name) {
@@ -46,6 +39,9 @@ class Filename {
         return $this->asString();
     }
 
+    /**
+     * @return string
+     */
     public function asString() {
         return $this->name;
     }
@@ -57,6 +53,16 @@ class Filename {
         return file_exists($this->name);
     }
 
+    /**
+     * @return bool
+     */
+    public function isExecutable() {
+        return is_executable($this->name);
+    }
+
+    /**
+     * @return File
+     */
     public function read() {
         if (!$this->exists()) {
             throw new \RuntimeException('Cannot read - File does not (yet?) exist');
