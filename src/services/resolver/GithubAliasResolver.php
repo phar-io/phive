@@ -19,10 +19,10 @@ class GithubAliasResolver extends AbstractAliasResolver {
 
     public function resolve(PharAlias $alias) {
         $name = (string)$alias;
-        if (strpos($name, '/') !== false) {
-            return $this->localResolve($name);
+        if (strpos($name, '/') === false) {
+            return $this->tryNext($alias);
         }
-        return $this->tryNext($alias);
+        return $this->localResolve($name) ?: $this->tryNext($alias);
     }
 
     private function localResolve($name) {
