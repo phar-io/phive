@@ -7,7 +7,10 @@
 
     <testsuites>
         <testsuite name="Phive">
-            <directory suffix="Test.php">tests</directory>
+            <directory suffix="Test.php">tests/unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory suffix="Test.php">tests/integration</directory>
         </testsuite>
     </testsuites>
 

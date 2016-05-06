@@ -238,7 +238,7 @@ class Factory {
     /**
      * @return Config
      */
-    private function getConfig() {
+    protected function getConfig() {
         return new Config(
             $this->getEnvironment(),
             $this->request->getCommandOptions()
@@ -324,7 +324,7 @@ class Factory {
     }
 
     /**
-     * @return \Gnupg
+     * @return \Gnupg|GnuPG
      */
     private function getGnupg() {
         $home = $this->getConfig()->getHomeDirectory()->child('gpg');

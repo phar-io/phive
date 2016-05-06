@@ -9,7 +9,7 @@ before_install:
 install:
   - travis_retry composer install --no-interaction --prefer-source
 
-script: ./vendor/bin/phpunit
+script: ./vendor/bin/phpunit --testsuite=unit
 
 php:
   - 5.6

@@ -2,6 +2,7 @@
 /.project
 /.settings
 /.idea
+/bin
 /build
 /phive.xml
 /phpunit.xml
