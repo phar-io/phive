@@ -2,9 +2,10 @@
 namespace PharIo\Phive;
 
 /**
+ * @covers PharIo\Phive\UnixoidEnvironment
  * @covers PharIo\Phive\Environment
  */
-class EnvironmentTest extends \PHPUnit_Framework_TestCase {
+class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider hasProxyProvider
@@ -13,7 +14,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
      * @param bool   $expected
      */
     public function testHasProxy($server, $expected) {
-        $env = new Environment($server);
+        $env = new UnixoidEnvironment($server);
         $this->assertSame($expected, $env->hasProxy());
     }
 
@@ -30,7 +31,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
      * @param string $proxy
      */
     public function testGetProxy($proxy) {
-        $env = new Environment(['https_proxy' => $proxy]);
+        $env = new UnixoidEnvironment(['https_proxy' => $proxy]);
         $this->assertSame($proxy, $env->getProxy());
     }
 
@@ -45,7 +46,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
      *
      */
     public function testGetHomeDirectory() {
-        $env = new Environment(['HOME' => __DIR__]);
+        $env = new UnixoidEnvironment(['HOME' => __DIR__]);
         $this->assertSame(__DIR__, (string)$env->getHomeDirectory());
     }
 
@@ -53,7 +54,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \BadMethodCallException
      */
     public function testGetProxyThrowsExceptionIfProxyIsNotSet() {
-        $env = new Environment([]);
+        $env = new UnixoidEnvironment([]);
         $env->getProxy();
     }
 
@@ -61,7 +62,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \BadMethodCallException
      */
     public function testGetHomeDirectoryThrowsExceptionIfHomeIsNotSet() {
-        $env = new Environment([]);
+        $env = new UnixoidEnvironment([]);
         $env->getHomeDirectory();
     }
 

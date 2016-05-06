@@ -1,12 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
-class Environment {
+abstract class Environment {
 
     /**
      * @var array
      */
-    private $server = [];
+    protected $server = [];
 
     /**
      * @param array $server
@@ -16,27 +16,18 @@ class Environment {
     }
 
     public static function fromSuperGlobals() {
-        return new self($_SERVER);
+        return new static($_SERVER);
     }
 
     /**
      * @return Directory
-     * @throws \PharIo\Phive\DirectoryException
-     * @throws \BadMethodCallException
      */
-    public function getHomeDirectory() {
-        if (!$this->hasHomeDirectory()) {
-            throw new \BadMethodCallException('No home directory set in environment');
-        }
-        return new Directory($this->server['HOME']);
-    }
+    abstract public function getHomeDirectory();
 
     /**
      * @return bool
      */
-    public function hasHomeDirectory() {
-        return array_key_exists('HOME', $this->server);
-    }
+    abstract public function hasHomeDirectory();
 
     /**
      * @return Directory

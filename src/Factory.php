@@ -21,6 +21,11 @@ class Factory {
     private $request;
 
     /**
+     * @var Environment
+     */
+    private $environment;
+
+    /**
      * @param Cli\Request  $request
      * @param PhiveVersion $version
      */
@@ -211,7 +216,11 @@ class Factory {
      * @return Environment
      */
     private function getEnvironment() {
-        return Environment::fromSuperGlobals();
+        if (null === $this->environment) {
+            $locator = new EnvironmentLocator($this);
+            $this->environment = $locator->getEnvironment(PHP_OS);
+        }
+        return $this->environment;
     }
 
     /**

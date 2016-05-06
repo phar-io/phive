@@ -30,6 +30,7 @@ spl_autoload_register(
                 'phario\\phive\\gnupgkeydownloadertest' => '/unit/services/key/gpg/GnupgKeyDownloaderTest.php',
                 'phario\\phive\\gnupgkeyimportertest' => '/unit/services/key/gpg/GnupgKeyImporterTest.php',
                 'phario\\phive\\gnupgsignatureverifiertest' => '/unit/services/signature/gpg/GnupgSignatureVerifierTest.php',
+                'phario\\phive\\gnupgtest' => '/unit/shared/GnuPGTest.php',
                 'phario\\phive\\gnupgverificationresulttest' => '/unit/services/signature/gpg/GnupgVerificationResultTest.php',
                 'phario\\phive\\greaterthanorequaltoversionconstrainttest' => '/unit/shared/versionconstraints/GreaterThanOrEqualToVersionConstraintTest.php',
                 'phario\\phive\\helpcommandtest' => '/unit/commands/help/HelpCommandTest.php',

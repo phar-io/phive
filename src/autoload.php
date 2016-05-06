@@ -38,7 +38,8 @@ spl_autoload_register(
                 'phario\\phive\\directory' => '/shared/Directory.php',
                 'phario\\phive\\directoryexception' => '/shared/exceptions/DirectoryException.php',
                 'phario\\phive\\downloadfailedexception' => '/shared/exceptions/DownloadFailedException.php',
-                'phario\\phive\\environment' => '/shared/Environment.php',
+                'phario\\phive\\environment' => '/shared/environment/Environment.php',
+                'phario\\phive\\environmentlocator' => '/shared/environment/EnvironmentLocator.php',
                 'phario\\phive\\errorexception' => '/shared/exceptions/ErrorException.php',
                 'phario\\phive\\exactversionconstraint' => '/shared/versionconstraints/ExactVersionConstraint.php',
                 'phario\\phive\\exception' => '/shared/exceptions/Exception.php',
@@ -117,6 +118,7 @@ spl_autoload_register(
                 'phario\\phive\\specificmajorversionconstraint' => '/shared/versionconstraints/SpecificMajorVersionConstraint.php',
                 'phario\\phive\\staticphiveversion' => '/shared/version/StaticPhiveVersion.php',
                 'phario\\phive\\targetdirectorylocator' => '/commands/TargetDirectoryLocator.php',
+                'phario\\phive\\unixoidenvironment' => '/shared/environment/UnixoidEnvironment.php',
                 'phario\\phive\\unsupportedversionconstraintexception' => '/shared/exceptions/UnsupportedVersionConstraintException.php',
                 'phario\\phive\\updatecommand' => '/commands/update/UpdateCommand.php',
                 'phario\\phive\\updatecommandconfig' => '/commands/update/UpdateCommandConfig.php',
@@ -130,6 +132,7 @@ spl_autoload_register(
                 'phario\\phive\\versionconstraintgroup' => '/shared/versionconstraints/VersionConstraintGroup.php',
                 'phario\\phive\\versionconstraintparser' => '/shared/versionconstraints/VersionConstraintParser.php',
                 'phario\\phive\\versionnumber' => '/shared/version/VersionNumber.php',
+                'phario\\phive\\windowsenvironment' => '/shared/environment/WindowsEnvironment.php',
                 'phario\\phive\\xmlfile' => '/shared/XmlFile.php'
             );
         }
