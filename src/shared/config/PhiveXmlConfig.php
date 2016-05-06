@@ -17,8 +17,9 @@ class PhiveXmlConfig {
 
     /**
      * @param RequestedPhar $requestedPhar
+     * @param Phar $installedPhar
      */
-    public function addPhar(RequestedPhar $requestedPhar) {
+    public function addPhar(RequestedPhar $requestedPhar, Phar $installedPhar) {
         $name = (string)$requestedPhar->getAlias();
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
@@ -28,6 +29,7 @@ class PhiveXmlConfig {
             $this->configFile->addElement($pharNode);
         }
         $pharNode->setAttribute('version', $requestedPhar->getAlias()->getVersionConstraint()->asString());
+        $pharNode->setAttribute('installed', $installedPhar->getVersion()->getVersionString());
         $this->configFile->save();
     }
 

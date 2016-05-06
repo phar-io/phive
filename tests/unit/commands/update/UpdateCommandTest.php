@@ -14,6 +14,9 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $requestedPhar1 = $this->getRequestedPharMock();
         $requestedPhar2 = $this->getRequestedPharMock();
 
+        $installedPhar1 = $this->getPharMock();
+        $installedPhar2 = $this->getPharMock();
+
         $config->expects($this->any())
             ->method('getWorkingDirectory')
             ->willReturn('/foo');
@@ -26,11 +29,13 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
 
         $pharService->expects($this->at(0))
             ->method('update')
-            ->with($requestedPhar1, '/foo');
+            ->with($requestedPhar1, '/foo')
+            ->willReturn($installedPhar1);
 
         $pharService->expects($this->at(1))
             ->method('update')
-            ->with($requestedPhar2, '/foo');
+            ->with($requestedPhar2, '/foo')
+            ->willReturn($installedPhar2);
 
         $command->execute();
 
@@ -57,6 +62,14 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
      */
     private function getRequestedPharMock() {
         return $this->getMockBuilder(RequestedPhar::class)
+            ->disableOriginalConstructor()->getMock();
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Phar
+     */
+    private function getPharMock() {
+        return $this->getMockBuilder(Phar::class)
             ->disableOriginalConstructor()->getMock();
     }
 

@@ -66,11 +66,14 @@ class ComposerCommand implements Cli\Command {
                 continue;
             }
 
-            $this->pharService->install($candidate, $targetDirectory, $this->config->makeCopy());
+            $installedPhar = $this->pharService->install($candidate, $targetDirectory, $this->config->makeCopy());
+            if (null === $installedPhar) {
+                continue;
+            }
             if ($this->config->doNotAddToPhiveXml()) {
                 continue;
             }
-            $this->phiveXmlConfig->addPhar($candidate);
+            $this->phiveXmlConfig->addPhar($candidate, $installedPhar);
         }
     }
 

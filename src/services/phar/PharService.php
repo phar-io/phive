@@ -59,26 +59,32 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param string        $destination
-     * @param bool          $makeCopy
+     * @param string $destination
+     * @param bool $makeCopy
+     *
+     * @return Phar|null
      */
     public function install(RequestedPhar $requestedPhar, $destination, $makeCopy) {
-        $this->doInstall($requestedPhar, $destination, $makeCopy, false);
+        return $this->doInstall($requestedPhar, $destination, $makeCopy, false);
     }
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param string        $destination
+     * @param string $destination
+     *
+     * @return Phar
      */
     public function update(RequestedPhar $requestedPhar, $destination) {
-        $this->doInstall($requestedPhar, $destination, false, true);
+        return $this->doInstall($requestedPhar, $destination, false, true);
     }
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param string        $destination
-     * @param bool          $makeCopy
-     * @param bool          $replaceExisting
+     * @param string $destination
+     * @param bool $makeCopy
+     * @param bool $replaceExisting
+     *
+     * @return Phar|void
      */
     private function doInstall(RequestedPhar $requestedPhar, $destination, $makeCopy, $replaceExisting) {
         $release = $this->getRelease($requestedPhar);
@@ -89,7 +95,7 @@ class PharService {
         $destination = $destination . '/' . $name;
         if (!$replaceExisting && file_exists($destination)) {
             $this->output->writeInfo(sprintf('%s is already installed, skipping.', $name));
-            return;
+            return null;
         }
 
         if (!$this->pharRegistry->hasPhar($name, $version)) {
@@ -100,6 +106,8 @@ class PharService {
         }
         $this->installer->install($phar->getFile(), $destination, $makeCopy);
         $this->pharRegistry->addUsage($phar, $destination);
+        
+        return $phar;
     }
 
     /**

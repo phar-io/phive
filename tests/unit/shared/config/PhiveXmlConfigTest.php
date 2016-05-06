@@ -8,8 +8,10 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
 
     public function testAddPharUpdatesExistingNode() {
         $node = $this->getDomElementMock();
-        $node->expects($this->once())->method('setAttribute')
+        $node->expects($this->at(0))->method('setAttribute')
             ->with('version', '5.3.0');
+        $node->expects($this->at(1))->method('setAttribute')
+            ->with('installed', '5.3.0');
 
         $items = $this->getDomNodeListMock();
         $items->method('item')->with(0)->willReturn($node);
@@ -20,14 +22,18 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
             ->willReturn($items);
 
         $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'));
+        $version = new Version('5.3.0');
 
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
 
+        $installedPhar = $this->getPharMock();
+        $installedPhar->method('getVersion')->willReturn($version);
+
         $config = new PhiveXmlConfig($configFile);
 
         $configFile->expects($this->once())->method('save');
-        $config->addPhar($phar);
+        $config->addPhar($phar, $installedPhar);
     }
 
     public function testAddPharCreatesNewNode() {
@@ -51,6 +57,10 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $configFile->expects($this->once())->method('addElement')->with($node);
 
         $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'));
+        $version = new Version('5.3.0');
+
+        $installedPhar = $this->getPharMock();
+        $installedPhar->method('getVersion')->willReturn($version);
 
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
@@ -58,7 +68,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $config = new PhiveXmlConfig($configFile);
 
         $configFile->expects($this->once())->method('save');
-        $config->addPhar($phar);
+        $config->addPhar($phar, $installedPhar);
     }
 
     public function testGetPharsReturnsExpectedPhars() {
@@ -123,6 +133,13 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
      */
     private function getRequestedPharMock() {
         return $this->getMockWithoutInvokingTheOriginalConstructor(RequestedPhar::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Phar
+     */
+    private function getPharMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Phar::class);
     }
 
     /**

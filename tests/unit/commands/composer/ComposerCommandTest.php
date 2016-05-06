@@ -31,14 +31,14 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
                 $this->identicalTo($requestedPhar1),
                 $workingDirectory,
                 false
-            );
+            )->willReturn($this->getPharMock());
         $pharService->expects($this->at(1))
             ->method('install')
             ->with(
                 $this->identicalTo($requestedPhar2),
                 $workingDirectory,
                 false
-            );
+            )->willReturn($this->getPharMock());
 
         $input = $this->getInputMock();
         $input->method('confirm')->willReturn(true);
@@ -152,6 +152,9 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $requestedPhar1 = $this->getRequestedPharMock();
         $requestedPhar2 = $this->getRequestedPharMock();
 
+        $installedPhar1 = $this->getPharMock();
+        $installedPhar2 = $this->getPharMock();
+        
         $composerService = $this->getComposerServiceMock();
         $composerService->method('findCandidates')
             ->willReturn([$requestedPhar1, $requestedPhar2]);
@@ -159,18 +162,32 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $input = $this->getInputMock();
         $input->method('confirm')->willReturn(true);
 
+        
+        
+        $pharService = $this->getPharServiceMock();
+
+        $pharService->expects($this->at(0))
+            ->method('install')
+            ->with($requestedPhar1, $workingDirectory)
+            ->willReturn($installedPhar1);
+
+        $pharService->expects($this->at(1))
+            ->method('install')
+            ->with($requestedPhar2, $workingDirectory)
+            ->willReturn($installedPhar2);
+
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->expects($this->at(0))
             ->method('addPhar')
-            ->with($this->identicalTo($requestedPhar1));
+            ->with($this->identicalTo($requestedPhar1), $this->identicalTo($installedPhar1));
         $phiveXmlConfig->expects($this->at(1))
             ->method('addPhar')
-            ->with($this->identicalTo($requestedPhar2));
+            ->with($this->identicalTo($requestedPhar2), $this->identicalTo($installedPhar2));
 
         $command = new ComposerCommand(
             $config,
             $composerService,
-            $this->getPharServiceMock(),
+            $pharService,
             $phiveXmlConfig,
             $this->getEnvironmentMock(),
             $input
@@ -269,5 +286,12 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
      */
     private function getPhiveXmlConfigMock() {
         return $this->getMockWithoutInvokingTheOriginalConstructor(PhiveXmlConfig::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Phar
+     */
+    private function getPharMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Phar::class);
     }
 }

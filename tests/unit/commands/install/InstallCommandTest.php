@@ -26,11 +26,13 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
 
         $pharService->expects($this->at(0))
             ->method('install')
-            ->with($requestedPhar1, new Directory(__DIR__));
+            ->with($requestedPhar1, new Directory(__DIR__))
+            ->willReturn($this->getPharMock());
 
         $pharService->expects($this->at(1))
             ->method('install')
-            ->with($requestedPhar2, new Directory(__DIR__));
+            ->with($requestedPhar2, new Directory(__DIR__))
+            ->willReturn($this->getPharMock());
 
         $command->execute();
 
@@ -79,18 +81,27 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
     public function testAddsEntryToPhiveXml() {
         $config = $this->getCommandConfigMock();
         $pharService = $this->getPharServiceMock();
+        $directory = $this->getDirectoryMock();
+
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->method('hasTargetDirectory')->willReturn(true);
+        $phiveXmlConfig->method('getTargetDirectory')->willReturn($directory);
 
         $requestedPhar = $this->getRequestedPharMock();
+        $installedPhar = $this->getPharMock();
 
         $config->expects($this->once())
             ->method('getRequestedPhars')
             ->will($this->returnValue([$requestedPhar]));
 
+        $pharService->expects($this->at(0))
+            ->method('install')
+            ->with($requestedPhar, $directory)
+            ->willReturn($installedPhar);
+
         $phiveXmlConfig->expects($this->once())
             ->method('addPhar')
-            ->with($requestedPhar);
+            ->with($requestedPhar, $installedPhar);
 
         $command = new InstallCommand($config, $pharService, $phiveXmlConfig, $this->getEnvironmentMock());
 
@@ -118,6 +129,20 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
         $command = new InstallCommand($config, $pharService, $phiveXmlConfig, $this->getEnvironmentMock());
 
         $command->execute();
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Phar
+     */
+    private function getPharMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Phar::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     */
+    private function getDirectoryMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
     }
 
 }
