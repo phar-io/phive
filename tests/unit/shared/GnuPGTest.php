@@ -17,7 +17,7 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
         $pipeIO->expects($this->once())
             ->method('writeToPipe')
             ->with(PipeIO::PIPE_STDIN, $key);
-        $pipeIO->method('readFromStatus')->willReturn($status);
+        $pipeIO->method('readFromPipe')->willReturn($status);
 
         $expected  = [
             'imported' => 1,
@@ -39,7 +39,7 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
         $pipeIO->expects($this->once())
             ->method('writeToPipe')
             ->with(PipeIO::PIPE_STDIN, $key);
-        $pipeIO->method('readFromStatus')->willReturn($status);
+        $pipeIO->method('readFromPipe')->willReturn($status);
 
         $expected  = ['imported' => 0];
 
@@ -65,7 +65,7 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
         $message = 'Some Message';
         $signature = 'Some Signature';
         $pipeIO = $this->getPipeIOMock();
-        $pipeIO->method('readFromStatus')->willReturn($status);
+        $pipeIO->method('readFromPipe')->willReturn($status);
 
         $gnupg = new GnuPG($executable, $homeDirectory, $pipeIO);
 
@@ -96,7 +96,7 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
         $message = 'Some Message';
         $signature = 'Some Signature';
         $pipeIO = $this->getPipeIOMock();
-        $pipeIO->method('readFromStatus')->willReturn($status);
+        $pipeIO->method('readFromPipe')->willReturn($status);
 
         $gnupg = new GnuPG($executable, $homeDirectory, $pipeIO);
 

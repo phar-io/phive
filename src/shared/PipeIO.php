@@ -35,14 +35,16 @@ class PipeIO {
     }
 
     /**
+     * @param int $pipe
+     *
      * @return string
      */
-    public function readFromStatus() {
-        stream_set_blocking($this->pipeHandles[self::PIPE_FD_STATUS], 0);
-        stream_set_read_buffer($this->pipeHandles[self::PIPE_FD_STATUS], 0);
+    public function readFromPipe($pipe) {
+        stream_set_blocking($this->pipeHandles[$pipe], 0);
+        stream_set_read_buffer($this->pipeHandles[$pipe], 0);
         $status = '';
-        while (!feof($this->pipeHandles[self::PIPE_FD_STATUS])) {
-            $status .= fread($this->pipeHandles[self::PIPE_FD_STATUS], 1);
+        while (!feof($this->pipeHandles[$pipe])) {
+            $status .= fread($this->pipeHandles[$pipe], 1);
         }
         return $status;
     }
@@ -89,15 +91,14 @@ class PipeIO {
      * @return array
      */
     private function buildPipes(array $pipes) {
-        $this->pipeDefinitions = array_merge(
+        $this->pipeDefinitions =
             [
                 self::PIPE_STDIN => ['pipe', 'r'],
                 self::PIPE_STDOUT => ['pipe', 'w'],
                 self::PIPE_STDERR => ['pipe', 'w'],
                 self::PIPE_FD_STATUS => ['pipe', 'w'],
-            ],
-            $pipes
-        );
+            ]
+            + $pipes;
         return $this->pipeDefinitions;
     }
 

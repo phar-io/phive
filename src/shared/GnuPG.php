@@ -48,7 +48,7 @@ class GnuPG {
         );        
         $this->pipeIO->open($this->executable, $params);
         $this->pipeIO->writeToPipe(PipeIO::PIPE_STDIN, $key);
-        $status = $this->pipeIO->readFromStatus();
+        $status = $this->pipeIO->readFromPipe(PipeIO::PIPE_FD_STATUS);
         $this->pipeIO->close();
         if (preg_match('=.*IMPORT_OK\s(\d+)\s(.*)=', $status, $matches)) {
             return [
@@ -75,10 +75,10 @@ class GnuPG {
                 "'-&4'"
             ]
         );
-        $this->pipeIO->open($this->executable, $params, [['pipe', 'r']]);
+        $this->pipeIO->open($this->executable, $params, [4 => ['pipe', 'r']]);
         $this->pipeIO->writeToPipe(PipeIO::PIPE_STDIN, $signature);
         $this->pipeIO->writeToPipe(4, $message);
-        $status = $this->pipeIO->readFromStatus();
+        $status = $this->pipeIO->readFromPipe(PipeIO::PIPE_FD_STATUS);
         $this->pipeIO->close();
         return $this->parseVerifyOutput($status);
     }
@@ -157,7 +157,7 @@ class GnuPG {
     private function getDefaultGpgParams() {
         return [
             '--homedir ' . $this->homeDirectory,
-            '--status-fd 3',
+            '--status-fd ' . PipeIO::PIPE_FD_STATUS,
             '--no-tty',
             '--lock-multiple',
             '--no-permission-warning',
