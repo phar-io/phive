@@ -45,5 +45,10 @@ class UnixoidEnvironment extends Environment {
         return true;
     }
 
-
+    /**
+     * @return string
+     */
+    protected function getWhichCommand() {
+        return 'which';
+    }
 }

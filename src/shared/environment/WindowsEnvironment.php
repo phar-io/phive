@@ -21,20 +21,12 @@ class WindowsEnvironment extends Environment {
     }
 
     /**
-     * @param string $command
-     *
-     * @return Filename
-     * @throws EnvironmentException
+     * @return string
      */
-    public function getPathToCommand($command) {
-        $result = exec(sprintf('where.exe %s', $command), $output, $exitCode);
-        if ($exitCode !== 0) {
-            throw new EnvironmentException(sprintf('Command %s not found', $command));
-        }
-        $resultLines = explode("\n", $result);
-        return new Filename($resultLines[0]);
+    protected function getWhichCommand() {
+        return 'where.exe';
     }
-
+    
     /**
      * @return bool
      */

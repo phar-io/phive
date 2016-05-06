@@ -23,9 +23,17 @@ abstract class Environment {
      * @param string $command
      *
      * @return Filename
+     * @throws EnvironmentException
      */
-    abstract public function getPathToCommand($command);
-
+    public function getPathToCommand($command) {
+        $result = exec(sprintf('%s %s', $this->getWhichCommand(), $command), $output, $exitCode);
+        if ($exitCode !== 0) {
+            throw new EnvironmentException(sprintf('Command %s not found', $command));
+        }
+        $resultLines = explode("\n", $result);
+        return new Filename($resultLines[0]);
+    }
+    
     /**
      * @return Directory
      */
@@ -105,6 +113,11 @@ abstract class Environment {
         }
         return PHP_VERSION;
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getWhichCommand();
 
     private function isHHVM() {
         return defined('HHVM_VERSION');
