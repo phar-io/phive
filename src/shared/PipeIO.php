@@ -24,8 +24,8 @@ class PipeIO {
     private $proc;
 
     /**
-     * @param $pipe
-     * @param $content
+     * @param int $pipe
+     * @param string $content
      */
     public function writeToPipe($pipe, $content) {
         fwrite($this->pipeHandles[$pipe], $content);
@@ -38,15 +38,20 @@ class PipeIO {
      * @return string
      */
     public function readFromStatus() {
-        stream_set_blocking($this->pipeHandles[3], 0);
-        stream_set_read_buffer($this->pipeHandles[3], 0);
+        stream_set_blocking($this->pipeHandles[self::PIPE_FD_STATUS], 0);
+        stream_set_read_buffer($this->pipeHandles[self::PIPE_FD_STATUS], 0);
         $status = '';
-        while (!feof($this->pipeHandles[3])) {
-            $status .= fread($this->pipeHandles[3], 1);
+        while (!feof($this->pipeHandles[self::PIPE_FD_STATUS])) {
+            $status .= fread($this->pipeHandles[self::PIPE_FD_STATUS], 1);
         }
         return $status;
     }
 
+    /**
+     * @param string $executable
+     * @param array $params
+     * @param array $pipes
+     */
     public function open($executable, array $params, array $pipes = []) {
         $this->proc = proc_open(
             $this->buildCLICommand($executable, $params),
