@@ -5,7 +5,6 @@ use PharIo\Phive\Cli\Request;
 use PharIo\Phive\Directory;
 use PharIo\Phive\Factory;
 use PharIo\Phive\GnuPG;
-use PharIo\Phive\PipeIO;
 
 class IntegrationTestFactory extends Factory {
 
@@ -22,10 +21,9 @@ class IntegrationTestFactory extends Factory {
     public function getShellBasedGnupg(Directory $gpgHome) {
         return new GnuPG(
             $this->getConfig()->getGPGBinaryPath(),
-            $gpgHome,
-            new PipeIO()
+            new Directory(__DIR__),
+            $gpgHome
         );
-                
     }
 
 
