@@ -21,19 +21,19 @@ class GnuPG {
     private $homeDirectory;
 
     /**
-     * @var PipeIO
+     * @var Directory
      */
-    private $pipeIO;
+    private $tmpDirectory;
 
     /**
-     * @param Filename $executable
+     * @param Filename  $executable
+     * @param Directory $tmpDirectory
      * @param Directory $homeDirectory
-     * @param PipeIO $pipeIO
      */
-    public function __construct(Filename $executable, Directory $homeDirectory, PipeIO $pipeIO) {
+    public function __construct(Filename $executable, Directory $tmpDirectory, Directory $homeDirectory) {
         $this->executable = $executable;
+        $this->tmpDirectory = $tmpDirectory;
         $this->homeDirectory = $homeDirectory;
-        $this->pipeIO = $pipeIO;
     }
 
     /**
@@ -42,15 +42,14 @@ class GnuPG {
      * @return array
      */
     public function import($key) {
-        $params = array_merge(
-            $this->getDefaultGpgParams(),
-            ['--import']
-        );        
-        $this->pipeIO->open($this->executable, $params);
-        $this->pipeIO->writeToPipe(PipeIO::PIPE_STDIN, $key);
-        $status = $this->pipeIO->readFromPipe(PipeIO::PIPE_FD_STATUS);
-        $this->pipeIO->close();
-        if (preg_match('=.*IMPORT_OK\s(\d+)\s(.*)=', $status, $matches)) {
+        $tmpFile = $this->createTemporaryFile($key);
+        $result = $this->execute([
+            '--import',
+            escapeshellarg($tmpFile->asString())
+        ]);
+        unlink($tmpFile);
+
+        if (preg_match('=.*IMPORT_OK\s(\d+)\s(.*)=', join('', $result), $matches)) {
             return [
                 'imported'    => (int)$matches[1],
                 'fingerprint' => $matches[2]
@@ -66,21 +65,19 @@ class GnuPG {
      * @return array|false
      */
     public function verify($message, $signature) {
-        $params = array_merge(
-            $this->getDefaultGpgParams(),
-            [
-                '--enable-special-filenames',
-                '--verify',
-                '-',
-                "'-&4'"
-            ]
-        );
-        $this->pipeIO->open($this->executable, $params, [4 => ['pipe', 'r']]);
-        $this->pipeIO->writeToPipe(PipeIO::PIPE_STDIN, $signature);
-        $this->pipeIO->writeToPipe(4, $message);
-        $status = $this->pipeIO->readFromPipe(PipeIO::PIPE_FD_STATUS);
-        $this->pipeIO->close();
-        return $this->parseVerifyOutput($status);
+        $messageFile = $this->createTemporaryFile($message);
+        $signatureFile = $this->createTemporaryFile($signature);
+
+        $result = $this->execute([
+            '--verify',
+            escapeshellarg($signatureFile->asString()),
+            escapeshellarg($messageFile->asString())
+        ]);
+
+        unlink($signatureFile);
+        unlink($messageFile);
+
+        return $this->parseVerifyOutput($result);
     }
 
     /**
@@ -92,7 +89,7 @@ class GnuPG {
         $fingerprint = '';
         $timestamp = 0;
         $summary = false;
-        foreach (explode("\n", $status) as $line) {
+        foreach ($status as $line) {
             $parts = explode(' ', $line);
             if (count($parts) < 3) {
                 continue;
@@ -156,12 +153,44 @@ class GnuPG {
      */
     private function getDefaultGpgParams() {
         return [
-            '--homedir ' . $this->homeDirectory,
-            '--status-fd ' . PipeIO::PIPE_FD_STATUS,
-            '--no-tty',
+            '--homedir ' . escapeshellarg($this->homeDirectory),
+            '--quiet',
+            '--status-fd 1',
             '--lock-multiple',
             '--no-permission-warning',
+            '--no-greeting',
+            '--exit-on-status-write-error',
+            '--batch',
+            '--no-tty'
         ];
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return mixed
+     */
+    private function execute(array $params) {
+        $devNull = stripos(PHP_OS, 'win') === 0 ? 'nul' : '/dev/null';
+
+        $command = sprintf('%s %s %s 2>%s',
+            escapeshellarg($this->executable),
+            join(' ', $this->getDefaultGpgParams()),
+            join(' ', $params),
+            $devNull
+        );
+        exec($command, $result, $rc);
+        return $result;
+    }
+
+    /**
+     * @param string $content
+     * @return Filename
+     */
+    private function createTemporaryFile($content) {
+        $tmpFile = $this->tmpDirectory->file(uniqid('phive_gpg_', true));
+        file_put_contents($tmpFile->asString(), $content);
+        return $tmpFile;
     }
 
 }
