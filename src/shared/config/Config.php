@@ -45,7 +45,7 @@ class Config {
      * @return Directory
      */
     public function getToolsDirectory() {
-        return $this->getWorkingDirectory()->child('tools');
+        return new Directory('tools');
     }
 
     /**
