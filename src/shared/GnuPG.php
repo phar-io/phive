@@ -149,7 +149,7 @@ class GnuPG {
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     private function getDefaultGpgParams() {
         return [
@@ -166,7 +166,7 @@ class GnuPG {
     }
 
     /**
-     * @param array $params
+     * @param string[] $params
      *
      * @return mixed
      */
