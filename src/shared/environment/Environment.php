@@ -20,6 +20,13 @@ abstract class Environment {
     }
 
     /**
+     * @param string $command
+     *
+     * @return Filename
+     */
+    abstract public function getPathToCommand($command);
+
+    /**
      * @return Directory
      */
     abstract public function getHomeDirectory();
@@ -28,6 +35,11 @@ abstract class Environment {
      * @return bool
      */
     abstract public function hasHomeDirectory();
+
+    /**
+     * @return bool
+     */
+    abstract public function supportsColoredOutput();
 
     /**
      * @return Directory

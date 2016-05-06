@@ -40,7 +40,7 @@ class Factory {
     public function getRunner() {
         return new Cli\Runner(
             $this->getCommandLocator(),
-            $this->getConsoleOutput(),
+            $this->getOutput(),
             $this->getPhiveVersion(),
             $this->getEnvironment(),
             $this->request
@@ -60,7 +60,7 @@ class Factory {
     public function getHelpCommand() {
         return new HelpCommand(
             $this->getEnvironment(),
-            $this->getConsoleOutput()
+            $this->getOutput()
         );
     }
 
@@ -89,7 +89,7 @@ class Factory {
             new RemoveCommandConfig($this->request->getCommandOptions(), $this->getTargetDirectoryLocator()),
             $this->getPharRegistry(),
             $this->getPharService(),
-            $this->getColoredConsoleOutput()
+            $this->getOutput()
         );
     }
 
@@ -140,7 +140,7 @@ class Factory {
     public function getListCommand() {
         return new ListCommand(
             $this->getSourcesList(),
-            $this->getColoredConsoleOutput()
+            $this->getOutput()
         );
     }
 
@@ -154,7 +154,7 @@ class Factory {
                 $this->getConfig()
             ),
             $this->getPharRegistry(),
-            $this->getColoredConsoleOutput()
+            $this->getOutput()
         );
     }
 
@@ -173,11 +173,11 @@ class Factory {
         );
     }
 
+
     /**
      * @return TargetDirectoryLocator
      */
-    private function getTargetDirectoryLocator()
-    {
+    private function getTargetDirectoryLocator() {
         return new TargetDirectoryLocator($this->getConfig(), $this->getPhiveXmlConfig(), $this->request->getCommandOptions());
     }
 
@@ -191,8 +191,8 @@ class Factory {
     /**
      * @return Cli\Output
      */
-    private function getConsoleOutput() {
-        return new Cli\ColoredConsoleOutput(Cli\ConsoleOutput::VERBOSE_INFO);
+    private function getOutput() {
+        return (new Cli\OutputLocator(new Cli\OutputFactory()))->getOutput($this->getEnvironment());
     }
 
     /**
@@ -231,7 +231,7 @@ class Factory {
             $this->getConfig()->getSourcesListUrl(),
             $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
             $this->getFileDownloader(),
-            $this->getColoredConsoleOutput()
+            $this->getOutput()
         );
     }
 
@@ -251,7 +251,7 @@ class Factory {
     private function getFileDownloader() {
         return new FileDownloader(
             $this->getCurl(),
-            $this->getColoredConsoleOutput()
+            $this->getOutput()
         );
     }
 
@@ -277,13 +277,6 @@ class Factory {
     }
 
     /**
-     * @return Cli\Output
-     */
-    private function getColoredConsoleOutput() {
-        return new Cli\ColoredConsoleOutput(Cli\ConsoleOutput::VERBOSE_INFO);
-    }
-
-    /**
      * @return PharRegistry
      */
     private function getPharRegistry() {
@@ -306,7 +299,7 @@ class Factory {
             $this->getPharInstaller(),
             $this->getPharRegistry(),
             $this->getAliasResolverService(),
-            $this->getColoredConsoleOutput(),
+            $this->getOutput(),
             $this->getPharIoRepositoryFactory()
         );
     }
@@ -359,7 +352,7 @@ class Factory {
         return new KeyService(
             $this->getPgpKeyDownloader(),
             $this->getGnupgKeyImporter(),
-            $this->getColoredConsoleOutput(),
+            $this->getOutput(),
             $this->getConsoleInput()
         );
     }
@@ -371,7 +364,7 @@ class Factory {
         return new GnupgKeyDownloader(
             $this->getCurl(),
             include __DIR__ . '/../conf/pgp-keyservers.php',
-            $this->getColoredConsoleOutput()
+            $this->getOutput()
         );
     }
 
@@ -386,7 +379,7 @@ class Factory {
      * @return Cli\ConsoleInput
      */
     private function getConsoleInput() {
-        return new Cli\ConsoleInput($this->getConsoleOutput());
+        return new Cli\ConsoleInput($this->getOutput());
     }
 
     /**
@@ -402,7 +395,7 @@ class Factory {
     private function getPharInstaller() {
         return new PharInstaller(
             $this->getConfig()->getHomeDirectory()->child('phars'),
-            $this->getColoredConsoleOutput()
+            $this->getOutput()
         );
     }
 
