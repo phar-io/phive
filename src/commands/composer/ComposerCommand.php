@@ -3,9 +3,6 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
 
-/**
- * @method ComposerCommandConfig getConfig
- */
 class ComposerCommand extends InstallCommand {
     
     /**
@@ -41,6 +38,13 @@ class ComposerCommand extends InstallCommand {
             }
             $this->installRequestedPhar($candidate, $targetDirectory);
         }
+    }
+
+    /**
+     * @return ComposerCommandConfig
+     */
+    protected function getConfig() {
+        return parent::getConfig();
     }
 
 }

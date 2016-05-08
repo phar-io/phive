@@ -20,8 +20,8 @@ class CommandLocator implements Cli\CommandLocator {
     /**
      * @param Cli\Request $request
      *
+     * @return Cli\Command|ComposerCommand|ResetCommand|UpdateCommand|UpdateRepositoryListCommand
      * @throws Cli\CommandLocatorException
-     * @return Cli\Command
      */
     public function getCommandForRequest(Cli\Request $request) {
         $command = $request->getCommand();
