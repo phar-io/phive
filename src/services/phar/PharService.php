@@ -72,7 +72,7 @@ class PharService {
      * @param RequestedPhar $requestedPhar
      * @param string $destination
      *
-     * @return Phar
+     * @return Phar|null
      */
     public function update(RequestedPhar $requestedPhar, $destination) {
         return $this->doInstall($requestedPhar, $destination, false, true);
@@ -84,7 +84,7 @@ class PharService {
      * @param bool $makeCopy
      * @param bool $replaceExisting
      *
-     * @return Phar|void
+     * @return Phar|null
      */
     private function doInstall(RequestedPhar $requestedPhar, $destination, $makeCopy, $replaceExisting) {
         $release = $this->getRelease($requestedPhar);

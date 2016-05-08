@@ -13,6 +13,9 @@ class AliasResolverService {
      */
     private $last;
 
+    /**
+     * @param AliasResolver $resolver
+     */
     public function addResolver(AliasResolver $resolver) {
         if ($this->first === null) {
             $this->first = $resolver;
@@ -23,6 +26,11 @@ class AliasResolverService {
         $this->last = $resolver;
     }
 
+    /**
+     * @param PharAlias $alias
+     *
+     * @return Source[]
+     */
     public function resolve(PharAlias $alias) {
         return $this->first->resolve($alias);
     }
