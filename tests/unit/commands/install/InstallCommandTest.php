@@ -79,37 +79,43 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testAddsEntryToPhiveXml() {
-        $config = $this->getCommandConfigMock();
-        $pharService = $this->getPharServiceMock();
         $directory = $this->getDirectoryMock();
 
-        $phiveXmlConfig = $this->getPhiveXmlConfigMock();
-        $phiveXmlConfig->method('hasTargetDirectory')->willReturn(true);
-        $phiveXmlConfig->method('getTargetDirectory')->willReturn($directory);
+        $config = $this->getCommandConfigMock();
+        $config->method('getTargetDirectory')->willReturn($directory);
 
         $requestedPhar = $this->getRequestedPharMock();
         $installedPhar = $this->getPharMock();
 
-        $config->expects($this->once())
-            ->method('getRequestedPhars')
-            ->will($this->returnValue([$requestedPhar]));
+        $pharService = $this->getPharServiceMock();
 
         $pharService->expects($this->at(0))
             ->method('install')
             ->with($requestedPhar, $directory)
             ->willReturn($installedPhar);
 
+        $phiveXmlConfig = $this->getPhiveXmlConfigMock();
+        $phiveXmlConfig->method('hasTargetDirectory')->willReturn(true);
+        
         $phiveXmlConfig->expects($this->once())
             ->method('addPhar')
             ->with($requestedPhar, $installedPhar);
-
+        
+        $config->expects($this->once())
+            ->method('getRequestedPhars')
+            ->will($this->returnValue([$requestedPhar]));
+        
         $command = new InstallCommand($config, $pharService, $phiveXmlConfig, $this->getEnvironmentMock());
 
         $command->execute();
     }
 
     public function testDoNotAddEntryToPhiveXml() {
+        $directory = $this->getDirectoryMock();
+        
         $config = $this->getCommandConfigMock();
+        $config->method('getTargetDirectory')->willReturn($directory);
+
         $pharService = $this->getPharServiceMock();
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
 

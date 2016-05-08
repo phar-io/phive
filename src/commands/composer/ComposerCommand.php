@@ -3,37 +3,20 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
 
-class ComposerCommand implements Cli\Command {
-
-    /**
-     * @var ComposerCommandConfig
-     */
-    private $config;
-
+/**
+ * @method ComposerCommandConfig getConfig
+ */
+class ComposerCommand extends InstallCommand {
+    
     /**
      * @var ComposerService
      */
     private $composerService;
 
     /**
-     * @var PharService
-     */
-    private $pharService;
-
-    /**
      * @var Cli\Input
      */
     private $input;
-
-    /**
-     * @var Environment
-     */
-    private $environment;
-
-    /**
-     * @var PhiveXmlConfig
-     */
-    private $phiveXmlConfig;
 
     /**
      * @param ComposerCommandConfig $config
@@ -44,36 +27,19 @@ class ComposerCommand implements Cli\Command {
      * @param Cli\Input             $input
      */
     public function __construct(ComposerCommandConfig $config, ComposerService $composerService, PharService $pharService, PhiveXmlConfig $phiveXmlConfig, Environment $environment, Cli\Input $input) {
-        $this->config = $config;
+        parent::__construct($config, $pharService, $phiveXmlConfig, $environment);
         $this->composerService = $composerService;
-        $this->pharService = $pharService;
-        $this->phiveXmlConfig = $phiveXmlConfig;
-        $this->environment = $environment;
         $this->input = $input;
     }
 
     public function execute() {
-        if ($this->config->installGlobally()) {
-            $targetDirectory = dirname($this->environment->getBinaryName());
-        } else {
-            $targetDirectory = $this->config->getWorkingDirectory();
-        }
+        $targetDirectory = $this->initTargetDirectory();
 
-        foreach ($this->composerService->findCandidates($this->config->getComposerFilename()) as $candidate) {
-            if (!$this->input->confirm(
-                sprintf('Install %s ?', $candidate->getAlias()))
-            ) {
+        foreach ($this->composerService->findCandidates($this->getConfig()->getComposerFilename()) as $candidate) {
+            if (!$this->input->confirm(sprintf('Install %s ?', $candidate->getAlias()))) {
                 continue;
             }
-
-            $installedPhar = $this->pharService->install($candidate, $targetDirectory, $this->config->makeCopy());
-            if (null === $installedPhar) {
-                continue;
-            }
-            if ($this->config->doNotAddToPhiveXml()) {
-                continue;
-            }
-            $this->phiveXmlConfig->addPhar($candidate, $installedPhar);
+            $this->installRequestedPhar($candidate, $targetDirectory);
         }
     }
 

@@ -162,8 +162,9 @@ class Factory {
         return new ComposerCommand(
             new ComposerCommandConfig(
                 $this->request->getCommandOptions(),
-                $this->getConfig(),
-                $this->getPhiveXmlConfig()
+                $this->getPhiveXmlConfig(),
+                $this->getTargetDirectoryLocator(),
+                $this->getEnvironment()->getWorkingDirectory()
             ),
             $this->getComposerService(),
             $this->getPharService(),

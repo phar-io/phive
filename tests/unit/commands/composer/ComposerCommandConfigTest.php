@@ -10,19 +10,20 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
     use ScalarTestDataProvider;
 
-    public function testGetWorkingDirectory() {
+    public function testGetTargetDirectory() {
         $directory = $this->getDirectoryMock();
 
-        $config = $this->getConfigMock();
-        $config->method('getWorkingDirectory')->willReturn($directory);
+        $locator = $this->getTargetDirectoryLocatorMock();
+        $locator->method('getTargetDirectory')->willReturn($directory);
 
         $commandConfig = new ComposerCommandConfig(
             $this->getOptionsMock(),
-            $config,
-            $this->getPhiveXmlConfigMock()
+            $this->getPhiveXmlConfigMock(),
+            $locator,
+            $directory
         );
 
-        $this->assertSame($directory, $commandConfig->getWorkingDirectory());
+        $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
 
     /**
@@ -36,8 +37,9 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
         $commandConfig = new ComposerCommandConfig(
             $options,
-            $this->getConfigMock(),
-            $this->getPhiveXmlConfigMock()
+            $this->getPhiveXmlConfigMock(),
+            $this->getTargetDirectoryLocatorMock(),
+            $this->getDirectoryMock()
         );
 
         $this->assertSame($value, $commandConfig->installGlobally());
@@ -54,29 +56,38 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
         $commandConfig = new ComposerCommandConfig(
             $options,
-            $this->getConfigMock(),
-            $this->getPhiveXmlConfigMock()
+            $this->getPhiveXmlConfigMock(),
+            $this->getTargetDirectoryLocatorMock(),
+            $this->getDirectoryMock()
         );
 
         $this->assertSame($value, $commandConfig->makeCopy());
     }
 
     /**
-     * @dataProvider boolProvider
+     * @dataProvider doNotaddToPhiveXmlProvider
      *
-     * @param bool $value
+     * @param bool $temporaryValue
+     * @param bool $globalValue
+     * @param bool $expected
      */
-    public function testDoNotAddToPhiveXml($value) {
+    public function testDoNotAddToPhiveXml($temporaryValue, $globalValue, $expected) {
         $options = $this->getOptionsMock();
-        $options->method('isSwitch')->with('temporary')->willReturn($value);
+        $options->method('isSwitch')->willReturnMap(
+            [
+                ['temporary', $temporaryValue],
+                ['global', $globalValue]
+            ]
+        );
 
         $commandConfig = new ComposerCommandConfig(
             $options,
-            $this->getConfigMock(),
-            $this->getPhiveXmlConfigMock()
+            $this->getPhiveXmlConfigMock(),
+            $this->getTargetDirectoryLocatorMock(),
+            $this->getDirectoryMock()
         );
 
-        $this->assertSame($value, $commandConfig->doNotAddToPhiveXml());
+        $this->assertSame($expected, $commandConfig->doNotAddToPhiveXml());
     }
 
     public function testGetComposerFilenname() {
@@ -85,16 +96,26 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $directory = $this->getDirectoryMock();
         $directory->method('file')->with('composer.json')->willReturn($composerFilename);
 
-        $config = $this->getConfigMock();
-        $config->method('getWorkingDirectory')->willReturn($directory);
-
         $commandConfig = new ComposerCommandConfig(
             $this->getOptionsMock(),
-            $config,
-            $this->getPhiveXmlConfigMock()
+            $this->getPhiveXmlConfigMock(),
+            $this->getTargetDirectoryLocatorMock(),
+            $directory
         );
 
         $this->assertSame($composerFilename, $commandConfig->getComposerFilename());
+    }
+
+    /**
+     * @return array
+     */
+    public static function doNotAddToPhiveXmlProvider() {
+        return [
+            [true, false, true],
+            [true, true, true],
+            [false, true, true],
+            [false, false, false],
+        ];
     }
 
     /**
@@ -112,17 +133,17 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Config
-     */
-    private function getConfigMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Config::class);
-    }
-
-    /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
      */
     private function getPhiveXmlConfigMock() {
         return $this->getMockWithoutInvokingTheOriginalConstructor(PhiveXmlConfig::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|TargetDirectoryLocator
+     */
+    private function getTargetDirectoryLocatorMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(TargetDirectoryLocator::class);
     }
 
 }

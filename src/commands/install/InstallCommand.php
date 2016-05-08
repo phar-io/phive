@@ -47,26 +47,51 @@ class InstallCommand implements Cli\Command {
      *
      */
     public function execute() {
-        if ($this->config->installGlobally()) {
-            $targetDirectory = new Directory(dirname($this->environment->getBinaryName()));
-        } else {
-            $targetDirectory = $this->config->getTargetDirectory();
-        }
+        $targetDirectory = $this->initTargetDirectory();
 
-        if (!$this->phiveXmlConfig->hasTargetDirectory() && !$this->config->doNotAddToPhiveXml()) {
+        foreach ($this->getConfig()->getRequestedPhars() as $requestedPhar) {
+            $this->installRequestedPhar($requestedPhar, $targetDirectory);
+        }
+    }
+
+    /**
+     * @param RequestedPhar $requestedPhar
+     * @param Directory $targetDirectory
+     */
+    protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory) {
+        $installedPhar = $this->pharService->install($requestedPhar, (string)$targetDirectory, $this->getConfig()->makeCopy());
+        if (null === $installedPhar || $this->getConfig()->doNotAddToPhiveXml()) {
+            return;
+        }
+        $this->phiveXmlConfig->addPhar($requestedPhar, $installedPhar);
+    }
+
+    /**
+     * @return Directory
+     */
+    protected function getTargetDirectory() {
+        if ($this->getConfig()->installGlobally()) {
+            return new Directory(dirname($this->environment->getBinaryName()));
+        }
+        return $this->getConfig()->getTargetDirectory();
+    }
+
+    /**
+     * @return Directory
+     */
+    protected function initTargetDirectory() {
+        $targetDirectory = $this->getTargetDirectory();
+        if (!$this->phiveXmlConfig->hasTargetDirectory() && !$this->getConfig()->doNotAddToPhiveXml()) {
             $this->phiveXmlConfig->setTargetDirectory($targetDirectory);
         }
+        return $targetDirectory;
+    }
 
-        foreach ($this->config->getRequestedPhars() as $requestedPhar) {
-            $installedPhar = $this->pharService->install($requestedPhar, (string)$targetDirectory, $this->config->makeCopy());
-            if (null === $installedPhar) {
-                continue;
-            }
-            if ($this->config->doNotAddToPhiveXml()) {
-                continue;
-            }
-            $this->phiveXmlConfig->addPhar($requestedPhar, $installedPhar);
-        }
+    /**
+     * @return InstallCommandConfig
+     */
+    protected function getConfig() {
+        return $this->config;
     }
 
 }

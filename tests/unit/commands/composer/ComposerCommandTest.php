@@ -13,7 +13,7 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $workingDirectory = $this->getDirectoryMock();
 
         $config = $this->getComposerCommandConfigMock();
-        $config->method('getWorkingDirectory')->willReturn($workingDirectory);
+        $config->method('getTargetDirectory')->willReturn($workingDirectory);
         $config->method('makeCopy')->willReturn(false);
         $config->method('getComposerFilename')->willReturn(new Filename('foo'));
 
@@ -109,7 +109,7 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $workingDirectory = $this->getDirectoryMock();
 
         $config = $this->getComposerCommandConfigMock();
-        $config->method('getWorkingDirectory')->willReturn($workingDirectory);
+        $config->method('getTargetDirectory')->willReturn($workingDirectory);
         $config->method('makeCopy')->willReturn(false);
         $config->method('getComposerFilename')->willReturn(new Filename('foo'));
 
@@ -144,7 +144,7 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $workingDirectory = $this->getDirectoryMock();
 
         $config = $this->getComposerCommandConfigMock();
-        $config->method('getWorkingDirectory')->willReturn($workingDirectory);
+        $config->method('getTargetDirectory')->willReturn($workingDirectory);
         $config->method('makeCopy')->willReturn(false);
         $config->method('getComposerFilename')->willReturn(new Filename('foo'));
         $config->method('doNotAddToPhiveXml')->willReturn(false);
@@ -154,16 +154,7 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
 
         $installedPhar1 = $this->getPharMock();
         $installedPhar2 = $this->getPharMock();
-        
-        $composerService = $this->getComposerServiceMock();
-        $composerService->method('findCandidates')
-            ->willReturn([$requestedPhar1, $requestedPhar2]);
 
-        $input = $this->getInputMock();
-        $input->method('confirm')->willReturn(true);
-
-        
-        
         $pharService = $this->getPharServiceMock();
 
         $pharService->expects($this->at(0))
@@ -176,11 +167,19 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
             ->with($requestedPhar2, $workingDirectory)
             ->willReturn($installedPhar2);
 
+        $composerService = $this->getComposerServiceMock();
+        $composerService->method('findCandidates')
+            ->willReturn([$requestedPhar1, $requestedPhar2]);
+
+        $input = $this->getInputMock();
+        $input->method('confirm')->willReturn(true);
+
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
-        $phiveXmlConfig->expects($this->at(0))
+        $phiveXmlConfig->method('hasTargetDirectory')->willReturn(true);
+        $phiveXmlConfig->expects($this->at(1))
             ->method('addPhar')
             ->with($this->identicalTo($requestedPhar1), $this->identicalTo($installedPhar1));
-        $phiveXmlConfig->expects($this->at(1))
+        $phiveXmlConfig->expects($this->at(2))
             ->method('addPhar')
             ->with($this->identicalTo($requestedPhar2), $this->identicalTo($installedPhar2));
 
@@ -201,7 +200,7 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $workingDirectory = $this->getDirectoryMock();
 
         $config = $this->getComposerCommandConfigMock();
-        $config->method('getWorkingDirectory')->willReturn($workingDirectory);
+        $config->method('getTargetDirectory')->willReturn($workingDirectory);
         $config->method('makeCopy')->willReturn(false);
         $config->method('getComposerFilename')->willReturn(new Filename('foo'));
         $config->method('doNotAddToPhiveXml')->willReturn(true);

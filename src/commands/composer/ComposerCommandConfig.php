@@ -3,67 +3,34 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
 
-class ComposerCommandConfig {
+class ComposerCommandConfig extends InstallCommandConfig {
 
     /**
-     * @var Cli\Options
+     * @var Directory
      */
-    private $cliOptions;
+    private $workingDirectory;
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var PhiveXmlConfig
-     */
-    private $phiveXmlConfig;
-
-    /**
-     * @param Cli\Options    $options
-     * @param Config         $config
+     * @param Cli\Options $options
      * @param PhiveXmlConfig $phiveXmlConfig
+     * @param TargetDirectoryLocator $targetDirectoryLocator
+     * @param Directory $workingDirectory
      */
-    public function __construct(Cli\Options $options, Config $config, PhiveXmlConfig $phiveXmlConfig) {
-        $this->cliOptions = $options;
-        $this->config = $config;
-        $this->phiveXmlConfig = $phiveXmlConfig;
-    }
-
-    /**
-     * @return Directory
-     */
-    public function getWorkingDirectory() {
-        return $this->config->getWorkingDirectory();
-    }
-
-    /**
-     * @return bool
-     */
-    public function installGlobally() {
-        return $this->cliOptions->isSwitch('global');
-    }
-
-    /**
-     * @return bool
-     */
-    public function makeCopy() {
-        return $this->cliOptions->isSwitch('copy');
-    }
-
-    /**
-     * @return bool
-     */
-    public function doNotAddToPhiveXml() {
-        return $this->cliOptions->isSwitch('temporary');
+    public function __construct(
+        Cli\Options $options,
+        PhiveXmlConfig $phiveXmlConfig,
+        TargetDirectoryLocator $targetDirectoryLocator,
+        Directory $workingDirectory
+    ) {
+        parent::__construct($options, $phiveXmlConfig, $targetDirectoryLocator);
+        $this->workingDirectory = $workingDirectory;
     }
 
     /**
      * @return Filename
      */
     public function getComposerFilename() {
-        return $this->getWorkingDirectory()->file('composer.json');
+        return $this->workingDirectory->file('composer.json');
     }
 
 }
