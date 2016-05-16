@@ -64,7 +64,7 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
 
         $environment = $this->getEnvironmentMock();
         $environment->method('getBinaryName')
-            ->willReturn('/usr/bin/php');
+            ->willReturn(__DIR__ . '/php');
 
         $requestedPhar1 = $this->getRequestedPharMock();
         $requestedPhar2 = $this->getRequestedPharMock();
@@ -78,14 +78,14 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
             ->method('install')
             ->with(
                 $this->identicalTo($requestedPhar1),
-                '/usr/bin',
+                __DIR__,
                 false
             );
         $pharService->expects($this->at(1))
             ->method('install')
             ->with(
                 $this->identicalTo($requestedPhar2),
-                '/usr/bin',
+                __DIR__,
                 false
             );
 
