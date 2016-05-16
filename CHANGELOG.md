@@ -1,6 +1,14 @@
 # Changelog of phive
 
-## phive 0.3.0 (?? ?? ????)
+## phive 0.4.0 (16 May 2016)
+
+* Add: Add support for Windows environments (#52)
+* Change: Download repositories.xml from https://phar.io only when needed (#53)
+* Fix: Trying to install an unknown alias does not lead to an Exception anymore (#50)
+* Fix: Fix path to GPG binary under OSX (#48)
+* Fix: Always write relative paths to phive.xml (#47)
+
+## phive 0.3.0 (21 Apr 2016)
 
 * Add: Implement reset command (#9)
 * Add: Generate phive configuration file from composer.json (#10)
@@ -8,7 +16,7 @@
 * Add: Implement update command (#14)
 * Change: Make CURL SSL Checks more secure (#15)
 * Add: Implement support for GitHub repositories (#22)
-* Add; Show download progress (#39)
+* Add: Show download progress (#39)
 * Add: Support caret version operator (#41)
 
 ## phive 0.2.1 (08 Apr 2016)
