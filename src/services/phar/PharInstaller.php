@@ -14,12 +14,19 @@ class PharInstaller {
     private $output;
 
     /**
-     * @param Directory  $pharDirectory
+    * @var Environment
+    */
+    private $environment;
+
+    /**
+     * @param Directory $pharDirectory
      * @param Cli\Output $output
+     * @param Environment $environment
      */
-    public function __construct(Directory $pharDirectory, Cli\Output $output) {
+    public function __construct(Directory $pharDirectory, Cli\Output $output, Environment $environment) {
         $this->pharDirectory = $pharDirectory;
         $this->output = $output;
+        $this->environment = $environment;
     }
 
     /**
@@ -31,11 +38,20 @@ class PharInstaller {
         if (file_exists($destination)) {
             unlink($destination);
         }
+
+        if (!$copy && $this->environment instanceof WindowsEnvironment && !$this->environment->hasAdminPrivileges()) {
+            $this->output->writeWarning(
+                'Windows allows creation of symlinks only when having Administrator privileges.' . "\n" .
+                '          Creating a copy of the PHAR instead.'
+            );
+            $copy = true;
+        }
+
         if ($copy) {
             $this->copy($phar, $destination);
-        } else {
-            $this->link($phar, $destination);
+            return;
         }
+        $this->link($phar, $destination);
     }
 
     /**
