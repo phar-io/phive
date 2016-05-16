@@ -413,13 +413,7 @@ class Factory {
      * @return SourcesList
      */
     private function getSourcesList() {
-        return new SourcesList(
-            new XmlFile(
-                $this->getSourcesListFileLoader()->load(),
-                'https://phar.io/repository-list',
-                'repositories'
-            )
-        );
+        return $this->getSourcesListFileLoader()->load();
     }
 
     /**

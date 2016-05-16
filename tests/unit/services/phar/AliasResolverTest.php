@@ -9,20 +9,14 @@ use Prophecy\Prophecy\ObjectProphecy;
 class AliasResolverTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @var SourcesList|ObjectProphecy
+     * @var SourcesListFileLoader
      */
-    private $sourcesList;
+    private $sourcesListFileLoader;
 
-    /**
-     * @expectedException \PharIo\Phive\ResolveException
-     */
     public function testThrowsExceptionIfListReturnsEmptyArray() {
         $alias = new PharAlias('phpunit', new AnyVersionConstraint());
-        $this->sourcesList->getSourcesForAlias($alias)
-            ->shouldBeCalled()
-            ->willReturn([]);
-
-        $resolver = new PharIoAliasResolver($this->sourcesList->reveal());
+        $resolver = new PharIoAliasResolver($this->sourcesListFileLoader->reveal());
+        $this->expectException(ResolveException::class);
         $resolver->resolve($alias);
     }
 
@@ -38,12 +32,15 @@ class AliasResolverTest extends \PHPUnit_Framework_TestCase {
             ->shouldBeCalled()
             ->willReturn($sources);
 
-        $resolver = new PharIoAliasResolver($this->sourcesList->reveal());
+        $resolver = new PharIoAliasResolver($this->sourcesListFileLoader->reveal());
         $this->assertEquals($sources, $resolver->resolve($alias));
     }
 
     protected function setUp() {
         $this->sourcesList = $this->prophesize(SourcesList::class);
+        $this->sourcesListFileLoader = $this->prophesize(SourcesListFileLoader::class);
+        $this->sourcesListFileLoader->load()->shouldBeCalled()->willReturn($this->sourcesList);
+        
     }
 
 }

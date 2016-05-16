@@ -42,13 +42,19 @@ class SourcesListFileLoader {
     }
 
     /**
-     * @return Filename
+     * @return SourcesList
      */
     public function load() {
         if (!$this->filename->exists()) {
             $this->downloadFromSource();
         }
-        return $this->filename;
+        return new SourcesList(
+            new XmlFile(
+                $this->filename,
+                'https://phar.io/repository-list',
+                'repositories'
+            )
+        );
     }
 
     /**

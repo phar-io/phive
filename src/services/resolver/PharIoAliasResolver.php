@@ -39,13 +39,7 @@ class PharIoAliasResolver extends AbstractAliasResolver {
 
     private function getSources() {
         if ($this->sources === null) {
-            $this->sources = new SourcesList(
-                new XmlFile(
-                    $this->loader->load(),
-                    'https://phar.io/repository-list',
-                    'repositories'
-                )
-            );
+            $this->sources = $this->loader->load();
         }
         return $this->sources;
     }
