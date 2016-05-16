@@ -78,7 +78,7 @@ class Factory {
      * @return UpdateRepositoryListCommand
      */
     public function getUpdateRepositoryListCommand() {
-        return new UpdateRepositoryListCommand($this->getPharIoRepositoryListFileLoader());
+        return new UpdateRepositoryListCommand($this->getSourcesListFileLoader());
     }
 
     /**
@@ -227,7 +227,7 @@ class Factory {
     /**
      * @return SourcesListFileLoader
      */
-    private function getPharIoRepositoryListFileLoader() {
+    private function getSourcesListFileLoader() {
         return new SourcesListFileLoader(
             $this->getConfig()->getSourcesListUrl(),
             $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
@@ -405,7 +405,7 @@ class Factory {
      */
     private function getPharIoAliasResolver() {
         return new PharIoAliasResolver(
-            $this->getSourcesList()
+            $this->getSourcesListFileLoader()
         );
     }
 
@@ -415,7 +415,7 @@ class Factory {
     private function getSourcesList() {
         return new SourcesList(
             new XmlFile(
-                $this->getPharIoRepositoryListFileLoader()->load(),
+                $this->getSourcesListFileLoader()->load(),
                 'https://phar.io/repository-list',
                 'repositories'
             )

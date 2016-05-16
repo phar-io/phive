@@ -12,11 +12,15 @@ class PharIoAliasResolver extends AbstractAliasResolver {
     private $sources;
 
     /**
-     * @param SourcesList $sourcesList
-     *
+     * @var SourcesListFileLoader
      */
-    public function __construct(SourcesList $sourcesList) {
-        $this->sources = $sourcesList;
+    private $loader;
+
+    /**
+     * @param SourcesListFileLoader $loader
+     */
+    public function __construct(SourcesListFileLoader $loader) {
+        $this->loader = $loader;
     }
 
     /**
@@ -26,11 +30,24 @@ class PharIoAliasResolver extends AbstractAliasResolver {
      * @throws ResolveException
      */
     public function resolve(PharAlias $alias) {
-        $sources = $this->sources->getSourcesForAlias($alias);
+        $sources = $this->getSources()->getSourcesForAlias($alias);
         if (count($sources) > 0) {
             return $sources;
         }
         return $this->tryNext($alias);
+    }
+
+    private function getSources() {
+        if ($this->sources === null) {
+            $this->sources = new SourcesList(
+                new XmlFile(
+                    $this->loader->load(),
+                    'https://phar.io/repository-list',
+                    'repositories'
+                )
+            );
+        }
+        return $this->sources;
     }
 
 }
