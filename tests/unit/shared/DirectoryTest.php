@@ -31,11 +31,11 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @uses PharIo\Phive\Filename
+     * @uses Filename
      */
     public function testRequestingFileFromDirectoryReturnsFilenameInstance() {
         $this->assertInstanceOf(
-            \PharIo\Phive\Filename::class,
+            Filename::class,
             (new Directory($this->testDir))->file('file')
         );
     }
