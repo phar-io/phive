@@ -18,13 +18,12 @@ class CommandLocator implements Cli\CommandLocator {
     }
 
     /**
-     * @param Cli\Request $request
+     * @param string $command
      *
-     * @return Cli\Command|ComposerCommand|ResetCommand|UpdateCommand|UpdateRepositoryListCommand
+     * @return Cli\Command
      * @throws Cli\CommandLocatorException
      */
-    public function getCommandForRequest(Cli\Request $request) {
-        $command = $request->getCommand();
+    public function getCommand($command) {
         switch ($command) {
             case '':
             case 'help': {

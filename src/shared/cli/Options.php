@@ -6,11 +6,6 @@ class Options {
     /**
      * @var string[]
      */
-    private $switches = [];
-
-    /**
-     * @var string[]
-     */
     private $options = [];
 
     /**
@@ -19,39 +14,18 @@ class Options {
     private $arguments = [];
 
     /**
-     * @param string[] $options
+     * @param string $option
+     * @param string $value
      */
-    public function __construct(array $options) {
-        $this->parseOptions($options);
+    public function setOption($option, $value) {
+        $this->options[$option] = $value;
     }
 
-    private function parseOptions(array $options) {
-        $skipNext = false;
-        foreach ($options as $idx => $option) {
-            if ($skipNext) {
-                $skipNext = false;
-                continue;
-            }
-            if (strpos($option, '--') === 0) {
-                if (strpos($option, '=') !== false) {
-                    list($key, $value) = explode('=', ltrim($option, '-'));
-                    $this->options[$key] = $value;
-                    continue;
-                }
-                if (isset($options[$idx + 1])) {
-                    $this->options[ltrim($option, '-')] = $options[$idx + 1];
-                    $skipNext = true;
-                } else {
-                    $this->options[ltrim($option, '-')] = true;
-                }
-                continue;
-            }
-            if (strpos($option, '-') === 0) {
-                $this->switches[ltrim($option, '-')] = true;
-                continue;
-            }
-            $this->arguments[] = $option;
-        }
+    /**
+     * @param string $argument
+     */
+    public function addArgument($argument) {
+        $this->arguments[] = $argument;
     }
 
     /**
@@ -79,10 +53,6 @@ class Options {
         return isset($this->options[$name]);
     }
 
-    public function isSwitch($switch) {
-        return isset($this->switches[$switch]);
-    }
-
     public function getArgumentCount() {
         return count($this->arguments);
     }
@@ -104,4 +74,5 @@ class Options {
     public function getArguments() {
         return $this->arguments;
     }
+    
 }

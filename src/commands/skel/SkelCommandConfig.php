@@ -29,7 +29,7 @@ class SkelCommandConfig {
      * @return bool
      */
     public function allowOverwrite() {
-        return $this->cliOptions->isSwitch('force');
+        return $this->cliOptions->hasOption('force');
     }
 
     /**

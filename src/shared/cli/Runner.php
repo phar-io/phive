@@ -5,6 +5,7 @@ use PharIo\Phive\Environment;
 use PharIo\Phive\ErrorException;
 use PharIo\Phive\Exception;
 use PharIo\Phive\ExtensionsMissingException;
+use PharIo\Phive\PhiveContext;
 use PharIo\Phive\PhiveVersion;
 
 class Runner {
@@ -66,7 +67,10 @@ class Runner {
             $this->environment->ensureFitness();
             $this->setupRuntime();
             $this->showHeader();
-            $this->locator->getCommandForRequest($this->request)->execute();
+
+            $options = $this->request->parse(new PhiveContext());
+            $command = $options->hasArgument(0) ? $options->getArgument(0) : '';
+            $this->locator->getCommand($command)->execute();
             $this->showFooter();
             return self::RC_OK;
         } catch (ExtensionsMissingException $e) {

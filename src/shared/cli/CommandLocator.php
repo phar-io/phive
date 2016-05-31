@@ -4,10 +4,10 @@ namespace PharIo\Phive\Cli;
 interface CommandLocator {
 
     /**
-     * @param Request $request
+     * @param string $command
      *
      * @throws CommandLocatorException
      * @return Command
      */
-    public function getCommandForRequest(Request $request);
+    public function getCommand($command);
 }

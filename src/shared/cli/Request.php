@@ -3,89 +3,135 @@ namespace PharIo\Phive\Cli;
 
 class Request {
 
-    private $parsed = false;
-
     /**
-     * @var string[]
+     * @var array
      */
     private $argv;
 
     /**
-     * @var Options
+     * @var int
      */
-    private $phiveOptions;
+    private $pos = 0;
 
     /**
-     * @var string
+     * @var int
      */
-    private $command;
-
-    /**
-     * @var Options
-     */
-    private $options;
+    private $count;
 
     /**
      * @param array $argv
      */
     public function __construct(array $argv) {
         $this->argv = $argv;
+        $this->count = count($argv) - 1;
     }
 
-    public function getCommand() {
-        $this->parse();
-        return $this->command;
-    }
+    public function parse(Context $context) {
+        while ($this->hasNext()) {
+            $arg = $this->getNext();
+            if ($arg[0] === '-') {
+                if ($arg[1] === '-') {
+                    $this->handleLongOption($context, substr($arg, 2));
+                } else {
+                    $len = strlen($arg);
+                    for ($t = 1; $t < $len; $t++) {
+                        $this->handleShortOption($context, $arg[$t], ($t === $len));
+                    }
+                }
+            } else {
+                $this->handleArgument($context, $arg);
+            }
 
-    private function parse() {
-        if ($this->parsed === true) {
-            return;
-        }
-        $this->parsed = true;
-
-        // no parameters given?
-        if (count($this->argv) == 1) {
-            $this->command = 'help';
-            $this->options = new Options([]);
-            return;
-        }
-
-        if (count($this->argv) >= 2) {
-            array_shift($this->argv);
-            $this->phiveOptions = new Options($this->extractOptions());
-            $this->command = array_shift($this->argv);
-            $this->options = new Options($this->argv);
-            return;
+            if (!$context->canContinue()) {
+                break;
+            }
         }
 
-        $this->options = new Options([]);
+        return $context->getOptions();
     }
 
     /**
-     * @return string[]
+     * @return string
      */
-    private function extractOptions() {
-        $opts = [];
-        while (count($this->argv) && strpos($this->argv[0][0], '-') === 0) {
-            $opts[] = array_shift($this->argv);
+    private function getNext() {
+        if (!$this->hasNext()) {
+            throw new \OutOfBoundsException('No more parameters');
         }
-        return $opts;
+        $this->pos++;
+        return $this->argv[$this->pos];
     }
 
     /**
-     * @return Options
+     * @return bool
      */
-    public function getCommandOptions() {
-        $this->parse();
-        return $this->options;
+    private function hasNext() {
+        return $this->pos < $this->count;
     }
 
-    /**
-     * @return Options
-     */
-    public function getPhiveOptions() {
-        $this->parse();
-        return $this->phiveOptions;
+    private function handleLongOption(Context $context, $option) {
+        if (!$context->knowsOption($option)) {
+            throw new RequestException(
+                sprintf('Unknown option: %s', $option),
+                RequestException::InvalidOption
+            );
+        }
+
+        if ($context->requiresValue($option)) {
+            if (!$this->hasNext()) {
+                throw new RequestException(
+                    sprintf('Option %s requires a value - none given', $option),
+                    RequestException::ValueRequired
+                );
+            }
+            $value = $this->getNext();
+            if ($value[0] == '-') {
+                throw new RequestException(
+                    sprintf('Option %s requires a value - none given', $option),
+                    RequestException::ValueRequired
+                );
+            }
+        } else {
+            $value = true;
+        }
+
+        $this->options->setOption($option, $value);
+    }
+
+    private function handleShortOption(Context $context, $char, $isLast) {
+        if (!$context->knowsOption($char)) {
+            throw new RequestException(
+                sprintf('Unknown option: %s', $char),
+                RequestException::InvalidOption
+            );
+        }
+        $option = $context->getOptionForChar($char);
+
+        if ($context->requiresValue($option)) {
+            if (!$isLast || !$this->hasNext()) {
+                throw new RequestException(
+                    sprintf('Option %s requires a value - none given', $option),
+                    RequestException::ValueRequired
+                );
+            }
+            $value = $this->getNext();
+            if ($value[0] == '-') {
+                throw new RequestException(
+                    sprintf('Option %s requires a value - none given', $option),
+                    RequestException::ValueRequired
+                );
+            }
+            $context->setOption($option, $value);
+        }
+    }
+
+    private function handleArgument(Context $context, $arg) {
+        if (!$context->acceptsArguments()) {
+            throw new RequestException(
+                'Unexpected argument ' . $arg,
+                RequestException::UnexpectedArgument
+            );
+        }
+        $context->addArgument($arg);
     }
 
 }

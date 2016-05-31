@@ -112,7 +112,7 @@ class Factory {
     public function getInstallCommand() {
         return new InstallCommand(
             new InstallCommandConfig(
-                $this->request->getCommandOptions(), $this->getPhiveXmlConfig(), $this->getTargetDirectoryLocator()
+                $this->request->parse(new InstallContext()), $this->getPhiveXmlConfig(), $this->getTargetDirectoryLocator()
             ),
             $this->getPharService(),
             $this->getPhiveXmlConfig(),

@@ -29,7 +29,7 @@ class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
         $request = $this->prophesize(Cli\Request::class);
         $request->getCommand()->willReturn($command)->shouldBeCalled();
 
-        $result = $locator->getCommandForRequest($request->reveal());
+        $result = $locator->getCommand($request->reveal());
         $this->assertInstanceOf(CLI\Command::class, $result);
     }
 
@@ -59,7 +59,7 @@ class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
         $request = $this->prophesize(Cli\Request::class);
         $request->getCommand()->willReturn('unknown');
 
-        $locator->getCommandForRequest($request->reveal());
+        $locator->getCommand($request->reveal());
     }
 
 }

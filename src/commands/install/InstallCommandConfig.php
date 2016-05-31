@@ -78,21 +78,21 @@ class InstallCommandConfig {
      * @return bool
      */
     public function installGlobally() {
-        return $this->cliOptions->isSwitch('global');
+        return $this->cliOptions->hasOption('global');
     }
 
     /**
      * @return bool
      */
     public function makeCopy() {
-        return $this->cliOptions->isSwitch('copy');
+        return $this->cliOptions->hasOption('copy');
     }
 
     /**
      * @return bool
      */
     public function doNotAddToPhiveXml() {
-        return $this->cliOptions->isSwitch('temporary') || $this->installGlobally();
+        return $this->cliOptions->hasOption('temporary') || $this->installGlobally();
     }
 
 }
