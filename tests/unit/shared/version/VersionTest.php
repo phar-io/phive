@@ -24,7 +24,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame($expectedMinor, $version->getMinor()->getValue());
         $this->assertSame($expectedPatch, $version->getPatch()->getValue());
         $this->assertSame($expectedLabel, $version->getLabel());
-        $this->assertSame($expectedMetadata, $version->getBuildMetadata());
+        $this->assertSame($expectedMetadata, $version->getBuildMetaData());
         $this->assertSame($versionString, $version->getVersionString());
     }
 
