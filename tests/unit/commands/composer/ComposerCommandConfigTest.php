@@ -65,7 +65,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider doNotaddToPhiveXmlProvider
+     * @dataProvider doNotAddToPhiveXmlProvider
      *
      * @param bool $temporaryValue
      * @param bool $globalValue
@@ -90,7 +90,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame($expected, $commandConfig->doNotAddToPhiveXml());
     }
 
-    public function testGetComposerFilenname() {
+    public function testGetComposerFilename() {
         $composerFilename = new Filename('/foo/composer.json');
 
         $directory = $this->getDirectoryMock();

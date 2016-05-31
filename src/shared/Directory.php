@@ -22,7 +22,7 @@ class Directory {
     public function __construct($path, $mode = 0775) {
         $this->ensureModeIsInteger($mode);
         $this->ensureExists($path);
-        $this->ensureIsDirecotry($path);
+        $this->ensureIsDirectory($path);
         $this->ensureMode($path, $mode);
         $this->path = $path;
         $this->mode = $mode;
@@ -118,7 +118,7 @@ class Directory {
         return $this->path;
     }
 
-    private function ensureIsDirecotry($path) {
+    private function ensureIsDirectory($path) {
         if (is_dir($path)) {
             return;
         }

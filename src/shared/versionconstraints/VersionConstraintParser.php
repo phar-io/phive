@@ -6,7 +6,7 @@ class VersionConstraintParser {
     /**
      * @param string $value
      *
-     * @return ExactVersionConstraint
+     * @return AbstractVersionConstraint
      * @throws UnsupportedVersionConstraintException
      */
     public function parse($value) {

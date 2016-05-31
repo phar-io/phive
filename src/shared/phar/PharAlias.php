@@ -23,7 +23,7 @@ class PharAlias {
     }
 
     /**
-     * @return ExactVersionConstraint
+     * @return VersionConstraint
      */
     public function getVersionConstraint() {
         return $this->versionConstraint;
