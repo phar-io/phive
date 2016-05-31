@@ -35,6 +35,18 @@ class PhiveXmlConfig {
 
     /**
      * @param string $name
+     */
+    public function removePhar($name) {
+        if (!$this->hasPharNode($name)) {
+            return;
+        }
+        $pharNode = $this->getPharNode($name);
+        $pharNode->parentNode->removeChild($pharNode);
+        $this->configFile->save();
+    }
+
+    /**
+     * @param string $name
      *
      * @return bool
      */

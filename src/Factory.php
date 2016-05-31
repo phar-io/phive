@@ -89,7 +89,8 @@ class Factory {
             new RemoveCommandConfig($this->request->getCommandOptions(), $this->getTargetDirectoryLocator()),
             $this->getPharRegistry(),
             $this->getPharService(),
-            $this->getOutput()
+            $this->getOutput(),
+            $this->getPhiveXmlConfig()
         );
     }
 
