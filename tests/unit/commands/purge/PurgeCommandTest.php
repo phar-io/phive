@@ -51,7 +51,9 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Phar
      */
     private function getPharMock() {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Version $version */
         $version = $this->getMockBuilder(Version::class)->disableOriginalConstructor()->getMock();
+        /** @var \PHPUnit_Framework_MockObject_MockObject|File $file */
         $file = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
         return new Phar('foo', $version, $file);
     }
