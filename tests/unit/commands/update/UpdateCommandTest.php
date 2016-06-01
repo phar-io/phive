@@ -18,7 +18,7 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $installedPhar2 = $this->getPharMock();
 
         $config->expects($this->any())
-            ->method('getWorkingDirectory')
+            ->method('getTargetDirectory')
             ->willReturn('/foo');
 
         $config->expects($this->once())

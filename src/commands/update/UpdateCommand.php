@@ -34,7 +34,7 @@ class UpdateCommand implements Cli\Command {
     }
 
     public function execute() {
-        $targetDirectory = $this->config->getWorkingDirectory();
+        $targetDirectory = $this->config->getTargetDirectory();
 
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
             $installedPhar = $this->pharService->update($requestedPhar, $targetDirectory);

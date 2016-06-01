@@ -9,28 +9,28 @@ class UpdateCommandConfig {
     private $cliOptions;
 
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * @var PhiveXmlConfig
      */
     private $phiveXmlConfig;
 
     /**
-     * @param Cli\Options    $cliOptions
-     * @param Config         $config
+     * @var TargetDirectoryLocator
+     */
+    private $targetDirectoryLocator;
+
+    /**
+     * @param Cli\Options $cliOptions
      * @param PhiveXmlConfig $phiveXmlConfig
+     * @param TargetDirectoryLocator $targetDirectoryLocator
      */
     public function __construct(
         Cli\Options $cliOptions,
-        Config $config,
-        PhiveXmlConfig $phiveXmlConfig
+        PhiveXmlConfig $phiveXmlConfig,
+        TargetDirectoryLocator $targetDirectoryLocator
     ) {
         $this->cliOptions = $cliOptions;
-        $this->config = $config;
         $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->targetDirectoryLocator = $targetDirectoryLocator;
     }
 
     /**
@@ -44,8 +44,8 @@ class UpdateCommandConfig {
     /**
      * @return Directory
      */
-    public function getWorkingDirectory() {
-        return $this->config->getWorkingDirectory();
+    public function getTargetDirectory() {
+        return $this->targetDirectoryLocator->getTargetDirectory();
     }
 
     /**

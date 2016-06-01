@@ -127,8 +127,8 @@ class Factory {
         return new UpdateCommand(
             new UpdateCommandConfig(
                 $this->request->getCommandOptions(),
-                $this->getConfig(),
-                $this->getPhiveXmlConfig()
+                $this->getPhiveXmlConfig(),
+                $this->getTargetDirectoryLocator()
             ),
             $this->getPharService(),
             $this->getPhiveXmlConfig()

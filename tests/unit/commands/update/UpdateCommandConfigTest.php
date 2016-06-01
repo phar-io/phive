@@ -10,16 +10,15 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
     use ScalarTestDataProvider;
 
-    public function testGetWorkingDirectory() {
+    public function testGetTargetDirectory() {
         $directory = $this->getDirectoryMock();
-        $config = $this->getConfigMock();
+        $locatorMock = $this->getTargetDirectoryLocatorMock();
+        $locatorMock->method('getTargetDirectory')->willReturn($directory);
 
-        $config->expects($this->once())
-            ->method('getWorkingDirectory')
-            ->willReturn($directory);
-
-        $commandConfig = new UpdateCommandConfig($this->getOptionsMock(), $config, $this->getPhiveXmlConfigMock());
-        $this->assertSame($directory, $commandConfig->getWorkingDirectory());
+        $commandConfig = new UpdateCommandConfig(
+            $this->getOptionsMock(), $this->getPhiveXmlConfigMock(), $locatorMock
+        );
+        $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
 
     /**
@@ -27,14 +26,6 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
      */
     private function getDirectoryMock() {
         return $this->getMockBuilder(Directory::class)
-            ->disableOriginalConstructor()->getMock();
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Config
-     */
-    private function getConfigMock() {
-        return $this->getMockBuilder(Config::class)
             ->disableOriginalConstructor()->getMock();
     }
 
@@ -69,7 +60,7 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ->method('getPhars')
             ->willReturn([$phpabPhar, $phpdocPhar, $phpunitPhar]);
 
-        $commandConfig = new UpdateCommandConfig($options, $this->getConfigMock(), $phiveXmlConfig);
+        $commandConfig = new UpdateCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
         $this->assertEquals([$phpabPhar, $phpdocPhar, $phpunitPhar], $commandConfig->getRequestedPhars());
     }
 
@@ -97,11 +88,17 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
         $expected = [$phpabPhar, $phpunitPhar];
 
-        $commandConfig = new UpdateCommandConfig($options, $this->getConfigMock(), $phiveXmlConfig);
+        $commandConfig = new UpdateCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
         $this->assertEquals($expected, $commandConfig->getRequestedPhars());
     }
 
-
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|TargetDirectoryLocator
+     */
+    private function getTargetDirectoryLocatorMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(TargetDirectoryLocator::class);
+    }
+    
 }
 
 
