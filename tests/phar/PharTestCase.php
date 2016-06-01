@@ -6,6 +6,7 @@ use PharIo\Phive\File;
 use PharIo\Phive\Filename;
 use PharIo\Phive\Phar;
 use PharIo\Phive\PharRegistry;
+use PharIo\Phive\PhiveXmlConfig;
 use PharIo\Phive\Version;
 use PharIo\Phive\XmlFile;
 
@@ -82,6 +83,27 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
         $this->getPharRegistry()->addPhar(
             new Phar($name, new Version($version), new File(new Filename($filename), 'foo'))
         );
+    }
+
+    /**
+     * @return PhiveXmlConfig
+     */
+    protected function getPhiveXmlConfig() {
+        return new PhiveXmlConfig(
+            new XmlFile(
+                new Filename(__DIR__ . '/tmp/phive.xml'),
+                'https://phar.io/phive',
+                'phive'
+            )
+        );
+    }
+
+    /**
+     * @param string $filename
+     * @param string $target
+     */
+    protected function assertSymlinkTargetEquals($filename, $target) {
+        $this->assertEquals($target, readlink($filename));
     }
 
     /**
