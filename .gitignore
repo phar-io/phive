@@ -8,4 +8,7 @@
 /phpunit.xml
 /tools
 /vendor
+/tests/phar/fixtures/phive-home/phars.xml
+/tests/phar/fixtures/phive-home/phars
+/tests/phar/under-test.phar
 cache.properties

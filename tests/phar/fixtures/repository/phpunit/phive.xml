@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<repository xmlns="https://phar.io/repository" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://phar.io/repository https://phar.io/data/repository.xsd">
+  <phar name="phpunit">
+    <release version="5.3.1" url="https://phar.phpunit.de/phpunit-5.3.1.phar">
+      <signature type="gpg"/>
+      <hash type="sha-256" value="5602ea831312d8cf4d7e79decee9dfdf15f667bec50d5a378762d5283f7cf99d"/>
+    </release>
+  </phar>
+</repository>

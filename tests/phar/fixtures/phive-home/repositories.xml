@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repositories xmlns="https://phar.io/repository-list">
+
+    <phar alias="phpunit" composer="phpunit/phpunit">
+        <repository url="file:///vagrant/phive/tests/phar/fixtures/repository/phpunit/phive.xml"/>
+    </phar>
+
+</repositories>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         verbose="true"
+         bootstrap="tests/phar/bootstrap.php"
+         forceCoversAnnotation="true">
+
+    <testsuites>
+        <testsuite name="Phive">
+            <directory suffix="Test.php">tests/phar</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+</phpunit>
