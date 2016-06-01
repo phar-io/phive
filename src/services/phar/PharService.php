@@ -89,12 +89,13 @@ class PharService {
     private function doInstall(RequestedPhar $requestedPhar, $destination, $makeCopy, $replaceExisting) {
         $release = $this->getRelease($requestedPhar);
 
-        $name = $this->getPharName($release->getUrl());
-        $version = $this->getPharVersion($release->getUrl());
+        $name = $release->getName();
+        $version = $release->getVersion();
+        $pharName = $this->getPharName($release->getUrl());
 
-        $destination = $destination . '/' . $name;
+        $destination = $destination . '/' . $pharName;
         if (!$replaceExisting && file_exists($destination)) {
-            $this->output->writeInfo(sprintf('%s is already installed, skipping.', $name));
+            $this->output->writeInfo(sprintf('%s is already installed, skipping.', $pharName));
             return null;
         }
 
@@ -106,7 +107,7 @@ class PharService {
         }
         $this->installer->install($phar->getFile(), $destination, $makeCopy);
         $this->pharRegistry->addUsage($phar, $destination);
-        
+
         return $phar;
     }
 
