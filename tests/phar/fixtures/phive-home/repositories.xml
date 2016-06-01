@@ -2,7 +2,7 @@
 <repositories xmlns="https://phar.io/repository-list">
 
     <phar alias="phpunit" composer="phpunit/phpunit">
-        <repository url="file:///vagrant/phive/tests/phar/fixtures/repository/phpunit/phive.xml"/>
+        <repository url="https://phar.phpunit.de/phive.xml"/>
     </phar>
 
 </repositories>
