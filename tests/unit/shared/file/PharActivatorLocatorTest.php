@@ -1,0 +1,65 @@
+<?php
+namespace PharIo\Phive;
+
+/**
+ * @covers PharIo\Phive\PharActivatorLocator
+ */
+class PharActivatorLocatorTest extends \PHPUnit_Framework_TestCase {
+
+    /**
+     * @dataProvider returnsExpectedActivatorDataProvider
+     *
+     * @param $environment
+     * @param $expectedFactoryMethod
+     */
+    public function testReturnsExpectedActivator($environment, $expectedFactoryMethod) {
+        $activator = $this->getPharActivatorMock();
+
+        $factory = $this->getPharActivatorFactoryMock();
+        $factory->expects($this->once())
+            ->method($expectedFactoryMethod)
+            ->willReturn($activator);
+
+        $locator = new PharActivatorLocator($factory);
+
+        $actual = $locator->getPharActivator($environment);
+
+        $this->assertSame($activator, $actual);
+    }
+
+    public function returnsExpectedActivatorDataProvider() {
+        return [
+            [$this->getWindowsEnvironmentMock(), 'getBatPharActivator'],
+            [$this->getEnvironmentMock(), 'getSymlinkPharActivator']
+        ];
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     */
+    private function getEnvironmentMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Environment::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|WindowsEnvironment
+     */
+    private function getWindowsEnvironmentMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(WindowsEnvironment::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharActivatorFactory
+     */
+    private function getPharActivatorFactoryMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PharActivatorFactory::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharActivator
+     */
+    private function getPharActivatorMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PharActivator::class);
+    }
+
+}

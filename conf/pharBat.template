@@ -1,0 +1,2 @@
+@echo off
+php ##PHAR_FILENAME## %*

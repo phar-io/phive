@@ -10,7 +10,7 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     private $testDir;
 
     protected function setUp() {
-        $this->testDir = __DIR__ . '/../../data/directory';
+        $this->testDir = __DIR__ . '/../../../data/directory';
     }
 
     public function testCanBeConvertedToString() {

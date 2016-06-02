@@ -19,14 +19,26 @@ class PharInstaller {
     private $environment;
 
     /**
+     * @var PharActivator
+     */
+    private $pharActivator;
+
+    /**
      * @param Directory $pharDirectory
      * @param Cli\Output $output
      * @param Environment $environment
+     * @param PharActivator $pharActivator
      */
-    public function __construct(Directory $pharDirectory, Cli\Output $output, Environment $environment) {
+    public function __construct(
+        Directory $pharDirectory,
+        Cli\Output $output,
+        Environment $environment,
+        PharActivator $pharActivator
+    ) {
         $this->pharDirectory = $pharDirectory;
         $this->output = $output;
         $this->environment = $environment;
+        $this->pharActivator = $pharActivator;
     }
 
     /**
@@ -38,15 +50,7 @@ class PharInstaller {
         if ($destination->exists()) {
             unlink($destination->asString());
         }
-
-        if (!$copy && $this->environment instanceof WindowsEnvironment && !$this->environment->hasAdminPrivileges()) {
-            $this->output->writeWarning(
-                'Windows allows creation of symlinks only when having Administrator privileges.' . "\n" .
-                '          Creating a copy of the PHAR instead.'
-            );
-            $copy = true;
-        }
-
+        
         if ($copy) {
             $this->copy($phar, $destination);
             return;
@@ -69,8 +73,8 @@ class PharInstaller {
      * @param Filename $destination
      */
     private function link(File $phar, Filename $destination) {
-        $this->output->writeInfo(sprintf('Symlinking %s to %s', $phar->getFilename(), $destination->asString()));
-        symlink($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination->asString());
+        $linkFilename = $this->pharActivator->activate($this->pharDirectory->file($phar->getFilename()), $destination);
+        $this->output->writeInfo(sprintf('Linking %s to %s', $phar->getFilename(), $linkFilename->asString()));
     }
 
 }

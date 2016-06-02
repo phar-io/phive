@@ -35,7 +35,7 @@ class FilenameTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testReadReturnsExpectedFile() {
-        $name = new Filename(__DIR__ . '/fixtures/file.txt');
+        $name = new Filename(__DIR__ . '/../fixtures/file.txt');
         $expectedFile = new File($name, 'foo');
         $this->assertEquals($expectedFile, $name->read());
     }

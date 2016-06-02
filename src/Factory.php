@@ -159,6 +159,9 @@ class Factory {
         );
     }
 
+    /**
+     * @return ComposerCommand
+     */
     public function getComposerCommand() {
         return new ComposerCommand(
             new ComposerCommandConfig(
@@ -174,7 +177,6 @@ class Factory {
             $this->getConsoleInput()
         );
     }
-
 
     /**
      * @return TargetDirectoryLocator
@@ -398,7 +400,8 @@ class Factory {
         return new PharInstaller(
             $this->getConfig()->getHomeDirectory()->child('phars'),
             $this->getOutput(),
-            $this->getEnvironment()
+            $this->getEnvironment(),
+            $this->getFileLinker()
         );
     }
 
@@ -438,10 +441,16 @@ class Factory {
         );
     }
 
+    /**
+     * @return ComposerService
+     */
     private function getComposerService() {
         return new ComposerService($this->getSourcesList());
     }
 
+    /**
+     * @return AliasResolverService
+     */
     private function getAliasResolverService() {
         $service = new AliasResolverService();
 
@@ -456,8 +465,25 @@ class Factory {
         return $service;
     }
 
+    /**
+     * @return GithubAliasResolver
+     */
     private function getGithubAliasResolver() {
         return new GithubAliasResolver($this->getCurl());
+    }
+
+    /**
+     * @return PharActivator
+     */
+    private function getFileLinker() {
+        return $this->getFileLinkerLocator()->getPharActivator($this->getEnvironment());
+    }
+
+    /**
+     * @return PharActivatorLocator
+     */
+    private function getFileLinkerLocator() {
+        return new PharActivatorLocator(new PharActivatorFactory());
     }
 
 }
