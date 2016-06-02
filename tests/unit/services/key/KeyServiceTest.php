@@ -2,76 +2,106 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @covers PharIo\Phive\KeyService
  */
 class KeyServiceTest extends \PHPUnit_Framework_TestCase {
 
-    /**
-     * @var KeyDownloader|ObjectProphecy
-     */
-    private $downloader;
-
-    /**
-     * @var KeyImporter|ObjectProphecy
-     */
-    private $importer;
-
-    /**
-     * @var Cli\Output|ObjectProphecy
-     */
-    private $output;
-
-    /**
-     * @var Cli\Input|ObjectProphecy
-     */
-    private $input;
-
-    public function setUp() {
-        $this->downloader = $this->prophesize(KeyDownloader::class);
-        $this->importer = $this->prophesize(KeyImporter::class);
-        $this->output = $this->prophesize(Cli\Output::class);
-        $this->input = $this->prophesize(Cli\Input::class);
-    }
-
     public function testInvokesKeyDownloader() {
     }
 
     public function testInvokesImporter() {
-        $this->input->confirm(Argument::any(), false)->willReturn(true);
-        $this->importer->importKey('some key')->willReturn(['keydata']);
+        $input = $this->getInputMock();
+        $input->method('confirm')->willReturn(true);
 
-        $key = $this->prophesize(PublicKey::class);
-        $key->getInfo()->willReturn('keyinfo');
-        $key->getKeyData()->willReturn('some key');
-        $this->downloader->download('foo')->willReturn($key);
+        $importer = $this->getKeyImporterMock();
+        $importer->method('importKey')->willReturn(['keydata']);
 
-        $this->assertEquals(['keydata'], $this->getKeyService()->importKey('foo', []));
+        $key = $this->getPublicKeyMock();
+        $key->method('getInfo')->willReturn('keyinfo');
+        $key->method('getKeyData')->willReturn('some key');
+
+        $downloader = $this->getKeyDownloaderMock();
+        $downloader->method('download')->willReturn($key);
+
+        $service = new KeyService($downloader, $importer, $this->getOutputMock(), $input);
+
+        $this->assertEquals(['keydata'], $service->importKey('foo', []));
     }
 
-    /**
-     * @expectedException \PharIo\Phive\VerificationFailedException
-     */
+    public function testOutputsAWarningIfTheKeyChanged() {
+        $input = $this->getInputMock();
+        $input->method('confirm')->willReturn(true);
+
+        $importer = $this->getKeyImporterMock();
+        $importer->method('importKey')->willReturn(['keydata']);
+
+        $key = $this->getPublicKeyMock();
+        $key->method('getInfo')->willReturn('keyinfo');
+        $key->method('getKeyData')->willReturn('some key');
+
+        $downloader = $this->getKeyDownloaderMock();
+        $downloader->method('download')->willReturn($key);
+
+        $output = $this->getOutputMock();
+        $output->expects($this->once())->method('writeWarning');
+
+        $service = new KeyService($downloader, $importer, $output, $input);
+
+        $service->importKey('foo', ['bar']);
+    }
+
     public function testImportKeyWillThrowExceptionIfUserDeclinedImport() {
-        $this->markTestSkipped('Adjust logic');
-        /*
-        $this->input->confirm(Argument::any())
-            ->willReturn(false);
+        $input = $this->getInputMock();
+        $input->method('confirm')->willReturn(false);
 
-        $this->getKeyService()->importKey('some id', 'some key');
-        */
+        $key = $this->getPublicKeyMock();
+        $key->method('getInfo')->willReturn('keyinfo');
+        $key->method('getKeyData')->willReturn('some key');
+
+        $downloader = $this->getKeyDownloaderMock();
+        $downloader->method('download')->willReturn($key);
+
+        $this->expectException(VerificationFailedException::class);
+
+        $service = new KeyService($downloader, $this->getKeyImporterMock(), $this->getOutputMock(), $input);
+        $service->importKey('some id', []);
     }
 
     /**
-     * @return KeyService
+     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Input
      */
-    private function getKeyService() {
-        return new KeyService(
-            $this->downloader->reveal(), $this->importer->reveal(), $this->output->reveal(), $this->input->reveal()
-        );
+    private function getInputMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Cli\Input::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
+     */
+    private function getOutputMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Cli\Output::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|KeyDownloader
+     */
+    private function getKeyDownloaderMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(KeyDownloader::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|KeyImporter
+     */
+    private function getKeyImporterMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(KeyImporter::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|PublicKey
+     */
+    private function getPublicKeyMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PublicKey::class);
     }
 }
 
