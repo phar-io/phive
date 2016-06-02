@@ -1,5 +1,14 @@
 # Changelog of phive
 
+## phive 0.4.1 (02 Jun 2016)
+
+* Merge PR [#57](https://github.com/phar-io/phive/pull/57) code cleanup / typo fixes - thanks @haeber!
+* Fix: Installing PHARs from GitHub releases now correctly resolves the PHAR's name
+* Fix: Remove command removes phar node from the project's phive.xml
+* Fix: Write absolute paths to usages in phars.xml
+* Fix: Update command now creates symlinks in the correct location
+* Add: Additional testsuite running regression tests on the Phive PHAR
+
 ## phive 0.4.0 (16 May 2016)
 
 * Add: Add support for Windows environments (#52)
