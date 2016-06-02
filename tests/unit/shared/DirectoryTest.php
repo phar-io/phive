@@ -32,7 +32,7 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @uses Filename
+     * @uses \PharIo\Phive\Filename
      */
     public function testRequestingFileFromDirectoryReturnsFilenameInstance() {
         $this->assertInstanceOf(

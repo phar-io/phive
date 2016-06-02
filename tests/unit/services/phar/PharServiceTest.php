@@ -2,43 +2,11 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @covers PharIo\Phive\PharService
  */
 class PharServiceTest extends \PHPUnit_Framework_TestCase {
-
-    /**
-     * @var PharDownloader|ObjectProphecy
-     */
-    private $downloader;
-
-    /**
-     * @var PharInstaller|ObjectProphecy
-     */
-    private $installer;
-
-    /**
-     * @var PharRegistry|ObjectProphecy
-     */
-    private $pharRegistry;
-
-    /**
-     * @var AliasResolverService|ObjectProphecy
-     */
-    private $resolver;
-
-    /**
-     * @var Cli\Output|ObjectProphecy
-     */
-    private $output;
-
-    /**
-     * @var SourceRepositoryLoader|ObjectProphecy
-     */
-    private $pharIoRepositoryFactory;
 
     public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
         $url = new Url('https://example.com/foo-1.20.1.phar');
@@ -48,46 +16,34 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $expectedPhar = new Phar('foo', new Version('1.20.1'), $file);
 
-        $this->pharRegistry->hasPhar('foo', new Version('1.20.1'))
-            ->shouldBeCalled()
+        $registry = $this->getPharRegistryMock();
+        $registry->method('hasPhar')
+            ->with('foo', new Version('1.20.1'))
             ->willReturn(false);
+        $registry->expects($this->once())->method('addPhar');
+        $registry->expects($this->once())->method('addUsage')
+            ->with($expectedPhar, new Filename('/tmp/foo'));
 
-        $this->pharRegistry->addPhar($expectedPhar)
-            ->shouldBeCalled();
+        $downloader = $this->getPharDownloaderMock();
+        $downloader->expects($this->once())->method('download')->with($release)->willReturn($expectedPhar);
 
-        $this->downloader->download($release)
-            ->shouldBeCalled()
-            ->willReturn($expectedPhar);
-
-        $this->pharRegistry->addUsage(
-            $expectedPhar,
-            new Filename('/tmp/foo')
-        )->shouldBeCalled();
-
-        $this->installer->install(
-            $file,
-            new Filename('/tmp/foo'),
-            true
-        )->shouldBeCalled();
+        $installer = $this->getPharInstallerMock();
+        $installer->method('install')
+            ->with($file, new Filename('/tmp/foo'), true);
 
         $directory = $this->getDirectoryMock();
-        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+        $directory->expects($this->once())->method('file')->willReturn(new Filename('/tmp/foo'));
 
-        $this->getPharService()->install($requestedPhar, $directory, true);
-    }
-
-    /**
-     * @return PharService
-     */
-    private function getPharService() {
-        return new PharService(
-            $this->downloader->reveal(),
-            $this->installer->reveal(),
-            $this->pharRegistry->reveal(),
-            $this->resolver->reveal(),
-            $this->output->reveal(),
-            $this->pharIoRepositoryFactory->reveal()
+        $service = new PharService(
+            $downloader,
+            $installer,
+            $registry,
+            $this->getAliasResolverServiceMock(),
+            $this->getOutputMock(),
+            $this->getSourceRepositoryLoaderMock()
         );
+
+        $service->install($requestedPhar, $directory, true);
     }
 
     public function testInstallByUrlGetsPharFromRepositoryAndInvokesInstaller() {
@@ -97,29 +53,34 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $phar = new Phar('foo', new Version('1.20.1'), $file);
 
-        $this->pharRegistry->hasPhar('foo', new Version('1.20.1'))
-            ->shouldBeCalled()
+        $registry = $this->getPharRegistryMock();
+        $registry->method('hasPhar')
+            ->with('foo', new Version('1.20.1'))
             ->willReturn(true);
-
-        $this->pharRegistry->getPhar('foo', new Version('1.20.1'))
-            ->shouldBeCalled()
+        $registry->method('getPhar')
+            ->with('foo', new Version('1.20.1'))
             ->willReturn($phar);
+        $registry->expects($this->once())->method('addUsage')
+            ->with($phar, new Filename('/tmp/foo'));
 
-        $this->pharRegistry->addUsage(
-            $phar,
-            new Filename('/tmp/foo')
-        )->shouldBeCalled();
-
-        $this->installer->install(
-            $file,
-            new Filename('/tmp/foo'),
-            true
-        )->shouldBeCalled();
+        $installer = $this->getPharInstallerMock();
+        $installer->expects($this->once())
+            ->method('install')
+            ->with($file, new Filename('/tmp/foo'), true);
 
         $directory = $this->getDirectoryMock();
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
 
-        $this->getPharService()->install($requestedPhar, $directory, true);
+        $service = new PharService(
+            $this->getPharDownloaderMock(),
+            $installer,
+            $registry,
+            $this->getAliasResolverServiceMock(),
+            $this->getOutputMock(),
+            $this->getSourceRepositoryLoaderMock()
+        );
+
+        $service->install($requestedPhar, $directory, true);
     }
 
     public function testUpdate()
@@ -130,68 +91,76 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $phar = new Phar('foo', new Version('1.20.1'), $file);
 
-        $this->pharRegistry->hasPhar('foo', new Version('1.20.1'))
-            ->shouldBeCalled()
+        $registry = $this->getPharRegistryMock();
+        $registry->method('hasPhar')
+            ->with('foo', new Version('1.20.1'))
             ->willReturn(true);
-
-        $this->pharRegistry->getPhar('foo', new Version('1.20.1'))
-            ->shouldBeCalled()
+        $registry->method('getPhar')
+            ->with('foo', new Version('1.20.1'))
             ->willReturn($phar);
+        $registry->expects($this->once())
+            ->method('addUsage')
+            ->with($phar, new Filename('/tmp/foo'));
 
-        $this->pharRegistry->addUsage(
-            $phar,
-            new Filename('/tmp/foo')
-        )->shouldBeCalled();
-
-        $this->installer->install(
-            $file,
-            new Filename('/tmp/foo'),
-            false
-        )->shouldBeCalled();
+        $installer = $this->getPharInstallerMock();
+        $installer->expects($this->once())
+            ->method('install')
+            ->with($file, new Filename('/tmp/foo'), false);
 
         $directory = $this->getDirectoryMock();
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
 
-        $this->getPharService()->update($requestedPhar, $directory);
+        $service = new PharService(
+            $this->getPharDownloaderMock(),
+            $installer,
+            $registry,
+            $this->getAliasResolverServiceMock(),
+            $this->getOutputMock(),
+            $this->getSourceRepositoryLoaderMock()
+        );
+
+        $service->update($requestedPhar, $directory);
     }
 
     public function testInstallSkipsPharIfAlreadyInstalled()
     {
-        $this->markTestSkipped('This test is dubious');
-
-        $url = new Url('https://example.com/phpunit-5.2.10.phar');
+        $url = new Url('https://example.com/foo-1.20.1.phar');
+        $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
-        $this->downloader->download()->shouldBeCalled()->willReturn(new File(new Filename('phpunit-5.2.10.phar'),''));
+        $phar = new Phar('foo', new Version('1.20.1'), $file);
 
-        $this->pharRegistry->hasPhar(
-            Argument::cetera()
-        )->shouldNotBeCalled();
+        $registry = $this->getPharRegistryMock();
+        $registry->method('hasPhar')
+            ->with('foo', new Version('1.20.1'))
+            ->willReturn(true);
+        $registry->method('getPhar')
+            ->with('foo', new Version('1.20.1'))
+            ->willReturn($phar);
 
-        $this->pharRegistry->getPhar(
-            Argument::cetera()
-        )->shouldNotBeCalled();
+        $installer = $this->getPharInstallerMock();
+        $installer->expects($this->never())->method('install');
 
-        $this->output->writeInfo(
-            Argument::any()
-        )->shouldBeCalled();
+        $output = $this->getOutputMock();
+        $output->expects($this->once())
+            ->method('writeInfo');
 
-        $this->pharRegistry->addUsage(
-            Argument::cetera()
-        )->shouldNotBeCalled();
-
-        $this->installer->install(
-            Argument::cetera()
-        )->shouldNotBeCalled();
-
-        $this->pharRegistry->addPhar(
-            Argument::cetera()
-        )->shouldBeCalled();
+        $filename = $this->getMockWithoutInvokingTheOriginalConstructor(Filename::class);
+        $filename->method('exists')->willReturn(true);
 
         $directory = $this->getDirectoryMock();
-        $directory->method('file')->willReturn(new Filename(__DIR__ .'/fixtures/tools'));
+        $directory->expects($this->once())->method('file')->willReturn($filename);
 
-        $this->getPharService()->install($requestedPhar, $directory, false);
+        $service = new PharService(
+            $this->getPharDownloaderMock(),
+            $installer,
+            $registry,
+            $this->getAliasResolverServiceMock(),
+            $output,
+            $this->getSourceRepositoryLoaderMock()
+        );
+
+        $service->install($requestedPhar, $directory, true);
     }
 
     public function testInstallHandlesDownloadFailedException()
@@ -199,25 +168,33 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
-        $this->pharRegistry->hasPhar(
-            Argument::cetera()
-        )->willReturn(false);
+        $registry = $this->getPharRegistryMock();
+        $registry->method('hasPhar')->willReturn(false);
 
-        $this->downloader->download(Argument::cetera())->willThrow(new DownloadFailedException());
+        $downloader = $this->getPharDownloaderMock();
+        $downloader->method('download')->willThrowException(new DownloadFailedException());
 
-        $this->output->writeError(
-            Argument::any()
-        )->shouldNotBeCalled();
+        $output = $this->getOutputMock();
+        $output->expects($this->never())->method('writeError');
 
-        $this->installer->install(
-            Argument::cetera()
-        )->shouldNotBeCalled();
+        $installer = $this->getPharInstallerMock();
+        $installer->expects($this->never())->method('install');
 
         $directory = $this->getDirectoryMock();
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
 
         $this->expectException(DownloadFailedException::class);
-        $this->getPharService()->install($requestedPhar, $directory, false);
+
+        $service = new PharService(
+            $downloader,
+            $installer,
+            $registry,
+            $this->getAliasResolverServiceMock(),
+            $output,
+            $this->getSourceRepositoryLoaderMock()
+        );
+
+        $service->install($requestedPhar, $directory, false);
     }
 
     public function testInstallHandlesPharRegistryException()
@@ -225,27 +202,31 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
-        $this->pharRegistry->hasPhar(
-            Argument::cetera()
-        )->willReturn(true);
+        $registry = $this->getPharRegistryMock();
+        $registry->method('hasPhar')->willReturn(true);
+        $registry->method('getPhar')->willThrowException(new PharRegistryException());
 
-        $this->pharRegistry->getPhar(
-            Argument::cetera()
-        )->willThrow(new PharRegistryException());
+        $output = $this->getOutputMock();
+        $output->expects($this->never())->method('writeError');
 
-        $this->output->writeError(
-            Argument::any()
-        )->shouldNotBeCalled();
-
-        $this->installer->install(
-            Argument::cetera()
-        )->shouldNotBeCalled();
+        $installer = $this->getPharInstallerMock();
+        $installer->expects($this->never())->method('install');
 
         $directory = $this->getDirectoryMock();
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
 
+        $service = new PharService(
+            $this->getPharDownloaderMock(),
+            $installer,
+            $registry,
+            $this->getAliasResolverServiceMock(),
+            $output,
+            $this->getSourceRepositoryLoaderMock()
+        );
+
         $this->expectException(PharRegistryException::class);
-        $this->getPharService()->install($requestedPhar, $directory, false);
+
+        $service->install($requestedPhar, $directory, false);
     }
 
     public function testInstallHandlesVerificationFailedException()
@@ -253,56 +234,64 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = RequestedPhar::fromUrl($url);
 
-        $this->pharRegistry->hasPhar(
-            Argument::cetera()
-        )->willReturn(false);
+        $registry = $this->getPharRegistryMock();
+        $registry->method('hasPhar')->willReturn(false);
 
-        $this->downloader->download(Argument::cetera())->willThrow(new VerificationFailedException());
+        $downloader = $this->getPharDownloaderMock();
+        $downloader->method('download')->willThrowException(new VerificationFailedException());
 
-        $this->output->writeError(
-            Argument::any()
-        )->shouldNotBeCalled();
+        $output = $this->getOutputMock();
+        $output->expects($this->never())->method('writeError');
 
-        $this->installer->install(
-            Argument::cetera()
-        )->shouldNotBeCalled();
+        $installer = $this->getPharInstallerMock();
+        $installer->expects($this->never())->method('install');
 
         $directory = $this->getDirectoryMock();
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
 
         $this->expectException(VerificationFailedException::class);
-        $this->getPharService()->install($requestedPhar, $directory, false);
+
+        $service = new PharService(
+            $downloader,
+            $installer,
+            $registry,
+            $this->getAliasResolverServiceMock(),
+            $output,
+            $this->getSourceRepositoryLoaderMock()
+        );
+
+        $service->install($requestedPhar, $directory, false);
     }
 
     public function testInstallHandlesResolveException()
     {
         $requestedPhar = RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
 
-        $this->resolver->resolve($requestedPhar->getAlias())
-            ->willThrow(new ResolveException());
+        $resolver = $this->getAliasResolverServiceMock();
+        $resolver->method('resolve')
+            ->willThrowException(new ResolveException());
 
-        $this->output->writeError(
-            Argument::any()
-        )->shouldNotBeCalled();
+        $output = $this->getOutputMock();
+        $output->expects($this->never())->method('writeError');
 
-        $this->installer->install(
-            Argument::cetera()
-        )->shouldNotBeCalled();
+        $installer = $this->getPharInstallerMock();
+        $installer->expects($this->never())->method('install');
 
         $directory = $this->getDirectoryMock();
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
         
         $this->expectException(ResolveException::class);
-        $this->getPharService()->install($requestedPhar, $directory, false);
-    }
 
-    protected function setUp() {
-        $this->downloader = $this->prophesize(PharDownloader::class);
-        $this->installer = $this->prophesize(PharInstaller::class);
-        $this->pharRegistry = $this->prophesize(PharRegistry::class);
-        $this->resolver = $this->prophesize(AliasResolverService::class);
-        $this->output = $this->prophesize(Cli\Output::class);
-        $this->pharIoRepositoryFactory = $this->prophesize(SourceRepositoryLoader::class);
+        $service = new PharService(
+            $this->getPharDownloaderMock(),
+            $installer,
+            $this->getPharRegistryMock(),
+            $resolver,
+            $output,
+            $this->getSourceRepositoryLoaderMock()
+        );
+
+        $service->install($requestedPhar, $directory, false);
     }
 
     /**
@@ -311,6 +300,49 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     private function getDirectoryMock() {
         return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
     }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharDownloader
+     */
+    private function getPharDownloaderMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PharDownloader::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharInstaller
+     */
+    private function getPharInstallerMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PharInstaller::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
+     */
+    private function getPharRegistryMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PharRegistry::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|AliasResolverService
+     */
+    private function getAliasResolverServiceMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(AliasResolverService::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
+     */
+    private function getOutputMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Cli\Output::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|SourceRepositoryLoader
+     */
+    private function getSourceRepositoryLoaderMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(SourceRepositoryLoader::class);
+    }
+
 
 }
 
