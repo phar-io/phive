@@ -30,7 +30,7 @@ class GitAwarePhiveVersion extends PhiveVersion {
             return $this->version;
         }
 
-        $phiveRoot = new Directory(realpath(__DIR__ . '/../../../'));
+        $phiveRoot = new Directory(__DIR__ . '/../../../');
 
         if (!$this->git->isRepository($phiveRoot)) {
             $this->version = self::UNKNOWN_VERSION;

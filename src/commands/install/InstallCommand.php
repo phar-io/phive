@@ -59,7 +59,7 @@ class InstallCommand implements Cli\Command {
      * @param Directory $targetDirectory
      */
     protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory) {
-        $installedPhar = $this->pharService->install($requestedPhar, (string)$targetDirectory, $this->getConfig()->makeCopy());
+        $installedPhar = $this->pharService->install($requestedPhar, $targetDirectory, $this->getConfig()->makeCopy());
         if (null === $installedPhar || $this->getConfig()->doNotAddToPhiveXml()) {
             return;
         }

@@ -20,9 +20,9 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
         );
 
         $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('foo'));
 
-        $environment->method('getWorkingDirectory')
-            ->willReturn($directory);
+        $environment->method('getWorkingDirectory')->willReturn($directory);
 
         $phars = [
             $this->getPharMock('foo', 'foo.phar'),
@@ -34,8 +34,7 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
             ->with($directory)
             ->willReturn($phars);
 
-        $installer->expects($this->exactly(2))
-            ->method('install');
+        $installer->expects($this->exactly(2))->method('install');
 
         $command->execute();
     }
@@ -61,6 +60,7 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
             ->willReturn(['foo', 'baz']);
 
         $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('foo'));
 
         $environment->method('getWorkingDirectory')
             ->willReturn($directory);

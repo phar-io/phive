@@ -14,6 +14,7 @@ class TargetDirectoryLocator {
      * @var PhiveXmlConfig
      */
     private $phiveXmlConfig;
+
     /**
      * @var Options
      */
@@ -37,12 +38,12 @@ class TargetDirectoryLocator {
      */
     public function getTargetDirectory() {
         if ($this->cliOptions->hasOption('target')) {
-            return new Directory(rtrim($this->cliOptions->getOption('target'), '/'));
+            return new Directory($this->cliOptions->getOption('target'));
         }
         if (!$this->phiveXmlConfig->hasTargetDirectory()) {
             return $this->config->getToolsDirectory();
         }
-        return $this->phiveXmlConfig->getTargetDirectory();        
+        return $this->phiveXmlConfig->getTargetDirectory();
     }
     
     

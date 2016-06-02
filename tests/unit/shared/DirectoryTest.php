@@ -14,7 +14,7 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCanBeConvertedToString() {
-        $this->assertEquals($this->testDir, (string)(new Directory($this->testDir)));
+        $this->assertEquals(realpath($this->testDir), (string)(new Directory($this->testDir)));
     }
 
     public function testDirectoryIsCreatedWhenMissing() {

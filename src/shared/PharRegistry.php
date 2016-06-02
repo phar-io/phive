@@ -70,17 +70,17 @@ class PharRegistry {
 
     /**
      * @param Phar   $phar
-     * @param string $destination
+     * @param Filename $destination
      */
-    public function addUsage(Phar $phar, $destination) {
+    public function addUsage(Phar $phar, Filename $destination) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        if ($this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $destination), $pharNode)->length
+        if ($this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $destination->asString()), $pharNode)->length
             !== 0
         ) {
             return;
         }
         $usageNode = $this->dbFile->createElement('usage');
-        $usageNode->setAttribute('destination', $destination);
+        $usageNode->setAttribute('destination', $destination->asString());
         $pharNode->appendChild($usageNode);
         $this->dbFile->save();
     }

@@ -72,6 +72,13 @@ class XmlFile {
         $this->getDom()->save($this->filename->asString());
     }
 
+    /**
+     * @return Directory
+     */
+    public function getDirectoy() {
+        return new Directory(dirname($this->filename->asString()));
+    }
+
     private function init() {
         if ($this->dom instanceof \DOMDocument) {
             return;

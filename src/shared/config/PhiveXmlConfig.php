@@ -126,7 +126,8 @@ class PhiveXmlConfig {
             $node = $this->configFile->createElement('targetDirectory');
             $configurationNode->appendChild($node);
         }
-        $node->nodeValue = (string)$directory;
+        $xmlFileDirectory = $this->configFile->getDirectoy();
+        $node->nodeValue = $directory->getRelativePathTo($xmlFileDirectory);
     }
 
     /**

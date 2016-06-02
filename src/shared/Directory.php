@@ -22,7 +22,7 @@ class Directory {
         $this->ensureExists($path);
         $this->ensureIsDirectory($path);
         $this->ensureMode($path, $mode);
-        $this->path = $path;
+        $this->path = realpath($path);
         $this->mode = $mode;
     }
 

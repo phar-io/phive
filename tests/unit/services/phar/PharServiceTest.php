@@ -61,16 +61,19 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $this->pharRegistry->addUsage(
             $expectedPhar,
-            '/tmp/foo'
+            new Filename('/tmp/foo')
         )->shouldBeCalled();
 
         $this->installer->install(
             $file,
-            '/tmp/foo',
+            new Filename('/tmp/foo'),
             true
         )->shouldBeCalled();
 
-        $this->getPharService()->install($requestedPhar, '/tmp', true);
+        $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+
+        $this->getPharService()->install($requestedPhar, $directory, true);
     }
 
     /**
@@ -104,16 +107,19 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $this->pharRegistry->addUsage(
             $phar,
-            '/tmp/foo'
+            new Filename('/tmp/foo')
         )->shouldBeCalled();
 
         $this->installer->install(
             $file,
-            '/tmp/foo',
+            new Filename('/tmp/foo'),
             true
         )->shouldBeCalled();
 
-        $this->getPharService()->install($requestedPhar, '/tmp', true);
+        $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+
+        $this->getPharService()->install($requestedPhar, $directory, true);
     }
 
     public function testUpdate()
@@ -134,16 +140,19 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $this->pharRegistry->addUsage(
             $phar,
-            '/tmp/foo'
+            new Filename('/tmp/foo')
         )->shouldBeCalled();
 
         $this->installer->install(
             $file,
-            '/tmp/foo',
+            new Filename('/tmp/foo'),
             false
         )->shouldBeCalled();
 
-        $this->getPharService()->update($requestedPhar, '/tmp');
+        $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+
+        $this->getPharService()->update($requestedPhar, $directory);
     }
 
     public function testInstallSkipsPharIfAlreadyInstalled()
@@ -179,7 +188,10 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->shouldBeCalled();
 
-        $this->getPharService()->install($requestedPhar, __DIR__ .'/fixtures/tools', false);
+        $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename(__DIR__ .'/fixtures/tools'));
+
+        $this->getPharService()->install($requestedPhar, $directory, false);
     }
 
     public function testInstallHandlesDownloadFailedException()
@@ -201,8 +213,11 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->shouldNotBeCalled();
 
+        $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+
         $this->expectException(DownloadFailedException::class);
-        $this->getPharService()->install($requestedPhar, '/tmp', false);
+        $this->getPharService()->install($requestedPhar, $directory, false);
     }
 
     public function testInstallHandlesPharRegistryException()
@@ -226,8 +241,11 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->shouldNotBeCalled();
 
+        $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+
         $this->expectException(PharRegistryException::class);
-        $this->getPharService()->install($requestedPhar, '/tmp', false);
+        $this->getPharService()->install($requestedPhar, $directory, false);
     }
 
     public function testInstallHandlesVerificationFailedException()
@@ -249,8 +267,11 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->shouldNotBeCalled();
 
+        $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+
         $this->expectException(VerificationFailedException::class);
-        $this->getPharService()->install($requestedPhar, '/tmp', false);
+        $this->getPharService()->install($requestedPhar, $directory, false);
     }
 
     public function testInstallHandlesResolveException()
@@ -268,8 +289,11 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             Argument::cetera()
         )->shouldNotBeCalled();
 
+        $directory = $this->getDirectoryMock();
+        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+        
         $this->expectException(ResolveException::class);
-        $this->getPharService()->install($requestedPhar, '/tmp', false);
+        $this->getPharService()->install($requestedPhar, $directory, false);
     }
 
     protected function setUp() {
@@ -279,6 +303,13 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->resolver = $this->prophesize(AliasResolverService::class);
         $this->output = $this->prophesize(Cli\Output::class);
         $this->pharIoRepositoryFactory = $this->prophesize(SourceRepositoryLoader::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     */
+    private function getDirectoryMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
     }
 
 }

@@ -31,12 +31,12 @@ class PharInstaller {
 
     /**
      * @param File   $phar
-     * @param string $destination
+     * @param Filename $destination
      * @param bool   $copy
      */
-    public function install(File $phar, $destination, $copy) {
-        if (file_exists($destination)) {
-            unlink($destination);
+    public function install(File $phar, Filename $destination, $copy) {
+        if ($destination->exists()) {
+            unlink($destination->asString());
         }
 
         if (!$copy && $this->environment instanceof WindowsEnvironment && !$this->environment->hasAdminPrivileges()) {
@@ -56,21 +56,21 @@ class PharInstaller {
 
     /**
      * @param File   $phar
-     * @param string $destination
+     * @param Filename $destination
      */
-    private function copy(File $phar, $destination) {
-        $this->output->writeInfo(sprintf('Copying %s to %s', $phar->getFilename(), $destination));
-        copy($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
+    private function copy(File $phar, Filename $destination) {
+        $this->output->writeInfo(sprintf('Copying %s to %s', $phar->getFilename(), $destination->asString()));
+        copy($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination->asString());
         chmod($destination, 0755);
     }
 
     /**
      * @param File   $phar
-     * @param string $destination
+     * @param Filename $destination
      */
-    private function link(File $phar, $destination) {
-        $this->output->writeInfo(sprintf('Symlinking %s to %s', $phar->getFilename(), $destination));
-        symlink($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination);
+    private function link(File $phar, Filename $destination) {
+        $this->output->writeInfo(sprintf('Symlinking %s to %s', $phar->getFilename(), $destination->asString()));
+        symlink($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination->asString());
     }
 
 }

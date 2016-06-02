@@ -17,9 +17,11 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $installedPhar1 = $this->getPharMock();
         $installedPhar2 = $this->getPharMock();
 
+        $directory = $this->getDirectoryMock();
+
         $config->expects($this->any())
             ->method('getTargetDirectory')
-            ->willReturn('/foo');
+            ->willReturn($directory);
 
         $config->expects($this->once())
             ->method('getRequestedPhars')
@@ -29,12 +31,12 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
 
         $pharService->expects($this->at(0))
             ->method('update')
-            ->with($requestedPhar1, '/foo')
+            ->with($requestedPhar1, $directory)
             ->willReturn($installedPhar1);
 
         $pharService->expects($this->at(1))
             ->method('update')
-            ->with($requestedPhar2, '/foo')
+            ->with($requestedPhar2, $directory)
             ->willReturn($installedPhar2);
 
         $command->execute();
@@ -42,43 +44,45 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     */
+    private function getDirectoryMock() {
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+    }
+
+    /**
      * @return \PHPUnit_Framework_MockObject_MockObject|UpdateCommandConfig
      */
     private function getCommandConfigMock() {
-        return $this->getMockBuilder(UpdateCommandConfig::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->getMockWithoutInvokingTheOriginalConstructor(UpdateCommandConfig::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharService
      */
     private function getPharServiceMock() {
-        return $this->getMockBuilder(PharService::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PharService::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
-        return $this->getMockBuilder(RequestedPhar::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->getMockWithoutInvokingTheOriginalConstructor(RequestedPhar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Phar
      */
     private function getPharMock() {
-        return $this->getMockBuilder(Phar::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->getMockWithoutInvokingTheOriginalConstructor(Phar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
      */
     private function getPhiveXmlConfigMock() {
-        return $this->getMockBuilder(PhiveXmlConfig::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PhiveXmlConfig::class);
     }
 
 }
