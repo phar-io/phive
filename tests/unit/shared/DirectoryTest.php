@@ -26,7 +26,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testTryingToInstantiateOnFileThrowsException() {
-        $this->setExpectedException(DirectoryException::class, null, DirectoryException::InvalidType);
+        $this->expectException(DirectoryException::class);
+        $this->expectExceptionCode(DirectoryException::InvalidType);
         (new Directory($this->testDir . '/file'));
     }
 
@@ -50,15 +51,38 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testThrowsExceptionOnNonIntegerMode() {
-        $this->setExpectedException(DirectoryException::class, null, DirectoryException::InvalidMode);
+        $this->expectException(DirectoryException::class);
+        $this->expectExceptionCode(DirectoryException::InvalidMode);
         (new Directory('/', 'abc'));
         restore_error_handler();
     }
 
     public function testThrowsExceptionIfGivenPathCannotBeCreated() {
-        $this->setExpectedException(DirectoryException::class, null, DirectoryException::CreateFailed);
+        $this->expectException(DirectoryException::class);
+        $this->expectExceptionCode(DirectoryException::CreateFailed);
         set_error_handler(function() { throw new \ErrorException('caught'); });
         (new Directory('/arbitrary/non/exisiting/path', 0777));
         restore_error_handler();
+    }
+
+    /**
+     * @dataProvider relativePathTestDataProvider
+     *
+     * @param $directory
+     * @param $otherDirectory
+     * @param $expected
+     */
+    public function testReturnsExpectedRelativePath($directory, $otherDirectory, $expected) {
+        $directory = new Directory($directory);
+        $otherDirectory = new Directory($otherDirectory);
+
+        $this->assertEquals($expected, $directory->getRelativePathTo($otherDirectory));
+    }
+
+    public static function relativePathTestDataProvider() {
+        return [
+            [__DIR__ . '/../../data/directory', __DIR__ . '/../../data', './directory/'],
+            [__DIR__ . '/../../data', __DIR__ . '/../../data/directory', '../']
+        ];
     }
 }
