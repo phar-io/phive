@@ -17,7 +17,7 @@ class Filename {
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @throws \InvalidArgumentException
      */

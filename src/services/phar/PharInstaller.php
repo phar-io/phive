@@ -14,8 +14,8 @@ class PharInstaller {
     private $output;
 
     /**
-    * @var Environment
-    */
+     * @var Environment
+     */
     private $environment;
 
     /**
