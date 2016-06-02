@@ -4,14 +4,16 @@ namespace PharIo\Phive\PharRegressionTests;
 class RemoveCommandTest extends PharTestCase {
 
     public function testRemovesSymlink() {
-        $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
+        $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar', $this->getToolsDirectory()->file('phpunit'));
+        $this->usePhiveXmlConfig(__DIR__ . '/fixtures/removeCommandTest/phive.xml');
+        $this->createSymlink(
+            $this->getPhiveHomeDirectory()->child('phars')->file('phpunit-5.3.1.phar')->asString(),
+            $this->getToolsDirectory()->file('phpunit')
+        );
 
-        file_put_contents(__DIR__ . '/tmp/phpunit', 'foo');
-
-        $this->changeWorkingDirectory(__DIR__ . '/tmp');
         $this->runPhiveCommand('remove', ['phpunit']);
 
-        $this->assertFileNotExists(__DIR__ .'/tmp/tools/phpunit');
+        $this->assertFileNotExists($this->getToolsDirectory()->file('phpunit')->asString());
     }
 
 }

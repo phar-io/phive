@@ -15,11 +15,24 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
     private $pharSize = 0;
 
     /**
+     * @var Directory
+     */
+    private $workingDirectory;
+
+    /**
+     * @var Directory
+     */
+    private $toolsDirectory;
+
+    /**
      * @var PharRegistry
      */
     private $registry;
 
     final protected function setUp() {
+        $this->workingDirectory = new Directory(__DIR__ . '/tmp');
+        $this->toolsDirectory = new Directory($this->workingDirectory . '/tools');
+        $this->changeWorkingDirectory($this->workingDirectory);
         $this->createCopyOfPharUnderTest();
         $this->createTemporaryDirectory();
         $this->_setUp();
@@ -41,10 +54,10 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @param string $directory
+     * @param Directory $directory
      */
-    protected function changeWorkingDirectory($directory) {
-        chdir($directory);
+    protected function changeWorkingDirectory(Directory $directory) {
+        chdir((string)$directory);
     }
 
     /**
@@ -56,7 +69,7 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
      */
     protected function runPhiveCommand($command, array $arguments = [], array $switches = []) {
         $call = $this->getTestedPharFilename() . ' ' . $command;
-        $call .= ' --home=' . __DIR__ . '/fixtures/phive-home';
+        $call .= ' --home=' . (string)$this->getPhiveHomeDirectory();
         foreach ($switches as $switch) {
             $call .= ' -' . $switch;
         }
@@ -79,10 +92,40 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
         return $output;
     }
 
-    protected function addPharToRegistry($name, $version, $filename) {
-        $this->getPharRegistry()->addPhar(
-            new Phar($name, new Version($version), new File(new Filename($filename), 'foo'))
-        );
+    /**
+     * @param string $name
+     * @param string $version
+     * @param string $filename
+     * @param Filename|null $usage
+     */
+    protected function addPharToRegistry($name, $version, $filename, Filename $usage = null) {
+        $phar = new Phar($name, new Version($version), new File(new Filename($filename), 'foo'));
+        $this->getPharRegistry()->addPhar($phar);
+        if (null === $usage) {
+            return;
+        }
+        $this->getPharRegistry()->addUsage($phar, $usage);
+    }
+
+    /**
+     * @return Directory
+     */
+    protected function getWorkingDirectory() {
+        return $this->workingDirectory;
+    }
+
+    /**
+     * @return Directory
+     */
+    protected function getToolsDirectory() {
+        return $this->toolsDirectory;
+    }
+
+    /**
+     * @param string $filename
+     */
+    protected function usePhiveXmlConfig($filename) {
+        copy($filename, $this->getWorkingDirectory()->file('phive.xml')->asString());
     }
 
     /**
@@ -91,7 +134,7 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
     protected function getPhiveXmlConfig() {
         return new PhiveXmlConfig(
             new XmlFile(
-                new Filename(__DIR__ . '/tmp/phive.xml'),
+                $this->getWorkingDirectory()->file('phive.xml'),
                 'https://phar.io/phive',
                 'phive'
             )
@@ -104,6 +147,21 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
      */
     protected function assertSymlinkTargetEquals($filename, $target) {
         $this->assertEquals($target, readlink($filename));
+    }
+
+    /**
+     * @param string $target
+     * @param string $link
+     */
+    protected function createSymlink($target, $link) {
+        symlink($target, $link);
+    }
+
+    /**
+     * @return Directory
+     */
+    protected function getPhiveHomeDirectory() {
+        return new Directory(__DIR__ . '/fixtures/phive-home');
     }
 
     /**
@@ -163,13 +221,13 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
      */
     private function getPharRegistry() {
         if (null === $this->registry) {
-            $xmlFilename = __DIR__ . '/fixtures/phive-home/phars.xml';
+            $xmlFilename = $this->getPhiveHomeDirectory()->file('phars.xml')->asString();
             if (file_exists($xmlFilename)) {
                 unlink($xmlFilename);
             }
             $this->registry = new PharRegistry(
                 new XmlFile(new Filename($xmlFilename), 'https://phar.io/phive/installdb', 'phars'),
-                new Directory(__DIR__ . '/fixtures/phive-home/phars')
+                $this->getPhiveHomeDirectory()->child('phars')
             );
         }
         return $this->registry;

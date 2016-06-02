@@ -4,16 +4,21 @@ namespace PharIo\Phive\PharRegressionTests;
 class UpdateCommandTest extends PharTestCase {
 
     public function testUpdatesSymlinkToUpdatedVersion() {
-        copy(__DIR__  . '/fixtures/updateCommandTest/phive.xml', __DIR__ . '/tmp/phive.xml');
-
-        mkdir(__DIR__ . '/tmp/tools');
-        symlink(__DIR__ . '/fixtures/phive-home/phars/phpunit-5.3.1.phar', __DIR__ . '/tmp/tools/phpunit');
-
         $this->addPharToRegistry('phpunit', '5.3.4', 'phpunit-5.3.4.phar');
-        $this->changeWorkingDirectory(__DIR__ . '/tmp');
+        $this->addPharToRegistry('phpunit', '5.3.4', 'phpunit-5.3.4.phar');
+        $this->usePhiveXmlConfig(__DIR__  . '/fixtures/updateCommandTest/phive.xml');
+
+        $this->createSymlink(
+            $this->getPhiveHomeDirectory()->child('phars')->file('phpunit-5.3.1.phar'),
+            $this->getToolsDirectory()->file('phpunit')
+        );
+
         $this->runPhiveCommand('update');
 
-        $this->assertSymlinkTargetEquals(__DIR__ . '/tmp/tools/phpunit', __DIR__ .'/fixtures/phive-home/phars/phpunit-5.3.4.phar');
+        $this->assertSymlinkTargetEquals(
+            $this->getToolsDirectory()->file('phpunit'),
+            $this->getPhiveHomeDirectory()->child('phars')->file('phpunit-5.3.4.phar')
+        );
     }
 
 }
