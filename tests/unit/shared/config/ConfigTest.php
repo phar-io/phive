@@ -52,9 +52,30 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testGetGPGBinaryPath() {
-        $this->markTestSkipped('Needs to be rewritten after refactoring of method under test');
+        $filename = new Filename('foo');
+
+        $environment = $this->getEnvironmentMock();
+        $environment->method('getPathToCommand')->with('gpg')->willReturn($filename);
+
+        $config = new Config($environment, $this->getOptionsMock());
+
+        $this->assertSame($filename, $config->getGPGBinaryPath());
+    }
+
+    public function testGetToolsDirectory() {
         $config = new Config($this->getEnvironmentMock(), $this->getOptionsMock());
-        $this->assertEquals(new Filename('/usr/bin/gpg'), $config->getGPGBinaryPath());
+        $expectedDirectory = new Directory('tools');
+        $this->assertEquals($expectedDirectory, $config->getToolsDirectory());
+    }
+
+    public function testThrowsNoGPGBinaryFoundExceptionIfPathToGpgWasNotFound() {
+        $environment = $this->getEnvironmentMock();
+        $environment->method('getPathToCommand')->with('gpg')->willThrowException(new EnvironmentException());
+
+        $config = new Config($environment, $this->getOptionsMock());
+        $this->expectException(NoGPGBinaryFoundException::class);
+
+        $config->getGPGBinaryPath();
     }
 
     public function testGetSourcesListUrl() {
