@@ -6,7 +6,7 @@ class FileDownloader implements HttpProgressHandler {
     /**
      * @var HttpClient
      */
-    private $curl;
+    private $httpClient;
 
     /**
      * @var Cli\Output
@@ -14,11 +14,11 @@ class FileDownloader implements HttpProgressHandler {
     private $output;
 
     /**
-     * @param HttpClient $curl
+     * @param HttpClient $httpClient
      * @param Cli\Output $output
      */
-    public function __construct(HttpClient $curl, Cli\Output $output) {
-        $this->curl = $curl;
+    public function __construct(HttpClient $httpClient, Cli\Output $output) {
+        $this->httpClient = $httpClient;
         $this->output = $output;
     }
 
@@ -33,20 +33,31 @@ class FileDownloader implements HttpProgressHandler {
         // force new line for progress update
         $this->output->writeInfo('');
 
-        $response = $this->curl->get($url, [], $this);
-        if ($response->getHttpCode() !== 200) {
+        try {
+            $response = $this->httpClient->get($url, [], $this);
+
+            if ($response->getHttpCode() !== 200) {
+                throw new DownloadFailedException(
+                    sprintf(
+                        'Download failed (HTTP status code %s) %s',
+                        $response->getHttpCode(),
+                        $response->getErrorMessage()
+                    )
+                );
+            }
+            if (empty($response->getBody())) {
+                throw new DownloadFailedException('Download failed - response is empty');
+            }
+            return new File($this->getFilename($url), $response->getBody());
+        } catch (HttpException $e) {
             throw new DownloadFailedException(
                 sprintf(
-                    'Download failed (HTTP status code %s) %s',
-                    $response->getHttpCode(),
-                    $response->getErrorMessage()
+                    'Download failed (Error code %s) %s',
+                    $e->getCode(),
+                    $e->getMessage()
                 )
             );
         }
-        if (empty($response->getBody())) {
-            throw new DownloadFailedException('Download failed - response is empty');
-        }
-        return new File($this->getFilename($url), $response->getBody());
     }
 
     /**

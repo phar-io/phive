@@ -99,7 +99,16 @@ class Curl implements HttpClient {
                 curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname)->getCertificateFile());
             }
 
-            return new HttpResponse(curl_exec($ch), curl_getinfo($ch, CURLINFO_HTTP_CODE), curl_error($ch));
+            $result = curl_exec($ch);
+            if (curl_errno($ch) !== 0) {
+                throw new HttpException(curl_error($ch), curl_errno($ch));
+            }
+
+            return new HttpResponse(
+                $result,
+                curl_getinfo($ch, CURLINFO_HTTP_CODE),
+                curl_error($ch)
+            );
         } catch (CurlException $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
         }
