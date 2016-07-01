@@ -25,5 +25,10 @@ abstract class AbstractAliasResolver implements AliasResolver {
         return $this->next->resolve($alias);
     }
 
+    /**
+     * @param PharAlias $alias
+     *
+     * @return Source[]
+     */
     abstract public function resolve(PharAlias $alias);
 }
