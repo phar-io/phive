@@ -31,6 +31,9 @@ class Url {
         return $this->uri;
     }
 
+    /**
+     * @return string
+     */
     public function getHostname() {
         return $this->hostname;
     }
@@ -56,7 +59,7 @@ class Url {
     /**
      * @param array $params
      *
-     * @return string
+     * @return Url
      */
     public function withParams(array $params) {
         if (count($params)) {
