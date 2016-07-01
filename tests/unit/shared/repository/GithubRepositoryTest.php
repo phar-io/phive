@@ -19,8 +19,8 @@ class GithubRepositoryTest extends \PHPUnit_Framework_TestCase {
             ->willReturn([$entry1, $entry2, $entry3]);
 
         $expectedReleases = new ReleaseCollection();
-        $expectedReleases->add(new Release('foo', new Version('5.3.0'), new Url('https://example.com/foo-5.3.0.phar')));
-        $expectedReleases->add(new Release('foo', new Version('5.2.12'), new Url('https://example.com/foo-5.2.12.phar')));
+        $expectedReleases->add(new Release('foo', new Version('5.3.0'), new PharUrl('https://example.com/foo-5.3.0.phar')));
+        $expectedReleases->add(new Release('foo', new Version('5.2.12'), new PharUrl('https://example.com/foo-5.2.12.phar')));
 
         $repository = new GithubRepository($jsonData);
         $this->assertEquals(

@@ -7,7 +7,7 @@ namespace PharIo\Phive;
 class RequestedPharUrlTest extends \PHPUnit_Framework_TestCase {
 
     public function testReturnsExpectedUrl() {
-        $url = new Url('https://example.com/foo.phar');
+        $url = new PharUrl('https://example.com/foo.phar');
         $phar = new RequestedPharUrl($url);
         
         $this->assertFalse($phar->isAlias());

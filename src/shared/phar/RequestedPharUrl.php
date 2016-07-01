@@ -4,14 +4,14 @@ namespace PharIo\Phive;
 class RequestedPharUrl implements RequestedPhar {
 
     /**
-     * @var Url
+     * @var PharUrl
      */
     private $url;
 
     /**
-     * @param Url $url
+     * @param PharUrl $url
      */
-    public function __construct(Url $url) {
+    public function __construct(PharUrl $url) {
         $this->url = $url;
     }    
     
@@ -30,7 +30,7 @@ class RequestedPharUrl implements RequestedPhar {
     }
 
     /**
-     * @return Url
+     * @return PharUrl
      */
     public function getPharUrl() {
         return $this->url;

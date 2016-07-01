@@ -41,10 +41,10 @@ class ReleaseTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Url
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharUrl
      */
     private function getUrlMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Url::class);
+        return $this->getMockWithoutInvokingTheOriginalConstructor(PharUrl::class);
     }
 
     /**

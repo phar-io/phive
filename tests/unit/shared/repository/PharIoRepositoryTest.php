@@ -29,13 +29,13 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
         $expectedReleases = new ReleaseCollection();
         $expectedReleases->add(
             new Release(
-                'foo', new Version('5.3.0'), new Url('https://example.com/foo-5.3.0.phar'),
+                'foo', new Version('5.3.0'), new PharUrl('https://example.com/foo-5.3.0.phar'),
                 new Sha1Hash('aa43f08c9402ca142f607fa2db0b1152cf248d49')
             )
         );
         $expectedReleases->add(
             new Release(
-                'foo', new Version('5.2.12'), new Url('https://example.com/foo-5.2.12.phar'),
+                'foo', new Version('5.2.12'), new PharUrl('https://example.com/foo-5.2.12.phar'),
                 new Sha256Hash('7a8755061d7ac2bc09f25bf6a867031fb945b4b25a6be1fb41b117893065f76c')
             )
         );

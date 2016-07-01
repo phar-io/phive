@@ -82,7 +82,7 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ]);
 
         $expected = [
-            new RequestedPharUrl(new Url('https://example.com/foo.phar')),
+            new RequestedPharUrl(new PharUrl('https://example.com/foo.phar')),
             new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint())),
             new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0'))),
         ];

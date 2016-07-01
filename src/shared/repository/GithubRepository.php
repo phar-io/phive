@@ -30,7 +30,7 @@ class GithubRepository implements SourceRepository {
             foreach ($entry->assets as $asset) {
                 $url = $asset->browser_download_url;
                 if (substr($url, -5, 5) === '.phar') {
-                    $pharUrl = new Url($url);
+                    $pharUrl = new PharUrl($url);
                     break;
                 }
             }

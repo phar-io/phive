@@ -9,7 +9,7 @@ class Release {
     private $version;
 
     /**
-     * @var Url
+     * @var PharUrl
      */
     private $url;
 
@@ -24,12 +24,12 @@ class Release {
     private $name = '';
 
     /**
-     * @param string  $name
+     * @param string $name
      * @param Version $version
-     * @param Url     $url
-     * @param Hash    $expectedHash
+     * @param PharUrl $url
+     * @param Hash $expectedHash
      */
-    public function __construct($name, Version $version, Url $url, Hash $expectedHash = null) {
+    public function __construct($name, Version $version, PharUrl $url, Hash $expectedHash = null) {
         $this->version = $version;
         $this->url = $url;
         $this->expectedHash = $expectedHash;
@@ -44,7 +44,7 @@ class Release {
     }
 
     /**
-     * @return Url
+     * @return PharUrl
      */
     public function getUrl() {
         return $this->url;

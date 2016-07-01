@@ -31,7 +31,7 @@ class PharIoRepository implements SourceRepository {
                 new Release(
                     (string)$alias,
                     new Version($releaseNode->getAttribute('version')),
-                    new Url($releaseNode->getAttribute('url')),
+                    new PharUrl($releaseNode->getAttribute('url')),
                     $this->getHash($releaseNode)
                 )
             );

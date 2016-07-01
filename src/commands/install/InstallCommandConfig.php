@@ -59,7 +59,7 @@ class InstallCommandConfig {
         for ($i = 0; $i < $argCount; $i++) {
             $argument = $this->cliOptions->getArgument($i);
             if (strpos($argument, 'https://') !== false) {
-                $phars[] = new RequestedPharUrl(new Url($argument));
+                $phars[] = new RequestedPharUrl(new PharUrl($argument));
             } else {
                 $aliasSegments = explode('@', $argument, 2);
                 $parser = new VersionConstraintParser();

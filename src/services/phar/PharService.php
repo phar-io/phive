@@ -91,7 +91,7 @@ class PharService {
         
         $name = $release->getName();
         $version = $release->getVersion();
-        $pharName = $this->getPharName($release->getUrl());
+        $pharName = $release->getUrl()->getPharName();
 
         $destination = $destination->file($pharName);
         if (!$replaceExisting && $destination->exists()) {
@@ -126,7 +126,7 @@ class PharService {
 
         $url = $requestedPhar->getPharUrl();
 
-        return new Release($this->getPharName($url), $this->getPharVersion($url), $url, null);
+        return new Release($url->getPharName(), $url->getPharVersion(), $url, null);
     }
 
     /**
@@ -156,40 +156,5 @@ class PharService {
             }
         }
         throw new ResolveException(sprintf('Could not resolve alias %s', $alias));
-    }
-
-    /**
-     * @param Url $url
-     *
-     * @return Version
-     * @throws DownloadFailedException
-     */
-    private function getPharVersion(Url $url) {
-        $filename = pathinfo((string)$url, PATHINFO_FILENAME);
-        preg_match('/-([\d]+.[\d]+.[\d]+.*)/', $filename, $matches);
-        if (count($matches) !== 2) {
-            preg_match('/\/([\d]+.[\d]+.[\d]+.*)\//', (string)$url, $matches);
-        }
-        if (count($matches) !== 2) {
-            throw new DownloadFailedException(sprintf('Could not extract PHAR version from %s', $url));
-        }
-
-        return new Version($matches[1]);
-    }
-
-    /**
-     * @param Url $url
-     *
-     * @return string
-     * @throws DownloadFailedException
-     */
-    private function getPharName(Url $url) {
-        $filename = pathinfo((string)$url, PATHINFO_FILENAME);
-        preg_match('/(.*)-[\d]+.[\d]+.[\d]+.*/', $filename, $matches);
-        if (count($matches) !== 2) {
-            $matches[1] = $filename;
-        }
-
-        return $matches[1];
     }
 }

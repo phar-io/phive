@@ -14,7 +14,7 @@ interface RequestedPhar {
     public function getAlias();
 
     /**
-     * @return Url
+     * @return PharUrl
      */
     public function getPharUrl();
     

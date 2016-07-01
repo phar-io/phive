@@ -36,7 +36,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testReturnsExpectedPharFileIfStatusCodeIs200() {
-        $url = new Url('https://example.com/foo.phar');
+        $url = new PharUrl('https://example.com/foo.phar');
         $release = new Release('foo', new Version('1.0.0'), $url, null);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');
         $downloadedFile = new File(new Filename('foo.phar'), 'foo');
@@ -56,7 +56,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testVerifiesChecksum() {
-        $url = new Url('https://example.com/foo.phar');
+        $url = new PharUrl('https://example.com/foo.phar');
         $expectedHash = new Sha1Hash(sha1('foo'));
         $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');
@@ -81,7 +81,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \PharIo\Phive\VerificationFailedException
      */
     public function testThrowsExceptionIfSignatureVerificationFails() {
-        $url = new Url('https://example.com/foo.phar');
+        $url = new PharUrl('https://example.com/foo.phar');
         $expectedHash = new Sha1Hash(sha1('foo'));
         $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');
@@ -102,7 +102,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \PharIo\Phive\VerificationFailedException
      */
     public function testThrowsExceptionIfChecksumVerificationFails() {
-        $url = new Url('https://example.com/foo.phar');
+        $url = new PharUrl('https://example.com/foo.phar');
         $expectedHash = new Sha1Hash(sha1('foo'));
         $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
         $signatureUrl = new Url('https://example.com/foo.phar.asc');

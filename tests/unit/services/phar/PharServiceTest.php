@@ -9,7 +9,7 @@ use PharIo\Phive\Cli;
 class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
-        $url = new Url('https://example.com/foo-1.20.1.phar');
+        $url = new PharUrl('https://example.com/foo-1.20.1.phar');
         $release = new Release('foo', new Version('1.20.1'), $url, null);
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPharUrl($url);
@@ -47,7 +47,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testInstallByUrlGetsPharFromRepositoryAndInvokesInstaller() {
-        $url = new Url('https://example.com/foo-1.20.1.phar');
+        $url = new PharUrl('https://example.com/foo-1.20.1.phar');
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPharUrl($url);
 
@@ -85,7 +85,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testUpdate()
     {
-        $url = new Url('https://example.com/foo-1.20.1.phar');
+        $url = new PharUrl('https://example.com/foo-1.20.1.phar');
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPharUrl($url);
 
@@ -124,7 +124,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallSkipsPharIfAlreadyInstalled()
     {
-        $url = new Url('https://example.com/foo-1.20.1.phar');
+        $url = new PharUrl('https://example.com/foo-1.20.1.phar');
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPharUrl($url);
 
@@ -165,7 +165,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallHandlesDownloadFailedException()
     {
-        $url = new Url('https://example.com/phpunit-5.2.10.phar');
+        $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = new RequestedPharUrl($url);
 
         $registry = $this->getPharRegistryMock();
@@ -199,7 +199,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallHandlesPharRegistryException()
     {
-        $url = new Url('https://example.com/phpunit-5.2.10.phar');
+        $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = new RequestedPharUrl($url);
 
         $registry = $this->getPharRegistryMock();
@@ -231,7 +231,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallHandlesVerificationFailedException()
     {
-        $url = new Url('https://example.com/phpunit-5.2.10.phar');
+        $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = new RequestedPharUrl($url);
 
         $registry = $this->getPharRegistryMock();

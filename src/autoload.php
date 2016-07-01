@@ -95,6 +95,7 @@ spl_autoload_register(
                 'phario\\phive\\pharregistry' => '/shared/PharRegistry.php',
                 'phario\\phive\\pharregistryexception' => '/shared/exceptions/PharRegistryException.php',
                 'phario\\phive\\pharservice' => '/services/phar/PharService.php',
+                'phario\\phive\\pharurl' => '/shared/phar/PharUrl.php',
                 'phario\\phive\\phiveversion' => '/shared/version/PhiveVersion.php',
                 'phario\\phive\\phivexmlconfig' => '/shared/config/PhiveXmlConfig.php',
                 'phario\\phive\\pipeio' => '/shared/PipeIO.php',
