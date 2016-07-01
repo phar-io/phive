@@ -86,11 +86,15 @@ class Curl implements HttpClient {
     private function exec($method, Url $url, array $params = [], HttpProgressHandler $progressHandler = null) {
         try {
             $this->progressHandler = $progressHandler;
-            $this->url = $url;
-
-            $ch = curl_init($url . '?' . http_build_query($params));
+            $this->url = $url->withParams($params);
+            $ch = curl_init($this->url);
             curl_setopt_array($ch, $this->config->asCurlOptArray());
+
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+            if ($method === 'HEAD') {
+                curl_setopt($ch, CURLOPT_NOBODY, true);
+            }
+
             curl_setopt($ch, CURLOPT_NOPROGRESS, false);
             curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
 
@@ -101,7 +105,10 @@ class Curl implements HttpClient {
 
             $result = curl_exec($ch);
             if (curl_errno($ch) !== 0) {
-                throw new HttpException(curl_error($ch), curl_errno($ch));
+                throw new HttpException(
+                    curl_error($ch) . ' (while requesting ' . $this->url . ')',
+                    curl_errno($ch)
+                );
             }
 
             return new HttpResponse(
@@ -110,7 +117,10 @@ class Curl implements HttpClient {
                 curl_error($ch)
             );
         } catch (CurlException $e) {
-            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+            throw new HttpException(
+                '[CurlException] ' . $e->getMessage() . ' (while requesting ' . $this->url . ')',
+                $e->getCode(),
+                $e);
         }
     }
 
