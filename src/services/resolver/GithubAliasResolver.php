@@ -22,17 +22,23 @@ class GithubAliasResolver extends AbstractAliasResolver {
         if (strpos($name, '/') === false) {
             return $this->tryNext($alias);
         }
-        return $this->localResolve($name) ?: $this->tryNext($alias);
+        $result = $this->localResolve($name);
+        return  count($result) ? $result : $this->tryNext($alias);
     }
 
     private function localResolve($name) {
-        list($username, $project) = explode('/', $name);
-        $url = new Url(
-            sprintf('https://api.github.com/repos/%s/%s/releases', $username, $project)
-        );
-        $response = $this->client->head($url);
-        if ($response->getHttpCode() === 200) {
-            return [new Source('github', $url)];
+        try {
+            list($username, $project) = explode('/', $name);
+            $url = new Url(
+                sprintf('https://api.github.com/repos/%s/%s/releases', $username, $project)
+            );
+            $response = $this->client->head($url);
+            if ($response->getHttpCode() === 200) {
+                return [new Source('github', $url)];
+            }
+            return [];
+        } catch (HttpException $e) {
+            return [];
         }
     }
 
