@@ -189,6 +189,22 @@ class Factory {
     }
 
     /**
+     * @return SelfupdateCommand
+     */
+    public function getSelfupdateCommand()
+    {
+        return new SelfupdateCommand(
+            $this->getPharDownloader(),
+            new SourceRepositoryLoader($this->getFileDownloader()),
+            $this->getGithubAliasResolver(),
+            $this->getEnvironment(),
+            $this->getPhiveVersion(),
+            $this->getOutput(),
+            $this->getPharInstaller()
+        );
+    }
+
+    /**
      * @return TargetDirectoryLocator
      */
     private function getTargetDirectoryLocator() {

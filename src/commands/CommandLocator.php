@@ -74,6 +74,12 @@ class CommandLocator implements Cli\CommandLocator {
                 return $this->factory->getStatusCommand();
             }
 
+
+            case 'selfupdate':
+            case 'self-update': {
+                return $this->factory->getSelfupdateCommand();
+            }
+
             default: {
                 throw new Cli\CommandLocatorException(
                     sprintf('Command "%s" is not a valid command', $command),

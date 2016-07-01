@@ -131,6 +131,7 @@ spl_autoload_register(
                 'phario\\phive\\resetcommandconfig' => '/commands/reset/ResetCommandConfig.php',
                 'phario\\phive\\resetcontext' => '/commands/reset/ResetContext.php',
                 'phario\\phive\\resolveexception' => '/shared/exceptions/ResolveException.php',
+                'phario\\phive\\selfupdatecommand' => '/commands/selfupdate/SelfupdateCommand.php',
                 'phario\\phive\\sha1hash' => '/shared/hash/sha/Sha1Hash.php',
                 'phario\\phive\\sha256hash' => '/shared/hash/sha/Sha256Hash.php',
                 'phario\\phive\\signatureverifier' => '/services/signature/SignatureVerifier.php',
