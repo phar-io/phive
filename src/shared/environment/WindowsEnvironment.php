@@ -33,13 +33,4 @@ class WindowsEnvironment extends Environment {
     public function supportsColoredOutput() {
         return false;
     }
-
-    /**
-     * @return bool
-     */
-    public function hasAdminPrivileges() {
-        @exec('net session >nul 2>&1', $output, $exitCode);
-        return $exitCode === 0;
-    }
-
 }
