@@ -22,8 +22,8 @@ class ComposerServiceTest extends \PHPUnit_Framework_TestCase {
             ->willReturn('phpab');
 
         $expectedList = [
-            RequestedPhar::fromAlias(new PharAlias('phpab', new ExactVersionConstraint('1.20.1'))),
-            RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint())),
+            new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.20.1'))),
+            new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint())),
         ];
 
         $service = new ComposerService($sourcesList->reveal());

@@ -12,7 +12,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/foo-1.20.1.phar');
         $release = new Release('foo', new Version('1.20.1'), $url, null);
         $file = new File(new Filename('foo.phar'), 'bar');
-        $requestedPhar = RequestedPhar::fromUrl($url);
+        $requestedPhar = new RequestedPharUrl($url);
 
         $expectedPhar = new Phar('foo', new Version('1.20.1'), $file);
 
@@ -49,7 +49,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     public function testInstallByUrlGetsPharFromRepositoryAndInvokesInstaller() {
         $url = new Url('https://example.com/foo-1.20.1.phar');
         $file = new File(new Filename('foo.phar'), 'bar');
-        $requestedPhar = RequestedPhar::fromUrl($url);
+        $requestedPhar = new RequestedPharUrl($url);
 
         $phar = new Phar('foo', new Version('1.20.1'), $file);
 
@@ -87,7 +87,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     {
         $url = new Url('https://example.com/foo-1.20.1.phar');
         $file = new File(new Filename('foo.phar'), 'bar');
-        $requestedPhar = RequestedPhar::fromUrl($url);
+        $requestedPhar = new RequestedPharUrl($url);
 
         $phar = new Phar('foo', new Version('1.20.1'), $file);
 
@@ -126,7 +126,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     {
         $url = new Url('https://example.com/foo-1.20.1.phar');
         $file = new File(new Filename('foo.phar'), 'bar');
-        $requestedPhar = RequestedPhar::fromUrl($url);
+        $requestedPhar = new RequestedPharUrl($url);
 
         $phar = new Phar('foo', new Version('1.20.1'), $file);
 
@@ -166,7 +166,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     public function testInstallHandlesDownloadFailedException()
     {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
-        $requestedPhar = RequestedPhar::fromUrl($url);
+        $requestedPhar = new RequestedPharUrl($url);
 
         $registry = $this->getPharRegistryMock();
         $registry->method('hasPhar')->willReturn(false);
@@ -200,7 +200,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     public function testInstallHandlesPharRegistryException()
     {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
-        $requestedPhar = RequestedPhar::fromUrl($url);
+        $requestedPhar = new RequestedPharUrl($url);
 
         $registry = $this->getPharRegistryMock();
         $registry->method('hasPhar')->willReturn(true);
@@ -232,7 +232,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     public function testInstallHandlesVerificationFailedException()
     {
         $url = new Url('https://example.com/phpunit-5.2.10.phar');
-        $requestedPhar = RequestedPhar::fromUrl($url);
+        $requestedPhar = new RequestedPharUrl($url);
 
         $registry = $this->getPharRegistryMock();
         $registry->method('hasPhar')->willReturn(false);
@@ -265,7 +265,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallHandlesResolveException()
     {
-        $requestedPhar = RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
+        $requestedPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
 
         $resolver = $this->getAliasResolverServiceMock();
         $resolver->method('resolve')

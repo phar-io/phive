@@ -59,7 +59,7 @@ class InstallCommandConfig {
         for ($i = 0; $i < $argCount; $i++) {
             $argument = $this->cliOptions->getArgument($i);
             if (strpos($argument, 'https://') !== false) {
-                $phars[] = RequestedPhar::fromUrl(new Url($argument));
+                $phars[] = new RequestedPharUrl(new Url($argument));
             } else {
                 $aliasSegments = explode('@', $argument, 2);
                 $parser = new VersionConstraintParser();
@@ -68,7 +68,7 @@ class InstallCommandConfig {
                 } else {
                     $versionConstraint = new AnyVersionConstraint();
                 }
-                $phars[] = RequestedPhar::fromAlias(new PharAlias($aliasSegments[0], $versionConstraint));
+                $phars[] = new RequestedPharAlias(new PharAlias($aliasSegments[0], $versionConstraint));
             }
         }
         return $phars;

@@ -51,9 +51,9 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ->method('getArgumentCount')
             ->willReturn(0);
 
-        $phpunitPhar = RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
-        $phpabPhar = RequestedPhar::fromAlias(new PharAlias('phpunit', new ExactVersionConstraint('1.12.0')));
-        $phpdocPhar = RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
+        $phpunitPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
+        $phpabPhar = new RequestedPharAlias(new PharAlias('phpunit', new ExactVersionConstraint('1.12.0')));
+        $phpdocPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->expects($this->once())
@@ -77,9 +77,9 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
                 [1, 'phpunit']
             ]);
 
-        $phpunitPhar = RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
-        $phpabPhar = RequestedPhar::fromAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0')));
-        $phpdocPhar = RequestedPhar::fromAlias(new PharAlias('phpdoc', new AnyVersionConstraint()));
+        $phpunitPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
+        $phpabPhar = new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0')));
+        $phpdocPhar = new RequestedPharAlias(new PharAlias('phpdoc', new AnyVersionConstraint()));
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->expects($this->once())

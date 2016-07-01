@@ -82,9 +82,9 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ]);
 
         $expected = [
-            RequestedPhar::fromUrl(new Url('https://example.com/foo.phar')),
-            RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint())),
-            RequestedPhar::fromAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0'))),
+            new RequestedPharUrl(new Url('https://example.com/foo.phar')),
+            new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint())),
+            new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0'))),
         ];
 
         $commandConfig = new InstallCommandConfig($options, $this->getPhiveXmlConfigMock(), $this->getTargetDirectoryLocatorMock());

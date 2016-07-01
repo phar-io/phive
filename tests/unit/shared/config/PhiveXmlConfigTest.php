@@ -105,9 +105,9 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
 
         $config = new PhiveXmlConfig($configFile);
         $expected = [
-            RequestedPhar::fromUrl(new Url('https://example.com/phpunit-5.3.0.phar')),
-            RequestedPhar::fromAlias(new PharAlias('phpunit', new ExactVersionConstraint('5.2.12'))),
-            RequestedPhar::fromAlias(new PharAlias('phpunit', new AnyVersionConstraint()))
+            new RequestedPharUrl(new Url('https://example.com/phpunit-5.3.0.phar')),
+            new RequestedPharAlias(new PharAlias('phpunit', new ExactVersionConstraint('5.2.12'))),
+            new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()))
         ];
         $actual = $config->getPhars();
 

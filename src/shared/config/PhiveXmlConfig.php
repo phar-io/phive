@@ -71,9 +71,9 @@ class PhiveXmlConfig {
         /** @var \DOMElement $pharNode */
         foreach ($this->configFile->query('//phive:phar') as $pharNode) {
             if ($pharNode->hasAttribute('url')) {
-                $phars[] = RequestedPhar::fromUrl(new Url($pharNode->getAttribute('url')));
+                $phars[] = new RequestedPharUrl(new Url($pharNode->getAttribute('url')));
             } else {
-                $phars[] = RequestedPhar::fromAlias($this->getPharAliasFromNode($pharNode));
+                $phars[] = new RequestedPharAlias($this->getPharAliasFromNode($pharNode));
             }
         }
         return $phars;

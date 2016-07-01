@@ -107,6 +107,8 @@ spl_autoload_register(
                 'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
                 'phario\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
                 'phario\\phive\\requestedphar' => '/shared/phar/RequestedPhar.php',
+                'phario\\phive\\requestedpharalias' => '/shared/phar/RequestedPharAlias.php',
+                'phario\\phive\\requestedpharurl' => '/shared/phar/RequestedPharUrl.php',
                 'phario\\phive\\resetcommand' => '/commands/reset/ResetCommand.php',
                 'phario\\phive\\resetcommandconfig' => '/commands/reset/ResetCommandConfig.php',
                 'phario\\phive\\resolveexception' => '/shared/exceptions/ResolveException.php',
