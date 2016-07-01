@@ -193,7 +193,7 @@ class PharRegistry {
     public function hasUsages(Phar $phar) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
 
-        return $this->dbFile->query('//phive:usage', $pharNode)->length > 0;
+        return $this->dbFile->query('phive:usage', $pharNode)->length > 0;
     }
 
     /**

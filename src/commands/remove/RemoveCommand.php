@@ -21,7 +21,7 @@ class RemoveCommand implements Cli\Command {
     private $pharService;
 
     /**
-     * @varCli\Output
+     * @var Cli\Output
      */
     private $output;
 
