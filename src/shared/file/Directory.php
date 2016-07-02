@@ -19,11 +19,11 @@ class Directory {
      */
     public function __construct($path, $mode = 0775) {
         $this->ensureModeIsInteger($mode);
+        $this->mode = $mode;
+
         $this->ensureExists($path);
         $this->ensureIsDirectory($path);
-        $this->ensureMode($path, $mode);
         $this->path = realpath($path);
-        $this->mode = $mode;
     }
 
     /**
@@ -93,7 +93,7 @@ class Directory {
             return;
         }
         try {
-            mkdir($path, 0777, true);
+            mkdir($path, $this->mode, true);
             clearstatcache(true, $path);
         } catch (\ErrorException $e) {
             throw new DirectoryException(
@@ -104,30 +104,6 @@ class Directory {
         }
     }
 
-    /**
-     * @param string $path
-     * @param int    $mode
-     *
-     * @throws DirectoryException
-     */
-    private function ensureMode($path, $mode) {
-        if (octdec(substr(sprintf('%o', fileperms($path)), -4)) === $mode) {
-            return;
-        }
-        try {
-            $rc = chmod($path, $mode);
-            if (!$rc) {
-                throw new \ErrorException('Chmod call returned false.');
-            }
-            clearstatcache(true, $path);
-        } catch (\ErrorException $e) {
-            throw new DirectoryException(
-                sprintf('Setting mode for directory "%s" failed.', $path),
-                DirectoryException::ChmodFailed,
-                $e
-            );
-        }
-    }
 
     /**
      * @param string $child
