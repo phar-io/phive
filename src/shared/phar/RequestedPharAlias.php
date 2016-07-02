@@ -13,8 +13,8 @@ class RequestedPharAlias implements RequestedPhar {
      */
     public function __construct(PharAlias $alias) {
         $this->alias = $alias;
-    }    
-    
+    }
+
     /**
      * @return bool
      */
@@ -35,5 +35,5 @@ class RequestedPharAlias implements RequestedPhar {
     public function getPharUrl() {
         return null;
     }
-    
+
 }

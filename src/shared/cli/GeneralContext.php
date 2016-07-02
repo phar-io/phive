@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive\Cli;
 
-abstract  class GeneralContext implements Context {
+abstract class GeneralContext implements Context {
 
     /**
      * @var Options

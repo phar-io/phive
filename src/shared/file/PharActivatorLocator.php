@@ -26,5 +26,5 @@ class PharActivatorLocator {
         }
         return $this->factory->getSymlinkPharActivator();
     }
-    
+
 }

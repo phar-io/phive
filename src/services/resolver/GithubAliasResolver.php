@@ -23,7 +23,7 @@ class GithubAliasResolver extends AbstractAliasResolver {
             return $this->tryNext($alias);
         }
         $result = $this->localResolve($name);
-        return  count($result) ? $result : $this->tryNext($alias);
+        return count($result) ? $result : $this->tryNext($alias);
     }
 
     private function localResolve($name) {

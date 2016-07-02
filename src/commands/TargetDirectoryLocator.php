@@ -21,9 +21,9 @@ class TargetDirectoryLocator {
     private $cliOptions;
 
     /**
-     * @param Config $config
+     * @param Config         $config
      * @param PhiveXmlConfig $phiveXmlConfig
-     * @param Options $cliOptions
+     * @param Options        $cliOptions
      */
     public function __construct(Config $config, PhiveXmlConfig $phiveXmlConfig, Options $cliOptions) {
         $this->config = $config;
@@ -45,6 +45,5 @@ class TargetDirectoryLocator {
         }
         return $this->phiveXmlConfig->getTargetDirectory();
     }
-    
-    
+
 }

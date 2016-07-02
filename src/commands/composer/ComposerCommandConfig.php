@@ -11,10 +11,10 @@ class ComposerCommandConfig extends InstallCommandConfig {
     private $workingDirectory;
 
     /**
-     * @param Cli\Options $options
-     * @param PhiveXmlConfig $phiveXmlConfig
+     * @param Cli\Options            $options
+     * @param PhiveXmlConfig         $phiveXmlConfig
      * @param TargetDirectoryLocator $targetDirectoryLocator
-     * @param Directory $workingDirectory
+     * @param Directory              $workingDirectory
      */
     public function __construct(
         Cli\Options $options,

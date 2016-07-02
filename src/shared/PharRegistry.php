@@ -69,7 +69,7 @@ class PharRegistry {
     }
 
     /**
-     * @param Phar   $phar
+     * @param Phar     $phar
      * @param Filename $destination
      */
     public function addUsage(Phar $phar, Filename $destination) {

@@ -59,8 +59,8 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory $destination
-     * @param bool $makeCopy
+     * @param Directory     $destination
+     * @param bool          $makeCopy
      *
      * @return Phar|null
      */
@@ -70,7 +70,7 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory $destination
+     * @param Directory     $destination
      *
      * @return Phar|null
      */
@@ -80,15 +80,15 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory $destination
-     * @param bool $makeCopy
-     * @param bool $replaceExisting
+     * @param Directory     $destination
+     * @param bool          $makeCopy
+     * @param bool          $replaceExisting
      *
      * @return Phar|null
      */
     private function doInstall(RequestedPhar $requestedPhar, Directory $destination, $makeCopy, $replaceExisting) {
         $release = $this->getRelease($requestedPhar);
-        
+
         $name = $release->getName();
         $version = $release->getVersion();
         $pharName = $release->getUrl()->getPharName();

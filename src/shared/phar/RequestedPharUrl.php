@@ -13,8 +13,8 @@ class RequestedPharUrl implements RequestedPhar {
      */
     public function __construct(PharUrl $url) {
         $this->url = $url;
-    }    
-    
+    }
+
     /**
      * @return bool
      */
@@ -35,5 +35,5 @@ class RequestedPharUrl implements RequestedPhar {
     public function getPharUrl() {
         return $this->url;
     }
-    
+
 }

@@ -26,7 +26,7 @@ class WindowsEnvironment extends Environment {
     protected function getWhichCommand() {
         return 'where.exe';
     }
-    
+
     /**
      * @return bool
      */

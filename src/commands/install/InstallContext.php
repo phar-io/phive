@@ -7,9 +7,9 @@ class InstallContext extends GeneralContext {
 
     protected function getKnownOptions() {
         return [
-            'target' => 't',
-            'copy' => 'c',
-            'global' => 'g',
+            'target'    => 't',
+            'copy'      => 'c',
+            'global'    => 'g',
             'temporary' => false
         ];
     }

@@ -19,8 +19,8 @@ class UpdateCommandConfig {
     private $targetDirectoryLocator;
 
     /**
-     * @param Cli\Options $cliOptions
-     * @param PhiveXmlConfig $phiveXmlConfig
+     * @param Cli\Options            $cliOptions
+     * @param PhiveXmlConfig         $phiveXmlConfig
      * @param TargetDirectoryLocator $targetDirectoryLocator
      */
     public function __construct(

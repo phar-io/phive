@@ -9,7 +9,7 @@ class InstallCommandConfig {
      * @var Cli\Options
      */
     private $cliOptions;
-    
+
     /**
      * @var PhiveXmlConfig
      */
@@ -21,8 +21,8 @@ class InstallCommandConfig {
     private $targetDirectoryLocator;
 
     /**
-     * @param Cli\Options $options
-     * @param PhiveXmlConfig $phiveXmlConfig
+     * @param Cli\Options            $options
+     * @param PhiveXmlConfig         $phiveXmlConfig
      * @param TargetDirectoryLocator $targetDirectoryLocator
      */
     public function __construct(Cli\Options $options, PhiveXmlConfig $phiveXmlConfig, TargetDirectoryLocator $targetDirectoryLocator) {

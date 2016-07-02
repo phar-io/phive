@@ -7,7 +7,7 @@ class PipeIO {
     const PIPE_STDOUT = 1;
     const PIPE_STDERR = 2;
     const PIPE_FD_STATUS = 3;
-    
+
     /**
      * @var array
      */
@@ -24,7 +24,7 @@ class PipeIO {
     private $proc;
 
     /**
-     * @param int $pipe
+     * @param int    $pipe
      * @param string $content
      */
     public function writeToPipe($pipe, $content) {
@@ -51,8 +51,8 @@ class PipeIO {
 
     /**
      * @param string $executable
-     * @param array $params
-     * @param array $pipes
+     * @param array  $params
+     * @param array  $pipes
      */
     public function open($executable, array $params, array $pipes = []) {
         $this->proc = proc_open(
@@ -77,7 +77,7 @@ class PipeIO {
 
     /**
      * @param string $executable
-     * @param array $params
+     * @param array  $params
      *
      * @return string
      */
@@ -93,9 +93,9 @@ class PipeIO {
     private function buildPipes(array $pipes) {
         $this->pipeDefinitions =
             [
-                self::PIPE_STDIN => ['pipe', 'r'],
-                self::PIPE_STDOUT => ['pipe', 'w'],
-                self::PIPE_STDERR => ['pipe', 'w'],
+                self::PIPE_STDIN     => ['pipe', 'r'],
+                self::PIPE_STDOUT    => ['pipe', 'w'],
+                self::PIPE_STDERR    => ['pipe', 'w'],
                 self::PIPE_FD_STATUS => ['pipe', 'w'],
             ]
             + $pipes;

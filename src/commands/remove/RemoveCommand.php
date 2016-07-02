@@ -32,10 +32,10 @@ class RemoveCommand implements Cli\Command {
 
     /**
      * @param RemoveCommandConfig $config
-     * @param PharRegistry $repository
-     * @param PharService $pharService
-     * @param Cli\Output $output
-     * @param PhiveXmlConfig $phiveXmlConfig
+     * @param PharRegistry        $repository
+     * @param PharService         $pharService
+     * @param Cli\Output          $output
+     * @param PhiveXmlConfig      $phiveXmlConfig
      */
     public function __construct(
         RemoveCommandConfig $config,

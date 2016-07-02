@@ -2,12 +2,12 @@
 namespace PharIo\Phive;
 
 interface RequestedPhar {
-    
+
     /**
      * @return bool
      */
     public function isAlias();
-    
+
     /**
      * @return PharAlias
      */
@@ -17,5 +17,5 @@ interface RequestedPhar {
      * @return PharUrl
      */
     public function getPharUrl();
-    
+
 }

@@ -24,7 +24,7 @@ class BatPharActivator implements PharActivator {
         $template = str_replace(self::PHAR_PLACEHOLDER, $pharLocation->asString(), $this->template);
         $linkFilename = new Filename($linkDestination->asString() . '.bat');
         file_put_contents($linkFilename, $template);
-        
+
         return $linkFilename;
     }
 

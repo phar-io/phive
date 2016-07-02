@@ -56,7 +56,7 @@ class InstallCommand implements Cli\Command {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory $targetDirectory
+     * @param Directory     $targetDirectory
      */
     protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory) {
         $installedPhar = $this->pharService->install($requestedPhar, $targetDirectory, $this->getConfig()->makeCopy());

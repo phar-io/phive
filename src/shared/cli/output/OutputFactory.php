@@ -16,5 +16,5 @@ class OutputFactory {
     public function getColoredConsoleOutput() {
         return new ColoredConsoleOutput(ConsoleOutput::VERBOSE_INFO);
     }
-    
+
 }

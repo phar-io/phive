@@ -32,5 +32,5 @@ class PharUrl extends Url {
 
         return new Version($matches[1]);
     }
-    
+
 }

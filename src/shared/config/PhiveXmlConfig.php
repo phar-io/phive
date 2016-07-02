@@ -17,7 +17,7 @@ class PhiveXmlConfig {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Phar $installedPhar
+     * @param Phar          $installedPhar
      */
     public function addPhar(RequestedPhar $requestedPhar, Phar $installedPhar) {
         $name = (string)$requestedPhar->getAlias();

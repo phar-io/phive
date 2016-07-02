@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli;
 
 class ComposerCommand extends InstallCommand {
-    
+
     /**
      * @var ComposerService
      */

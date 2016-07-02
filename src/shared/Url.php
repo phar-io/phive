@@ -63,7 +63,7 @@ class Url {
      */
     public function withParams(array $params) {
         if (count($params)) {
-            return  new self($this->uri . '?' . http_build_query($params));
+            return new self($this->uri . '?' . http_build_query($params));
         }
         return $this;
     }

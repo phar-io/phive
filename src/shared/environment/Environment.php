@@ -33,7 +33,7 @@ abstract class Environment {
         $resultLines = explode("\n", $result);
         return new Filename($resultLines[0]);
     }
-    
+
     /**
      * @return Directory
      */

@@ -185,6 +185,7 @@ class GnuPG {
 
     /**
      * @param string $content
+     *
      * @return Filename
      */
     private function createTemporaryFile($content) {

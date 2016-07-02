@@ -24,9 +24,9 @@ class PharInstaller {
     private $pharActivator;
 
     /**
-     * @param Directory $pharDirectory
-     * @param Cli\Output $output
-     * @param Environment $environment
+     * @param Directory     $pharDirectory
+     * @param Cli\Output    $output
+     * @param Environment   $environment
      * @param PharActivator $pharActivator
      */
     public function __construct(
@@ -42,15 +42,15 @@ class PharInstaller {
     }
 
     /**
-     * @param File   $phar
+     * @param File     $phar
      * @param Filename $destination
-     * @param bool   $copy
+     * @param bool     $copy
      */
     public function install(File $phar, Filename $destination, $copy) {
         if ($destination->exists()) {
             unlink($destination->asString());
         }
-        
+
         if ($copy) {
             $this->copy($phar, $destination);
             return;
@@ -59,7 +59,7 @@ class PharInstaller {
     }
 
     /**
-     * @param File   $phar
+     * @param File     $phar
      * @param Filename $destination
      */
     private function copy(File $phar, Filename $destination) {
@@ -69,7 +69,7 @@ class PharInstaller {
     }
 
     /**
-     * @param File   $phar
+     * @param File     $phar
      * @param Filename $destination
      */
     private function link(File $phar, Filename $destination) {
