@@ -36,14 +36,14 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|SourcesList
      */
     private function getSourcesListMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(SourcesList::class);
+        return $this->createMock(SourcesList::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Output
      */
     private function getOutputMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Output::class);
+        return $this->createMock(Output::class);
     }
 
 }

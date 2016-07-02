@@ -44,21 +44,21 @@ class ReleaseTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|PharUrl
      */
     private function getUrlMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharUrl::class);
+        return $this->createMock(PharUrl::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Version
      */
     private function getVersionMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Version::class);
+        return $this->createMock(Version::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Hash
      */
     private function getHashMock() {
-        return $this->getMock(Hash::class);
+        return $this->createMock(Hash::class);
     }
 
 }

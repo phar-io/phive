@@ -26,14 +26,14 @@ class HelpCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Environment
      */
     private function getEnvironmentMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Environment::class);
+        return $this->createMock(Environment::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Output
      */
     protected function getOutputMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Output::class);
+        return $this->createMock(Output::class);
     }
 
 }

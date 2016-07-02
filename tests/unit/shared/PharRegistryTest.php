@@ -24,7 +24,7 @@ class PharRegistryTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($expected, $actual);
     }
-    
+
     public function testReturnsExpectedUsedPharsByDestination() {
         $repo = new PharRegistry(
             new XmlFile(
@@ -36,7 +36,7 @@ class PharRegistryTest extends \PHPUnit_Framework_TestCase {
         );
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|Directory $destination */
-        $destination = $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+        $destination = $this->createMock(Directory::class);
         $destination->method('__toString')
             ->willReturn('/vagrant/phive/tools');
 

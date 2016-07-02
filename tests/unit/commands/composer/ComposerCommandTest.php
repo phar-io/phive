@@ -235,62 +235,62 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(RequestedPhar::class);
+        return $this->createMock(RequestedPhar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+        return $this->createMock(Directory::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|ComposerCommandConfig
      */
     private function getComposerCommandConfigMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(ComposerCommandConfig::class);
+        return $this->createMock(ComposerCommandConfig::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|ComposerService
      */
     private function getComposerServiceMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(ComposerService::class);
+        return $this->createMock(ComposerService::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharService
      */
     private function getPharServiceMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharService::class);
+        return $this->createMock(PharService::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Input
      */
     private function getInputMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Input::class);
+        return $this->createMock(Input::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Environment
      */
     private function getEnvironmentMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Environment::class);
+        return $this->createMock(Environment::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
      */
     private function getPhiveXmlConfigMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PhiveXmlConfig::class);
+        return $this->createMock(PhiveXmlConfig::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Phar
      */
     private function getPharMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Phar::class);
+        return $this->createMock(Phar::class);
     }
 }

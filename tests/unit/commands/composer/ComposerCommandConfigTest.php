@@ -33,7 +33,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
      */
     public function testInstallGlobally($value) {
         $options = $this->getOptionsMock();
-        $options->method('isSwitch')->with('global')->willReturn($value);
+        $options->method('hasOption')->with('global')->willReturn($value);
 
         $commandConfig = new ComposerCommandConfig(
             $options,
@@ -52,7 +52,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
      */
     public function testMakeCopy($value) {
         $options = $this->getOptionsMock();
-        $options->method('isSwitch')->with('copy')->willReturn($value);
+        $options->method('hasOption')->with('copy')->willReturn($value);
 
         $commandConfig = new ComposerCommandConfig(
             $options,
@@ -73,7 +73,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDoNotAddToPhiveXml($temporaryValue, $globalValue, $expected) {
         $options = $this->getOptionsMock();
-        $options->method('isSwitch')->willReturnMap(
+        $options->method('hasOption')->willReturnMap(
             [
                 ['temporary', $temporaryValue],
                 ['global', $globalValue]
@@ -122,28 +122,28 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+        return $this->createMock(Directory::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Options
      */
     private function getOptionsMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Options::class);
+        return $this->createMock(Options::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
      */
     private function getPhiveXmlConfigMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PhiveXmlConfig::class);
+        return $this->createMock(PhiveXmlConfig::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|TargetDirectoryLocator
      */
     private function getTargetDirectoryLocatorMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(TargetDirectoryLocator::class);
+        return $this->createMock(TargetDirectoryLocator::class);
     }
 
 }

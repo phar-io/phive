@@ -38,28 +38,28 @@ class PharActivatorLocatorTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Environment
      */
     private function getEnvironmentMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Environment::class);
+        return $this->createMock(Environment::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|WindowsEnvironment
      */
     private function getWindowsEnvironmentMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(WindowsEnvironment::class);
+        return $this->createMock(WindowsEnvironment::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharActivatorFactory
      */
     private function getPharActivatorFactoryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharActivatorFactory::class);
+        return $this->createMock(PharActivatorFactory::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharActivator
      */
     private function getPharActivatorMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharActivator::class);
+        return $this->createMock(PharActivator::class);
     }
 
 }

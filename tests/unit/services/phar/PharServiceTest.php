@@ -145,7 +145,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $output->expects($this->once())
             ->method('writeInfo');
 
-        $filename = $this->getMockWithoutInvokingTheOriginalConstructor(Filename::class);
+        $filename = $this->createMock(Filename::class);
         $filename->method('exists')->willReturn(true);
 
         $directory = $this->getDirectoryMock();
@@ -279,7 +279,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $directory = $this->getDirectoryMock();
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
-        
+
         $this->expectException(ResolveException::class);
 
         $service = new PharService(
@@ -298,49 +298,49 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+        return $this->createMock(Directory::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharDownloader
      */
     private function getPharDownloaderMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharDownloader::class);
+        return $this->createMock(PharDownloader::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharInstaller
      */
     private function getPharInstallerMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharInstaller::class);
+        return $this->createMock(PharInstaller::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
      */
     private function getPharRegistryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharRegistry::class);
+        return $this->createMock(PharRegistry::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|AliasResolverService
      */
     private function getAliasResolverServiceMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(AliasResolverService::class);
+        return $this->createMock(AliasResolverService::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
      */
     private function getOutputMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Cli\Output::class);
+        return $this->createMock(Cli\Output::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SourceRepositoryLoader
      */
     private function getSourceRepositoryLoaderMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(SourceRepositoryLoader::class);
+        return $this->createMock(SourceRepositoryLoader::class);
     }
 
 

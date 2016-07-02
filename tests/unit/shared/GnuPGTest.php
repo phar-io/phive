@@ -152,21 +152,21 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Filename
      */
     private function getFilenameMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Filename::class);
+        return $this->createMock(Filename::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+        return $this->createMock(Directory::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PipeIO
      */
     private function getPipeIOMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PipeIO::class);
+        return $this->createMock(PipeIO::class);
     }
 
 }

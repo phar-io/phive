@@ -90,7 +90,7 @@ class ConsoleInputTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Output
      */
     private function getOutputMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Output::class);
+        return $this->createMock(Output::class);
     }
-    
+
 }

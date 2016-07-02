@@ -35,16 +35,16 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|PurgeCommandConfig
      */
     private function getCommandConfigMock() {
-        return $this->getMockBuilder(PurgeCommandConfig::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(PurgeCommandConfig::class)
+            ;
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
      */
     private function getPharRegistryMock() {
-        return $this->getMockBuilder(PharRegistry::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(PharRegistry::class)
+            ;
     }
 
     /**
@@ -52,9 +52,9 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
      */
     private function getPharMock() {
         /** @var \PHPUnit_Framework_MockObject_MockObject|Version $version */
-        $version = $this->getMockBuilder(Version::class)->disableOriginalConstructor()->getMock();
+        $version = $this->createMock(Version::class);
         /** @var \PHPUnit_Framework_MockObject_MockObject|File $file */
-        $file = $this->getMockBuilder(File::class)->disableOriginalConstructor()->getMock();
+        $file = $this->createMock(File::class);
         return new Phar('foo', $version, $file);
     }
 
@@ -62,8 +62,8 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
      */
     private function getOutputMock() {
-        return $this->getMockBuilder(Cli\Output::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(Cli\Output::class)
+            ;
     }
 
     public function testWritesToOutput() {

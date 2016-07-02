@@ -42,40 +42,40 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|InstallCommandConfig
      */
     private function getCommandConfigMock() {
-        return $this->getMockBuilder(InstallCommandConfig::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(InstallCommandConfig::class)
+            ;
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharService
      */
     private function getPharServiceMock() {
-        return $this->getMockBuilder(PharService::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(PharService::class)
+            ;
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
-        return $this->getMockBuilder(RequestedPhar::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(RequestedPhar::class)
+            ;
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
      */
     private function getPhiveXmlConfigMock() {
-        return $this->getMockBuilder(PhiveXmlConfig::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(PhiveXmlConfig::class)
+            ;
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Environment
      */
     private function getEnvironmentMock() {
-        return $this->getMockBuilder(Environment::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(Environment::class)
+            ;
     }
 
     public function testAddsEntryToPhiveXml() {
@@ -96,15 +96,15 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->method('hasTargetDirectory')->willReturn(true);
-        
+
         $phiveXmlConfig->expects($this->once())
             ->method('addPhar')
             ->with($requestedPhar, $installedPhar);
-        
+
         $config->expects($this->once())
             ->method('getRequestedPhars')
             ->will($this->returnValue([$requestedPhar]));
-        
+
         $command = new InstallCommand($config, $pharService, $phiveXmlConfig, $this->getEnvironmentMock());
 
         $command->execute();
@@ -112,7 +112,7 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
 
     public function testDoNotAddEntryToPhiveXml() {
         $directory = $this->getDirectoryMock();
-        
+
         $config = $this->getCommandConfigMock();
         $config->method('getTargetDirectory')->willReturn($directory);
 
@@ -141,14 +141,14 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Phar
      */
     private function getPharMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Phar::class);
+        return $this->createMock(Phar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+        return $this->createMock(Directory::class);
     }
 
 }

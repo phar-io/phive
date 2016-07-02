@@ -54,32 +54,32 @@ class TargetDirectoryLocatorTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->getMockBuilder(Directory::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(Directory::class)
+            ;
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Config
      */
     private function getConfigMock() {
-        return $this->getMockBuilder(Config::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(Config::class)
+            ;
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Options
      */
     private function getOptionsMock() {
-        return $this->getMockBuilder(Options::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(Options::class)
+            ;
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
      */
     private function getPhiveXmlConfigMock() {
-        return $this->getMockBuilder(PhiveXmlConfig::class)
-            ->disableOriginalConstructor()->getMock();
+        return $this->createMock(PhiveXmlConfig::class)
+            ;
     }
 
 }

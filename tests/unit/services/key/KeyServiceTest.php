@@ -73,35 +73,35 @@ class KeyServiceTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Input
      */
     private function getInputMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Cli\Input::class);
+        return $this->createMock(Cli\Input::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
      */
     private function getOutputMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Cli\Output::class);
+        return $this->createMock(Cli\Output::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|KeyDownloader
      */
     private function getKeyDownloaderMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(KeyDownloader::class);
+        return $this->createMock(KeyDownloader::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|KeyImporter
      */
     private function getKeyImporterMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(KeyImporter::class);
+        return $this->createMock(KeyImporter::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PublicKey
      */
     private function getPublicKeyMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PublicKey::class);
+        return $this->createMock(PublicKey::class);
     }
 }
 

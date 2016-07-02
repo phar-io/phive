@@ -43,7 +43,7 @@ class ResetCommandConfigTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Options
      */
     private function getOptionsMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Cli\Options::class);
+        return $this->createMock(Cli\Options::class);
     }
 
 }

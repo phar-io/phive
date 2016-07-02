@@ -24,7 +24,7 @@ class SkelCommandConfigTest extends \PHPUnit_Framework_TestCase {
      * @param bool $switch
      */
     public function testAllowOverwrite($switch) {
-        $this->cliOptionsProphecy->isSwitch('force')->willReturn($switch);
+        $this->cliOptionsProphecy->hasOption('force')->willReturn($switch);
         $config = new SkelCommandConfig($this->cliOptionsProphecy->reveal(), '/tmp/');
 
         $this->assertSame($switch, $config->allowOverwrite());

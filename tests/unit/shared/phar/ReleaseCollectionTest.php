@@ -58,14 +58,14 @@ class ReleaseCollectionTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Release
      */
     private function getReleaseMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Release::class);
+        return $this->createMock(Release::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|VersionConstraint
      */
     private function getVersionConstraintMock() {
-        return $this->getMock(VersionConstraint::class);
+        return $this->createMock(VersionConstraint::class);
     }
 
 }

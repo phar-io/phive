@@ -90,21 +90,21 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Environment
      */
     private function getEnvironmentMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Environment::class);
+        return $this->createMock(Environment::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+        return $this->createMock(Directory::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Options
      */
     private function getOptionsMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Options::class);
+        return $this->createMock(Options::class);
     }
 
 }

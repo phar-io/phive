@@ -99,28 +99,28 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|HttpProgressUpdate
      */
     private function getHttpProgressUpdateMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(HttpProgressUpdate::class);
+        return $this->createMock(HttpProgressUpdate::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|HttpResponse
      */
     private function getHttpResponseMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(HttpResponse::class);
+        return $this->createMock(HttpResponse::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Curl
      */
     private function getCurlMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Curl::class);
+        return $this->createMock(Curl::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Output
      */
     private function getOutputMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Output::class);
+        return $this->createMock(Output::class);
     }
 
 }

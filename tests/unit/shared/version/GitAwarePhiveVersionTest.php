@@ -16,7 +16,7 @@ class GitAwarePhiveVersionTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertContains('0.2.0-67-gd2a5e31', $version->getVersionString());
     }
-    
+
     public function testGetVersionReturnsFallbackVersionIfNoGitRepositoryIsPresent() {
         $git = $this->getGitMock();
         $git->method('isRepository')->willReturn(false);
@@ -61,7 +61,7 @@ class GitAwarePhiveVersionTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Git
      */
     private function getGitMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Git::class);
+        return $this->createMock(Git::class);
     }
-    
+
 }

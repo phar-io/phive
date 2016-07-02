@@ -17,14 +17,15 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
     public function testInstantiation($method, $expectedClass) {
         $request = $this->getRequestMock();
         $options = $this->getOptionsMock();
-        $request->method('getCommandOptions')->willReturn($options);
+        $request->method('parse')->willReturn($options);
+        $request->method('getOptions')->willReturn($options);
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|Factory $factory */
         $factory = $this->getMockBuilder(Factory::class)
             ->setConstructorArgs([$request])
             ->setMethods(['getSourcesList'])
             ->getMock();
-        $factory->method('getSourcesList')->willReturn($this->getMockWithoutInvokingTheOriginalConstructor(SourcesList::class));
+        $factory->method('getSourcesList')->willReturn($this->createMock(SourcesList::class));
         $this->assertInstanceOf($expectedClass, call_user_func([$factory, $method]));
     }
 
@@ -49,14 +50,14 @@ class FactoryTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Request
      */
     private function getRequestMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Request::class);
+        return $this->createMock(Request::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Options
      */
     private function getOptionsMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Cli\Options::class);
+        return $this->createMock(Cli\Options::class);
     }
 
 }

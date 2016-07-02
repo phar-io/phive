@@ -50,14 +50,14 @@ class GithubRepositoryTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|JsonData
      */
     private function getJsonDataMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(JsonData::class);
+        return $this->createMock(JsonData::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharAlias
      */
     private function getPharAliasMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharAlias::class);
+        return $this->createMock(PharAlias::class);
     }
 
 

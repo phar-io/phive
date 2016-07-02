@@ -71,7 +71,7 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
      * @return \DOMElement|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getReleaseNodeMock($version, $url, $hashType, $hash) {
-        $hashNode = $this->getMockWithoutInvokingTheOriginalConstructor(\DOMElement::class);
+        $hashNode = $this->createMock(\DOMElement::class);
         $hashNode->method('getAttribute')->willReturnMap(
             [
                 ['type', $hashType],
@@ -79,10 +79,10 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
             ]
         );
 
-        $hashNodeList = $this->getMockWithoutInvokingTheOriginalConstructor(\DOMNodeList::class);
+        $hashNodeList = $this->createMock(\DOMNodeList::class);
         $hashNodeList->method('item')->with('0')->willReturn($hashNode);
 
-        $node = $this->getMockWithoutInvokingTheOriginalConstructor(\DOMElement::class);
+        $node = $this->createMock(\DOMElement::class);
         $node->method('getAttribute')->willReturnMap(
             [
                 ['version', $version],
@@ -97,14 +97,14 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|XmlFile
      */
     private function getXmlFileMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(XmlFile::class);
+        return $this->createMock(XmlFile::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharAlias
      */
     private function getPharAliasMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharAlias::class);
+        return $this->createMock(PharAlias::class);
     }
 
 }

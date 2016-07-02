@@ -126,7 +126,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
      */
     private function getPharRegistryMock() {
-        $mock = $this->getMockWithoutInvokingTheOriginalConstructor(PharRegistry::class);
+        $mock = $this->createMock(PharRegistry::class);
         $mock->method('getKnownSignatureFingerprints')->willReturn([]);
         return $mock;
     }

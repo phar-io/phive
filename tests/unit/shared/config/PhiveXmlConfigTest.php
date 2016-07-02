@@ -118,35 +118,35 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|\DOMElement
      */
     private function getDomElementMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(\DOMElement::class);
+        return $this->createMock(\DOMElement::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|\DOMNodeList
      */
     private function getDomNodeListMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(\DOMNodeList::class);
+        return $this->createMock(\DOMNodeList::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(RequestedPhar::class);
+        return $this->createMock(RequestedPhar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Phar
      */
     private function getPharMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Phar::class);
+        return $this->createMock(Phar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|XmlFile
      */
     private function getXmlFileMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(XmlFile::class);
+        return $this->createMock(XmlFile::class);
     }
 
 }

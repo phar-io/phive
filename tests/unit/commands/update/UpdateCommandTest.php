@@ -47,42 +47,42 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Directory::class);
+        return $this->createMock(Directory::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|UpdateCommandConfig
      */
     private function getCommandConfigMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(UpdateCommandConfig::class);
+        return $this->createMock(UpdateCommandConfig::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharService
      */
     private function getPharServiceMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PharService::class);
+        return $this->createMock(PharService::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(RequestedPhar::class);
+        return $this->createMock(RequestedPhar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Phar
      */
     private function getPharMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(Phar::class);
+        return $this->createMock(Phar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
      */
     private function getPhiveXmlConfigMock() {
-        return $this->getMockWithoutInvokingTheOriginalConstructor(PhiveXmlConfig::class);
+        return $this->createMock(PhiveXmlConfig::class);
     }
 
 }
