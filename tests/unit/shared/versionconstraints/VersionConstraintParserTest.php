@@ -22,8 +22,7 @@ class VersionConstraintParserTest extends \PHPUnit_Framework_TestCase {
      *
      * @param string $versionString
      */
-    public function testThrowsExceptionIfVersionStringIsNotSupported($versionString)
-    {
+    public function testThrowsExceptionIfVersionStringIsNotSupported($versionString) {
         $parser = new VersionConstraintParser();
         $this->expectException(UnsupportedVersionConstraintException::class);
         $parser->parse($versionString);

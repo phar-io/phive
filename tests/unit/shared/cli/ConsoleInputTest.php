@@ -15,7 +15,7 @@ class ConsoleInputTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider confirmProvider
      *
      * @param string $inputString
-     * @param bool $expectedResult
+     * @param bool   $expectedResult
      */
     public function testConfirmReturnsTrue($inputString, $expectedResult) {
         $output = $this->getOutputMock();
@@ -45,7 +45,7 @@ class ConsoleInputTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider  capitalizedOptionProvider
      *
-     * @param bool $default
+     * @param bool   $default
      * @param string $expectedString
      */
     public function testCapitalizesExpectedOption($default, $expectedString) {

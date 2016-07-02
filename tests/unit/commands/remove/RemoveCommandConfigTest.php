@@ -38,16 +38,14 @@ class RemoveCommandConfigTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Directory
      */
     private function getDirectoryMock() {
-        return $this->createMock(Directory::class)
-            ;
+        return $this->createMock(Directory::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Options
      */
     private function getOptionsMock() {
-        return $this->createMock(Options::class)
-            ;
+        return $this->createMock(Options::class);
     }
 
 }

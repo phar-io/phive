@@ -33,7 +33,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase {
         $url = new Url('https://example.com/foo/bar');
         $this->assertSame('example.com', $url->getHostname());
     }
-    
+
 }
 
 

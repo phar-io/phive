@@ -83,8 +83,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $service->install($requestedPhar, $directory, true);
     }
 
-    public function testUpdate()
-    {
+    public function testUpdate() {
         $url = new PharUrl('https://example.com/foo-1.20.1.phar');
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPharUrl($url);
@@ -122,8 +121,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $service->update($requestedPhar, $directory);
     }
 
-    public function testInstallSkipsPharIfAlreadyInstalled()
-    {
+    public function testInstallSkipsPharIfAlreadyInstalled() {
         $url = new PharUrl('https://example.com/foo-1.20.1.phar');
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPharUrl($url);
@@ -163,8 +161,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $service->install($requestedPhar, $directory, true);
     }
 
-    public function testInstallHandlesDownloadFailedException()
-    {
+    public function testInstallHandlesDownloadFailedException() {
         $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = new RequestedPharUrl($url);
 
@@ -197,8 +194,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $service->install($requestedPhar, $directory, false);
     }
 
-    public function testInstallHandlesPharRegistryException()
-    {
+    public function testInstallHandlesPharRegistryException() {
         $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = new RequestedPharUrl($url);
 
@@ -229,8 +225,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $service->install($requestedPhar, $directory, false);
     }
 
-    public function testInstallHandlesVerificationFailedException()
-    {
+    public function testInstallHandlesVerificationFailedException() {
         $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
         $requestedPhar = new RequestedPharUrl($url);
 
@@ -263,8 +258,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $service->install($requestedPhar, $directory, false);
     }
 
-    public function testInstallHandlesResolveException()
-    {
+    public function testInstallHandlesResolveException() {
         $requestedPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
 
         $resolver = $this->getAliasResolverServiceMock();
@@ -342,7 +336,6 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     private function getSourceRepositoryLoaderMock() {
         return $this->createMock(SourceRepositoryLoader::class);
     }
-
 
 }
 

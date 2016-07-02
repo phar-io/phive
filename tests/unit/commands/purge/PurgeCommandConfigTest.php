@@ -19,16 +19,14 @@ class PurgeCommandConfigTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Options
      */
     private function getOptionsMock() {
-        return $this->createMock(Cli\Options::class)
-            ;
+        return $this->createMock(Cli\Options::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Config
      */
     private function getConfigMock() {
-        return $this->createMock(Config::class)
-            ;
+        return $this->createMock(Config::class);
     }
 
 }

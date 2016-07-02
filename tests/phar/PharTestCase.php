@@ -61,7 +61,7 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @param $command
+     * @param       $command
      * @param array $arguments
      * @param array $switches
      *
@@ -93,9 +93,9 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @param string $name
-     * @param string $version
-     * @param string $filename
+     * @param string        $name
+     * @param string        $version
+     * @param string        $filename
      * @param Filename|null $usage
      */
     protected function addPharToRegistry($name, $version, $filename, Filename $usage = null) {
@@ -187,7 +187,7 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
      * @return string
      */
     private function getTestedPharFilename() {
-        return __DIR__  . '/under-test.php';
+        return __DIR__ . '/under-test.php';
     }
 
     /**

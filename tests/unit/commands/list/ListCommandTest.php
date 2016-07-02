@@ -31,7 +31,6 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase {
         $command->execute();
     }
 
-
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SourcesList
      */

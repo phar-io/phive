@@ -9,7 +9,7 @@ class RequestedPharUrlTest extends \PHPUnit_Framework_TestCase {
     public function testReturnsExpectedUrl() {
         $url = new PharUrl('https://example.com/foo.phar');
         $phar = new RequestedPharUrl($url);
-        
+
         $this->assertFalse($phar->isAlias());
         $this->assertSame($url, $phar->getPharUrl());
     }

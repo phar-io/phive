@@ -60,5 +60,4 @@ class GithubRepositoryTest extends \PHPUnit_Framework_TestCase {
         return $this->createMock(PharAlias::class);
     }
 
-
 }

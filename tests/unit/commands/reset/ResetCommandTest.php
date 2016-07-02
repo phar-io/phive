@@ -6,8 +6,7 @@ namespace PharIo\Phive;
  */
 class ResetCommandTest extends \PHPUnit_Framework_TestCase {
 
-    public function testInstallsExpectedPhars()
-    {
+    public function testInstallsExpectedPhars() {
         $pharRegistry = $this->getPharRegistryMock();
         $environment = $this->getEnvironmentMock();
         $installer = $this->getPharInstallerMock();
@@ -39,8 +38,7 @@ class ResetCommandTest extends \PHPUnit_Framework_TestCase {
         $command->execute();
     }
 
-    public function testOnlyInstallsPharsMatchingProvidedAliases()
-    {
+    public function testOnlyInstallsPharsMatchingProvidedAliases() {
         $config = $this->getConfigMock();
         $pharRegistry = $this->getPharRegistryMock();
         $environment = $this->getEnvironmentMock();

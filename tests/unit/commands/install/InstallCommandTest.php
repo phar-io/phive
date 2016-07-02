@@ -42,40 +42,35 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|InstallCommandConfig
      */
     private function getCommandConfigMock() {
-        return $this->createMock(InstallCommandConfig::class)
-            ;
+        return $this->createMock(InstallCommandConfig::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharService
      */
     private function getPharServiceMock() {
-        return $this->createMock(PharService::class)
-            ;
+        return $this->createMock(PharService::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
-        return $this->createMock(RequestedPhar::class)
-            ;
+        return $this->createMock(RequestedPhar::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
      */
     private function getPhiveXmlConfigMock() {
-        return $this->createMock(PhiveXmlConfig::class)
-            ;
+        return $this->createMock(PhiveXmlConfig::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Environment
      */
     private function getEnvironmentMock() {
-        return $this->createMock(Environment::class)
-            ;
+        return $this->createMock(Environment::class);
     }
 
     public function testAddsEntryToPhiveXml() {

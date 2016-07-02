@@ -38,7 +38,7 @@ class AliasResolverTest extends \PHPUnit_Framework_TestCase {
         $this->sourcesList = $this->prophesize(SourcesList::class);
         $this->sourcesListFileLoader = $this->prophesize(SourcesListFileLoader::class);
         $this->sourcesListFileLoader->load()->shouldBeCalled()->willReturn($this->sourcesList);
-        
+
     }
 
 }

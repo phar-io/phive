@@ -65,8 +65,8 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider httpProgressUpdateProvider
      *
-     * @param int $downloadSize
-     * @param int $bytesReceived
+     * @param int    $downloadSize
+     * @param int    $bytesReceived
      * @param string $expectedInfo
      */
     public function testHandleUpdateWritesExpectedInfoToOutput($downloadSize, $bytesReceived, $expectedInfo) {
@@ -77,7 +77,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
 
         $output = $this->getOutputMock();
         $output->expects($this->once())->method('writeInfo')->willReturnCallback(
-            function($info) use ($expectedInfo) {
+            function ($info) use ($expectedInfo) {
                 $this->assertContains('https://example.com/foo.phar', $info);
                 $this->assertContains($expectedInfo, $info);
             }

@@ -35,16 +35,14 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|PurgeCommandConfig
      */
     private function getCommandConfigMock() {
-        return $this->createMock(PurgeCommandConfig::class)
-            ;
+        return $this->createMock(PurgeCommandConfig::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
      */
     private function getPharRegistryMock() {
-        return $this->createMock(PharRegistry::class)
-            ;
+        return $this->createMock(PharRegistry::class);
     }
 
     /**
@@ -62,8 +60,7 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
      * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
      */
     private function getOutputMock() {
-        return $this->createMock(Cli\Output::class)
-            ;
+        return $this->createMock(Cli\Output::class);
     }
 
     public function testWritesToOutput() {

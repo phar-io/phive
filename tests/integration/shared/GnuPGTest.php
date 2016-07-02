@@ -10,7 +10,7 @@ class GnuPGTest extends IntegrationTestCase {
         $gnupg = $this->getFactory()->getShellBasedGnupg(new Directory(__DIR__ . '/fixtures/.gpg'));
         $message = file_get_contents(__DIR__ . '/fixtures/message.txt');
         $signature = file_get_contents(__DIR__ . '/fixtures/message.txt.asc');
-        
+
         $actual = $gnupg->verify($message, $signature);
         $this->assertSame(0, $actual[0]['summary']);
     }

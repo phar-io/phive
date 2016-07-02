@@ -21,8 +21,8 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
             ->with(PipeIO::PIPE_STDIN, $key);
         $pipeIO->method('readFromPipe')->willReturn($status);
 
-        $expected  = [
-            'imported' => 1,
+        $expected = [
+            'imported'    => 1,
             'fingerprint' => 'foo'
         ];
 
@@ -45,7 +45,7 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
             ->with(PipeIO::PIPE_STDIN, $key);
         $pipeIO->method('readFromPipe')->willReturn($status);
 
-        $expected  = ['imported' => 0];
+        $expected = ['imported' => 0];
 
         $gnupg = new GnuPG($executable, $tmpDirectory, $homeDirectory);
         $this->assertEquals($expected, $gnupg->import($key));
@@ -56,9 +56,9 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
      *
      * @param string $status
      * @param string $expectedFingerprint
-     * @param int $expectedValidity
+     * @param int    $expectedValidity
      * @param string $expectedTimestamp
-     * @param int $expectedSummary
+     * @param int    $expectedSummary
      */
     public function testVerifyReturnsExpectedArray(
         $status, $expectedFingerprint, $expectedValidity, $expectedTimestamp, $expectedSummary
@@ -113,7 +113,6 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($actual);
     }
 
-
     public static function verificationStatusProvider() {
         return [
             'Valid Signature' => [
@@ -123,7 +122,7 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
                 '1461855515',
                 0
             ],
-            'Bad Signature' => [
+            'Bad Signature'   => [
                 '[GNUPG:] BADSIG 4AA394086372C20A Sebastian Bergmann <sb@sebastian-bergmann.de>',
                 '4AA394086372C20A',
                 0,

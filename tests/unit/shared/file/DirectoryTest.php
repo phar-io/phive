@@ -3,7 +3,7 @@ namespace PharIo\Phive;
 
 /**
  * @covers PharIo\Phive\Directory
- * @uses PharIo\Phive\DirectoryException
+ * @uses   PharIo\Phive\DirectoryException
  */
 class DirectoryTest extends \PHPUnit_Framework_TestCase {
 
@@ -60,7 +60,9 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     public function testThrowsExceptionIfGivenPathCannotBeCreated() {
         $this->expectException(DirectoryException::class);
         $this->expectExceptionCode(DirectoryException::CreateFailed);
-        set_error_handler(function() { throw new \ErrorException('caught'); });
+        set_error_handler(function () {
+            throw new \ErrorException('caught');
+        });
         (new Directory('/arbitrary/non/exisiting/path', 0777));
         restore_error_handler();
     }

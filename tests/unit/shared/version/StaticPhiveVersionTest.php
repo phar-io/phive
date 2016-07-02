@@ -19,5 +19,4 @@ class StaticPhiveVersionTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame('0.3.1', $version->getVersion());
     }
 
-    
 }

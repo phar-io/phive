@@ -24,8 +24,7 @@ class AnyVersionConstraintTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($constraint->complies($version));
     }
 
-    public function testAsString()
-    {
+    public function testAsString() {
         $this->assertSame('*', (new AnyVersionConstraint())->asString());
     }
 

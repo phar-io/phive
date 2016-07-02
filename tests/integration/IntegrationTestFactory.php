@@ -26,5 +26,4 @@ class IntegrationTestFactory extends Factory {
         );
     }
 
-
 }

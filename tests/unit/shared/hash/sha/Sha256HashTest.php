@@ -42,7 +42,6 @@ class Sha256HashTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame($hashValue, $hash->asString());
     }
 
-
     public function testEquals() {
         $hash = new Sha256Hash('7a8755061d7ac2bc09f25bf6a867031fb945b4b25a6be1fb41b117893065f76c');
         $otherHash = new Sha256Hash('7a8755061d7ac2bc09f25bf6a867031fb945b4b25a6be1fb41b117893065f76c');

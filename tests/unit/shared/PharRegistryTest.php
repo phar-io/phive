@@ -67,6 +67,7 @@ class PharRegistryTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($expected, $actual);
     }
+
     protected function setUp() {
         TestStreamWrapper::register('test', __DIR__ . '/fixtures/');
     }
