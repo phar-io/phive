@@ -30,6 +30,13 @@ interface Context {
     public function getOptionForChar($char);
 
     /**
+     * @param $char
+     *
+     * @return bool
+     */
+    public function hasOptionForChar($char);
+
+    /**
      * @return bool
      */
     public function acceptsArguments();

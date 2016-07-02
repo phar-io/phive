@@ -22,10 +22,12 @@ class Options {
     }
 
     /**
-     * @param string $argument
+     * @param $name
+     *
+     * @return bool
      */
-    public function addArgument($argument) {
-        $this->arguments[] = $argument;
+    public function hasOption($name) {
+        return isset($this->options[$name]);
     }
 
     /**
@@ -45,12 +47,10 @@ class Options {
     }
 
     /**
-     * @param $name
-     *
-     * @return bool
+     * @param string $argument
      */
-    public function hasOption($name) {
-        return isset($this->options[$name]);
+    public function addArgument($argument) {
+        $this->arguments[] = $argument;
     }
 
     public function getArgumentCount() {
@@ -74,5 +74,12 @@ class Options {
     public function getArguments() {
         return $this->arguments;
     }
-    
+
+    public function mergeOptions(Options $options) {
+        $result = new Options();
+        $result->arguments = $this->arguments;
+        $result->options = array_merge($this->options, $options->options);
+        return $result;
+    }
+
 }

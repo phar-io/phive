@@ -19,11 +19,17 @@ class Request {
     private $count;
 
     /**
+     * @var Options
+     */
+    private $options;
+
+    /**
      * @param array $argv
      */
     public function __construct(array $argv) {
         $this->argv = $argv;
         $this->count = count($argv) - 1;
+        $this->options = new Options();
     }
 
     public function parse(Context $context) {
@@ -33,8 +39,8 @@ class Request {
                 if ($arg[1] === '-') {
                     $this->handleLongOption($context, substr($arg, 2));
                 } else {
-                    $len = strlen($arg);
-                    for ($t = 1; $t < $len; $t++) {
+                    $len = strlen($arg) - 1;
+                    for ($t = 1; $t <= $len; $t++) {
                         $this->handleShortOption($context, $arg[$t], ($t === $len));
                     }
                 }
@@ -47,7 +53,16 @@ class Request {
             }
         }
 
-        return $context->getOptions();
+        $this->options = $context->getOptions()->mergeOptions($this->options);
+
+        return $this->getOptions();
+    }
+
+    /**
+     * @return Options
+     */
+    public function getOptions() {
+        return $this->options;
     }
 
     /**
@@ -94,18 +109,17 @@ class Request {
             $value = true;
         }
 
-        $this->options->setOption($option, $value);
+        $context->setOption($option, $value);
     }
 
     private function handleShortOption(Context $context, $char, $isLast) {
-        if (!$context->knowsOption($char)) {
+        if (!$context->hasOptionForChar($char)) {
             throw new RequestException(
                 sprintf('Unknown option: %s', $char),
                 RequestException::InvalidOption
             );
         }
         $option = $context->getOptionForChar($char);
-
         if ($context->requiresValue($option)) {
             if (!$isLast || !$this->hasNext()) {
                 throw new RequestException(
@@ -121,6 +135,8 @@ class Request {
                 );
             }
             $context->setOption($option, $value);
+        } else {
+            $context->setOption($option, true);
         }
     }
 
@@ -133,5 +149,6 @@ class Request {
         }
         $context->addArgument($arg);
     }
+
 
 }

@@ -12,13 +12,13 @@ list
 install [--target bin/] <alias|url> [<alias|url> ...]
     Perform installation of a phar distributed application or library
 
-    alias/url       Installation via github profile/project, phar.io alias or explicit download form given URL
+    alias/url        Installation via github profile/project, phar.io alias or explicit download form given URL
 
-    --target        Set custom target directory for the PHAR
+    -t, --target     Set custom target directory for the PHAR
 
-    -copy           Copy PHAR file instead of using symlink
-    -global         Install PHAR globally (likely to require root privileges)
-    -temporary      Do not add entries in phive.xml for installed PHARs
+    -c, --copy       Copy PHAR file instead of using symlink
+    -g, --global     Install PHAR globally (likely to require root privileges)
+        --temporary  Do not add entries in phive.xml for installed PHARs
 
 composer
     Parse composer.json file for known aliases and suggest installation

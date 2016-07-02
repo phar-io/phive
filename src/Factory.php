@@ -69,7 +69,7 @@ class Factory {
      */
     public function getSkelCommand() {
         return new SkelCommand(
-            new SkelCommandConfig($this->request->getCommandOptions(), getcwd()),
+            new SkelCommandConfig($this->request->parse(new SkelContext()), getcwd()),
             $this->getPhiveVersion()
         );
     }
@@ -86,7 +86,7 @@ class Factory {
      */
     public function getRemoveCommand() {
         return new RemoveCommand(
-            new RemoveCommandConfig($this->request->getCommandOptions(), $this->getTargetDirectoryLocator()),
+            new RemoveCommandConfig($this->request->parse(new RemoveContext()), $this->getTargetDirectoryLocator()),
             $this->getPharRegistry(),
             $this->getPharService(),
             $this->getOutput(),
@@ -99,7 +99,7 @@ class Factory {
      */
     public function getResetCommand() {
         return new ResetCommand(
-            new ResetCommandConfig($this->request->getCommandOptions()),
+            new ResetCommandConfig($this->request->parse(new ResetContext())),
             $this->getPharRegistry(),
             $this->getEnvironment(),
             $this->getPharInstaller()
@@ -126,7 +126,7 @@ class Factory {
     public function getUpdateCommand() {
         return new UpdateCommand(
             new UpdateCommandConfig(
-                $this->request->getCommandOptions(),
+                $this->request->parse(new UpdateContext()),
                 $this->getPhiveXmlConfig(),
                 $this->getTargetDirectoryLocator()
             ),
@@ -151,7 +151,7 @@ class Factory {
     public function getPurgeCommand() {
         return new PurgeCommand(
             new PurgeCommandConfig(
-                $this->request->getCommandOptions(),
+                $this->request->parse(new PurgeContext()),
                 $this->getConfig()
             ),
             $this->getPharRegistry(),
@@ -165,7 +165,7 @@ class Factory {
     public function getComposerCommand() {
         return new ComposerCommand(
             new ComposerCommandConfig(
-                $this->request->getCommandOptions(),
+                $this->request->parse(new ComposerContext()),
                 $this->getPhiveXmlConfig(),
                 $this->getTargetDirectoryLocator(),
                 $this->getEnvironment()->getWorkingDirectory()
@@ -182,7 +182,7 @@ class Factory {
      * @return TargetDirectoryLocator
      */
     private function getTargetDirectoryLocator() {
-        return new TargetDirectoryLocator($this->getConfig(), $this->getPhiveXmlConfig(), $this->request->getCommandOptions());
+        return new TargetDirectoryLocator($this->getConfig(), $this->getPhiveXmlConfig(), $this->request->getOptions());
     }
 
     /**
@@ -245,7 +245,7 @@ class Factory {
     protected function getConfig() {
         return new Config(
             $this->getEnvironment(),
-            $this->request->getCommandOptions()
+            $this->request->getOptions()
         );
     }
 

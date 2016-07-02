@@ -26,10 +26,7 @@ class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
         $factory->addMethodProphecy($method);
         $locator = new CommandLocator($factory->reveal());
 
-        $request = $this->prophesize(Cli\Request::class);
-        $request->getCommand()->willReturn($command)->shouldBeCalled();
-
-        $result = $locator->getCommand($request->reveal());
+        $result = $locator->getCommand($command);
         $this->assertInstanceOf(CLI\Command::class, $result);
     }
 
@@ -56,10 +53,7 @@ class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
         $factory = $this->prophesize(Factory::class);
         $locator = new CommandLocator($factory->reveal());
 
-        $request = $this->prophesize(Cli\Request::class);
-        $request->getCommand()->willReturn('unknown');
-
-        $locator->getCommand($request->reveal());
+        $locator->getCommand('unknown');
     }
 
 }
