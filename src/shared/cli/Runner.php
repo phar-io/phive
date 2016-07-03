@@ -63,13 +63,16 @@ class Runner {
      * @return int
      */
     public function run() {
+        $command = 'help';
         try {
             $this->environment->ensureFitness();
             $this->setupRuntime();
             $this->showHeader();
 
             $options = $this->request->parse(new PhiveContext());
-            $command = $options->hasArgument(0) ? $options->getArgument(0) : '';
+            if ($options->hasArgument(0)) {
+                $command = $options->getArgument(0);
+            }
             $this->locator->getCommand($command)->execute();
             $this->showFooter();
             return self::RC_OK;
@@ -84,7 +87,7 @@ class Runner {
         } catch (CommandLocatorException $e) {
             if ($e->getCode() == CommandLocatorException::UnknownCommand) {
                 $this->output->writeError(
-                    sprintf("Unknown command '%s'\n\n", $this->request->getCommand())
+                    sprintf("Unknown command '%s'\n\n", $command)
                 );
                 return self::RC_UNKNOWN_COMMAND;
             } else {
