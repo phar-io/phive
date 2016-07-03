@@ -15,7 +15,8 @@ class Runner {
     const RC_EXT_MISSING = 2;
     const RC_UNKNOWN_COMMAND = 3;
     const RC_ERROR = 4;
-    const RC_BUG_FOUND = 5;
+    const RC_PARAM_ERROR = 5;
+    const RC_BUG_FOUND = 10;
 
     /**
      * @var CommandLocator
@@ -98,7 +99,7 @@ class Runner {
             $this->output->writeError(sprintf("Error while processing arguments to command '%s':", $command));
             $this->output->writeError($e->getMessage());
             $this->showFooter();
-            return self::RC_ERROR;
+            return self::RC_PARAM_ERROR;
         } catch (Exception $e) {
             $this->output->writeError($e->getMessage());
             $this->showFooter();
