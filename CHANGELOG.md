@@ -6,6 +6,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ### Changed
 * via [PR #56](https://github.com/phar-io/phive/pull/57) by [sebastianbergmann](https://github.com/sebastianbergmann): Changelog rewritten to respect the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
+* Rewritten CLI parameter processing code (Fixes [#29](https://github.com/phar-io/phive/issues/29) and [#55](https://github.com/phar-io/phive/issues/55)) 
 
 ## [0.4.1] - 2016-06-02
 
