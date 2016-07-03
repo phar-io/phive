@@ -94,6 +94,11 @@ class Runner {
                 $this->showError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
                 return self::RC_ERROR;
             }
+        } catch (RequestException $e) {
+            $this->output->writeError(sprintf("Error while processing arguments to command '%s':", $command));
+            $this->output->writeError($e->getMessage());
+            $this->showFooter();
+            return self::RC_ERROR;
         } catch (Exception $e) {
             $this->output->writeError($e->getMessage());
             $this->showFooter();
