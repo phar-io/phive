@@ -42,13 +42,13 @@ interface Context {
     public function acceptsArguments();
 
     /**
-     * @param $arg
+     * @param string $arg
      */
     public function addArgument($arg);
 
     /**
      * @param string $option
-     * @param string $value
+     * @param mixed  $value
      */
     public function setOption($option, $value);
 

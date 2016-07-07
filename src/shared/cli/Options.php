@@ -14,8 +14,8 @@ class Options {
     private $arguments = [];
 
     /**
-     * @param string         $option
-     * @param string|boolean $value
+     * @param string $option
+     * @param mixed  $value
      */
     public function setOption($option, $value) {
         $this->options[$option] = $value;

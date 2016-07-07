@@ -24,7 +24,7 @@ abstract class GeneralContext implements Context {
 
     /**
      * @param string $option
-     * @param string $value
+     * @param mixed  $value
      */
     public function setOption($option, $value) {
         $this->options->setOption($option, $value);
