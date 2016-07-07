@@ -11,9 +11,9 @@ namespace PharIo\Phive;
 class GnuPG {
 
     /**
-     * @var Filename
+     * @var Executor
      */
-    private $executable;
+    private $executor;
 
     /**
      * @var Directory
@@ -26,12 +26,12 @@ class GnuPG {
     private $tmpDirectory;
 
     /**
-     * @param Filename  $executable
+     * @param Executor  $executor
      * @param Directory $tmpDirectory
      * @param Directory $homeDirectory
      */
-    public function __construct(Filename $executable, Directory $tmpDirectory, Directory $homeDirectory) {
-        $this->executable = $executable;
+    public function __construct(Executor $executor, Directory $tmpDirectory, Directory $homeDirectory) {
+        $this->executor = $executor;
         $this->tmpDirectory = $tmpDirectory;
         $this->homeDirectory = $homeDirectory;
     }
@@ -173,14 +173,13 @@ class GnuPG {
     private function execute(array $params) {
         $devNull = stripos(PHP_OS, 'win') === 0 ? 'nul' : '/dev/null';
 
-        $command = sprintf('%s %s %s 2>%s',
-            escapeshellarg($this->executable),
+        $argLine = sprintf('%s %s 2>%s',
             join(' ', $this->getDefaultGpgParams()),
             join(' ', $params),
             $devNull
         );
-        exec($command, $result, $rc);
-        return $result;
+        $result = $this->executor->execute($argLine);
+        return $result->getOutput();
     }
 
     /**

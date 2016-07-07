@@ -338,7 +338,9 @@ class Factory {
             $gpg->seterrormode(\Gnupg::ERROR_EXCEPTION);
         } else {
             $gpg = new GnuPG(
-                $this->getConfig()->getGPGBinaryPath(),
+                $this->getExecutor(
+                    $this->getConfig()->getGPGBinaryPath()
+                ),
                 $home->child('temp'),
                 $home
             );
@@ -484,6 +486,10 @@ class Factory {
      */
     private function getFileLinkerLocator() {
         return new PharActivatorLocator(new PharActivatorFactory());
+    }
+
+    private function getExecutor(Filename $executable) {
+        return new Executor($executable);
     }
 
 }
