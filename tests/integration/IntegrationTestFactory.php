@@ -3,6 +3,7 @@ namespace PharIo\Phive\IntegrationTests;
 
 use PharIo\Phive\Cli\Request;
 use PharIo\Phive\Directory;
+use PharIo\Phive\Executor;
 use PharIo\Phive\Factory;
 use PharIo\Phive\GnuPG;
 
@@ -20,7 +21,7 @@ class IntegrationTestFactory extends Factory {
      */
     public function getShellBasedGnupg(Directory $gpgHome) {
         return new GnuPG(
-            $this->getConfig()->getGPGBinaryPath(),
+            new Executor($this->getConfig()->getGPGBinaryPath()),
             new Directory(__DIR__),
             $gpgHome
         );
