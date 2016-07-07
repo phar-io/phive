@@ -93,8 +93,8 @@ class PharService {
         $version = $release->getVersion();
         $pharName = $release->getUrl()->getPharName();
 
-        $destination = $destination->file($pharName);
-        if (!$replaceExisting && $destination->exists()) {
+        $destinationFile = $destination->file($pharName);
+        if (!$replaceExisting && $destinationFile->exists()) {
             $this->output->writeInfo(sprintf('%s is already installed, skipping.', $pharName));
             return null;
         }
@@ -105,8 +105,8 @@ class PharService {
         } else {
             $phar = $this->pharRegistry->getPhar($name, $version);
         }
-        $this->installer->install($phar->getFile(), $destination, $makeCopy);
-        $this->pharRegistry->addUsage($phar, $destination);
+        $this->installer->install($phar->getFile(), $destinationFile, $makeCopy);
+        $this->pharRegistry->addUsage($phar, $destinationFile);
 
         return $phar;
     }
