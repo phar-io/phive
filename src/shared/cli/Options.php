@@ -14,7 +14,7 @@ class Options {
     private $arguments = [];
 
     /**
-     * @param string $option
+     * @param string         $option
      * @param string|boolean $value
      */
     public function setOption($option, $value) {

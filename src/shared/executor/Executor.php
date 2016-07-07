@@ -39,7 +39,7 @@ class Executor {
         if (!$executable->exists()) {
             throw new ExecutorException(
                 sprintf(
-                    'Given executable "%s" does not exist' , $executable->asString()
+                    'Given executable "%s" does not exist', $executable->asString()
                 ),
                 ExecutorException::NotFound
             );
@@ -50,7 +50,7 @@ class Executor {
         if (!$executable->isExecutable()) {
             throw new ExecutorException(
                 sprintf(
-                    'Given executable "%s" is not executable' , $executable->asString()
+                    'Given executable "%s" is not executable', $executable->asString()
                 ),
                 ExecutorException::NotExecutable
             );
