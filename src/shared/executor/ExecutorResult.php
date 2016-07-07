@@ -9,7 +9,7 @@ class ExecutorResult {
     private $command;
 
     /**
-     * @var string
+     * @var array
      */
     private $output;
 
@@ -21,24 +21,33 @@ class ExecutorResult {
     /**
      * ExecutorResult constructor.
      *
-     * @param string $command
-     * @param string $output
-     * @param int    $exitCode
+     * @param string   $command
+     * @param string[] $output
+     * @param int      $exitCode
      */
-    public function __construct($command, $output, $exitCode) {
+    public function __construct($command, array $output, $exitCode) {
         $this->command = $command;
         $this->output = $output;
         $this->exitCode = $exitCode;
     }
 
+    /**
+     * @return bool
+     */
     public function isSuccess() {
         return $this->exitCode === 0;
     }
 
+    /**
+     * @return int
+     */
     public function getExitCode() {
         return $this->exitCode;
     }
 
+    /**
+     * @return string[]
+     */
     public function getOutput() {
         return $this->output;
     }
