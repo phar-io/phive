@@ -39,6 +39,7 @@ spl_autoload_register(
 
 Phar::mapPhar('phive.phar');
 
-(new Factory(new Cli\Request($_SERVER['argv']), new StaticPhiveVersion('___VERSION___')))->getRunner()->run();
+$rc = (new Factory(new Cli\Request($_SERVER['argv']), new StaticPhiveVersion('___VERSION___')))->getRunner()->run();
+exit($rc);
 
 __HALT_COMPILER();
