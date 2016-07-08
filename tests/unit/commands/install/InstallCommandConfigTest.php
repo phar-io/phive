@@ -20,21 +20,33 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
 
-    /**
-     * @dataProvider boolProvider
-     *
-     * @param $switch
-     */
-    public function testMakeCopy($switch) {
-        $options = $this->getOptionsMock();
-        $options->expects($this->once())
-            ->method('hasOption')
-            ->with('copy')
-            ->willReturn($switch);
 
-        $commandConfig = new InstallCommandConfig($options, $this->getPhiveXmlConfigMock(), $this->getTargetDirectoryLocatorMock());
-        $this->assertSame($switch, $commandConfig->makeCopy());
+    /**
+     * @dataProvider makeCopyProvider
+     *
+     * @param bool $hasCopyOption
+     * @param bool $hasGlobalOption
+     * @param bool $expected
+     */
+    public function testMakeCopy($hasCopyOption, $hasGlobalOption, $expected) {
+        $options = $this->getOptionsMock();
+        $options->method('hasOption')->willReturnMap(
+            [
+                ['copy', $hasCopyOption],
+                ['global', $hasGlobalOption]
+            ]
+        );
+
+        $commandConfig = new InstallCommandConfig(
+            $options,
+            $this->getPhiveXmlConfigMock(),
+            $this->getTargetDirectoryLocatorMock(),
+            $this->getDirectoryMock()
+        );
+
+        $this->assertSame($expected, $commandConfig->makeCopy());
     }
+
 
     /**
      * @dataProvider boolProvider
@@ -104,6 +116,17 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
         $config = new InstallCommandConfig($options, $this->getPhiveXmlConfigMock(), $this->getTargetDirectoryLocatorMock());
         $this->assertSame($switch, $config->doNotAddToPhiveXml());
+    }
+    
+    /**
+     * @return array
+     */
+    public static function makeCopyProvider() {
+        return [
+            [true, false, true],
+            [false, false, false],
+            [false, true, true]
+        ];
     }
 
     /**

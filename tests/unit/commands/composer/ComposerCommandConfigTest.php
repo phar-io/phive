@@ -46,13 +46,20 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @dataProvider boolProvider
+     * @dataProvider makeCopyProvider
      *
-     * @param bool $value
+     * @param bool $hasCopyOption
+     * @param bool $hasGlobalOption
+     * @param bool $expected
      */
-    public function testMakeCopy($value) {
+    public function testMakeCopy($hasCopyOption, $hasGlobalOption, $expected) {
         $options = $this->getOptionsMock();
-        $options->method('hasOption')->with('copy')->willReturn($value);
+        $options->method('hasOption')->willReturnMap(
+            [
+                ['copy', $hasCopyOption],
+                ['global', $hasGlobalOption]
+            ]
+        );
 
         $commandConfig = new ComposerCommandConfig(
             $options,
@@ -61,7 +68,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
             $this->getDirectoryMock()
         );
 
-        $this->assertSame($value, $commandConfig->makeCopy());
+        $this->assertSame($expected, $commandConfig->makeCopy());
     }
 
     /**
@@ -115,6 +122,17 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
             [true, true, true],
             [false, true, true],
             [false, false, false],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function makeCopyProvider() {
+        return [
+            [true, false, true],
+            [false, false, false],
+            [false, true, true]
         ];
     }
 

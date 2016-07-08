@@ -17,7 +17,7 @@ install [--target bin/] <alias|url> [<alias|url> ...]
     -t, --target     Set custom target directory for the PHAR
 
     -c, --copy       Copy PHAR file instead of using symlink
-    -g, --global     Install PHAR globally (likely to require root privileges)
+    -g, --global     Install a copy of the PHAR globally (likely to require root privileges)
         --temporary  Do not add entries in phive.xml for installed PHARs
 
 composer

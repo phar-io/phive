@@ -85,7 +85,7 @@ class InstallCommandConfig {
      * @return bool
      */
     public function makeCopy() {
-        return $this->cliOptions->hasOption('copy');
+        return $this->cliOptions->hasOption('copy') || $this->installGlobally();
     }
 
     /**
