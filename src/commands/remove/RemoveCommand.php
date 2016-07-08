@@ -13,7 +13,7 @@ class RemoveCommand implements Cli\Command {
     /**
      * @var PharRegistry
      */
-    private $repository;
+    private $pharRegistry;
 
     /**
      * @var PharService
@@ -32,36 +32,40 @@ class RemoveCommand implements Cli\Command {
 
     /**
      * @param RemoveCommandConfig $config
-     * @param PharRegistry        $repository
+     * @param PharRegistry        $pharRegistry
      * @param PharService         $pharService
      * @param Cli\Output          $output
      * @param PhiveXmlConfig      $phiveXmlConfig
      */
     public function __construct(
         RemoveCommandConfig $config,
-        PharRegistry $repository,
+        PharRegistry $pharRegistry,
         PharService $pharService,
         Cli\Output $output,
         PhiveXmlConfig $phiveXmlConfig
     ) {
         $this->config = $config;
-        $this->repository = $repository;
+        $this->pharRegistry = $pharRegistry;
         $this->pharService = $pharService;
         $this->output = $output;
         $this->phiveXmlConfig = $phiveXmlConfig;
     }
 
     public function execute() {
-        $destination = $this->config->getTargetDirectory() . '/' . $this->config->getPharName();
-        $phar = $this->repository->getByUsage($destination);
+        $name = $this->config->getPharName();
+        if (!$this->phiveXmlConfig->hasPharLocation($name)) {
+            throw new NotFoundException(sprintf('PHAR %s not found in phive.xml, aborting.', $name));
+        }
+        $location = $this->phiveXmlConfig->getPharLocation($this->config->getPharName());
+        $phar = $this->pharRegistry->getByUsage($location);
         $this->output->writeInfo(
             sprintf('Removing Phar %s %s', $phar->getName(), $phar->getVersion()->getVersionString())
         );
         $this->phiveXmlConfig->removePhar($phar->getName());
-        $this->repository->removeUsage($phar, $destination);
-        unlink($destination);
+        $this->pharRegistry->removeUsage($phar, $location);
+        unlink($location);
 
-        if (!$this->repository->hasUsages($phar)) {
+        if (!$this->pharRegistry->hasUsages($phar)) {
             $this->output->writeInfo(
                 sprintf(
                     'Phar %s %s has no more known usages. You can run \'phive purge\' to remove unused Phars.',

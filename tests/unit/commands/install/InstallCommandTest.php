@@ -94,7 +94,7 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
 
         $phiveXmlConfig->expects($this->once())
             ->method('addPhar')
-            ->with($requestedPhar, $installedPhar);
+            ->with($requestedPhar, $installedPhar, $this->getDirectoryMock());
 
         $config->expects($this->once())
             ->method('getRequestedPhars')
@@ -112,6 +112,8 @@ class InstallCommandTest extends \PHPUnit_Framework_TestCase {
         $config->method('getTargetDirectory')->willReturn($directory);
 
         $pharService = $this->getPharServiceMock();
+        $pharService->method('install')->willReturn($this->getPharMock());
+
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
 
         $requestedPhar = $this->getRequestedPharMock();

@@ -75,7 +75,7 @@ class XmlFile {
     /**
      * @return Directory
      */
-    public function getDirectoy() {
+    public function getDirectory() {
         return new Directory(dirname($this->filename->asString()));
     }
 

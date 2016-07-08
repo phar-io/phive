@@ -175,13 +175,20 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $input->method('confirm')->willReturn(true);
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
-        $phiveXmlConfig->method('hasTargetDirectory')->willReturn(true);
+        $phiveXmlConfig->expects($this->at(0))
+            ->method('addPhar')
+            ->with(
+                $this->identicalTo($requestedPhar1),
+                $this->identicalTo($installedPhar1),
+                $workingDirectory
+            );
         $phiveXmlConfig->expects($this->at(1))
             ->method('addPhar')
-            ->with($this->identicalTo($requestedPhar1), $this->identicalTo($installedPhar1));
-        $phiveXmlConfig->expects($this->at(2))
-            ->method('addPhar')
-            ->with($this->identicalTo($requestedPhar2), $this->identicalTo($installedPhar2));
+            ->with(
+                $this->identicalTo($requestedPhar2),
+                $this->identicalTo($installedPhar2),
+                $workingDirectory
+            );
 
         $command = new ComposerCommand(
             $config,

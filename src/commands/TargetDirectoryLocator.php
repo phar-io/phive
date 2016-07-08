@@ -40,10 +40,10 @@ class TargetDirectoryLocator {
         if ($this->cliOptions->hasOption('target')) {
             return new Directory($this->cliOptions->getOption('target'));
         }
-        if (!$this->phiveXmlConfig->hasTargetDirectory()) {
-            return $this->config->getToolsDirectory();
+        if ($this->phiveXmlConfig->hasTargetDirectory()) {
+            return $this->phiveXmlConfig->getTargetDirectory();
         }
-        return $this->phiveXmlConfig->getTargetDirectory();
+        return $this->config->getToolsDirectory();
     }
 
 }

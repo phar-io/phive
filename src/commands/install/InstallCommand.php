@@ -47,7 +47,7 @@ class InstallCommand implements Cli\Command {
      *
      */
     public function execute() {
-        $targetDirectory = $this->initTargetDirectory();
+        $targetDirectory = $this->getTargetDirectory();
 
         foreach ($this->getConfig()->getRequestedPhars() as $requestedPhar) {
             $this->installRequestedPhar($requestedPhar, $targetDirectory);
@@ -63,7 +63,7 @@ class InstallCommand implements Cli\Command {
         if (null === $installedPhar || $this->getConfig()->doNotAddToPhiveXml()) {
             return;
         }
-        $this->phiveXmlConfig->addPhar($requestedPhar, $installedPhar);
+        $this->phiveXmlConfig->addPhar($requestedPhar, $installedPhar, $targetDirectory);
     }
 
     /**
@@ -74,17 +74,6 @@ class InstallCommand implements Cli\Command {
             return new Directory(dirname($this->environment->getBinaryName()));
         }
         return $this->getConfig()->getTargetDirectory();
-    }
-
-    /**
-     * @return Directory
-     */
-    protected function initTargetDirectory() {
-        $targetDirectory = $this->getTargetDirectory();
-        if (!$this->phiveXmlConfig->hasTargetDirectory() && !$this->getConfig()->doNotAddToPhiveXml()) {
-            $this->phiveXmlConfig->setTargetDirectory($targetDirectory);
-        }
-        return $targetDirectory;
     }
 
     /**

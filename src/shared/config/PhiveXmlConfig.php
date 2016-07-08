@@ -17,9 +17,10 @@ class PhiveXmlConfig {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Phar          $installedPhar
+     * @param Phar $installedPhar
+     * @param Directory $location
      */
-    public function addPhar(RequestedPhar $requestedPhar, Phar $installedPhar) {
+    public function addPhar(RequestedPhar $requestedPhar, Phar $installedPhar, Directory $location) {
         $name = (string)$requestedPhar->getAlias();
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
@@ -28,9 +29,32 @@ class PhiveXmlConfig {
             $pharNode->setAttribute('name', $name);
             $this->configFile->addElement($pharNode);
         }
+
+        $xmlFileDirectory = $this->configFile->getDirectory();
+
         $pharNode->setAttribute('version', $requestedPhar->getAlias()->getVersionConstraint()->asString());
         $pharNode->setAttribute('installed', $installedPhar->getVersion()->getVersionString());
+        $pharNode->setAttribute('location', $location->getRelativePathTo($xmlFileDirectory));
         $this->configFile->save();
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasPharLocation($name) {
+        return $this->hasPharNode($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Filename
+     */
+    public function getPharLocation($name) {
+        $node = $this->getPharNode($name);
+        return (new Directory($node->getAttribute('location')))->file($name);
     }
 
     /**
@@ -57,7 +81,7 @@ class PhiveXmlConfig {
     /**
      * @param string $name
      *
-     * @return \DOMNode
+     * @return \DOMElement
      */
     private function getPharNode($name) {
         return $this->configFile->query(sprintf('//phive:phar[@name="%s"]', mb_strtolower($name)))->item(0);
@@ -126,7 +150,7 @@ class PhiveXmlConfig {
             $node = $this->configFile->createElement('targetDirectory');
             $configurationNode->appendChild($node);
         }
-        $xmlFileDirectory = $this->configFile->getDirectoy();
+        $xmlFileDirectory = $this->configFile->getDirectory();
         $node->nodeValue = $directory->getRelativePathTo($xmlFileDirectory);
     }
 

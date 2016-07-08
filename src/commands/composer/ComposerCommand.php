@@ -30,7 +30,7 @@ class ComposerCommand extends InstallCommand {
     }
 
     public function execute() {
-        $targetDirectory = $this->initTargetDirectory();
+        $targetDirectory = $this->getTargetDirectory();
 
         foreach ($this->composerService->findCandidates($this->getConfig()->getComposerFilename()) as $candidate) {
             if (!$this->input->confirm(sprintf('Install %s ?', $candidate->getAlias()))) {

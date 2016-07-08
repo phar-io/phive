@@ -30,10 +30,15 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $installedPhar = $this->getPharMock();
         $installedPhar->method('getVersion')->willReturn($version);
 
+        $targetDirectory = $this->getDirectoryMock();
+        $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock());
+
         $config = new PhiveXmlConfig($configFile);
 
         $configFile->expects($this->once())->method('save');
-        $config->addPhar($phar, $installedPhar);
+        $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
+
+        $config->addPhar($phar, $installedPhar, $targetDirectory);
     }
 
     public function testAddPharCreatesNewNode() {
@@ -62,13 +67,18 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $installedPhar = $this->getPharMock();
         $installedPhar->method('getVersion')->willReturn($version);
 
+        $targetDirectory = $this->getDirectoryMock();
+        $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock());
+
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
 
         $config = new PhiveXmlConfig($configFile);
 
         $configFile->expects($this->once())->method('save');
-        $config->addPhar($phar, $installedPhar);
+        $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
+
+        $config->addPhar($phar, $installedPhar, $targetDirectory);
     }
 
     public function testGetPharsReturnsExpectedPhars() {
@@ -147,6 +157,13 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
      */
     private function getXmlFileMock() {
         return $this->createMock(XmlFile::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     */
+    private function getDirectoryMock() {
+        return $this->createMock(Directory::class);
     }
 
 }

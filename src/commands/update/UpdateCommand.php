@@ -37,11 +37,18 @@ class UpdateCommand implements Cli\Command {
         $targetDirectory = $this->config->getTargetDirectory();
 
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
+
+            $pharName = (string)$requestedPhar->getAlias();
+
+            if ($this->phiveXmlConfig->hasPharLocation($pharName)) {
+                $targetDirectory = new Directory(dirname($this->phiveXmlConfig->getPharLocation($pharName)));
+            }
+
             $installedPhar = $this->pharService->update($requestedPhar, $targetDirectory);
             if (null === $installedPhar) {
                 continue;
             }
-            $this->phiveXmlConfig->addPhar($requestedPhar, $installedPhar);
+            $this->phiveXmlConfig->addPhar($requestedPhar, $installedPhar, $targetDirectory);
         }
     }
 
