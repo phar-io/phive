@@ -1,4 +1,9 @@
-Usage: %phive <command> [arguments]
+Usage: %phive [global-options] <command> [arguments]
+
+Global options:
+    --home  Set a custom Phive home directory (default: ~/.phive)
+
+Commands:
 
 help
     Show this help output and exit
@@ -7,7 +12,7 @@ version
     Show release version and exit
 
 list
-    Show a list of know PHAR aliases
+    Show a list of PHAR aliases found in $PHIVE_HOME/repositories.xml
 
 install [--target bin/] <alias|url> [<alias|url> ...]
     Perform installation of a phar distributed application or library
