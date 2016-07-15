@@ -85,6 +85,7 @@ spl_autoload_register(
                 'phario\\phive\\installcommand' => '/commands/install/InstallCommand.php',
                 'phario\\phive\\installcommandconfig' => '/commands/install/InstallCommandConfig.php',
                 'phario\\phive\\installcontext' => '/commands/install/InstallContext.php',
+                'phario\\phive\\installedphar' => '/shared/phar/InstalledPhar.php',
                 'phario\\phive\\invalidhashexception' => '/shared/exceptions/InvalidHashException.php',
                 'phario\\phive\\ioexception' => '/shared/exceptions/IOException.php',
                 'phario\\phive\\jsondata' => '/shared/JsonData.php',

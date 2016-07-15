@@ -48,7 +48,7 @@ class UpdateCommand implements Cli\Command {
             if (null === $installedPhar) {
                 continue;
             }
-            $this->phiveXmlConfig->addPhar($requestedPhar, $installedPhar, $targetDirectory);
+            $this->phiveXmlConfig->addPhar($installedPhar);
         }
     }
 

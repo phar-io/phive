@@ -84,7 +84,7 @@ class PharService {
      * @param bool          $makeCopy
      * @param bool          $replaceExisting
      *
-     * @return Phar|null
+     * @return InstalledPhar
      */
     private function doInstall(RequestedPhar $requestedPhar, Directory $destination, $makeCopy, $replaceExisting) {
         $release = $this->getRelease($requestedPhar);
@@ -108,7 +108,12 @@ class PharService {
         $this->installer->install($phar->getFile(), $destinationFile, $makeCopy);
         $this->pharRegistry->addUsage($phar, $destinationFile);
 
-        return $phar;
+        return new InstalledPhar(
+            $name,
+            $release->getVersion(),
+            $requestedPhar->getVersionConstraint(),
+            $destination
+        );
     }
 
     /**

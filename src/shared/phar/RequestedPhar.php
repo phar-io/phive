@@ -18,4 +18,9 @@ interface RequestedPhar {
      */
     public function getPharUrl();
 
+    /**
+     * @return VersionConstraint
+     */
+    public function getVersionConstraint();
+
 }

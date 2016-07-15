@@ -23,12 +23,10 @@ class PhiveXmlConfig {
     }
 
     /**
-     * @param RequestedPhar $requestedPhar
-     * @param Phar $installedPhar
-     * @param Directory $location
+     * @param InstalledPhar $installedPhar
      */
-    public function addPhar(RequestedPhar $requestedPhar, Phar $installedPhar, Directory $location) {
-        $name = (string)$requestedPhar->getAlias();
+    public function addPhar(InstalledPhar $installedPhar) {
+        $name = $installedPhar->getName();
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
         } else {
@@ -39,9 +37,9 @@ class PhiveXmlConfig {
 
         $xmlFileDirectory = $this->configFile->getDirectory();
 
-        $pharNode->setAttribute('version', $requestedPhar->getAlias()->getVersionConstraint()->asString());
-        $pharNode->setAttribute('installed', $installedPhar->getVersion()->getVersionString());
-        $pharNode->setAttribute('location', $location->getRelativePathTo($xmlFileDirectory));
+        $pharNode->setAttribute('version', $installedPhar->getVersionConstraint()->asString());
+        $pharNode->setAttribute('installed', $installedPhar->getInstalledVersion()->getVersionString());
+        $pharNode->setAttribute('location', $installedPhar->getLocation()->getRelativePathTo($xmlFileDirectory));
         $this->configFile->save();
     }
 

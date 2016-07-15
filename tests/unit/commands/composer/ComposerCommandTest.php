@@ -31,14 +31,14 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
                 $this->identicalTo($requestedPhar1),
                 $workingDirectory,
                 false
-            )->willReturn($this->getPharMock());
+            )->willReturn($this->getInstalledPharMock());
         $pharService->expects($this->at(1))
             ->method('install')
             ->with(
                 $this->identicalTo($requestedPhar2),
                 $workingDirectory,
                 false
-            )->willReturn($this->getPharMock());
+            )->willReturn($this->getInstalledPharMock());
 
         $input = $this->getInputMock();
         $input->method('confirm')->willReturn(true);
@@ -152,8 +152,8 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $requestedPhar1 = $this->getRequestedPharMock();
         $requestedPhar2 = $this->getRequestedPharMock();
 
-        $installedPhar1 = $this->getPharMock();
-        $installedPhar2 = $this->getPharMock();
+        $installedPhar1 = $this->getInstalledPharMock();
+        $installedPhar2 = $this->getInstalledPharMock();
 
         $pharService = $this->getPharServiceMock();
 
@@ -177,18 +177,10 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->expects($this->at(0))
             ->method('addPhar')
-            ->with(
-                $this->identicalTo($requestedPhar1),
-                $this->identicalTo($installedPhar1),
-                $workingDirectory
-            );
+            ->with($this->identicalTo($installedPhar1));
         $phiveXmlConfig->expects($this->at(1))
             ->method('addPhar')
-            ->with(
-                $this->identicalTo($requestedPhar2),
-                $this->identicalTo($installedPhar2),
-                $workingDirectory
-            );
+            ->with($this->identicalTo($installedPhar2));
 
         $command = new ComposerCommand(
             $config,
@@ -295,9 +287,9 @@ class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Phar
+     * @return \PHPUnit_Framework_MockObject_MockObject|InstalledPhar
      */
-    private function getPharMock() {
-        return $this->createMock(Phar::class);
+    private function getInstalledPharMock() {
+        return $this->createMock(InstalledPhar::class);
     }
 }

@@ -22,13 +22,15 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
             ->willReturn($items);
 
         $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'));
-        $version = new Version('5.3.0');
 
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
 
-        $installedPhar = $this->getPharMock();
-        $installedPhar->method('getVersion')->willReturn($version);
+        $installedPhar = $this->getInstalledPharMock();
+        $installedPhar->method('getVersionConstraint')->willReturn(new ExactVersionConstraint('5.3.0'));
+        $installedPhar->method('getInstalledVersion')->willReturn(new Version('5.3.0'));
+        $installedPhar->method('getName')->willReturn('phpunit');
+        $installedPhar->method('getLocation')->willReturn($this->getDirectoryMock());
 
         $targetDirectory = $this->getDirectoryMock();
         $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock());
@@ -38,7 +40,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
 
-        $config->addPhar($phar, $installedPhar, $targetDirectory);
+        $config->addPhar($installedPhar);
     }
 
     public function testAddPharCreatesNewNode() {
@@ -62,10 +64,13 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $configFile->expects($this->once())->method('addElement')->with($node);
 
         $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'));
-        $version = new Version('5.3.0');
 
-        $installedPhar = $this->getPharMock();
-        $installedPhar->method('getVersion')->willReturn($version);
+
+        $installedPhar = $this->getInstalledPharMock();
+        $installedPhar->method('getVersionConstraint')->willReturn(new ExactVersionConstraint('5.3.0'));
+        $installedPhar->method('getInstalledVersion')->willReturn(new Version('5.3.0'));
+        $installedPhar->method('getName')->willReturn('phpunit');
+        $installedPhar->method('getLocation')->willReturn($this->getDirectoryMock());
 
         $targetDirectory = $this->getDirectoryMock();
         $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock());
@@ -78,7 +83,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
 
-        $config->addPhar($phar, $installedPhar, $targetDirectory);
+        $config->addPhar($installedPhar);
     }
 
     public function testGetPharsReturnsExpectedPhars() {
@@ -186,6 +191,13 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
      */
     private function getVersionConstraintParserMock() {
         return $this->createMock(VersionConstraintParser::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|InstalledPhar
+     */
+    private function getInstalledPharMock() {
+        return $this->createMock(InstalledPhar::class);
     }
 
 }

@@ -63,7 +63,7 @@ class InstallCommand implements Cli\Command {
         if (null === $installedPhar || $this->getConfig()->doNotAddToPhiveXml()) {
             return;
         }
-        $this->phiveXmlConfig->addPhar($requestedPhar, $installedPhar, $targetDirectory);
+        $this->phiveXmlConfig->addPhar($installedPhar);
     }
 
     /**

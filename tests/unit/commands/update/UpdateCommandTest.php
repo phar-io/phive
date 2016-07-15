@@ -14,8 +14,8 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $requestedPhar1 = $this->getRequestedPharMock();
         $requestedPhar2 = $this->getRequestedPharMock();
 
-        $installedPhar1 = $this->getPharMock();
-        $installedPhar2 = $this->getPharMock();
+        $installedPhar1 = $this->getInstalledPharMock();
+        $installedPhar2 = $this->getInstalledPharMock();
 
         $directory = $this->getDirectoryMock();
 
@@ -85,6 +85,12 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         return $this->createMock(PhiveXmlConfig::class);
     }
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|InstalledPhar
+     */
+    private function getInstalledPharMock() {
+        return $this->createMock(InstalledPhar::class);
+    }
 }
 
 

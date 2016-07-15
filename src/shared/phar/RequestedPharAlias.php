@@ -36,4 +36,11 @@ class RequestedPharAlias implements RequestedPhar {
         return null;
     }
 
+    /**
+     * @return VersionConstraint
+     */
+    public function getVersionConstraint() {
+        return $this->getAlias()->getVersionConstraint();
+    }
+
 }
