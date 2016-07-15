@@ -150,7 +150,7 @@ spl_autoload_register(
                 'phario\\phive\\staticphiveversion' => '/shared/version/StaticPhiveVersion.php',
                 'phario\\phive\\statuscommand' => '/commands/status/StatusCommand.php',
                 'phario\\phive\\symlinkpharactivator' => '/shared/file/SymlinkPharActivator.php',
-                'phario\\phive\\targetdirectorylocator' => '/commands/TargetDirectoryLocator.php',
+                'phario\\phive\\targetdirectorylocator' => '/shared/TargetDirectoryLocator.php',
                 'phario\\phive\\unixoidenvironment' => '/shared/environment/UnixoidEnvironment.php',
                 'phario\\phive\\unsupportedversionconstraintexception' => '/shared/exceptions/UnsupportedVersionConstraintException.php',
                 'phario\\phive\\updatecommand' => '/commands/update/UpdateCommand.php',
