@@ -84,8 +84,8 @@ class SelfupdateCommand implements Cli\Command {
         $release = $releases->getLatest($requestedPhar->getAlias()->getVersionConstraint());
 
         if (!$release->getVersion()->isGreaterThan(new Version($this->currentPhiveVersion->getVersion()))) {
-            //$this->output->writeInfo('You already have the newest version of PHIVE.');
-            //return;
+            $this->output->writeInfo('You already have the newest version of PHIVE.');
+            return;
         }
 
         $phar = $this->pharDownloader->download($release);
