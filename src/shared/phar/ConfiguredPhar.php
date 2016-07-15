@@ -48,7 +48,7 @@ class ConfiguredPhar {
     }
 
     /**
-     * @return Version
+     * @return Version|null
      */
     public function getInstalledVersion() {
         return $this->installedVersion;

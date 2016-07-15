@@ -122,7 +122,7 @@ class PhiveXmlConfig {
 
         return $phars;
     }
-    
+
     /**
      * @return bool
      */
