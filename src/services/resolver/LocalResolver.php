@@ -7,22 +7,21 @@ namespace PharIo\Phive;
 class LocalResolver extends AbstractAliasResolver {
 
     /**
-     * @var Filename
-     */
-    private $filename;
-
-    /**
      * @var SourcesList
      */
     private $sources;
 
     /**
-     * LocalResolver constructor.
-     *
-     * @param Filename $filename
+     * @var SourcesList
      */
-    public function __construct(Filename $filename) {
-        $this->filename = $filename;
+    private $sourcesList;
+
+    /**
+     * @param SourcesList $sourcesList
+     *
+     */
+    public function __construct(SourcesList $sourcesList) {
+        $this->sourcesList = $sourcesList;
     }
 
     /**
@@ -31,31 +30,10 @@ class LocalResolver extends AbstractAliasResolver {
      * @return Source[]
      */
     public function resolve(PharAlias $alias) {
-        if (!$this->filename->exists()) {
-            return $this->tryNext($alias);
-        }
-
-        $sources = $this->getSources()->getSourcesForAlias($alias);
+        $sources = $this->sourcesList->getSourcesForAlias($alias);
         if (count($sources) > 0) {
             return $sources;
         }
         return $this->tryNext($alias);
     }
-
-    /**
-     * @return SourcesList
-     */
-    private function getSources() {
-        if (!$this->sources) {
-            $this->sources = new SourcesList(
-                new XmlFile(
-                    $this->filename,
-                    'https://phar.io/repository-list',
-                    'repositories'
-                )
-            );
-        }
-        return $this->sources;
-    }
-
 }

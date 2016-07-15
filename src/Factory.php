@@ -141,6 +141,7 @@ class Factory {
     public function getListCommand() {
         return new ListCommand(
             $this->getSourcesList(),
+            $this->getLocalSourcesList(),
             $this->getOutput()
         );
     }
@@ -447,7 +448,7 @@ class Factory {
      */
     private function getLocalResolver() {
         return new LocalResolver(
-            $this->getConfig()->getHomeDirectory()->file('local.xml')
+            $this->getLocalSourcesList()
         );
     }
 
@@ -456,6 +457,19 @@ class Factory {
      */
     private function getSourcesList() {
         return $this->getSourcesListFileLoader()->load();
+    }
+
+    /**
+     * @return SourcesList
+     */
+    private function getLocalSourcesList() {
+        return new SourcesList(
+            new XmlFile(
+                $this->getConfig()->getHomeDirectory()->file('local.xml'),
+                'https://phar.io/repository-list',
+                'repositories'
+            )
+        );
     }
 
     /**
