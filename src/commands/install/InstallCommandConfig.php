@@ -58,7 +58,17 @@ class InstallCommandConfig {
             if (Url::isUrl($configuredPhar->getName())) {
                 $phars[] = new RequestedPharUrl(new PharUrl($configuredPhar->getName()));
             } else {
-                $phars[] = new RequestedPharAlias(new PharAlias($configuredPhar->getName(), $configuredPhar->getVersionConstraint()));
+                if ($configuredPhar->isInstalled()) {
+                    $versionConstraint = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
+                } else {
+                    $versionConstraint = $configuredPhar->getVersionConstraint();
+                }
+                $phars[] = new RequestedPharAlias(
+                    new PharAlias(
+                        $configuredPhar->getName(),
+                        $versionConstraint
+                    )
+                );
             }
         }
 

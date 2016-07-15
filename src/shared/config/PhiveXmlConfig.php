@@ -48,7 +48,7 @@ class PhiveXmlConfig {
      *
      * @return bool
      */
-    public function hasPharLocation($name) {
+    public function hasPhar($name) {
         return $this->hasPharNode($name);
     }
 

@@ -53,7 +53,7 @@ class RemoveCommand implements Cli\Command {
 
     public function execute() {
         $name = $this->config->getPharName();
-        if (!$this->phiveXmlConfig->hasPharLocation($name)) {
+        if (!$this->phiveXmlConfig->hasPhar($name)) {
             throw new NotFoundException(sprintf('PHAR %s not found in phive.xml, aborting.', $name));
         }
         $location = $this->phiveXmlConfig->getPharLocation($this->config->getPharName());

@@ -40,7 +40,7 @@ class UpdateCommand implements Cli\Command {
 
             $pharName = (string)$requestedPhar->getAlias();
 
-            if ($this->phiveXmlConfig->hasPharLocation($pharName)) {
+            if ($this->phiveXmlConfig->hasPhar($pharName)) {
                 $targetDirectory = new Directory(dirname($this->phiveXmlConfig->getPharLocation($pharName)));
             }
 
