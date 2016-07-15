@@ -1,7 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
-class UpdateRepositoryListCommand {
+use PharIo\Phive\Cli\Command;
+
+class UpdateRepositoryListCommand implements Command {
 
     /**
      * @var SourcesListFileLoader
