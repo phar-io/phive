@@ -443,6 +443,15 @@ class Factory {
     }
 
     /**
+     * @return LocalResolver
+     */
+    private function getLocalResolver() {
+        return new LocalResolver(
+            $this->getConfig()->getHomeDirectory()->file('local.xml')
+        );
+    }
+
+    /**
      * @return SourcesList
      */
     private function getSourcesList() {
@@ -485,6 +494,10 @@ class Factory {
 
         $service->addResolver(
             $this->getGithubAliasResolver()
+        );
+
+        $service->addResolver(
+            $this->getLocalResolver()
         );
 
         $service->addResolver(

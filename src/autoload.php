@@ -94,6 +94,7 @@ spl_autoload_register(
                 'phario\\phive\\keyimportresult' => '/services/key/KeyImportResult.php',
                 'phario\\phive\\keyservice' => '/services/key/KeyService.php',
                 'phario\\phive\\listcommand' => '/commands/list/ListCommand.php',
+                'phario\\phive\\localresolver' => '/services/resolver/LocalResolver.php',
                 'phario\\phive\\localsslcertificate' => '/shared/http/LocalSslCertificate.php',
                 'phario\\phive\\nogpgbinaryfoundexception' => '/shared/exceptions/NoGPGBinaryFoundException.php',
                 'phario\\phive\\notfoundexception' => '/shared/exceptions/NotFoundException.php',
