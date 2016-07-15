@@ -14,8 +14,16 @@ class InstallContext extends GeneralContext {
         ];
     }
 
+    protected function getConflictingOptions() {
+        return [
+            ['global' => 'temporary'],
+            ['global' => 'target']
+        ];
+    }
+
     public function requiresValue($option) {
         return $option === 'target';
     }
+
 
 }
