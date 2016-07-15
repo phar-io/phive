@@ -11,6 +11,11 @@ class ListCommand implements Cli\Command {
     private $sourcesList;
 
     /**
+     * @var SourcesList
+     */
+    private $localSources;
+
+    /**
      * @var Cli\Output
      */
     private $output;
@@ -19,8 +24,9 @@ class ListCommand implements Cli\Command {
      * @param SourcesList $sourcesList
      * @param Cli\Output  $output
      */
-    public function __construct(SourcesList $sourcesList, Cli\Output $output) {
+    public function __construct(SourcesList $sourcesList, SourcesList $localSources, Cli\Output $output) {
         $this->sourcesList = $sourcesList;
+        $this->localSources = $localSources;
         $this->output = $output;
     }
 
@@ -28,8 +34,18 @@ class ListCommand implements Cli\Command {
      *
      */
     public function execute() {
-        $this->output->writeText("List of Aliases known to your system:\n");
-        foreach ($this->sourcesList->getAliases() as $aliasName) {
+        $localAliases = $this->localSources->getAliases();
+        if (count($localAliases) > 0) {
+            $this->output->writeText("\nList of local aliases known to your system:\n");
+            $this->printAliases($localAliases);
+        }
+
+        $this->output->writeText("\nList of phar.io resolved aliases known to your system:\n");
+        $this->printAliases($this->sourcesList->getAliases());
+    }
+
+    private function printAliases(array $aliases) {
+        foreach ($aliases as $aliasName) {
             $this->output->writeText("* {$aliasName}\n");
         }
     }
