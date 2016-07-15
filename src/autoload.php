@@ -32,6 +32,7 @@ spl_autoload_register(
                 'phario\\phive\\cli\\request' => '/shared/cli/Request.php',
                 'phario\\phive\\cli\\requestexception' => '/shared/cli/RequestException.php',
                 'phario\\phive\\cli\\runner' => '/shared/cli/Runner.php',
+                'phario\\phive\\cli\\runnerexception' => '/shared/cli/RunnerException.php',
                 'phario\\phive\\commandlocator' => '/commands/CommandLocator.php',
                 'phario\\phive\\composeralias' => '/shared/ComposerAlias.php',
                 'phario\\phive\\composercommand' => '/commands/composer/ComposerCommand.php',

@@ -64,51 +64,22 @@ class Runner {
      * @return int
      */
     public function run() {
-        $command = 'help';
         try {
-            $this->environment->ensureFitness();
+            $this->ensureFitness();
             $this->setupRuntime();
-            $this->showHeader();
-
-            $options = $this->request->parse(new PhiveContext());
-            if ($options->hasArgument(0)) {
-                $command = $options->getArgument(0);
-            }
-            $this->locator->getCommand($command)->execute();
-            $this->showFooter();
+            $this->execute();
             return self::RC_OK;
-        } catch (ExtensionsMissingException $e) {
-            $this->output->writeError(
-                sprintf(
-                    "Your environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
-                    join("\n          ", $e->getMissing())
-                )
-            );
-            return self::RC_EXT_MISSING;
-        } catch (CommandLocatorException $e) {
-            if ($e->getCode() == CommandLocatorException::UnknownCommand) {
-                $this->output->writeError(
-                    sprintf("Unknown command '%s'\n\n", $command)
-                );
-                return self::RC_UNKNOWN_COMMAND;
-            } else {
-                $this->showError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
-                return self::RC_ERROR;
-            }
-        } catch (RequestException $e) {
-            $this->output->writeError(sprintf("Error while processing arguments to command '%s':", $command));
-            $this->output->writeError($e->getMessage());
-            $this->showFooter();
-            return self::RC_PARAM_ERROR;
+        } catch (RunnerException $e) {
+            $this->showException($e);
+            return $e->getCode();
         } catch (Exception $e) {
-            $this->output->writeError($e->getMessage());
-            $this->showFooter();
+            $this->showException($e);
             return self::RC_ERROR;
         } catch (\Exception $e) {
-            $this->showError($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
+            $this->showErrorWithTrace($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
             return self::RC_BUG_FOUND;
         } catch (\Throwable $t) {
-            $this->showError($t->getMessage(), $t->getFile(), $t->getLine(), $t->getTrace());
+            $this->showErrorWithTrace($t->getMessage(), $t->getFile(), $t->getLine(), $t->getTrace());
             return self::RC_BUG_FOUND;
         }
     }
@@ -119,7 +90,7 @@ class Runner {
      * @param int        $line
      * @param array|null $trace
      */
-    private function showError($error, $file, $line, array $trace = null) {
+    private function showErrorWithTrace($error, $file, $line, array $trace = null) {
 
         $baseLen = strlen(realpath(__DIR__ . '/../../..')) + 1;
 
@@ -176,7 +147,7 @@ class Runner {
         if ($error === null) {
             return;
         }
-        $this->showError($error['message'], $error['file'], $error['line'], debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
+        $this->showErrorWithTrace($error['message'], $error['file'], $error['line'], debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
     }
 
     private function setupRuntime() {
@@ -194,4 +165,68 @@ class Runner {
         $this->output->writeText("\n");
     }
 
+    private function ensureFitness() {
+        try {
+            $this->environment->ensureFitness();
+        } catch (ExtensionsMissingException $e) {
+            throw new RunnerException(
+                sprintf(
+                    "Your environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
+                    join("\n          ", $e->getMissing())
+                ),
+                self::RC_EXT_MISSING
+            );
+        }
+    }
+
+    private function parseRequest() {
+        try {
+            $options = $this->request->parse(new PhiveContext());
+            if ($options->hasArgument(0)) {
+                return $options->getArgument(0);
+            }
+            return 'help';
+        } catch (RequestException $e) {
+            throw new RunnerException(
+                $e->getMessage(),
+                self::RC_PARAM_ERROR
+            );
+        }
+    }
+
+    private function execute() {
+        $command = $this->parseRequest();
+        try {
+            $this->showHeader();
+            $this->locator->getCommand($command)->execute();
+            $this->showFooter();
+        } catch (CommandLocatorException $e) {
+            if ($e->getCode() == CommandLocatorException::UnknownCommand) {
+                throw new RunnerException(
+                    sprintf("Unknown command '%s'", $command),
+                    self::RC_UNKNOWN_COMMAND
+                );
+            }
+            throw $e;
+        } catch (RequestException $e) {
+            throw new RunnerException(
+                sprintf(
+                    "Error while processing arguments to command '%s':\n%s",
+                    $command,
+                    $e->getMessage()
+                ),
+                self::RC_PARAM_ERROR
+            );
+        }
+    }
+
+    /**
+     * @param \Exception $e
+     */
+    private function showException(\Exception $e) {
+        foreach(explode("\n", $e->getMessage()) as $line) {
+            $this->output->writeError($line);
+        }
+        $this->showFooter();
+    }
 }
