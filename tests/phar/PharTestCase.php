@@ -8,6 +8,7 @@ use PharIo\Phive\Phar;
 use PharIo\Phive\PharRegistry;
 use PharIo\Phive\PhiveXmlConfig;
 use PharIo\Phive\Version;
+use PharIo\Phive\VersionConstraintParser;
 use PharIo\Phive\XmlFile;
 
 class PharTestCase extends \PHPUnit_Framework_TestCase {
@@ -61,18 +62,31 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @param string        $name
+     * @param string        $version
+     * @param string        $filename
+     * @param Filename|null $usage
+     */
+    protected function addPharToRegistry($name, $version, $filename, Filename $usage = null) {
+        $phar = new Phar($name, new Version($version), new File(new Filename($filename), 'foo'));
+        $this->getPharRegistry()->addPhar($phar);
+        if (null === $usage) {
+            return;
+        }
+        $this->getPharRegistry()->addUsage($phar, $usage);
+    }
+
+    /**
      * @param       $command
      * @param array $arguments
-     * @param array $switches
      *
      * @return mixed
      */
-    protected function runPhiveCommand($command, array $arguments = [], array $switches = []) {
-        $call = $this->getTestedPharFilename() . ' ' . $command;
-        $call .= ' --home=' . (string)$this->getPhiveHomeDirectory();
-        foreach ($switches as $switch) {
-            $call .= ' -' . $switch;
-        }
+    protected function runPhiveCommand($command, array $arguments = []) {
+        $call = $this->getTestedPharFilename();
+        $call .= ' --home ' . (string)$this->getPhiveHomeDirectory();
+        $call .= ' ' . $command;
+
         foreach ($arguments as $argument) {
             $call .= ' ' . $argument;
         }
@@ -91,21 +105,6 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
         }
 
         return $output;
-    }
-
-    /**
-     * @param string        $name
-     * @param string        $version
-     * @param string        $filename
-     * @param Filename|null $usage
-     */
-    protected function addPharToRegistry($name, $version, $filename, Filename $usage = null) {
-        $phar = new Phar($name, new Version($version), new File(new Filename($filename), 'foo'));
-        $this->getPharRegistry()->addPhar($phar);
-        if (null === $usage) {
-            return;
-        }
-        $this->getPharRegistry()->addUsage($phar, $usage);
     }
 
     /**
@@ -138,7 +137,8 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
                 $this->getWorkingDirectory()->file('phive.xml'),
                 'https://phar.io/phive',
                 'phive'
-            )
+            ),
+            new VersionConstraintParser()
         );
     }
 

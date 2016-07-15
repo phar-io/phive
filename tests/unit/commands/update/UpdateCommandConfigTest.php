@@ -48,17 +48,23 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ->method('getArgumentCount')
             ->willReturn(0);
 
+        $configuredPhars = [
+            new ConfiguredPhar('phpab', new ExactVersionConstraint('1.12.0')),
+            new ConfiguredPhar('phpdoc', new AnyVersionConstraint()),
+            new ConfiguredPhar('phpunit', new AnyVersionConstraint())
+        ];
+
+        $phpabPhar = new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0')));
+        $phpdocPhar = new RequestedPharAlias(new PharAlias('phpdoc', new AnyVersionConstraint()));
         $phpunitPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
-        $phpabPhar = new RequestedPharAlias(new PharAlias('phpunit', new ExactVersionConstraint('1.12.0')));
-        $phpdocPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->expects($this->once())
             ->method('getPhars')
-            ->willReturn([$phpabPhar, $phpdocPhar, $phpunitPhar]);
+            ->willReturn($configuredPhars);
 
         $commandConfig = new UpdateCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
-        $this->assertEquals([$phpabPhar, $phpdocPhar, $phpunitPhar], $commandConfig->getRequestedPhars());
+        $this->assertEquals([$phpabPhar,$phpdocPhar,$phpunitPhar], $commandConfig->getRequestedPhars());
     }
 
     public function testGetRequestedPharsWithFilter() {
@@ -74,16 +80,21 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
                 [1, 'phpunit']
             ]);
 
+        $configuredPhars = [
+            new ConfiguredPhar('phpunit', new AnyVersionConstraint()),
+            new ConfiguredPhar('phpab', new ExactVersionConstraint('1.12.0')),
+            new ConfiguredPhar('phpdoc', new AnyVersionConstraint())
+        ];
+
         $phpunitPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
         $phpabPhar = new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0')));
-        $phpdocPhar = new RequestedPharAlias(new PharAlias('phpdoc', new AnyVersionConstraint()));
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->expects($this->once())
             ->method('getPhars')
-            ->willReturn([$phpabPhar, $phpdocPhar, $phpunitPhar]);
+            ->willReturn($configuredPhars);
 
-        $expected = [$phpabPhar, $phpunitPhar];
+        $expected = [$phpunitPhar, $phpabPhar];
 
         $commandConfig = new UpdateCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
         $this->assertEquals($expected, $commandConfig->getRequestedPhars());

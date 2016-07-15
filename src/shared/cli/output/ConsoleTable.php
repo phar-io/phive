@@ -35,13 +35,15 @@ class ConsoleTable {
     public function asString() {
         $output = '';
         $mask = '';
+        $totalWidth = 0;
         foreach ($this->headers as $index => $header) {
             $columnWidth = $this->getColWidth($index);
+            $totalWidth += $columnWidth;
             $mask .= "%-{$columnWidth}.{$columnWidth}s";
         }
         $mask .= "\n";
 
-        $output .= vsprintf($mask, $this->headers);
+        $output .= vsprintf($mask, $this->headers) . "\n";
 
         foreach ($this->rows as $row) {
             $output .= vsprintf($mask, $row);

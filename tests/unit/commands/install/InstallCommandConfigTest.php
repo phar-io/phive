@@ -70,13 +70,21 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ->method('getArgumentCount')
             ->willReturn(0);
 
+        $configuredPhar1 = new ConfiguredPhar('Some Phar', new AnyVersionConstraint());
+        $configuredPhar2 = new ConfiguredPhar('Some Other Phar', new ExactVersionConstraint('1.2.3'), new Version('1.2.3'));
+
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
         $phiveXmlConfig->expects($this->once())
             ->method('getPhars')
-            ->willReturn(['foo']);
+            ->willReturn([$configuredPhar1, $configuredPhar2]);
+
+        $expectedPhars = [
+            new RequestedPharAlias(new PharAlias('Some Phar', new AnyVersionConstraint())),
+            new RequestedPharAlias(new PharAlias('Some Other Phar', new ExactVersionConstraint('1.2.3')))
+        ];
 
         $commandConfig = new InstallCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
-        $this->assertEquals(['foo'], $commandConfig->getRequestedPhars());
+        $this->assertEquals($expectedPhars, $commandConfig->getRequestedPhars());
     }
 
     public function testGetRequestedPharsFromCliOptions() {

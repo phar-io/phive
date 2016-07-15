@@ -9,10 +9,17 @@ class PhiveXmlConfig {
     private $configFile;
 
     /**
-     * @param XmlFile $configFile
+     * @var VersionConstraintParser
      */
-    public function __construct(XmlFile $configFile) {
+    private $versionConstraintParser;
+
+    /**
+     * @param XmlFile $configFile
+     * @param VersionConstraintParser $versionConstraintParser
+     */
+    public function __construct(XmlFile $configFile, VersionConstraintParser $versionConstraintParser) {
         $this->configFile = $configFile;
+        $this->versionConstraintParser = $versionConstraintParser;
     }
 
     /**
@@ -88,18 +95,31 @@ class PhiveXmlConfig {
     }
 
     /**
-     * @return RequestedPhar[]
+     * @return ConfiguredPhar[]
      */
     public function getPhars() {
         $phars = [];
         /** @var \DOMElement $pharNode */
         foreach ($this->configFile->query('//phive:phar') as $pharNode) {
             if ($pharNode->hasAttribute('url')) {
-                $phars[] = new RequestedPharUrl(new PharUrl($pharNode->getAttribute('url')));
+                $url = new PharUrl($pharNode->getAttribute('url'));
+                $pharName = (string)$url;
+                $versionConstraint = $url->getPharVersion()->getVersionString();
             } else {
-                $phars[] = new RequestedPharAlias($this->getPharAliasFromNode($pharNode));
+                $pharName = $pharNode->getAttribute('name');
+                $versionConstraint = $pharNode->getAttribute('version');
             }
+            $pharVersion = null;
+            if ($pharNode->hasAttribute('installed') && !empty($pharNode->getAttribute('installed'))) {
+                $pharVersion = new Version($pharNode->getAttribute('installed'));
+            }
+            $phars[] = new ConfiguredPhar(
+                $pharName,
+                $this->versionConstraintParser->parse($versionConstraint),
+                $pharVersion
+            );
         }
+
         return $phars;
     }
 

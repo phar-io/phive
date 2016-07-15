@@ -55,11 +55,15 @@ class UpdateCommandConfig {
      */
     private function getPharAliasesFromPhiveXmlConfig(array $filter) {
         $phars = [];
-        foreach ($this->phiveXmlConfig->getPhars() as $phar) {
-            if (!empty($filter) && !in_array((string)$phar->getAlias(), $filter)) {
+        foreach ($this->phiveXmlConfig->getPhars() as $configuredPhar) {
+            if (!empty($filter) && !in_array((string)$configuredPhar->getName(), $filter)) {
                 continue;
             }
-            $phars[] = $phar;
+            if ($this->isUrl($configuredPhar->getName())) {
+                $phars[] = new RequestedPharUrl(new PharUrl($configuredPhar->getName()));
+            } else {
+                $phars[] = new RequestedPharAlias(new PharAlias($configuredPhar->getName(), $configuredPhar->getVersionConstraint()));
+            }
         }
         return $phars;
     }
@@ -75,5 +79,14 @@ class UpdateCommandConfig {
             $phars[] = $this->cliOptions->getArgument($i);
         }
         return $phars;
+    }
+
+    /**
+     * @param $string
+     *
+     * @return bool
+     */
+    private function isUrl($string) {
+        return strpos($string, 'https://') !== false;
     }
 }

@@ -33,7 +33,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $targetDirectory = $this->getDirectoryMock();
         $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock());
 
-        $config = new PhiveXmlConfig($configFile);
+        $config = new PhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
 
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
@@ -73,7 +73,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
 
-        $config = new PhiveXmlConfig($configFile);
+        $config = new PhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
 
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
@@ -83,20 +83,27 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetPharsReturnsExpectedPhars() {
         $node1 = $this->getDomElementMock();
-        $node1->method('hasAttribute')->with('url')->willReturn(true);
+        $node1->method('hasAttribute')->willReturnMap(
+            [
+                ['url', true],
+                ['installed', false]
+            ]
+        );
         $node1->method('getAttribute')->with('url')->willReturn('https://example.com/phpunit-5.3.0.phar');
 
         $node2 = $this->getDomElementMock();
         $node2->method('hasAttribute')->willReturnMap(
             [
                 ['url', false],
-                ['version', true]
+                ['version', true],
+                ['installed', true]
             ]
         );
         $node2->method('getAttribute')->willReturnMap(
             [
                 ['version', '5.2.12'],
-                ['name', 'phpunit']
+                ['name', 'phpunit'],
+                ['installed', '5.2.12']
             ]
         );
 
@@ -104,20 +111,28 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $node3->method('hasAttribute')->willReturnMap(
             [
                 ['url', false],
-                ['version', false]
+                ['version', true]
             ]
         );
-        $node3->method('getAttribute')->with('name')->willReturn('phpunit');
+        $node3->method('getAttribute')->willReturnMap(
+            [
+                ['name', 'phpunit'],
+                ['version', '5.2.12']
+            ]
+        );
+
+        $parserMock = $this->getVersionConstraintParserMock();
+        $parserMock->method('parse')->willReturn(new AnyVersionConstraint());
 
         $configFile = $this->getXmlFileMock();
         $configFile->method('query')->with('//phive:phar')
             ->willReturn([$node1, $node2, $node3]);
 
-        $config = new PhiveXmlConfig($configFile);
+        $config = new PhiveXmlConfig($configFile, $parserMock);
         $expected = [
-            new RequestedPharUrl(new PharUrl('https://example.com/phpunit-5.3.0.phar')),
-            new RequestedPharAlias(new PharAlias('phpunit', new ExactVersionConstraint('5.2.12'))),
-            new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()))
+            new ConfiguredPhar('https://example.com/phpunit-5.3.0.phar', new AnyVersionConstraint()),
+            new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12')),
+            new ConfiguredPhar('phpunit', new AnyVersionConstraint()),
         ];
         $actual = $config->getPhars();
 
@@ -164,6 +179,13 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|VersionConstraintParser
+     */
+    private function getVersionConstraintParserMock() {
+        return $this->createMock(VersionConstraintParser::class);
     }
 
 }

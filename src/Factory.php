@@ -179,6 +179,16 @@ class Factory {
     }
 
     /**
+     * @return StatusCommand
+     */
+    public function getStatusCommand() {
+        return new StatusCommand(
+            $this->getPhiveXmlConfig(),
+            $this->getOutput()
+        );
+    }
+
+    /**
      * @return TargetDirectoryLocator
      */
     private function getTargetDirectoryLocator() {
@@ -439,7 +449,8 @@ class Factory {
                 $this->getEnvironment()->getWorkingDirectory()->file('phive.xml'),
                 'https://phar.io/phive',
                 'phive'
-            )
+            ),
+            new VersionConstraintParser()
         );
     }
 

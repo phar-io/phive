@@ -37,6 +37,9 @@ reset [<alias1> <alias2> ...]
 skel
     Create a default configuration file
 
+status
+    Get a list of configured PHARs for the current directory
+
 update [<alias1> <alias2> ...]
     Update PHARs configured in the project's phive.xml to the newest applicable version.
 

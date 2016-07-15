@@ -70,6 +70,10 @@ class CommandLocator implements Cli\CommandLocator {
                 return $this->factory->getComposerCommand();
             }
 
+            case 'status': {
+                return $this->factory->getStatusCommand();
+            }
+
             default: {
                 throw new Cli\CommandLocatorException(
                     sprintf('Command "%s" is not a valid command', $command),
