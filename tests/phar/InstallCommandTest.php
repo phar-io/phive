@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive\PharRegressionTests;
 
+use PharIo\Phive\Cli\Runner;
 use PharIo\Phive\ConfiguredPhar;
 use PharIo\Phive\ExactVersionConstraint;
 use PharIo\Phive\PharAlias;
@@ -36,7 +37,13 @@ class InstallCommandTest extends PharTestCase {
         ];
 
         $this->assertEquals($expectedPhars, $phiveXmlConfig->getPhars());
+    }
 
+    public function testThrowsErrorIfGlobalAndTargetOptionsAreCombined() {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(Runner::RC_PARAM_ERROR);
+
+        $this->runPhiveCommand('install', ['--global', '--target tools', 'phpunit']);
     }
 
 }

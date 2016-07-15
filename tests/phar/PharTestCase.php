@@ -101,7 +101,7 @@ class PharTestCase extends \PHPUnit_Framework_TestCase {
 
         if ($resultCode !== 0) {
             $output = sprintf("PHIVE exited with exit code %d!\nOutput:\n%s", $resultCode, $output);
-            throw new \RuntimeException($output);
+            throw new \RuntimeException($output, $resultCode);
         }
 
         return $output;
