@@ -6,7 +6,7 @@ use PharIo\Phive\Cli\GeneralContext;
 class PhiveContext extends GeneralContext {
 
     protected function getKnownOptions() {
-        return ['home'];
+        return ['home' => false];
     }
 
     public function requiresValue($option) {
