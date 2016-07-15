@@ -34,6 +34,9 @@ reset [<alias1> <alias2> ...]
 
     alias    If one or more aliases are provided, only those will be reset
 
+selfupdate
+    Update PHIVE to the latest version.
+
 skel
     Create a default configuration file
 
