@@ -122,22 +122,7 @@ class PhiveXmlConfig {
 
         return $phars;
     }
-
-    /**
-     * @param \DOMElement $element
-     *
-     * @return PharAlias
-     */
-    private function getPharAliasFromNode(\DOMElement $element) {
-        $parser = new VersionConstraintParser();
-        if ($element->hasAttribute('version')) {
-            $version = $parser->parse($element->getAttribute('version'));
-        } else {
-            $version = new AnyVersionConstraint();
-        }
-        return new PharAlias($element->getAttribute('name'), $version);
-    }
-
+    
     /**
      * @return bool
      */
