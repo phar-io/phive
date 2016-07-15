@@ -9,11 +9,6 @@ class LocalResolver extends AbstractAliasResolver {
     /**
      * @var SourcesList
      */
-    private $sources;
-
-    /**
-     * @var SourcesList
-     */
     private $sourcesList;
 
     /**
