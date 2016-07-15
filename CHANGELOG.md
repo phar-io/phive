@@ -2,15 +2,28 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [Unreleased]
-### Changed
-* via [PR #56](https://github.com/phar-io/phive/pull/57) by [sebastianbergmann](https://github.com/sebastianbergmann): Changelog rewritten to respect the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
-* Rewritten CLI parameter processing code (Fixes [#29](https://github.com/phar-io/phive/issues/29) and [#55](https://github.com/phar-io/phive/issues/55)) 
-* Phive now exits with code 10 in case of an internal error (previously: 5)
+
+## [0.5.0] - 2016-07-15
 
 ### Added
 * Added exit code 5 to signal parameter validation errors  
+* [#7](https://github.com/phar-io/phive/issues/7): Implement selfupdate command
+* [#17](https://github.com/phar-io/phive/issues/17): Add support for custom repository list
+* [#13](https://github.com/phar-io/phive/issues/13): Implement status command
+* [#58](https://github.com/phar-io/phive/issues/58): Implement .bat-Wrapper for Windows
 
+### Changed
+* via [PR #56](https://github.com/phar-io/phive/pull/57) by [sebastianbergmann](https://github.com/sebastianbergmann): Changelog rewritten to respect the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
+* [#29](https://github.com/phar-io/phive/issues/29) and [#55](https://github.com/phar-io/phive/issues/55): Rewritten CLI parameter processing code 
+* Phive now exits with code 10 in case of an internal error (previously: 5)
+* [#38](https://github.com/phar-io/phive/issues/38): installed version of a PHAR is now added to phive.xml and respected by the install command
+* [#63](https://github.com/phar-io/phive/issues/63): Disallow the combined used of `--target` and `--global` in `phive install`
+* [#59](https://github.com/phar-io/phive/issues/59): Always create a copy when installing a PHAR globally
+* [#60](https://github.com/phar-io/phive/issues/60): Properly write the location of an installed PHAR to phive.xml
+
+### Fixed
+
+* [#64](https://github.com/phar-io/phive/issues/64): Fixed the global `--home` option to change Phive's home directory
 
 ## [0.4.1] - 2016-06-02
 ### Added
@@ -79,8 +92,11 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 ## 0.1.0 - 2015-09-23
 * Initial Release
 
+## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.4.1...HEAD
+
+[Unreleased]: https://github.com/phar-io/phive/compare/0.5.0...HEAD
+[0.5.0]: https://github.com/phar-io/phive/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/phar-io/phive/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/phar-io/phive/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/phar-io/phive/compare/0.2.1...0.3.0
