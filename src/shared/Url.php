@@ -68,4 +68,13 @@ class Url {
         return $this;
     }
 
+    /**
+     * @param $string
+     *
+     * @return bool
+     */
+    public static function isUrl($string) {
+        return strpos($string, 'https://') !== false;
+    }
+
 }

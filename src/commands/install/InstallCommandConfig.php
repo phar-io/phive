@@ -55,7 +55,7 @@ class InstallCommandConfig {
     private function getPharsFromPhiveXmlConfig() {
         $phars = [];
         foreach ($this->phiveXmlConfig->getPhars() as $configuredPhar) {
-            if ($this->isUrl($configuredPhar->getName())) {
+            if (Url::isUrl($configuredPhar->getName())) {
                 $phars[] = new RequestedPharUrl(new PharUrl($configuredPhar->getName()));
             } else {
                 $phars[] = new RequestedPharAlias(new PharAlias($configuredPhar->getName(), $configuredPhar->getVersionConstraint()));
@@ -74,7 +74,7 @@ class InstallCommandConfig {
         $argCount = $this->cliOptions->getArgumentCount();
         for ($i = 0; $i < $argCount; $i++) {
             $argument = $this->cliOptions->getArgument($i);
-            if ($this->isUrl($argument)) {
+            if (Url::isUrl($argument)) {
                 $phars[] = new RequestedPharUrl(new PharUrl($argument));
             } else {
                 $aliasSegments = explode('@', $argument, 2);
@@ -109,15 +109,6 @@ class InstallCommandConfig {
      */
     public function doNotAddToPhiveXml() {
         return $this->cliOptions->hasOption('temporary') || $this->installGlobally();
-    }
-
-    /**
-     * @param $string
-     *
-     * @return bool
-     */
-    private function isUrl($string) {
-        return strpos($string, 'https://') !== false;
     }
 
 }
