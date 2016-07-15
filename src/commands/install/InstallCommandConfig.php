@@ -58,21 +58,30 @@ class InstallCommandConfig {
             if (Url::isUrl($configuredPhar->getName())) {
                 $phars[] = new RequestedPharUrl(new PharUrl($configuredPhar->getName()));
             } else {
-                if ($configuredPhar->isInstalled()) {
-                    $versionConstraint = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
-                } else {
-                    $versionConstraint = $configuredPhar->getVersionConstraint();
-                }
-                $phars[] = new RequestedPharAlias(
-                    new PharAlias(
-                        $configuredPhar->getName(),
-                        $versionConstraint
-                    )
-                );
+                $phars[] = $this->getPharAliasFromConfiguredPhar($configuredPhar);
             }
         }
 
         return $phars;
+    }
+
+    /**
+     * @param ConfiguredPhar $configuredPhar
+     *
+     * @return RequestedPharAlias
+     */
+    private function getPharAliasFromConfiguredPhar(ConfiguredPhar $configuredPhar) {
+        if ($configuredPhar->isInstalled()) {
+            $versionConstraint = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
+        } else {
+            $versionConstraint = $configuredPhar->getVersionConstraint();
+        }
+        return new RequestedPharAlias(
+            new PharAlias(
+                $configuredPhar->getName(),
+                $versionConstraint
+            )
+        );
     }
 
     /**

@@ -88,9 +88,6 @@ class PharService {
      */
     private function doInstall(RequestedPhar $requestedPhar, Directory $destination, $makeCopy, $replaceExisting) {
         $release = $this->getRelease($requestedPhar);
-
-        $name = $release->getName();
-        $version = $release->getVersion();
         $pharName = $release->getUrl()->getPharName();
 
         $destinationFile = $destination->file($pharName);
@@ -99,21 +96,33 @@ class PharService {
             return null;
         }
 
-        if (!$this->pharRegistry->hasPhar($name, $version)) {
-            $phar = $this->downloader->download($release);
-            $this->pharRegistry->addPhar($phar);
-        } else {
-            $phar = $this->pharRegistry->getPhar($name, $version);
-        }
+        $phar = $this->getPharFromRelease($release);
+
         $this->installer->install($phar->getFile(), $destinationFile, $makeCopy);
         $this->pharRegistry->addUsage($phar, $destinationFile);
 
         return new InstalledPhar(
-            $name,
+            $release->getName(),
             $release->getVersion(),
             $requestedPhar->getVersionConstraint(),
             $destination
         );
+    }
+
+    /**
+     * @param Release $release
+     *
+     * @return Phar
+     */
+    private function getPharFromRelease(Release $release) {
+
+        if ($this->pharRegistry->hasPhar($release->getName(), $release->getVersion())) {
+            return $this->pharRegistry->getPhar($release->getName(), $release->getVersion());
+        }
+        $phar = $this->downloader->download($release);
+        $this->pharRegistry->addPhar($phar);
+
+        return $phar;
     }
 
     /**
