@@ -109,7 +109,7 @@ class Request {
             $value = true;
         }
 
-        $context->setOption($option, $value);
+        $this->setOption($context, $option, $value);
     }
 
     private function handleShortOption(Context $context, $char, $isLast) {
@@ -134,9 +134,9 @@ class Request {
                     RequestException::ValueRequired
                 );
             }
-            $context->setOption($option, $value);
+            $this->setOption($context, $option, $value);
         } else {
-            $context->setOption($option, true);
+            $this->setOption($context, $option, true);
         }
     }
 
@@ -150,4 +150,14 @@ class Request {
         $context->addArgument($arg);
     }
 
+    private function setOption(Context $context, $option, $value) {
+        try {
+            $context->setOption($option, $value);
+        } catch (ContextException $e) {
+            throw new RequestException(
+                $e->getMessage(),
+                RequestException::InvalidOption
+            );
+        }
+    }
 }

@@ -27,6 +27,7 @@ abstract class GeneralContext implements Context {
      * @param mixed  $value
      */
     public function setOption($option, $value) {
+        $this->ensureNotConflicting($option);
         $this->options->setOption($option, $value);
     }
 
@@ -93,6 +94,37 @@ abstract class GeneralContext implements Context {
      */
     protected function getKnownOptions() {
         return [];
+    }
+
+    /**
+     * Return conflicting pairs of options
+     *
+     * Format: Array of pairs (e.g. [ ['a' => 'b'], ['a' => 'c'] ])
+     * Lookup is performed both ways
+     * Return empty array if no options are conflicting
+     *
+     * @return array
+     */
+    protected function getConflictingOptions() {
+        return [];
+    }
+
+    private function ensureNotConflicting($option) {
+        $list = $this->getConflictingOptions();
+        foreach($list as $pair) {
+            foreach($pair as $opt1 => $opt2) {
+                if ($option !== $opt1 && $option !== $opt2) {
+                    continue;
+                }
+                if (($option === $opt1 && $this->options->hasOption($opt2)) ||
+                    ($option === $opt2 && $this->options->hasOption($opt1))) {
+                    throw new ContextException(
+                        sprintf("Options '%s' and '%s' cannot be combined", $opt1, $opt2),
+                        ContextException::ConflictingOptions
+                    );
+                }
+            }
+        }
     }
 }
 
