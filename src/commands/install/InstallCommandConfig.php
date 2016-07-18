@@ -87,6 +87,7 @@ class InstallCommandConfig {
     /**
      * @return RequestedPhar[]
      * @throws Cli\CommandOptionsException
+     * @throws UnsupportedVersionConstraintException
      */
     private function getPharsFromCliArguments() {
         $phars = [];
