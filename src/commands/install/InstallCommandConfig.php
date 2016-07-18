@@ -98,9 +98,8 @@ class InstallCommandConfig {
                 $phars[] = new RequestedPharUrl(new PharUrl($argument));
             } else {
                 $aliasSegments = explode('@', $argument, 2);
-                $parser = new VersionConstraintParser();
                 if (count($aliasSegments) === 2) {
-                    $versionConstraint = $parser->parse($aliasSegments[1]);
+                    $versionConstraint = (new VersionConstraintParser())->parse($aliasSegments[1]);
                 } else {
                     $versionConstraint = new AnyVersionConstraint();
                 }
