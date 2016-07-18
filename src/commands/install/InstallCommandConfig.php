@@ -97,7 +97,7 @@ class InstallCommandConfig {
             if (Url::isUrl($argument)) {
                 $phars[] = new RequestedPharUrl(new PharUrl($argument));
             } else {
-                $aliasSegments = explode('@', $argument, 2);
+                $aliasSegments = preg_split('/[@:=]/', $argument, 2, PREG_SPLIT_NO_EMPTY);
                 if (count($aliasSegments) === 2) {
                     $versionConstraint = (new VersionConstraintParser())->parse($aliasSegments[1]);
                 } else {
