@@ -2,6 +2,10 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.6.0] - unreleased
+
+### Added
+* [#67](https://github.com/phar-io/phive/issues/67): Implement alternative separators for version specification
 
 ## [0.5.0] - 2016-07-15
 
