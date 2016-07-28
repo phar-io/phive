@@ -23,6 +23,13 @@ class KeyImportResult {
     }
 
     /**
+     * @return bool
+     */
+    public function isSuccess() {
+        return $this->getCount() !== 0;
+    }
+
+    /**
      * @return int
      */
     public function getCount() {

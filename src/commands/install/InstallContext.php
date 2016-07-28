@@ -7,10 +7,11 @@ class InstallContext extends GeneralContext {
 
     protected function getKnownOptions() {
         return [
-            'target'    => 't',
-            'copy'      => 'c',
-            'global'    => 'g',
-            'temporary' => false
+            'target'         => 't',
+            'copy'           => 'c',
+            'global'         => 'g',
+            'temporary'      => false,
+            'trust-gpg-keys' => false
         ];
     }
 
@@ -22,8 +23,7 @@ class InstallContext extends GeneralContext {
     }
 
     public function requiresValue($option) {
-        return $option === 'target';
+        return in_array($option, ['target', 'trust-gpg-keys'], true);
     }
-
 
 }

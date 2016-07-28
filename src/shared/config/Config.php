@@ -68,4 +68,14 @@ class Config {
         return new Url('https://phar.io/data/repositories.xml');
     }
 
+    public function getTrustedKeyIds() {
+        $idList = new KeyIdCollection();
+        if ($this->cliOptions->hasOption('trust-gpg-keys')) {
+            foreach(explode(',', $this->cliOptions->getOption('trust-gpg-keys')) as $id) {
+                $idList->addKeyId($id);
+            }
+        }
+        return $idList;
+    }
+
 }

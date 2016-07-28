@@ -8,9 +8,6 @@ use PharIo\Phive\Cli;
  */
 class KeyServiceTest extends \PHPUnit_Framework_TestCase {
 
-    public function testInvokesKeyDownloader() {
-    }
-
     public function testInvokesImporter() {
         $input = $this->getInputMock();
         $input->method('confirm')->willReturn(true);
@@ -25,7 +22,9 @@ class KeyServiceTest extends \PHPUnit_Framework_TestCase {
         $downloader = $this->getKeyDownloaderMock();
         $downloader->method('download')->willReturn($key);
 
-        $service = new KeyService($downloader, $importer, $this->getOutputMock(), $input);
+        $trusted = $this->createMock(KeyIdCollection::class);
+
+        $service = new KeyService($downloader, $importer, $trusted, $this->getOutputMock(), $input);
 
         $this->assertEquals(['keydata'], $service->importKey('foo', []));
     }
@@ -47,12 +46,14 @@ class KeyServiceTest extends \PHPUnit_Framework_TestCase {
         $output = $this->getOutputMock();
         $output->expects($this->once())->method('writeWarning');
 
-        $service = new KeyService($downloader, $importer, $output, $input);
+        $trusted = $this->createMock(KeyIdCollection::class);
+
+        $service = new KeyService($downloader, $importer, $trusted, $output, $input);
 
         $service->importKey('foo', ['bar']);
     }
 
-    public function testImportKeyWillThrowExceptionIfUserDeclinedImport() {
+    public function testImportKeyWillNotSucceedIfUserDeclinedImport() {
         $input = $this->getInputMock();
         $input->method('confirm')->willReturn(false);
 
@@ -63,10 +64,11 @@ class KeyServiceTest extends \PHPUnit_Framework_TestCase {
         $downloader = $this->getKeyDownloaderMock();
         $downloader->method('download')->willReturn($key);
 
-        $this->expectException(VerificationFailedException::class);
+        $trusted = $this->createMock(KeyIdCollection::class);
 
-        $service = new KeyService($downloader, $this->getKeyImporterMock(), $this->getOutputMock(), $input);
-        $service->importKey('some id', []);
+        $service = new KeyService($downloader, $this->getKeyImporterMock(), $trusted, $this->getOutputMock(), $input);
+        $result = $service->importKey('some id', []);
+        $this->assertFalse($result->isSuccess());
     }
 
     /**

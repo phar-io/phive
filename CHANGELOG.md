@@ -6,6 +6,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ### Added
 * [#67](https://github.com/phar-io/phive/issues/67): Implement alternative separators for version specification
+* [#69](https://github.com/phar-io/phive/issues/69): Add cli option to provide trusted gpg key IDs
 
 ## [0.5.0] - 2016-07-15
 

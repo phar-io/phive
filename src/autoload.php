@@ -90,6 +90,7 @@ spl_autoload_register(
                 'phario\\phive\\ioexception' => '/shared/exceptions/IOException.php',
                 'phario\\phive\\jsondata' => '/shared/JsonData.php',
                 'phario\\phive\\keydownloader' => '/services/key/KeyDownloader.php',
+                'phario\\phive\\keyidcollection' => '/services/key/KeyIdCollection.php',
                 'phario\\phive\\keyimporter' => '/services/key/KeyImporter.php',
                 'phario\\phive\\keyimportresult' => '/services/key/KeyImportResult.php',
                 'phario\\phive\\keyservice' => '/services/key/KeyService.php',

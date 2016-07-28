@@ -385,6 +385,7 @@ class Factory {
         return new KeyService(
             $this->getPgpKeyDownloader(),
             $this->getGnupgKeyImporter(),
+            $this->getConfig()->getTrustedKeyIds(),
             $this->getOutput(),
             $this->getConsoleInput()
         );

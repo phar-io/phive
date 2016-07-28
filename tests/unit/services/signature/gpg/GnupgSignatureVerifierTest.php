@@ -45,7 +45,10 @@ class GnupgSignatureVerifierTest extends \PHPUnit_Framework_TestCase {
     public function testTriesToImportMissingKey() {
         $verificationData = ['summary' => 128, 'fingerprint' => 'foo'];
         $this->gnupg->verify('foo', 'bar')->willReturn([$verificationData]);
-        $this->keyservice->importKey('foo', [])->shouldBeCalled();
+        $result = $this->prophesize(KeyImportResult::class);
+        $result->isSuccess()->willReturn(true);
+
+        $this->keyservice->importKey('foo', [])->shouldBeCalled()->willReturn($result->reveal());
 
         $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
         $verifier->verify('foo', 'bar', []);

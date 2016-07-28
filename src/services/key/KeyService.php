@@ -24,14 +24,21 @@ class KeyService {
     private $input;
 
     /**
-     * @param KeyDownloader $keyDownloader
-     * @param KeyImporter   $keyImporter
-     * @param Cli\Output    $output
-     * @param Cli\Input     $input
+     * @var KeyIdCollection
+     */
+    private $trusted;
+
+    /**
+     * @param KeyDownloader   $keyDownloader
+     * @param KeyImporter     $keyImporter
+     * @param KeyIdCollection $trusted
+     * @param Cli\Output      $output
+     * @param Cli\Input       $input
      */
     public function __construct(
         KeyDownloader $keyDownloader,
         KeyImporter $keyImporter,
+        KeyIdCollection $trusted,
         Cli\Output $output,
         Cli\Input $input
     ) {
@@ -39,6 +46,7 @@ class KeyService {
         $this->keyImporter = $keyImporter;
         $this->output = $output;
         $this->input = $input;
+        $this->trusted = $trusted;
     }
 
     /**
@@ -46,7 +54,6 @@ class KeyService {
      * @param array  $knownFingerprints
      *
      * @return mixed
-     * @throws VerificationFailedException
      */
     public function importKey($keyId, array $knownFingerprints) {
         $key = $this->downloadKey($keyId);
@@ -59,8 +66,10 @@ class KeyService {
         }
 
         $this->output->writeText("\n" . $key->getInfo() . "\n\n");
-        if (!$this->input->confirm('Import this key?', false)) {
-            throw new VerificationFailedException(sprintf('User declined import of key %s', $key->getId()));
+
+        if (!$this->allowedToImport($key)) {
+            $this->output->writeError(sprintf('User declined import of key %s', $key->getId()));
+            return new KeyImportResult(0);
         }
 
         return $this->keyImporter->importKey($key->getKeyData());
@@ -75,6 +84,15 @@ class KeyService {
         $this->output->writeInfo(sprintf('Downloading key %s', $keyId));
 
         return $this->keyDownloader->download($keyId);
+    }
+
+    /**
+     * @param PublicKey $key
+     *
+     * @return bool
+     */
+    private function allowedToImport(PublicKey $key) {
+        return $this->trusted->has($key->getId()) || $this->input->confirm('Import this key?', false);
     }
 
 }
