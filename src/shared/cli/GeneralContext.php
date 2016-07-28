@@ -111,13 +111,14 @@ abstract class GeneralContext implements Context {
 
     private function ensureNotConflicting($option) {
         $list = $this->getConflictingOptions();
-        foreach($list as $pair) {
-            foreach($pair as $opt1 => $opt2) {
+        foreach ($list as $pair) {
+            foreach ($pair as $opt1 => $opt2) {
                 if ($option !== $opt1 && $option !== $opt2) {
                     continue;
                 }
                 if (($option === $opt1 && $this->options->hasOption($opt2)) ||
-                    ($option === $opt2 && $this->options->hasOption($opt1))) {
+                    ($option === $opt2 && $this->options->hasOption($opt1))
+                ) {
                     throw new ContextException(
                         sprintf("Options '%s' and '%s' cannot be combined", $opt1, $opt2),
                         ContextException::ConflictingOptions

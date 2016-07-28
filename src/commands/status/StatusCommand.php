@@ -17,7 +17,7 @@ class StatusCommand implements Cli\Command {
 
     /**
      * @param PhiveXmlConfig $phiveXmlConfig
-     * @param Cli\Output $output
+     * @param Cli\Output     $output
      */
     public function __construct(PhiveXmlConfig $phiveXmlConfig, Cli\Output $output) {
         $this->phiveXmlConfig = $phiveXmlConfig;

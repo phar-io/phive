@@ -23,7 +23,7 @@ class ListCommand implements Cli\Command {
     /**
      * @param SourcesList $sourcesList
      * @param SourcesList $localSources
-     * @param Cli\Output $output
+     * @param Cli\Output  $output
      */
     public function __construct(SourcesList $sourcesList, SourcesList $localSources, Cli\Output $output) {
         $this->sourcesList = $sourcesList;

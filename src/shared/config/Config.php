@@ -71,7 +71,7 @@ class Config {
     public function getTrustedKeyIds() {
         $idList = new KeyIdCollection();
         if ($this->cliOptions->hasOption('trust-gpg-keys')) {
-            foreach(explode(',', $this->cliOptions->getOption('trust-gpg-keys')) as $id) {
+            foreach (explode(',', $this->cliOptions->getOption('trust-gpg-keys')) as $id) {
                 $idList->addKeyId($id);
             }
         }

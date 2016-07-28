@@ -224,7 +224,7 @@ class Runner {
      * @param \Exception $e
      */
     private function showException(\Exception $e) {
-        foreach(explode("\n", $e->getMessage()) as $line) {
+        foreach (explode("\n", $e->getMessage()) as $line) {
             $this->output->writeError($line);
         }
         $this->showFooter();

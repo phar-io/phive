@@ -19,9 +19,9 @@ class ConfiguredPhar {
     private $installedVersion;
 
     /**
-     * @param string $name
+     * @param string            $name
      * @param VersionConstraint $versionConstraint
-     * @param Version|null $installedVersion
+     * @param Version|null      $installedVersion
      */
     public function __construct(
         $name,

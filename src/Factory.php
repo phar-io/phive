@@ -192,8 +192,7 @@ class Factory {
     /**
      * @return SelfupdateCommand
      */
-    public function getSelfupdateCommand()
-    {
+    public function getSelfupdateCommand() {
         return new SelfupdateCommand(
             $this->getPharDownloader(),
             new SourceRepositoryLoader($this->getFileDownloader()),

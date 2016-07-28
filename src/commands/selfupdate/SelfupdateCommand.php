@@ -43,13 +43,13 @@ class SelfupdateCommand implements Cli\Command {
     /**
      * SelfupdateCommand constructor.
      *
-     * @param PharDownloader $pharDownloader
+     * @param PharDownloader         $pharDownloader
      * @param SourceRepositoryLoader $sourceRepositoryLoader
-     * @param GithubAliasResolver $gitHubAliasResolver
-     * @param Environment $environment
-     * @param PhiveVersion $currentPhiveVersion
-     * @param Cli\Output $output
-     * @param PharInstaller $pharInstaller
+     * @param GithubAliasResolver    $gitHubAliasResolver
+     * @param Environment            $environment
+     * @param PhiveVersion           $currentPhiveVersion
+     * @param Cli\Output             $output
+     * @param PharInstaller          $pharInstaller
      */
     public function __construct(
         PharDownloader $pharDownloader,
@@ -68,7 +68,6 @@ class SelfupdateCommand implements Cli\Command {
         $this->output = $output;
         $this->pharInstaller = $pharInstaller;
     }
-
 
     /**
      *

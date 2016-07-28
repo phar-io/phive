@@ -26,10 +26,10 @@ class InstalledPhar {
     /**
      * InstalledPhar constructor.
      *
-     * @param string $name
-     * @param Version $installedVersion
+     * @param string            $name
+     * @param Version           $installedVersion
      * @param VersionConstraint $versionConstraint
-     * @param Directory $location
+     * @param Directory         $location
      */
     public function __construct(
         $name,
