@@ -34,22 +34,37 @@ class UpdateCommand implements Cli\Command {
     }
 
     public function execute() {
-        $targetDirectory = $this->config->getTargetDirectory();
-
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
-
-            $pharName = (string)$requestedPhar->getAlias();
-
-            if ($this->phiveXmlConfig->hasPhar($pharName)) {
-                $targetDirectory = new Directory(dirname($this->phiveXmlConfig->getPharLocation($pharName)));
+            if (!$this->phiveXmlConfig->hasPharLocation((string)$requestedPhar->getAlias())) {
+                $installedPhar = $this->install($requestedPhar);
+            } else {
+                $installedPhar = $this->update($requestedPhar);
             }
-
-            $installedPhar = $this->pharService->update($requestedPhar, $targetDirectory);
             if (null === $installedPhar) {
                 continue;
             }
             $this->phiveXmlConfig->addPhar($installedPhar);
         }
+    }
+
+    /**
+     * @param RequestedPhar $requestedPhar
+     *
+     * @return null|InstalledPhar
+     */
+    private function install(RequestedPhar $requestedPhar) {
+        $targetDirectory = $this->config->getTargetDirectory();
+        return $this->pharService->install($requestedPhar, $targetDirectory, false);
+    }
+
+    /**
+     * @param RequestedPhar $requestedPhar
+     *
+     * @return InstalledPhar
+     */
+    private function update(RequestedPhar $requestedPhar) {
+        $location = $this->phiveXmlConfig->getPharLocation((string)$requestedPhar->getAlias());
+        return $this->pharService->update($requestedPhar, $location);
     }
 
 }

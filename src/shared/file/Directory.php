@@ -134,6 +134,13 @@ class Directory {
     }
 
     /**
+     * @return Directory
+     */
+    public function withAbsolutePath() {
+        return new Directory(realpath($this));
+    }
+
+    /**
      * @param string $path
      *
      * @throws DirectoryException

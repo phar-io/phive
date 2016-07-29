@@ -55,11 +55,23 @@ class PhiveXmlConfig {
     /**
      * @param string $name
      *
+     * @return bool
+     */
+    public function hasPharLocation($name) {
+        return $this->hasPhar($name) && $this->getPharNode($name)->hasAttribute('location');
+    }
+
+    /**
+     * @param string $name
+     *
      * @return Filename
      */
     public function getPharLocation($name) {
-        $node = $this->getPharNode($name);
-        return (new Directory($node->getAttribute('location')))->file($name);
+        $locationAttribute = $this->getPharNode($name)->getAttribute('location');
+        if (is_dir($locationAttribute)) {
+            return (new Directory($locationAttribute))->file($name)->withAbsolutePath();
+        }
+        return (new Filename($locationAttribute))->withAbsolutePath();
     }
 
     /**
@@ -163,4 +175,5 @@ class PhiveXmlConfig {
     private function getTargetDirectoryNode() {
         return $this->configFile->query('//phive:configuration/phive:targetDirectory[1]')->item(0);
     }
+
 }

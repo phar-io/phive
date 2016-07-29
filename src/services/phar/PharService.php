@@ -65,33 +65,11 @@ class PharService {
      * @return InstalledPhar|null
      */
     public function install(RequestedPhar $requestedPhar, Directory $destination, $makeCopy) {
-        return $this->doInstall($requestedPhar, $destination, $makeCopy, false);
-    }
-
-    /**
-     * @param RequestedPhar $requestedPhar
-     * @param Directory     $destination
-     *
-     * @return InstalledPhar|null
-     */
-    public function update(RequestedPhar $requestedPhar, Directory $destination) {
-        return $this->doInstall($requestedPhar, $destination, false, true);
-    }
-
-    /**
-     * @param RequestedPhar $requestedPhar
-     * @param Directory     $destination
-     * @param bool          $makeCopy
-     * @param bool          $replaceExisting
-     *
-     * @return InstalledPhar|null
-     */
-    private function doInstall(RequestedPhar $requestedPhar, Directory $destination, $makeCopy, $replaceExisting) {
         $release = $this->getRelease($requestedPhar);
         $pharName = $release->getUrl()->getPharName();
 
         $destinationFile = $destination->file($pharName);
-        if (!$replaceExisting && $destinationFile->exists()) {
+        if ($destinationFile->exists()) {
             $this->output->writeInfo(sprintf('%s is already installed, skipping.', $pharName));
             return null;
         }
@@ -105,7 +83,28 @@ class PharService {
             $release->getName(),
             $release->getVersion(),
             $requestedPhar->getVersionConstraint(),
-            $destination
+            $destinationFile
+        );
+    }
+
+    /**
+     * @param RequestedPhar $requestedPhar
+     * @param Filename $location
+     *
+     * @return InstalledPhar
+     *
+     */
+    public function update(RequestedPhar $requestedPhar, Filename $location) {
+        $release = $this->getRelease($requestedPhar);
+        $phar = $this->getPharFromRelease($release);
+        $this->installer->install($phar->getFile(), $location, false);
+        $this->pharRegistry->addUsage($phar, $location);
+
+        return new InstalledPhar(
+            $release->getName(),
+            $release->getVersion(),
+            $requestedPhar->getVersionConstraint(),
+            $location
         );
     }
 

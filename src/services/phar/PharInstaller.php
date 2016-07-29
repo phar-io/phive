@@ -14,30 +14,22 @@ class PharInstaller {
     private $output;
 
     /**
-     * @var Environment
-     */
-    private $environment;
-
-    /**
      * @var PharActivator
      */
     private $pharActivator;
 
     /**
-     * @param Directory     $pharDirectory
-     * @param Cli\Output    $output
-     * @param Environment   $environment
+     * @param Directory $pharDirectory
+     * @param Cli\Output $output
      * @param PharActivator $pharActivator
      */
     public function __construct(
         Directory $pharDirectory,
         Cli\Output $output,
-        Environment $environment,
         PharActivator $pharActivator
     ) {
         $this->pharDirectory = $pharDirectory;
         $this->output = $output;
-        $this->environment = $environment;
         $this->pharActivator = $pharActivator;
     }
 

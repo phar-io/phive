@@ -21,6 +21,8 @@ class Executor {
 
     /**
      * @param string $argLine
+     *
+     * @return ExecutorResult
      */
     public function execute($argLine) {
         $command = sprintf(

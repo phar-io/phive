@@ -19,23 +19,21 @@ class InstalledPhar {
     private $versionConstraint;
 
     /**
-     * @var Directory
+     * @var Filename
      */
     private $location;
 
     /**
-     * InstalledPhar constructor.
-     *
-     * @param string            $name
-     * @param Version           $installedVersion
+     * @param string $name
+     * @param Version $installedVersion
      * @param VersionConstraint $versionConstraint
-     * @param Directory         $location
+     * @param Filename $location
      */
     public function __construct(
         $name,
         Version $installedVersion,
         VersionConstraint $versionConstraint,
-        Directory $location
+        Filename $location
     ) {
         $this->name = $name;
         $this->installedVersion = $installedVersion;
@@ -65,7 +63,7 @@ class InstalledPhar {
     }
 
     /**
-     * @return Directory
+     * @return Filename
      */
     public function getLocation() {
         return $this->location;

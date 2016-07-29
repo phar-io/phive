@@ -70,4 +70,35 @@ class Filename {
         return new File($this, file_get_contents($this->asString()));
     }
 
+    /**
+     * @return Filename
+     */
+    public function withAbsolutePath() {
+        return $this->getDirectory()->withAbsolutePath()->file($this->getBasename());
+    }
+
+    /**
+     * @return Directory
+     */
+    public function getDirectory() {
+        return new Directory(dirname($this));
+    }
+
+    /**
+     * @param Directory $directory
+     *
+     * @return Filename
+     */
+    public function getRelativePathTo(Directory $directory) {
+        return new Filename($this->getDirectory()->getRelativePathTo($directory) . $this->getBasename());
+    }
+
+    /**
+     * @return string
+     */
+    private function getBasename()
+    {
+        return pathinfo($this, PATHINFO_BASENAME);
+    }
+
 }

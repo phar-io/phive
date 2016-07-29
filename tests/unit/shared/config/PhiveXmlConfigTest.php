@@ -30,7 +30,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $installedPhar->method('getVersionConstraint')->willReturn(new ExactVersionConstraint('5.3.0'));
         $installedPhar->method('getInstalledVersion')->willReturn(new Version('5.3.0'));
         $installedPhar->method('getName')->willReturn('phpunit');
-        $installedPhar->method('getLocation')->willReturn($this->getDirectoryMock());
+        $installedPhar->method('getLocation')->willReturn($this->getFilenameMock());
 
         $targetDirectory = $this->getDirectoryMock();
         $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock());
@@ -166,13 +166,6 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Phar
-     */
-    private function getPharMock() {
-        return $this->createMock(Phar::class);
-    }
-
-    /**
      * @return \PHPUnit_Framework_MockObject_MockObject|XmlFile
      */
     private function getXmlFileMock() {
@@ -198,6 +191,13 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
      */
     private function getInstalledPharMock() {
         return $this->createMock(InstalledPhar::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Filename
+     */
+    private function getFilenameMock() {
+        return $this->createMock(Filename::class);
     }
 
 }

@@ -427,10 +427,7 @@ class Factory {
      */
     private function getPharInstaller() {
         return new PharInstaller(
-            $this->getConfig()->getHomeDirectory()->child('phars'),
-            $this->getOutput(),
-            $this->getEnvironment(),
-            $this->getFileLinker()
+            $this->getConfig()->getHomeDirectory()->child('phars'), $this->getOutput(), $this->getFileLinker()
         );
     }
 

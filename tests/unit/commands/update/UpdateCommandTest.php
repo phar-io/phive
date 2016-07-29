@@ -17,6 +17,12 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $installedPhar1 = $this->getInstalledPharMock();
         $installedPhar2 = $this->getInstalledPharMock();
 
+        $filename = new Filename('/tmp/foo');
+
+        $phiveXmlConfig = $this->getPhiveXmlConfigMock();
+        $phiveXmlConfig->method('hasPharLocation')->willReturn(true);
+        $phiveXmlConfig->method('getPharLocation')->willReturn($filename);
+
         $directory = $this->getDirectoryMock();
 
         $config->expects($this->any())
@@ -27,16 +33,16 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
             ->method('getRequestedPhars')
             ->will($this->returnValue([$requestedPhar1, $requestedPhar2]));
 
-        $command = new UpdateCommand($config, $pharService, $this->getPhiveXmlConfigMock());
+        $command = new UpdateCommand($config, $pharService, $phiveXmlConfig);
 
         $pharService->expects($this->at(0))
             ->method('update')
-            ->with($requestedPhar1, $directory)
+            ->with($requestedPhar1, $filename)
             ->willReturn($installedPhar1);
 
         $pharService->expects($this->at(1))
             ->method('update')
-            ->with($requestedPhar2, $directory)
+            ->with($requestedPhar2, $filename)
             ->willReturn($installedPhar2);
 
         $command->execute();
@@ -69,13 +75,6 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
      */
     private function getRequestedPharMock() {
         return $this->createMock(RequestedPhar::class);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Phar
-     */
-    private function getPharMock() {
-        return $this->createMock(Phar::class);
     }
 
     /**

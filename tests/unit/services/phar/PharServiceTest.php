@@ -106,8 +106,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             ->method('install')
             ->with($file, new Filename('/tmp/foo'), false);
 
-        $directory = $this->getDirectoryMock();
-        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
+        $filename = new Filename('/tmp/foo');
 
         $service = new PharService(
             $this->getPharDownloaderMock(),
@@ -118,7 +117,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             $this->getSourceRepositoryLoaderMock()
         );
 
-        $service->update($requestedPhar, $directory);
+        $service->update($requestedPhar, $filename);
     }
 
     public function testInstallSkipsPharIfAlreadyInstalled() {
