@@ -2,11 +2,14 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [0.6.0] - unreleased
+## [0.6.0] - 2016-07-29
 
 ### Added
 * [#67](https://github.com/phar-io/phive/issues/67): Implement alternative separators for version specification
 * [#69](https://github.com/phar-io/phive/issues/69): Add cli option to provide trusted gpg key IDs
+
+### Fixed
+* [#70](https://github.com/phar-io/phive/issues/70): Updating and removing PHARs installed via GitHub now works properly
 
 ## [0.5.0] - 2016-07-15
 
