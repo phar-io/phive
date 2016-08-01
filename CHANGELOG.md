@@ -10,6 +10,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ### Fixed
 * [#70](https://github.com/phar-io/phive/issues/70): Updating and removing PHARs installed via GitHub now works properly
+* [#73](https://github.com/phar-io/phive/issues/73): Selfupdate now properly installs the new PHAR
 
 ## [0.5.0] - 2016-07-15
 
