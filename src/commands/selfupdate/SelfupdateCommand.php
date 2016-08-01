@@ -87,11 +87,61 @@ class SelfupdateCommand implements Cli\Command {
             return;
         }
 
-        $phar = $this->pharDownloader->download($release);
-        $this->pharInstaller->install($phar->getFile(), $destination, true);
+        try {
+            $phar = $this->pharDownloader->download($release);
+            $this->installPhivePhar($phar, $destination);
+        } catch (DownloadFailedException $e) {
+            $this->output->writeError('Downloading the new version failed: ' . $e->getMessage());
+            return;
+        } catch (InstallationFailedException $e) {
+            $this->output->writeError('Installing the new version failed: ' . $e->getMessage());
+            return;
+        }
 
         $this->output->writeInfo(
             sprintf('PHIVE was successfully updated to version %s', $release->getVersion()->getVersionString())
         );
+    }
+
+    /**
+     * @param Phar $phar
+     * @param Filename $destination
+     *
+     * @throws InstallationFailedException
+     */
+    private function installPhivePhar(Phar $phar, Filename $destination)
+    {
+        $tmpFilename = tempnam(sys_get_temp_dir(), 'phive_selfupdate_');
+
+        if ($tmpFilename === false) {
+            throw new InstallationFailedException(
+                sprintf('Could not create temporary file in %s', sys_get_temp_dir())
+            );
+        }
+
+        $tmpFilename = new Filename($tmpFilename);
+        if (false === file_put_contents($tmpFilename->asString(), $phar->getFile()->getContent())) {
+            throw new InstallationFailedException(
+                sprintf('Could not write to %s', $tmpFilename->asString())
+            );
+        }
+
+        if (false === copy($tmpFilename, $destination->asString())) {
+            throw new InstallationFailedException(
+                sprintf('Could not copy temporary file to %s', $destination->asString())
+            );
+        }
+
+        if (false === chmod($destination, 0755)) {
+            throw new InstallationFailedException(
+                sprintf('Could not make %s executable, please fix manually', $destination->asString())
+            );
+        }
+
+        if (false === unlink($tmpFilename)) {
+            throw new InstallationFailedException(
+                sprintf('Could not remove temporary file %s, please fix manually', $tmpFilename->asString())
+            );
+        }
     }
 }
