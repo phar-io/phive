@@ -14,7 +14,12 @@ class SourcesListTest extends \PHPUnit_Framework_TestCase {
                 'repositories'
             )
         );
-        $this->assertEquals([], $list->getSourcesForAlias(new PharAlias('bar', new AnyVersionConstraint())));
+        $this->assertEquals(
+            [],
+            $list->getSourcesForAlias(
+                new PharAlias('bar', new AnyVersionConstraint(), new AnyVersionConstraint())
+            )
+        );
     }
 
     public function testReturnsEmptyArrayForUnknownAlias() {
@@ -25,7 +30,13 @@ class SourcesListTest extends \PHPUnit_Framework_TestCase {
                 'repositories'
             )
         );
-        $this->assertEquals([], $list->getSourcesForAlias(new PharAlias('foo', new AnyVersionConstraint())));
+        $this->assertEquals(
+            [],
+            $list->getSourcesForAlias(
+                new PharAlias('foo', new AnyVersionConstraint(), new AnyVersionConstraint()
+                )
+            )
+        );
     }
 
     public function testReturnsExpectedArrayOfSources() {
@@ -41,12 +52,22 @@ class SourcesListTest extends \PHPUnit_Framework_TestCase {
             new Source('phar.io', new Url('https://phar.phpunit.de')),
             new Source('phar.io', new Url('https://phar.io'))
         ];
-        $this->assertEquals($expected, $list->getSourcesForAlias(new PharAlias('phpunit', new AnyVersionConstraint())));
+        $this->assertEquals(
+            $expected,
+            $list->getSourcesForAlias(
+                new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint())
+            )
+        );
 
         $expected = [
             new Source('phar.io', new Url('https://phar.io'))
         ];
-        $this->assertEquals($expected, $list->getSourcesForAlias(new PharAlias('phpab', new AnyVersionConstraint())));
+        $this->assertEquals(
+            $expected,
+            $list->getSourcesForAlias(
+                new PharAlias('phpab', new AnyVersionConstraint(), new AnyVersionConstraint())
+            )
+        );
     }
 
 }

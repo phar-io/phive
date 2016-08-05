@@ -108,6 +108,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
         $filename = new Filename('/tmp/foo');
 
+        $currentVersion = new Version('0.0.0');
+
         $service = new PharService(
             $this->getPharDownloaderMock(),
             $installer,
@@ -117,47 +119,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
             $this->getSourceRepositoryLoaderMock()
         );
 
-        $service->update($requestedPhar, $filename);
-    }
-
-    public function testInstallSkipsPharIfAlreadyInstalled() {
-        $url = new PharUrl('https://example.com/foo-1.20.1.phar');
-        $file = new File(new Filename('foo.phar'), 'bar');
-        $requestedPhar = new RequestedPharUrl($url);
-
-        $phar = new Phar('foo', new Version('1.20.1'), $file);
-
-        $registry = $this->getPharRegistryMock();
-        $registry->method('hasPhar')
-            ->with('foo', new Version('1.20.1'))
-            ->willReturn(true);
-        $registry->method('getPhar')
-            ->with('foo', new Version('1.20.1'))
-            ->willReturn($phar);
-
-        $installer = $this->getPharInstallerMock();
-        $installer->expects($this->never())->method('install');
-
-        $output = $this->getOutputMock();
-        $output->expects($this->once())
-            ->method('writeInfo');
-
-        $filename = $this->createMock(Filename::class);
-        $filename->method('exists')->willReturn(true);
-
-        $directory = $this->getDirectoryMock();
-        $directory->expects($this->once())->method('file')->willReturn($filename);
-
-        $service = new PharService(
-            $this->getPharDownloaderMock(),
-            $installer,
-            $registry,
-            $this->getAliasResolverServiceMock(),
-            $output,
-            $this->getSourceRepositoryLoaderMock()
-        );
-
-        $service->install($requestedPhar, $directory, true);
+        $service->update($requestedPhar, $filename, $currentVersion);
     }
 
     public function testInstallHandlesDownloadFailedException() {
@@ -258,7 +220,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testInstallHandlesResolveException() {
-        $requestedPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint()));
+        $requestedPhar = new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint()));
 
         $resolver = $this->getAliasResolverServiceMock();
         $resolver->method('resolve')

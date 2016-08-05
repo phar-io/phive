@@ -21,7 +21,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
             ->with('//phive:phar[@name="phpunit"]')
             ->willReturn($items);
 
-        $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'));
+        $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'), new ExactVersionConstraint('5.3.0'));
 
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
@@ -63,7 +63,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
             ->willReturn($node);
         $configFile->expects($this->once())->method('addElement')->with($node);
 
-        $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'));
+        $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'), new ExactVersionConstraint('5.3.0'));
 
 
         $installedPhar = $this->getInstalledPharMock();

@@ -43,4 +43,10 @@ class RequestedPharUrl implements RequestedPhar {
         return new ExactVersionConstraint($this->getPharUrl()->getPharVersion()->getVersionString());
     }
 
+    /**
+     * @return VersionConstraint
+     */
+    public function getVersionToInstall() {
+        return $this->getVersionConstraint();
+    }
 }

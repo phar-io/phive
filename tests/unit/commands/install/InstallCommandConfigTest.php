@@ -79,8 +79,8 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ->willReturn([$configuredPhar1, $configuredPhar2]);
 
         $expectedPhars = [
-            new RequestedPharAlias(new PharAlias('Some Phar', new AnyVersionConstraint())),
-            new RequestedPharAlias(new PharAlias('Some Other Phar', new ExactVersionConstraint('1.2.3')))
+            new RequestedPharAlias(new PharAlias('Some Phar', new AnyVersionConstraint(), new AnyVersionConstraint())),
+            new RequestedPharAlias(new PharAlias('Some Other Phar', new ExactVersionConstraint('1.2.3'), new ExactVersionConstraint('1.2.3')))
         ];
 
         $commandConfig = new InstallCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
@@ -103,8 +103,8 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
         $expected = [
             new RequestedPharUrl(new PharUrl('https://example.com/foo.phar')),
-            new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint())),
-            new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0'))),
+            new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint())),
+            new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0'), new ExactVersionConstraint('1.12.0'))),
         ];
 
         $commandConfig = new InstallCommandConfig($options, $this->getPhiveXmlConfigMock(), $this->getTargetDirectoryLocatorMock());

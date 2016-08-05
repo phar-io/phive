@@ -12,14 +12,14 @@ class AliasResolverTest extends \PHPUnit_Framework_TestCase {
     private $sourcesListFileLoader;
 
     public function testThrowsExceptionIfListReturnsEmptyArray() {
-        $alias = new PharAlias('phpunit', new AnyVersionConstraint());
+        $alias = new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint());
         $resolver = new PharIoAliasResolver($this->sourcesListFileLoader->reveal());
         $this->expectException(ResolveException::class);
         $resolver->resolve($alias);
     }
 
     public function testReturnsExpectedArrayOfUrls() {
-        $alias = new PharAlias('phpunit', new AnyVersionConstraint());
+        $alias = new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint());
 
         $sources = [
             new Source('phar.io', new Url('https://example.com/foo')),

@@ -59,22 +59,16 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory     $destination
-     * @param bool          $makeCopy
+     * @param Directory $destination
+     * @param bool $makeCopy
      *
-     * @return InstalledPhar|null
+     * @return null|InstalledPhar
      */
     public function install(RequestedPhar $requestedPhar, Directory $destination, $makeCopy) {
         $release = $this->getRelease($requestedPhar);
         $pharName = $release->getUrl()->getPharName();
-
-        $destinationFile = $destination->file($pharName);
-        if ($destinationFile->exists()) {
-            $this->output->writeInfo(sprintf('%s is already installed, skipping.', $pharName));
-            return null;
-        }
-
         $phar = $this->getPharFromRelease($release);
+        $destinationFile = $destination->file($pharName);
 
         $this->installer->install($phar->getFile(), $destinationFile, $makeCopy);
         $this->pharRegistry->addUsage($phar, $destinationFile);
@@ -90,12 +84,25 @@ class PharService {
     /**
      * @param RequestedPhar $requestedPhar
      * @param Filename $location
+     * @param Version $currentVersion
      *
-     * @return InstalledPhar
-     *
+     * @return InstalledPhar|null
      */
-    public function update(RequestedPhar $requestedPhar, Filename $location) {
+    public function update(RequestedPhar $requestedPhar, Filename $location, Version $currentVersion) {
         $release = $this->getRelease($requestedPhar);
+
+        if (!$release->getVersion()->isGreaterThan($currentVersion)) {
+            $this->output->writeInfo(
+                sprintf(
+                    '%s: %s is the newest version matching constraint %s, skipping.',
+                    $requestedPhar->getAlias(),
+                    $currentVersion->getVersionString(),
+                    $requestedPhar->getVersionConstraint()->asString()
+                )
+            );
+            return null;
+        }
+
         $phar = $this->getPharFromRelease($release);
         $this->installer->install($phar->getFile(), $location, false);
         $this->pharRegistry->addUsage($phar, $location);
@@ -107,6 +114,7 @@ class PharService {
             $location
         );
     }
+
 
     /**
      * @param Release $release
@@ -155,7 +163,7 @@ class PharService {
             try {
                 $repo = $this->sourceRepositoryLoader->loadRepository($source);
                 $releases = $repo->getReleasesByAlias($alias);
-                return $releases->getLatest($alias->getVersionConstraint());
+                return $releases->getLatest($alias->getVersionToInstall());
             } catch (ResolveException $e) {
                 $this->output->writeWarning(
                     sprintf(

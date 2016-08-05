@@ -89,6 +89,37 @@ class PhiveXmlConfig {
     /**
      * @param string $name
      *
+     * @throws ConfigException
+     *
+     * @return Version
+     */
+    public function getPharVersion($name) {
+        if (!$this->hasPharNode($name)) {
+            throw new ConfigException(sprintf('PHAR %s not found in phive.xml', $name));
+        }
+        $pharNode = $this->getPharNode($name);
+        if (!$pharNode->hasAttribute('installed')) {
+            throw new ConfigException(sprintf('PHAR %s has no installed version', $name));
+        }
+        return new Version($pharNode->getAttribute('installed'));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function isPharInstalled($name) {
+        if (!$this->hasPharLocation($name)) {
+            return false;
+        }
+        return $this->getPharLocation($name)->exists() && $this->getPharNode($name)->hasAttribute('installed');
+    }
+
+
+    /**
+     * @param string $name
+     *
      * @return bool
      */
     private function hasPharNode($name) {

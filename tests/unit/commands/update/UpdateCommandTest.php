@@ -17,10 +17,11 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $installedPhar1 = $this->getInstalledPharMock();
         $installedPhar2 = $this->getInstalledPharMock();
 
-        $filename = new Filename('/tmp/foo');
+        $filename = $this->getFilenameMock();
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
-        $phiveXmlConfig->method('hasPharLocation')->willReturn(true);
+        $phiveXmlConfig->method('isPharInstalled')->willReturn(true);
+        $phiveXmlConfig->method('getPharVersion')->willReturn(new Version('0.0.0'));
         $phiveXmlConfig->method('getPharLocation')->willReturn($filename);
 
         $directory = $this->getDirectoryMock();
@@ -89,6 +90,13 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
      */
     private function getInstalledPharMock() {
         return $this->createMock(InstalledPhar::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Filename
+     */
+    private function getFilenameMock() {
+        return $this->createMock(Filename::class);
     }
 }
 

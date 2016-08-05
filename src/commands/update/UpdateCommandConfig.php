@@ -62,7 +62,13 @@ class UpdateCommandConfig {
             if (Url::isUrl($configuredPhar->getName())) {
                 $phars[] = new RequestedPharUrl(new PharUrl($configuredPhar->getName()));
             } else {
-                $phars[] = new RequestedPharAlias(new PharAlias($configuredPhar->getName(), $configuredPhar->getVersionConstraint()));
+                $phars[] = new RequestedPharAlias(
+                    new PharAlias(
+                        $configuredPhar->getName(),
+                        $configuredPhar->getVersionConstraint(),
+                        $configuredPhar->getVersionConstraint()
+                    )
+                );
             }
         }
         return $phars;

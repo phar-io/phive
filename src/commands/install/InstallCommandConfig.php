@@ -71,15 +71,18 @@ class InstallCommandConfig {
      * @return RequestedPharAlias
      */
     private function getPharAliasFromConfiguredPhar(ConfiguredPhar $configuredPhar) {
+        $versionConstraint = $configuredPhar->getVersionConstraint();
+        $versionToInstall = null;
         if ($configuredPhar->isInstalled()) {
-            $versionConstraint = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
+            $versionToInstall = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
         } else {
-            $versionConstraint = $configuredPhar->getVersionConstraint();
+            $versionToInstall = $versionConstraint;
         }
         return new RequestedPharAlias(
             new PharAlias(
                 $configuredPhar->getName(),
-                $versionConstraint
+                $versionConstraint,
+                $versionToInstall
             )
         );
     }
@@ -103,7 +106,7 @@ class InstallCommandConfig {
                 } else {
                     $versionConstraint = new AnyVersionConstraint();
                 }
-                $phars[] = new RequestedPharAlias(new PharAlias($aliasSegments[0], $versionConstraint));
+                $phars[] = new RequestedPharAlias(new PharAlias($aliasSegments[0], $versionConstraint, $versionConstraint));
             }
         }
         return $phars;

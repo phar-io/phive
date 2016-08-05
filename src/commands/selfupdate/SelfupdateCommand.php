@@ -73,7 +73,7 @@ class SelfupdateCommand implements Cli\Command {
      *
      */
     public function execute() {
-        $requestedPhar = new RequestedPharAlias(new PharAlias('phar-io/phive', new AnyVersionConstraint()));
+        $requestedPhar = new RequestedPharAlias(new PharAlias('phar-io/phive', new AnyVersionConstraint(), new AnyVersionConstraint()));
 
         $destination = new Filename($this->environment->getPhiveCommandPath());
 

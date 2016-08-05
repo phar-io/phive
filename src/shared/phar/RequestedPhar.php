@@ -23,4 +23,9 @@ interface RequestedPhar {
      */
     public function getVersionConstraint();
 
+    /**
+     * @return VersionConstraint
+     */
+    public function getVersionToInstall();
+
 }

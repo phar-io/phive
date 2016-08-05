@@ -14,12 +14,19 @@ class PharAlias {
     private $versionConstraint;
 
     /**
-     * @param string            $name
-     * @param VersionConstraint $versionConstraint
+     * @var VersionConstraint
      */
-    public function __construct($name, VersionConstraint $versionConstraint) {
+    private $versionToInstall;
+
+    /**
+     * @param string $name
+     * @param VersionConstraint $versionConstraint
+     * @param VersionConstraint $versionToInstall
+     */
+    public function __construct($name, VersionConstraint $versionConstraint, VersionConstraint $versionToInstall) {
         $this->name = $name;
         $this->versionConstraint = $versionConstraint;
+        $this->versionToInstall = $versionToInstall;
     }
 
     /**
@@ -27,6 +34,13 @@ class PharAlias {
      */
     public function getVersionConstraint() {
         return $this->versionConstraint;
+    }
+
+    /**
+     * @return VersionConstraint
+     */
+    public function getVersionToInstall() {
+        return $this->versionToInstall;
     }
 
     /**
