@@ -2,6 +2,17 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.7.0] - UNRELEASED
+
+### Added
+
+* [#71](https://github.com/phar-io/phive/issues/71): Do no update PHARs if there is no newer version
+* [#74](https://github.com/phar-io/phive/issues/74): Allow downgrading PHARs
+
+### Changed
+
+* [#75](https://github.com/phar-io/phive/issues/75): Running ```phive install``` with arguments will now overwrite existing entries in ```phive.xml```
+
 ## [0.6.0] - 2016-07-29
 
 ### Added
