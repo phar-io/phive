@@ -91,7 +91,7 @@ class PharService {
     public function update(RequestedPhar $requestedPhar, Filename $location, Version $currentVersion) {
         $release = $this->getRelease($requestedPhar);
 
-        if (!$release->getVersion()->isGreaterThan($currentVersion)) {
+        if ($requestedPhar->getVersionConstraint()->complies($currentVersion) && !$release->getVersion()->isGreaterThan($currentVersion)) {
             $this->output->writeInfo(
                 sprintf(
                     '%s: %s is the newest version matching constraint %s, skipping.',
