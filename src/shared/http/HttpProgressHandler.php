@@ -3,6 +3,11 @@ namespace PharIo\Phive;
 
 interface HttpProgressHandler {
 
+    /**
+     * @param Url $url
+     */
+    public function start(Url $url);
+
     public function finished();
 
     /**

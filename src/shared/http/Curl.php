@@ -45,6 +45,8 @@ class Curl implements HttpClient {
         $this->url = $url;
         $ch = $this->getCurlInstance($this->url, $etag);
 
+        $this->progressHandler->start($url);
+
         $result = $this->exec($ch);
 
         $this->progressHandler->finished();

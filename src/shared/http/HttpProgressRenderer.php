@@ -15,8 +15,15 @@ class HttpProgressRenderer implements HttpProgressHandler {
         $this->output = $output;
     }
 
+    /**
+     * @param Url $url
+     */
+    public function start(Url $url) {
+        $this->output->writeInfo(sprintf('Downloading %s', $url));
+    }
+
     public function finished() {
-        $this->output->writeText("\n");
+        $this->output->writeProgress('');
     }
 
     /**
@@ -29,11 +36,14 @@ class HttpProgressRenderer implements HttpProgressHandler {
             return true;
         }
 
-        $template = 'Downloading %s [ %s / %s - %3d%% ]';
+        $template = ' ↳ |%s| %s / %s - %3d%%';
+
+
+
         $this->output->writeProgress(
             sprintf(
                 $template,
-                $update->getUrl(),
+                $this->getProgressBar($update->getDownloadPercent()),
                 $this->formatSize(
                     $update->getExpectedDownloadSize(),
                     $update->getBytesReceived()
@@ -62,6 +72,17 @@ class HttpProgressRenderer implements HttpProgressHandler {
             return number_format($current / 1024, 2) . ' KB';
         }
         return $current . ' B';
+    }
+
+    /**
+     * @param float $downloadPercent
+     *
+     * @return string
+     */
+    private function getProgressBar($downloadPercent) {
+        $barCount = floor($downloadPercent / 2.5);
+        $barString = str_pad('', $barCount, '=') . '>';
+        return str_pad($barString, 40, ' ', STR_PAD_RIGHT);
     }
 
 }
