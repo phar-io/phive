@@ -27,7 +27,7 @@ class Url {
         $this->ensureValidHostname(isset($components['host']) ? $components['host'] : '');
         $this->uri = $uri;
         $this->hostname = $components['host'];
-        $this->path = $components['path'];
+        $this->path = array_key_exists('path', $components) ? $components['path'] : '/';
     }
 
     /**
@@ -49,6 +49,13 @@ class Url {
      */
     public function getPath() {
         return $this->path;
+    }
+
+    /**
+     * @return Filename
+     */
+    public function getFilename() {
+        return new Filename(basename($this->getPath()));
     }
 
     /**

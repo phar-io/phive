@@ -51,20 +51,7 @@ class GnupgKeyDownloader implements KeyDownloader {
 
             try {
                 $keyInfo = $this->httpClient->get((new Url($keyServer . self::PATH))->withParams($infoParams));
-                if ($keyInfo->getHttpCode() != 200) {
-                    $this->output->writeWarning(
-                        sprintf('Failed with status code %s: %s', $keyInfo->getHttpCode(), $keyInfo->getErrorMessage())
-                    );
-                    continue;
-                }
-
                 $publicKey = $this->httpClient->get((new Url($keyServer . self::PATH))->withParams($publicParams));
-                if ($publicKey->getHttpCode() != 200) {
-                    $this->output->writeWarning(
-                        sprintf('Failed with status code %s: %s', $publicKey->getHttpCode(), $publicKey->getErrorMessage())
-                    );
-                    continue;
-                }
             } catch (HttpException $e) {
                     $this->output->writeWarning(
                         sprintf('Failed with error code %s: %s', $e->getCode(), $e->getMessage())

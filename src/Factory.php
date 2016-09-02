@@ -351,7 +351,7 @@ class Factory {
      */
     private function getPharDownloader() {
         return new PharDownloader(
-            $this->getFileDownloader(new NullCacheBackend()),
+            $this->getCurl(),
             $this->getGnupgSignatureVerifier(),
             $this->getChecksumService(),
             $this->getPharRegistry()

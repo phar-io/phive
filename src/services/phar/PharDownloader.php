@@ -4,11 +4,6 @@ namespace PharIo\Phive;
 class PharDownloader {
 
     /**
-     * @var FileDownloader
-     */
-    private $fileDownloader;
-
-    /**
      * @var SignatureVerifier
      */
     private $signatureVerifier;
@@ -24,21 +19,26 @@ class PharDownloader {
     private $pharRegistry;
 
     /**
-     * @param FileDownloader    $fileDownloader
+     * @var HttpClient
+     */
+    private $httpClient;
+
+    /**
+     * @param HttpClient $httpClient
      * @param SignatureVerifier $signatureVerifier
-     * @param ChecksumService   $checksumService
-     * @param PharRegistry      $pharRegistry
+     * @param ChecksumService $checksumService
+     * @param PharRegistry $pharRegistry
      */
     public function __construct(
-        FileDownloader $fileDownloader,
+        HttpClient $httpClient,
         SignatureVerifier $signatureVerifier,
         ChecksumService $checksumService,
         PharRegistry $pharRegistry
     ) {
-        $this->fileDownloader = $fileDownloader;
         $this->signatureVerifier = $signatureVerifier;
         $this->checksumService = $checksumService;
         $this->pharRegistry = $pharRegistry;
+        $this->httpClient = $httpClient;
     }
 
     /**
@@ -50,8 +50,9 @@ class PharDownloader {
      * @throws VerificationFailedException
      */
     public function download(Release $release) {
-        $pharFile = $this->fileDownloader->download($release->getUrl());
-        $signatureFile = $this->fileDownloader->download($this->getSignatureUrl($release->getUrl()));
+        $pharFile = $this->downloadFile($release->getUrl());
+        $signatureFile = $this->downloadFile($this->getSignatureUrl($release->getUrl()));
+
         $signatureVerificationResult = $this->verifySignature(
             $pharFile,
             $signatureFile,
@@ -66,6 +67,26 @@ class PharDownloader {
             );
         }
         return new Phar($release->getName(), $release->getVersion(), $pharFile, $signatureVerificationResult->getFingerprint());
+    }
+
+    /**
+     * @param Url $url
+     *
+     * @return File
+     * @throws DownloadFailedException
+     */
+    private function downloadFile(Url $url)
+    {
+        try {
+            $response = $this->httpClient->get($url);
+            return new File($url->getFilename(), $response->getBody());
+        } catch (HttpException $e) {
+            throw new DownloadFailedException(
+                sprintf('Could not download from %s: %s', $url, $e->getMessage()),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 
     /**

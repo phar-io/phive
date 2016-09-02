@@ -38,13 +38,13 @@ class FileDownloader {
             $response = $this->httpClient->get($url, $cachedETag);
 
             if ($response->getHttpCode() === 304) {
-                return new File($this->getFilename($url), $this->cache->getContent($url));
+                return new File($url->getFilename(), $this->cache->getContent($url));
             }
 
             if ($response->hasETag()) {
                 $this->cache->storeEntry($url, $response->getETag(), $response->getBody());
             }
-            return new File($this->getFilename($url), $response->getBody());
+            return new File($url->getFilename(), $response->getBody());
 
         } catch (HttpException $e) {
             throw new DownloadFailedException(
@@ -55,15 +55,6 @@ class FileDownloader {
                 )
             );
         }
-    }
-
-    /**
-     * @param Url $url
-     *
-     * @return Filename
-     */
-    private function getFilename(Url $url) {
-        return new Filename(pathinfo($url, PATHINFO_BASENAME));
     }
 
 }
