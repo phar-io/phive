@@ -22,9 +22,20 @@ class Curl implements HttpClient {
     private $url;
 
     /**
+     * @var CacheBackend
+     */
+    private $cache;
+
+    /**
+     * @var ETag
+     */
+    private $etag;
+
+    /**
      * @param CurlConfig $curlConfig
      */
-    public function __construct(CurlConfig $curlConfig) {
+    public function __construct(CacheBackend $cache, CurlConfig $curlConfig) {
+        $this->cache = $cache;
         $this->config = $curlConfig;
     }
 
@@ -39,7 +50,30 @@ class Curl implements HttpClient {
      * @throws HttpException
      */
     public function get(Url $url, array $params = [], HttpProgressHandler $progressHandler = null) {
-        return $this->exec('GET', $url, $params, $progressHandler);
+        $this->url = $url->withParams($params);
+        $ch = $this->getCurlInstance($this->url);
+
+        if ($progressHandler !== NULL) {
+            curl_setopt($ch, CURLOPT_NOPROGRESS, false);
+            curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
+            $this->progressHandler = $progressHandler;
+        }
+
+        $result = $this->exec($ch);
+
+        if ($result->getHttpCode() === 200 && $this->etag instanceof ETag) {
+            $this->cache->storeEntry($this->url, $this->etag, $result->getBody());
+        }
+
+        if ($result->getHttpCode() === 304) { // not modified
+            return new HttpResponse(
+                $this->cache->getContent($this->url),
+                200,
+                ''
+            );
+        }
+
+        return $result;
     }
 
     /**
@@ -50,7 +84,13 @@ class Curl implements HttpClient {
      * @throws HttpException
      */
     public function head(Url $url, array $params = []) {
-        return $this->exec('HEAD', $url, $params);
+        $this->url = $url->withParams($params);
+        $ch = $this->getCurlInstance($this->url);
+        $result = $this->exec($ch);
+        if ($result->getHttpCode() === 304) { // not modified
+            return new HttpResponse('', 200, '');
+        }
+        return $result;
     }
 
     /**
@@ -63,13 +103,47 @@ class Curl implements HttpClient {
      * @return int
      */
     private function handleProgressInfo($ch, $expectedDown, $received, $expectedUp, $sent) {
-        if (!$this->progressHandler) {
-            return 0;
-        }
-
         return $this->progressHandler->handleUpdate(
             new HttpProgressUpdate($this->url, $expectedDown, $received, $expectedUp, $sent)
         ) ? 0 : 1;
+    }
+
+    /**
+     * @param resource $ch
+     * @param string   $line
+     *
+     * @return int
+     */
+    private function handleHeaderInput($ch, $line) {
+        $parts = explode(':', trim($line));
+        if (strtolower($parts[0]) === 'etag') {
+            $this->etag = new ETag(trim($parts[1]));
+        }
+        return mb_strlen($line);
+    }
+
+    /**
+     * @param Url $url
+     *
+     * @return resource
+     */
+    private function getCurlInstance(Url $url) {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, $this->config->asCurlOptArray());
+
+        if ($this->cache->hasEntry($url)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'If-None-Match: ' . $this->cache->getEtag($url)->asString()
+            ]);
+        }
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'handleHeaderInput']);
+
+        $hostname = $url->getHostname();
+        if ($this->config->hasLocalSslCertificate($hostname)) {
+            curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname)->getCertificateFile());
+        }
+
+        return $ch;
     }
 
     /**
@@ -83,26 +157,8 @@ class Curl implements HttpClient {
      *
      * @throws HttpException
      */
-    private function exec($method, Url $url, array $params = [], HttpProgressHandler $progressHandler = null) {
+    private function exec($ch) {
         try {
-            $this->progressHandler = $progressHandler;
-            $this->url = $url->withParams($params);
-            $ch = curl_init($this->url);
-            curl_setopt_array($ch, $this->config->asCurlOptArray());
-
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-            if ($method === 'HEAD') {
-                curl_setopt($ch, CURLOPT_NOBODY, true);
-            }
-
-            curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-            curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
-
-            $hostname = $url->getHostname();
-            if ($this->config->hasLocalSslCertificate($hostname)) {
-                curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname)->getCertificateFile());
-            }
-
             $result = curl_exec($ch);
             if (curl_errno($ch) !== 0) {
                 throw new HttpException(
@@ -110,7 +166,6 @@ class Curl implements HttpClient {
                     curl_errno($ch)
                 );
             }
-
             return new HttpResponse(
                 $result,
                 curl_getinfo($ch, CURLINFO_HTTP_CODE),

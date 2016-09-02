@@ -72,6 +72,9 @@ class Runner {
         } catch (RunnerException $e) {
             $this->showException($e);
             return $e->getCode();
+        } catch (ErrorException $e) {
+            $this->showErrorWithTrace($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
+            return self::RC_BUG_FOUND;
         } catch (Exception $e) {
             $this->showException($e);
             return self::RC_ERROR;

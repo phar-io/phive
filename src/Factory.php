@@ -6,9 +6,9 @@ use PharIo\Phive\Cli;
 class Factory {
 
     /**
-     * @var HttpClient
+     * @var CurlConfig
      */
-    private $curl;
+    private $curlConfig;
 
     /**
      * @var PhiveVersion
@@ -195,7 +195,7 @@ class Factory {
     public function getSelfupdateCommand() {
         return new SelfupdateCommand(
             $this->getPharDownloader(),
-            new SourceRepositoryLoader($this->getFileDownloader()),
+            $this->getSourceRepositoryLoader(),
             $this->getGithubAliasResolver(),
             $this->getEnvironment(),
             $this->getPhiveVersion(),
@@ -260,7 +260,7 @@ class Factory {
         return new SourcesListFileLoader(
             $this->getConfig()->getSourcesListUrl(),
             $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
-            $this->getFileDownloader(),
+            $this->getFileDownloader($this->getFileStorageCacheBackend()),
             $this->getOutput()
         );
     }
@@ -278,9 +278,9 @@ class Factory {
     /**
      * @return FileDownloader
      */
-    private function getFileDownloader() {
+    private function getFileDownloader(CacheBackend $cacheBackend) {
         return new FileDownloader(
-            $this->getCurl(),
+            $this->getCurl($cacheBackend),
             $this->getOutput()
         );
     }
@@ -288,10 +288,10 @@ class Factory {
     /**
      * @return HttpClient
      */
-    private function getCurl() {
-        if (null === $this->curl) {
-            $config = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
-            $config->addLocalSslCertificate(
+    private function getCurl(CacheBackend $cacheBackend) {
+        if (null === $this->curlConfig) {
+            $this->curlConfig = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
+            $this->curlConfig->addLocalSslCertificate(
                 new LocalSslCertificate(
                     'hkps.pool.sks-keyservers.net',
                     __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
@@ -299,11 +299,10 @@ class Factory {
             );
             $environment = $this->getEnvironment();
             if ($environment->hasProxy()) {
-                $config->setProxy($environment->getProxy());
+                $this->curlConfig->setProxy($environment->getProxy());
             }
-            $this->curl = new Curl($config);
         }
-        return $this->curl;
+        return new Curl($cacheBackend, $this->curlConfig);
     }
 
     /**
@@ -330,7 +329,7 @@ class Factory {
             $this->getPharRegistry(),
             $this->getAliasResolverService(),
             $this->getOutput(),
-            $this->getPharIoRepositoryFactory()
+            $this->getSourceRepositoryLoader()
         );
     }
 
@@ -339,7 +338,7 @@ class Factory {
      */
     private function getPharDownloader() {
         return new PharDownloader(
-            $this->getFileDownloader(),
+            $this->getFileDownloader(new NullCacheBackend()),
             $this->getGnupgSignatureVerifier(),
             $this->getChecksumService(),
             $this->getPharRegistry()
@@ -395,7 +394,7 @@ class Factory {
      */
     private function getPgpKeyDownloader() {
         return new GnupgKeyDownloader(
-            $this->getCurl(),
+            $this->getCurl(new NullCacheBackend()),
             include __DIR__ . '/../conf/pgp-keyservers.php',
             $this->getOutput()
         );
@@ -470,13 +469,6 @@ class Factory {
     }
 
     /**
-     * @return SourceRepositoryLoader
-     */
-    private function getPharIoRepositoryFactory() {
-        return new SourceRepositoryLoader($this->getFileDownloader());
-    }
-
-    /**
      * @return PhiveXmlConfig
      */
     private function getPhiveXmlConfig() {
@@ -522,7 +514,11 @@ class Factory {
      * @return GithubAliasResolver
      */
     private function getGithubAliasResolver() {
-        return new GithubAliasResolver($this->getCurl());
+        return new GithubAliasResolver(
+            $this->getCurl(
+                $this->getFileStorageCacheBackend()
+            )
+        );
     }
 
     /**
@@ -543,4 +539,11 @@ class Factory {
         return new Executor($executable);
     }
 
+    private function getFileStorageCacheBackend() {
+        return new FileStorageCacheBackend(new Directory('/tmp/phive-cache'));
+    }
+
+    private function getSourceRepositoryLoader() {
+        return new SourceRepositoryLoader($this->getFileDownloader($this->getFileStorageCacheBackend()));
+    }
 }

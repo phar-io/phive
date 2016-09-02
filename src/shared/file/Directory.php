@@ -118,6 +118,15 @@ class Directory {
     }
 
     /**
+     * @param string $child
+     *
+     * @return bool
+     */
+    public function hasChild($child) {
+        return file_exists($this->path . DIRECTORY_SEPARATOR . $child);
+    }
+
+    /**
      * @param string $filename
      *
      * @return Filename

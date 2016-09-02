@@ -14,6 +14,11 @@ class Url {
     private $hostname;
 
     /**
+     * @var string
+     */
+    private $path;
+
+    /**
      * @param string $uri
      */
     public function __construct($uri) {
@@ -22,6 +27,7 @@ class Url {
         $this->ensureValidHostname(isset($components['host']) ? $components['host'] : '');
         $this->uri = $uri;
         $this->hostname = $components['host'];
+        $this->path = $components['path'];
     }
 
     /**
@@ -36,6 +42,13 @@ class Url {
      */
     public function getHostname() {
         return $this->hostname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath() {
+        return $this->path;
     }
 
     /**
