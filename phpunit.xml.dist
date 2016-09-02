@@ -6,7 +6,7 @@
          forceCoversAnnotation="true">
 
     <testsuites>
-        <testsuite name="Phive">
+        <testsuite name="unit">
             <directory suffix="Test.php">tests/unit</directory>
         </testsuite>
         <testsuite name="integration">
