@@ -16,7 +16,7 @@ class SourcesListTest extends \PHPUnit_Framework_TestCase {
         );
         $this->assertEquals(
             [],
-            $list->getSourcesForAlias(
+            $list->getSourceForAlias(
                 new PharAlias('bar', new AnyVersionConstraint(), new AnyVersionConstraint())
             )
         );
@@ -32,7 +32,7 @@ class SourcesListTest extends \PHPUnit_Framework_TestCase {
         );
         $this->assertEquals(
             [],
-            $list->getSourcesForAlias(
+            $list->getSourceForAlias(
                 new PharAlias('foo', new AnyVersionConstraint(), new AnyVersionConstraint()
                 )
             )
@@ -54,7 +54,7 @@ class SourcesListTest extends \PHPUnit_Framework_TestCase {
         ];
         $this->assertEquals(
             $expected,
-            $list->getSourcesForAlias(
+            $list->getSourceForAlias(
                 new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint())
             )
         );
@@ -64,7 +64,7 @@ class SourcesListTest extends \PHPUnit_Framework_TestCase {
         ];
         $this->assertEquals(
             $expected,
-            $list->getSourcesForAlias(
+            $list->getSourceForAlias(
                 new PharAlias('phpab', new AnyVersionConstraint(), new AnyVersionConstraint())
             )
         );

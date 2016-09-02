@@ -28,11 +28,11 @@ class GnupgKeyDownloaderTest extends \PHPUnit_Framework_TestCase {
         $response->getBody()->willReturn('Some PublicKey');
 
         $this->curl->get(
-            'https://example.com/pks/lookup'
+            new Url('https://example.com/pks/lookup')
         )->shouldBeCalled()->willReturn($response->reveal());
 
         $this->curl->get(
-            'https://example.com/pks/lookup'
+            new Url('https://example.com/pks/lookup')
         )->shouldBeCalled()->willReturn($response->reveal());
 
         $downloader = new GnupgKeyDownloader(

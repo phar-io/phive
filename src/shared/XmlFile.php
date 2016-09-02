@@ -100,7 +100,7 @@ class XmlFile {
     /**
      * @return \DOMDocument
      */
-    private function getDom() {
+    public function getDom() {
         $this->init();
         return $this->dom;
     }

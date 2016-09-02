@@ -29,7 +29,7 @@ class AliasResolverService {
     /**
      * @param PharAlias $alias
      *
-     * @return Source[]
+     * @return SourceRepository
      */
     public function resolve(PharAlias $alias) {
         return $this->first->resolve($alias);

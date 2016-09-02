@@ -4,42 +4,49 @@ namespace PharIo\Phive;
 class GithubAliasResolver extends AbstractAliasResolver {
 
     /**
-     * @var HttpClient
+     * @var FileDownloader
      */
-    private $client;
+    private $fileDownloader;
 
     /**
-     * GithubAliasResolver constructor.
-     *
-     * @param HttpClient $client
+     * @param FileDownloader $fileDownloader
      */
-    public function __construct(HttpClient $client) {
-        $this->client = $client;
+    public function __construct(FileDownloader $fileDownloader) {
+        $this->fileDownloader = $fileDownloader;
     }
 
+    /**
+     * @param PharAlias $alias
+     *
+     * @return GithubRepository
+     */
     public function resolve(PharAlias $alias) {
         $name = (string)$alias;
         if (strpos($name, '/') === false) {
             return $this->tryNext($alias);
         }
-        $result = $this->localResolve($name);
-        return count($result) ? $result : $this->tryNext($alias);
+        try {
+            return $this->localResolve($name);
+        } catch (HttpException $e) {
+            return $this->tryNext($alias);
+        }
     }
 
+    /**
+     * @param string $name
+     *
+     * @return GithubRepository
+     */
     private function localResolve($name) {
-        try {
-            list($username, $project) = explode('/', $name);
-            $url = new Url(
-                sprintf('https://api.github.com/repos/%s/%s/releases', $username, $project)
-            );
-            $response = $this->client->get($url);
-            if ($response->getHttpCode() === 200) {
-                return [new Source('github', $url)];
-            }
-            return [];
-        } catch (HttpException $e) {
-            return [];
-        }
+        list($username, $project) = explode('/', $name);
+        $url = new Url(
+            sprintf('https://api.github.com/repos/%s/%s/releases', $username, $project)
+        );
+
+        $file = $this->fileDownloader->download($url);
+        return new GithubRepository(
+            new JsonData($file->getContent())
+        );
     }
 
 }

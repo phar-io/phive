@@ -35,12 +35,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $directory->expects($this->once())->method('file')->willReturn(new Filename('/tmp/foo'));
 
         $service = new PharService(
-            $downloader,
-            $installer,
-            $registry,
-            $this->getAliasResolverServiceMock(),
-            $this->getOutputMock(),
-            $this->getSourceRepositoryLoaderMock()
+            $downloader, $installer, $registry, $this->getAliasResolverServiceMock(), $this->getOutputMock()
         );
 
         $service->install($requestedPhar, $directory, true);
@@ -72,12 +67,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
 
         $service = new PharService(
-            $this->getPharDownloaderMock(),
-            $installer,
-            $registry,
-            $this->getAliasResolverServiceMock(),
-            $this->getOutputMock(),
-            $this->getSourceRepositoryLoaderMock()
+            $this->getPharDownloaderMock(), $installer, $registry, $this->getAliasResolverServiceMock(),
+            $this->getOutputMock()
         );
 
         $service->install($requestedPhar, $directory, true);
@@ -111,12 +102,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $currentVersion = new Version('0.0.0');
 
         $service = new PharService(
-            $this->getPharDownloaderMock(),
-            $installer,
-            $registry,
-            $this->getAliasResolverServiceMock(),
-            $this->getOutputMock(),
-            $this->getSourceRepositoryLoaderMock()
+            $this->getPharDownloaderMock(), $installer, $registry, $this->getAliasResolverServiceMock(),
+            $this->getOutputMock()
         );
 
         $service->update($requestedPhar, $filename, $currentVersion);
@@ -144,12 +131,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->expectException(DownloadFailedException::class);
 
         $service = new PharService(
-            $downloader,
-            $installer,
-            $registry,
-            $this->getAliasResolverServiceMock(),
-            $output,
-            $this->getSourceRepositoryLoaderMock()
+            $downloader, $installer, $registry, $this->getAliasResolverServiceMock(), $output
         );
 
         $service->install($requestedPhar, $directory, false);
@@ -173,12 +155,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $directory->method('file')->willReturn(new Filename('/tmp/foo'));
 
         $service = new PharService(
-            $this->getPharDownloaderMock(),
-            $installer,
-            $registry,
-            $this->getAliasResolverServiceMock(),
-            $output,
-            $this->getSourceRepositoryLoaderMock()
+            $this->getPharDownloaderMock(), $installer, $registry, $this->getAliasResolverServiceMock(), $output
         );
 
         $this->expectException(PharRegistryException::class);
@@ -208,12 +185,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->expectException(VerificationFailedException::class);
 
         $service = new PharService(
-            $downloader,
-            $installer,
-            $registry,
-            $this->getAliasResolverServiceMock(),
-            $output,
-            $this->getSourceRepositoryLoaderMock()
+            $downloader, $installer, $registry, $this->getAliasResolverServiceMock(), $output
         );
 
         $service->install($requestedPhar, $directory, false);
@@ -238,12 +210,7 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
         $this->expectException(ResolveException::class);
 
         $service = new PharService(
-            $this->getPharDownloaderMock(),
-            $installer,
-            $this->getPharRegistryMock(),
-            $resolver,
-            $output,
-            $this->getSourceRepositoryLoaderMock()
+            $this->getPharDownloaderMock(), $installer, $this->getPharRegistryMock(), $resolver, $output
         );
 
         $service->install($requestedPhar, $directory, false);

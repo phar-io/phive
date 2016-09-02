@@ -7,7 +7,7 @@ namespace PharIo\Phive;
 class AliasResolverTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @var SourcesListFileLoader
+     * @var RemoteSourcesListFileLoader
      */
     private $sourcesListFileLoader;
 
@@ -36,7 +36,7 @@ class AliasResolverTest extends \PHPUnit_Framework_TestCase {
 
     protected function setUp() {
         $this->sourcesList = $this->prophesize(SourcesList::class);
-        $this->sourcesListFileLoader = $this->prophesize(SourcesListFileLoader::class);
+        $this->sourcesListFileLoader = $this->prophesize(RemoteSourcesListFileLoader::class);
         $this->sourcesListFileLoader->load()->shouldBeCalled()->willReturn($this->sourcesList);
 
     }

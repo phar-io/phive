@@ -36,16 +36,6 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($body, $response->getBody());
     }
 
-    /**
-     * @dataProvider stringProvider
-     *
-     * @param string $message
-     */
-    public function testGetErrorMessage($message) {
-        $response = new HttpResponse(400, '');
-        $this->assertEquals($message, $response->getErrorMessage());
-    }
-
 }
 
 

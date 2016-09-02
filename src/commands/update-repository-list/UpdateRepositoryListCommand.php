@@ -6,14 +6,14 @@ use PharIo\Phive\Cli\Command;
 class UpdateRepositoryListCommand implements Command {
 
     /**
-     * @var SourcesListFileLoader
+     * @var RemoteSourcesListFileLoader
      */
     private $loader;
 
     /**
-     * @param SourcesListFileLoader $loader
+     * @param RemoteSourcesListFileLoader $loader
      */
-    public function __construct(SourcesListFileLoader $loader) {
+    public function __construct(RemoteSourcesListFileLoader $loader) {
         $this->loader = $loader;
     }
 

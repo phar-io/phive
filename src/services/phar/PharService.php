@@ -29,32 +29,24 @@ class PharService {
     private $output;
 
     /**
-     * @var SourceRepositoryLoader
-     */
-    private $sourceRepositoryLoader;
-
-    /**
-     * @param PharDownloader         $downloader
-     * @param PharInstaller          $installer
-     * @param PharRegistry           $pharRegistry
-     * @param AliasResolverService   $resolver
-     * @param Cli\Output             $output
-     * @param SourceRepositoryLoader $sourceRepositoryLoader
+     * @param PharDownloader $downloader
+     * @param PharInstaller $installer
+     * @param PharRegistry $pharRegistry
+     * @param AliasResolverService $resolver
+     * @param Cli\Output $output
      */
     public function __construct(
         PharDownloader $downloader,
         PharInstaller $installer,
         PharRegistry $pharRegistry,
         AliasResolverService $resolver,
-        Cli\Output $output,
-        SourceRepositoryLoader $sourceRepositoryLoader
+        Cli\Output $output
     ) {
         $this->downloader = $downloader;
         $this->installer = $installer;
         $this->pharRegistry = $pharRegistry;
         $this->aliasResolver = $resolver;
         $this->output = $output;
-        $this->sourceRepositoryLoader = $sourceRepositoryLoader;
     }
 
     /**
@@ -154,28 +146,10 @@ class PharService {
      * @param PharAlias $alias
      *
      * @return Release
-     * @throws InstallationFailedException
-     * @throws ResolveException
-     *
      */
     private function resolveAlias(PharAlias $alias) {
-        foreach ($this->aliasResolver->resolve($alias) as $source) {
-            try {
-                $repo = $this->sourceRepositoryLoader->loadRepository($source);
-                $releases = $repo->getReleasesByAlias($alias);
-                return $releases->getLatest($alias->getVersionToInstall());
-            } catch (ResolveException $e) {
-                $this->output->writeWarning(
-                    sprintf(
-                        'Resolving alias %s with repository %s failed: %s',
-                        $alias,
-                        $source->getUrl(),
-                        $e->getMessage()
-                    )
-                );
-                continue;
-            }
-        }
-        throw new ResolveException(sprintf('Could not resolve alias %s', $alias));
+        $repository = $this->aliasResolver->resolve($alias);
+        $releases = $repository->getReleasesByAlias($alias);
+        return $releases->getLatest($alias->getVersionToInstall());
     }
 }

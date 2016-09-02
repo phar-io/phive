@@ -20,19 +20,26 @@ class SourcesList {
     /**
      * @param PharAlias $alias
      *
-     * @return Source[]
+     * @return Source
+     * @throws SourcesListException
      */
-    public function getSourcesForAlias(PharAlias $alias) {
-        $sources = [];
+    public function getSourceForAlias(PharAlias $alias) {
         $query = sprintf('//phive:phar[@alias="%s"]/phive:repository', $alias);
-        foreach ($this->sourcesFile->query($query) as $repositoryNode) {
-            /** @var \DOMElement $repositoryNode */
-            $sources[] = new Source(
-                $repositoryNode->getAttribute('type') ?: 'phar.io',
-                new Url($repositoryNode->getAttribute('url'))
-            );
+        $repositoryNodes = $this->sourcesFile->query($query);
+
+        if ($repositoryNodes->length === 0) {
+            throw new SourcesListException(sprintf('No repository found for alias %s', $alias));
         }
-        return $sources;
+        if ($repositoryNodes->length > 1) {
+            throw new SourcesListException(sprintf('Multiple repositories found for alias %s', $alias));
+        }
+
+        /** @var \DOMElement $repositoryNode */
+        $repositoryNode = $repositoryNodes->item(0);
+        return new Source(
+            $repositoryNode->getAttribute('type') ?: 'phar.io',
+            new Url($repositoryNode->getAttribute('url'))
+        );
     }
 
     public function getAliasForComposerAlias(ComposerAlias $alias) {

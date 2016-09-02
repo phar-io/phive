@@ -78,7 +78,7 @@ class Factory {
      * @return UpdateRepositoryListCommand
      */
     public function getUpdateRepositoryListCommand() {
-        return new UpdateRepositoryListCommand($this->getSourcesListFileLoader());
+        return new UpdateRepositoryListCommand($this->getRemoteSourcesListFileLoader());
     }
 
     /**
@@ -194,13 +194,8 @@ class Factory {
      */
     public function getSelfupdateCommand() {
         return new SelfupdateCommand(
-            $this->getPharDownloader(),
-            $this->getSourceRepositoryLoader(),
-            $this->getGithubAliasResolver(),
-            $this->getEnvironment(),
-            $this->getPhiveVersion(),
-            $this->getOutput(),
-            $this->getPharInstaller()
+            $this->getPharDownloader(), $this->getGithubAliasResolver(), $this->getEnvironment(),
+            $this->getPhiveVersion(), $this->getOutput(), $this->getPharInstaller()
         );
     }
 
@@ -256,14 +251,23 @@ class Factory {
     }
 
     /**
-     * @return SourcesListFileLoader
+     * @return RemoteSourcesListFileLoader
      */
-    private function getSourcesListFileLoader() {
-        return new SourcesListFileLoader(
+    private function getRemoteSourcesListFileLoader() {
+        return new RemoteSourcesListFileLoader(
             $this->getConfig()->getSourcesListUrl(),
             $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
-            $this->getFileDownloader($this->getFileStorageCacheBackend()),
+            $this->getFileDownloader(),
             $this->getOutput()
+        );
+    }
+
+    /**
+     * @return LocalSourcesListFileLoader
+     */
+    private function getLocalSourcesListFileLoader() {
+        return new LocalSourcesListFileLoader(
+            $this->getConfig()->getHomeDirectory()->file('local.xml')
         );
     }
 
@@ -278,14 +282,12 @@ class Factory {
     }
 
     /**
-     * @param CacheBackend $cacheBackend
-     *
      * @return FileDownloader
      */
-    private function getFileDownloader(CacheBackend $cacheBackend) {
+    private function getFileDownloader() {
         return new FileDownloader(
             $this->getCurl(),
-            $cacheBackend
+            $this->getFileStorageCacheBackend()
         );
     }
 
@@ -337,12 +339,8 @@ class Factory {
      */
     private function getPharService() {
         return new PharService(
-            $this->getPharDownloader(),
-            $this->getPharInstaller(),
-            $this->getPharRegistry(),
-            $this->getAliasResolverService(),
-            $this->getOutput(),
-            $this->getSourceRepositoryLoader()
+            $this->getPharDownloader(), $this->getPharInstaller(), $this->getPharRegistry(),
+            $this->getAliasResolverService(), $this->getOutput()
         );
     }
 
@@ -444,20 +442,14 @@ class Factory {
     }
 
     /**
+     * @param SourcesListFileLoader $sourcesListFileLoader
+     *
      * @return PharIoAliasResolver
      */
-    private function getPharIoAliasResolver() {
+    private function getPharIoAliasResolver(SourcesListFileLoader $sourcesListFileLoader) {
         return new PharIoAliasResolver(
-            $this->getSourcesListFileLoader()
-        );
-    }
-
-    /**
-     * @return LocalResolver
-     */
-    private function getLocalResolver() {
-        return new LocalResolver(
-            $this->getLocalSourcesList()
+            $sourcesListFileLoader,
+            $this->getFileDownloader()
         );
     }
 
@@ -465,20 +457,14 @@ class Factory {
      * @return SourcesList
      */
     private function getSourcesList() {
-        return $this->getSourcesListFileLoader()->load();
+        return $this->getRemoteSourcesListFileLoader()->load();
     }
 
     /**
      * @return SourcesList
      */
     private function getLocalSourcesList() {
-        return new SourcesList(
-            new XmlFile(
-                $this->getConfig()->getHomeDirectory()->file('local.xml'),
-                'https://phar.io/repository-list',
-                'repositories'
-            )
-        );
+        return $this->getLocalSourcesListFileLoader()->load();
     }
 
     /**
@@ -512,12 +498,14 @@ class Factory {
             $this->getGithubAliasResolver()
         );
 
+        // local
         $service->addResolver(
-            $this->getLocalResolver()
+            $this->getPharIoAliasResolver($this->getLocalSourcesListFileLoader())
         );
 
+        // phar.io
         $service->addResolver(
-            $this->getPharIoAliasResolver()
+            $this->getPharIoAliasResolver($this->getRemoteSourcesListFileLoader())
         );
 
         return $service;
@@ -527,9 +515,7 @@ class Factory {
      * @return GithubAliasResolver
      */
     private function getGithubAliasResolver() {
-        return new GithubAliasResolver(
-            $this->getCurl()
-        );
+        return new GithubAliasResolver($this->getFileDownloader());
     }
 
     /**
@@ -546,15 +532,19 @@ class Factory {
         return new PharActivatorLocator(new PharActivatorFactory());
     }
 
+    /**
+     * @param Filename $executable
+     *
+     * @return Executor
+     */
     private function getExecutor(Filename $executable) {
         return new Executor($executable);
     }
 
+    /**
+     * @return FileStorageCacheBackend
+     */
     private function getFileStorageCacheBackend() {
-        return new FileStorageCacheBackend(new Directory('/tmp/phive-cache'));
-    }
-
-    private function getSourceRepositoryLoader() {
-        return new SourceRepositoryLoader($this->getFileDownloader($this->getFileStorageCacheBackend()));
+        return new FileStorageCacheBackend($this->getConfig()->getHomeDirectory()->child('http-cache'));
     }
 }

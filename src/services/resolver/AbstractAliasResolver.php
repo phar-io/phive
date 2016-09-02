@@ -15,7 +15,7 @@ abstract class AbstractAliasResolver implements AliasResolver {
     /**
      * @param PharAlias $alias
      *
-     * @return Source[]
+     * @return SourceRepository
      * @throws ResolveException
      */
     protected function tryNext(PharAlias $alias) {
@@ -28,7 +28,7 @@ abstract class AbstractAliasResolver implements AliasResolver {
     /**
      * @param PharAlias $alias
      *
-     * @return Source[]
+     * @return SourceRepository
      */
     abstract public function resolve(PharAlias $alias);
 }

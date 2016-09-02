@@ -11,11 +11,6 @@ class SelfupdateCommand implements Cli\Command {
     private $pharDownloader;
 
     /**
-     * @var SourceRepositoryLoader
-     */
-    private $sourceRepositoryLoader;
-
-    /**
      * @var GithubAliasResolver
      */
     private $gitHubAliasResolver;
@@ -43,17 +38,15 @@ class SelfupdateCommand implements Cli\Command {
     /**
      * SelfupdateCommand constructor.
      *
-     * @param PharDownloader         $pharDownloader
-     * @param SourceRepositoryLoader $sourceRepositoryLoader
-     * @param GithubAliasResolver    $gitHubAliasResolver
-     * @param Environment            $environment
-     * @param PhiveVersion           $currentPhiveVersion
-     * @param Cli\Output             $output
-     * @param PharInstaller          $pharInstaller
+     * @param PharDownloader $pharDownloader
+     * @param GithubAliasResolver $gitHubAliasResolver
+     * @param Environment $environment
+     * @param PhiveVersion $currentPhiveVersion
+     * @param Cli\Output $output
+     * @param PharInstaller $pharInstaller
      */
     public function __construct(
         PharDownloader $pharDownloader,
-        SourceRepositoryLoader $sourceRepositoryLoader,
         GithubAliasResolver $gitHubAliasResolver,
         Environment $environment,
         PhiveVersion $currentPhiveVersion,
@@ -61,7 +54,6 @@ class SelfupdateCommand implements Cli\Command {
         PharInstaller $pharInstaller
     ) {
         $this->pharDownloader = $pharDownloader;
-        $this->sourceRepositoryLoader = $sourceRepositoryLoader;
         $this->gitHubAliasResolver = $gitHubAliasResolver;
         $this->environment = $environment;
         $this->currentPhiveVersion = $currentPhiveVersion;
@@ -77,9 +69,8 @@ class SelfupdateCommand implements Cli\Command {
 
         $destination = new Filename($this->environment->getPhiveCommandPath());
 
-        $source = $this->gitHubAliasResolver->resolve($requestedPhar->getAlias());
-        $repo = $this->sourceRepositoryLoader->loadRepository($source[0]);
-        $releases = $repo->getReleasesByAlias($requestedPhar->getAlias());
+        $repository = $this->gitHubAliasResolver->resolve($requestedPhar->getAlias());
+        $releases = $repository->getReleasesByAlias($requestedPhar->getAlias());
         $release = $releases->getLatest($requestedPhar->getAlias()->getVersionConstraint());
 
         if (!$release->getVersion()->isGreaterThan(new Version($this->currentPhiveVersion->getVersion()))) {
