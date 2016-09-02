@@ -26,7 +26,7 @@ class Factory {
     private $environment;
 
     /**
-     * @param Cli\Request  $request
+     * @param Cli\Request $request
      * @param PhiveVersion $version
      */
     public function __construct(Cli\Request $request, PhiveVersion $version = null) {
@@ -232,6 +232,7 @@ class Factory {
         if (!$this->version) {
             $this->version = new GitAwarePhiveVersion($this->getGit());
         }
+
         return $this->version;
     }
 
@@ -250,6 +251,7 @@ class Factory {
             $locator = new EnvironmentLocator($this);
             $this->environment = $locator->getEnvironment(PHP_OS);
         }
+
         return $this->environment;
     }
 
@@ -276,16 +278,20 @@ class Factory {
     }
 
     /**
+     * @param CacheBackend $cacheBackend
+     *
      * @return FileDownloader
      */
     private function getFileDownloader(CacheBackend $cacheBackend) {
         return new FileDownloader(
             $this->getCurl($cacheBackend),
-            $this->getOutput()
+            $this->getHttpProgressRenderer()
         );
     }
 
     /**
+     * @param CacheBackend $cacheBackend
+     *
      * @return HttpClient
      */
     private function getCurl(CacheBackend $cacheBackend) {
@@ -302,7 +308,16 @@ class Factory {
                 $this->curlConfig->setProxy($environment->getProxy());
             }
         }
+
         return new Curl($cacheBackend, $this->curlConfig);
+    }
+
+    /**
+     * @return HttpProgressRenderer
+     */
+    private function getHttpProgressRenderer()
+    {
+        return new HttpProgressRenderer($this->getOutput());
     }
 
     /**

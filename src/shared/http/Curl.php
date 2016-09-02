@@ -32,6 +32,7 @@ class Curl implements HttpClient {
     private $etag;
 
     /**
+     * @param CacheBackend $cache
      * @param CurlConfig $curlConfig
      */
     public function __construct(CacheBackend $cache, CurlConfig $curlConfig) {
@@ -60,6 +61,10 @@ class Curl implements HttpClient {
         }
 
         $result = $this->exec($ch);
+
+        if ($progressHandler !== NULL) {
+            $this->progressHandler->finished();
+        }
 
         if ($result->getHttpCode() === 200 && $this->etag instanceof ETag) {
             $this->cache->storeEntry($this->url, $this->etag, $result->getBody());

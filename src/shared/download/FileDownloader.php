@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class FileDownloader implements HttpProgressHandler {
+class FileDownloader {
 
     /**
      * @var HttpClient
@@ -9,17 +9,17 @@ class FileDownloader implements HttpProgressHandler {
     private $httpClient;
 
     /**
-     * @var Cli\Output
+     * @var HttpProgressHandler
      */
-    private $output;
+    private $httpProgressHandler;
 
     /**
      * @param HttpClient $httpClient
-     * @param Cli\Output $output
+     * @param HttpProgressHandler $httpProgressHandler
      */
-    public function __construct(HttpClient $httpClient, Cli\Output $output) {
+    public function __construct(HttpClient $httpClient, HttpProgressHandler $httpProgressHandler) {
         $this->httpClient = $httpClient;
-        $this->output = $output;
+        $this->httpProgressHandler = $httpProgressHandler;
     }
 
     /**
@@ -30,11 +30,8 @@ class FileDownloader implements HttpProgressHandler {
      */
     public function download(Url $url) {
 
-        // force new line for progress update
-        $this->output->writeInfo('');
-
         try {
-            $response = $this->httpClient->get($url, [], $this);
+            $response = $this->httpClient->get($url, [], $this->httpProgressHandler);
 
             if ($response->getHttpCode() !== 200) {
                 throw new DownloadFailedException(
@@ -67,38 +64,6 @@ class FileDownloader implements HttpProgressHandler {
      */
     private function getFilename(Url $url) {
         return new Filename(pathinfo($url, PATHINFO_BASENAME));
-    }
-
-    public function handleUpdate(HttpProgressUpdate $update) {
-        if ($update->getExpectedDownloadSize() === 0) {
-            return true;
-        }
-        $template = 'Downloading %s [ %s / %s - %3d%% ]';
-        $progress = sprintf(
-            $template,
-            $update->getUrl(),
-            $this->formatSize(
-                $update->getExpectedDownloadSize(),
-                $update->getBytesReceived()
-            ),
-            $this->formatSize(
-                $update->getExpectedDownloadSize(),
-                $update->getExpectedDownloadSize()
-            ),
-            $update->getDownloadPercent()
-        );
-        $this->output->writeInfo(sprintf("\e[1A%s", $progress));
-        return true;
-    }
-
-    private function formatSize($expected, $current) {
-        if ($expected >= 1048576) { // MB
-            return number_format($current / 1048576, 2) . ' MB';
-        }
-        if ($expected >= 1024) { // KB
-            return number_format($current / 1024, 2) . ' KB';
-        }
-        return $current . ' B';
     }
 
 }

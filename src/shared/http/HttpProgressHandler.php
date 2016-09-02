@@ -3,6 +3,8 @@ namespace PharIo\Phive;
 
 interface HttpProgressHandler {
 
+    public function finished();
+
     /**
      * Method is called with updates from transfers (upload/download)
      * Return false to signal the http client to abort the transfer, true to continue

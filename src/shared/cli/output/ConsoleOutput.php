@@ -39,6 +39,15 @@ class ConsoleOutput implements Output {
     }
 
     /**
+     * @param string $progressMessage
+     */
+    public function writeProgress($progressMessage) {
+        if ($this->verbosity >= self::VERBOSE_INFO) {
+            $this->writeText(sprintf("\e[G%s\e[K", $progressMessage));
+        }
+    }
+
+    /**
      * @param $textMessage
      */
     public function writeText($textMessage) {

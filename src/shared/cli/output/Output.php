@@ -23,4 +23,9 @@ interface Output {
      */
     public function writeError($errorMessage);
 
+    /**
+     * @param string $progressMessage
+     */
+    public function writeProgress($progressMessage);
+
 }
