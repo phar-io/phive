@@ -4,15 +4,14 @@ namespace PharIo\Phive;
 interface HttpClient {
 
     /**
-     * @param Url                 $url
-     * @param array               $params
-     * @param HttpProgressHandler $handler
+     * @param Url $url
+     * @param array $params
      *
      * @return HttpResponse
+     * @internal param HttpProgressHandler $handler
      *
-     * @throws HttpException
      */
-    public function get(Url $url, array $params = [], HttpProgressHandler $handler = null);
+    public function get(Url $url, array $params = []);
 
     /**
      * @param Url   $url

@@ -284,8 +284,7 @@ class Factory {
      */
     private function getFileDownloader(CacheBackend $cacheBackend) {
         return new FileDownloader(
-            $this->getCurl($cacheBackend),
-            $this->getHttpProgressRenderer()
+            $this->getCurl($cacheBackend)
         );
     }
 
@@ -309,7 +308,7 @@ class Factory {
             }
         }
 
-        return new Curl($cacheBackend, $this->curlConfig);
+        return new Curl($cacheBackend, $this->curlConfig, $this->getHttpProgressRenderer());
     }
 
     /**

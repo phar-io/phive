@@ -34,37 +34,33 @@ class Curl implements HttpClient {
     /**
      * @param CacheBackend $cache
      * @param CurlConfig $curlConfig
+     * @param HttpProgressHandler $progressHandler
      */
-    public function __construct(CacheBackend $cache, CurlConfig $curlConfig) {
+    public function __construct(
+        CacheBackend $cache, CurlConfig $curlConfig, HttpProgressHandler $progressHandler
+    ) {
         $this->cache = $cache;
         $this->config = $curlConfig;
+        $this->progressHandler = $progressHandler;
     }
 
     /**
-     * @param Url                 $url
-     * @param array               $params
-     *
-     * @param HttpProgressHandler $progressHandler
+     * @param Url $url
+     * @param array $params
      *
      * @return HttpResponse
      *
-     * @throws HttpException
      */
-    public function get(Url $url, array $params = [], HttpProgressHandler $progressHandler = null) {
+    public function get(Url $url, array $params = []) {
         $this->url = $url->withParams($params);
         $ch = $this->getCurlInstance($this->url);
 
-        if ($progressHandler !== NULL) {
-            curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-            curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
-            $this->progressHandler = $progressHandler;
-        }
+        curl_setopt($ch, CURLOPT_NOPROGRESS, false);
+        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
 
         $result = $this->exec($ch);
 
-        if ($progressHandler !== NULL) {
-            $this->progressHandler->finished();
-        }
+        $this->progressHandler->finished();
 
         if ($result->getHttpCode() === 200 && $this->etag instanceof ETag) {
             $this->cache->storeEntry($this->url, $this->etag, $result->getBody());

@@ -17,7 +17,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
 
         $this->expectException(DownloadFailedException::class);
 
-        $downloader = new FileDownloader($curl, $this->getOutputMock());
+        $downloader = new FileDownloader($curl);
         $downloader->download(new Url('https://example.com/foo.phar'));
     }
 
@@ -31,7 +31,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
 
         $this->expectException(DownloadFailedException::class);
 
-        $downloader = new FileDownloader($curl, $this->getOutputMock());
+        $downloader = new FileDownloader($curl);
         $downloader->download(new Url('https://example.com/foo.phar'));
     }
 
@@ -45,7 +45,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
 
         $expected = new File(new Filename('foo.phar'), 'bar');
 
-        $downloader = new FileDownloader($curl, $this->getOutputMock());
+        $downloader = new FileDownloader($curl);
         $actual = $downloader->download(new Url('https://example.com/foo.phar'));
 
         $this->assertEquals($expected, $actual);
@@ -58,7 +58,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
         $output = $this->getOutputMock();
         $output->expects($this->never())->method('writeInfo');
 
-        $downloader = new FileDownloader($this->getCurlMock(), $output);
+        $downloader = new FileDownloader($this->getCurlMock());
         $downloader->handleUpdate($update);
     }
 
@@ -83,7 +83,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
             }
         );
 
-        $downloader = new FileDownloader($this->getCurlMock(), $output);
+        $downloader = new FileDownloader($this->getCurlMock());
         $downloader->handleUpdate($update);
     }
 

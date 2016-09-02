@@ -9,17 +9,10 @@ class FileDownloader {
     private $httpClient;
 
     /**
-     * @var HttpProgressHandler
-     */
-    private $httpProgressHandler;
-
-    /**
      * @param HttpClient $httpClient
-     * @param HttpProgressHandler $httpProgressHandler
      */
-    public function __construct(HttpClient $httpClient, HttpProgressHandler $httpProgressHandler) {
+    public function __construct(HttpClient $httpClient) {
         $this->httpClient = $httpClient;
-        $this->httpProgressHandler = $httpProgressHandler;
     }
 
     /**
@@ -31,7 +24,7 @@ class FileDownloader {
     public function download(Url $url) {
 
         try {
-            $response = $this->httpClient->get($url, [], $this->httpProgressHandler);
+            $response = $this->httpClient->get($url);
 
             if ($response->getHttpCode() !== 200) {
                 throw new DownloadFailedException(
