@@ -14,7 +14,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase {
      * @param int $code
      */
     public function testGetHttpCode($code) {
-        $response = new HttpResponse('', $code, '');
+        $response = new HttpResponse($code, '');
         $this->assertEquals($code, $response->getHttpCode());
     }
 
@@ -32,7 +32,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase {
      * @param string $body
      */
     public function testGetBody($body) {
-        $response = new HttpResponse($body, 200, '');
+        $response = new HttpResponse(200, $body);
         $this->assertEquals($body, $response->getBody());
     }
 
@@ -42,7 +42,7 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase {
      * @param string $message
      */
     public function testGetErrorMessage($message) {
-        $response = new HttpResponse('', 400, $message);
+        $response = new HttpResponse(400, '');
         $this->assertEquals($message, $response->getErrorMessage());
     }
 

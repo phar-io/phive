@@ -5,21 +5,9 @@ interface HttpClient {
 
     /**
      * @param Url $url
-     * @param array $params
+     * @param ETag $etag
      *
      * @return HttpResponse
-     * @internal param HttpProgressHandler $handler
-     *
      */
-    public function get(Url $url, array $params = []);
-
-    /**
-     * @param Url   $url
-     * @param array $params
-     *
-     * @return HttpResponse
-     *
-     * @throws HttpException
-     */
-    public function head(Url $url, array $params = []);
+    public function get(Url $url, ETag $etag = null);
 }

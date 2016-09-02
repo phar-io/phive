@@ -14,19 +14,21 @@ class HttpResponse {
     private $httpCode = 0;
 
     /**
-     * @var string
+     * @var ETag
      */
-    private $errorMessage = '';
+    private $etag;
 
     /**
-     * @param string  $responseBody
      * @param integer $httpCode
-     * @param string  $errorMessage
+     * @param string $responseBody
+     * @param ETag $etag
      */
-    public function __construct($responseBody, $httpCode, $errorMessage) {
+    public function __construct($httpCode, $responseBody, ETag $etag = null) {
+        $this->ensureBodyNotEmpty($httpCode, $responseBody);
+
         $this->responseBody = $responseBody;
         $this->httpCode = $httpCode;
-        $this->errorMessage = $errorMessage;
+        $this->etag = $etag;
     }
 
     /**
@@ -39,15 +41,40 @@ class HttpResponse {
     /**
      * @return string
      */
-    public function getErrorMessage() {
-        return $this->errorMessage;
-    }
-
-    /**
-     * @return string
-     */
     public function getBody() {
         return $this->responseBody;
     }
 
+    /**
+     * @return bool
+     */
+    public function hasETag() {
+        return $this->etag !== null;
+    }
+
+    /**
+     * @return ETag
+     * @throws HttpResponseException
+     */
+    public function getETag() {
+        if (!$this->hasETag()) {
+            throw new HttpResponseException('No ETag present in response');
+        }
+        return $this->etag;
+    }
+
+    /**
+     * @param int $httpCode
+     * @param string $body
+     *
+     * @throws HttpResponseException
+     */
+    private function ensureBodyNotEmpty($httpCode, $body) {
+        if ($httpCode !== 200) {
+            return;
+        }
+        if (empty($body)) {
+            throw new HttpResponseException('Response Body must not be empty when HTTP Code is 200');
+        }
+    }
 }

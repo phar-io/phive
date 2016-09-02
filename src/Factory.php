@@ -284,16 +284,15 @@ class Factory {
      */
     private function getFileDownloader(CacheBackend $cacheBackend) {
         return new FileDownloader(
-            $this->getCurl($cacheBackend)
+            $this->getCurl(),
+            $cacheBackend
         );
     }
 
     /**
-     * @param CacheBackend $cacheBackend
-     *
      * @return HttpClient
      */
-    private function getCurl(CacheBackend $cacheBackend) {
+    private function getCurl() {
         if (null === $this->curlConfig) {
             $this->curlConfig = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
             $this->curlConfig->addLocalSslCertificate(
@@ -308,7 +307,7 @@ class Factory {
             }
         }
 
-        return new Curl($cacheBackend, $this->curlConfig, $this->getHttpProgressRenderer());
+        return new Curl($this->curlConfig, $this->getHttpProgressRenderer());
     }
 
     /**
@@ -408,7 +407,7 @@ class Factory {
      */
     private function getPgpKeyDownloader() {
         return new GnupgKeyDownloader(
-            $this->getCurl(new NullCacheBackend()),
+            $this->getCurl(),
             include __DIR__ . '/../conf/pgp-keyservers.php',
             $this->getOutput()
         );
@@ -529,9 +528,7 @@ class Factory {
      */
     private function getGithubAliasResolver() {
         return new GithubAliasResolver(
-            $this->getCurl(
-                $this->getFileStorageCacheBackend()
-            )
+            $this->getCurl()
         );
     }
 

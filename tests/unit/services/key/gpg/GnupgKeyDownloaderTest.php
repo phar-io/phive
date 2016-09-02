@@ -28,11 +28,11 @@ class GnupgKeyDownloaderTest extends \PHPUnit_Framework_TestCase {
         $response->getBody()->willReturn('Some PublicKey');
 
         $this->curl->get(
-            'https://example.com/pks/lookup', ['search' => '0x12345678', 'op' => 'index', 'options' => 'mr']
+            'https://example.com/pks/lookup'
         )->shouldBeCalled()->willReturn($response->reveal());
 
         $this->curl->get(
-            'https://example.com/pks/lookup', ['search' => '0x12345678', 'op' => 'get', 'options' => 'mr']
+            'https://example.com/pks/lookup'
         )->shouldBeCalled()->willReturn($response->reveal());
 
         $downloader = new GnupgKeyDownloader(
@@ -47,7 +47,7 @@ class GnupgKeyDownloaderTest extends \PHPUnit_Framework_TestCase {
         $response->getBody()->willReturn('Some Key Info');
         $response->getBody()->willReturn('Some Public Key Data');
 
-        $this->curl->get(Argument::any(), Argument::any())
+        $this->curl->get(Argument::any())
             ->willReturn($response->reveal());
 
         $downloader = new GnupgKeyDownloader(
@@ -66,7 +66,7 @@ class GnupgKeyDownloaderTest extends \PHPUnit_Framework_TestCase {
         $response->getHttpCode()->willReturn(404);
         $response->getErrorMessage()->willReturn('Not Found');
 
-        $this->curl->get(Argument::any(), Argument::any())->willReturn($response);
+        $this->curl->get(Argument::any())->willReturn($response);
         $downloader = new GnupgKeyDownloader(
             $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
         );

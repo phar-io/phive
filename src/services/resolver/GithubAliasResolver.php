@@ -32,7 +32,7 @@ class GithubAliasResolver extends AbstractAliasResolver {
             $url = new Url(
                 sprintf('https://api.github.com/repos/%s/%s/releases', $username, $project)
             );
-            $response = $this->client->head($url);
+            $response = $this->client->get($url);
             if ($response->getHttpCode() === 200) {
                 return [new Source('github', $url)];
             }

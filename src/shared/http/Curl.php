@@ -22,75 +22,33 @@ class Curl implements HttpClient {
     private $url;
 
     /**
-     * @var CacheBackend
-     */
-    private $cache;
-
-    /**
      * @var ETag
      */
     private $etag;
 
     /**
-     * @param CacheBackend $cache
      * @param CurlConfig $curlConfig
      * @param HttpProgressHandler $progressHandler
      */
-    public function __construct(
-        CacheBackend $cache, CurlConfig $curlConfig, HttpProgressHandler $progressHandler
-    ) {
-        $this->cache = $cache;
+    public function __construct(CurlConfig $curlConfig, HttpProgressHandler $progressHandler) {
         $this->config = $curlConfig;
         $this->progressHandler = $progressHandler;
     }
 
     /**
      * @param Url $url
-     * @param array $params
+     * @param ETag $etag
      *
      * @return HttpResponse
-     *
      */
-    public function get(Url $url, array $params = []) {
-        $this->url = $url->withParams($params);
-        $ch = $this->getCurlInstance($this->url);
-
-        curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
+    public function get(Url $url, ETag $etag = null) {
+        $this->url = $url;
+        $ch = $this->getCurlInstance($this->url, $etag);
 
         $result = $this->exec($ch);
 
         $this->progressHandler->finished();
 
-        if ($result->getHttpCode() === 200 && $this->etag instanceof ETag) {
-            $this->cache->storeEntry($this->url, $this->etag, $result->getBody());
-        }
-
-        if ($result->getHttpCode() === 304) { // not modified
-            return new HttpResponse(
-                $this->cache->getContent($this->url),
-                200,
-                ''
-            );
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param Url   $url
-     * @param array $params
-     *
-     * @return HttpResponse
-     * @throws HttpException
-     */
-    public function head(Url $url, array $params = []) {
-        $this->url = $url->withParams($params);
-        $ch = $this->getCurlInstance($this->url);
-        $result = $this->exec($ch);
-        if ($result->getHttpCode() === 304) { // not modified
-            return new HttpResponse('', 200, '');
-        }
         return $result;
     }
 
@@ -126,18 +84,23 @@ class Curl implements HttpClient {
     /**
      * @param Url $url
      *
+     * @param ETag $etag
+     *
      * @return resource
      */
-    private function getCurlInstance(Url $url) {
+    private function getCurlInstance(Url $url, ETag $etag = null) {
         $ch = curl_init($url);
         curl_setopt_array($ch, $this->config->asCurlOptArray());
 
-        if ($this->cache->hasEntry($url)) {
+        curl_setopt($ch, CURLOPT_NOPROGRESS, false);
+        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'handleHeaderInput']);
+
+        if ($etag !== null) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'If-None-Match: ' . $this->cache->getEtag($url)->asString()
+                'If-None-Match: ' . $etag->asString()
             ]);
         }
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'handleHeaderInput']);
 
         $hostname = $url->getHostname();
         if ($this->config->hasLocalSslCertificate($hostname)) {
@@ -148,14 +111,9 @@ class Curl implements HttpClient {
     }
 
     /**
-     * @param string              $method
-     * @param Url                 $url
-     * @param array               $params
-     *
-     * @param HttpProgressHandler $progressHandler
+     * @param $ch
      *
      * @return HttpResponse
-     *
      * @throws HttpException
      */
     private function exec($ch) {
@@ -167,16 +125,28 @@ class Curl implements HttpClient {
                     curl_errno($ch)
                 );
             }
-            return new HttpResponse(
-                $result,
-                curl_getinfo($ch, CURLINFO_HTTP_CODE),
-                curl_error($ch)
-            );
+
+            $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if (!in_array($httpCode, [200, 304])) {
+                throw new HttpException(
+                    sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url),
+                    $httpCode
+                );
+            }
+
+            return new HttpResponse($httpCode, $result, $this->etag);
         } catch (CurlException $e) {
             throw new HttpException(
                 '[CurlException] ' . $e->getMessage() . ' (while requesting ' . $this->url . ')',
                 $e->getCode(),
-                $e);
+                $e
+            );
+        } catch (HttpResponseException $e) {
+            throw new HttpException(
+                '[ResponseException] ' . $e->getMessage() . ' (while requesting ' . $this->url . ')',
+                $e->getCode(),
+                $e
+            );
         }
     }
 

@@ -9,10 +9,17 @@ class FileDownloader {
     private $httpClient;
 
     /**
-     * @param HttpClient $httpClient
+     * @var CacheBackend
      */
-    public function __construct(HttpClient $httpClient) {
+    private $cache;
+
+    /**
+     * @param HttpClient $httpClient
+     * @param CacheBackend $cache
+     */
+    public function __construct(HttpClient $httpClient, CacheBackend $cache) {
         $this->httpClient = $httpClient;
+        $this->cache = $cache;
     }
 
     /**
@@ -20,25 +27,25 @@ class FileDownloader {
      *
      * @return File
      * @throws DownloadFailedException
+     * @throws \HttpException
      */
     public function download(Url $url) {
 
         try {
-            $response = $this->httpClient->get($url);
 
-            if ($response->getHttpCode() !== 200) {
-                throw new DownloadFailedException(
-                    sprintf(
-                        'Download failed (HTTP status code %s) %s',
-                        $response->getHttpCode(),
-                        $response->getErrorMessage()
-                    )
-                );
+            $cachedETag = $this->cache->hasEntry($url) ? $this->cache->getEtag($url) : null;
+
+            $response = $this->httpClient->get($url, $cachedETag);
+
+            if ($response->getHttpCode() === 304) {
+                return new File($this->getFilename($url), $this->cache->getContent($url));
             }
-            if (empty($response->getBody())) {
-                throw new DownloadFailedException('Download failed - response is empty');
+
+            if ($response->hasETag()) {
+                $this->cache->storeEntry($url, $response->getETag(), $response->getBody());
             }
             return new File($this->getFilename($url), $response->getBody());
+
         } catch (HttpException $e) {
             throw new DownloadFailedException(
                 sprintf(
