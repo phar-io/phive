@@ -8,6 +8,9 @@ abstract class AbstractAliasResolver implements AliasResolver {
      */
     private $next;
 
+    /**
+     * @param AliasResolver $resolver
+     */
     public function setNext(AliasResolver $resolver) {
         $this->next = $resolver;
     }
