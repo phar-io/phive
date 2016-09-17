@@ -10,7 +10,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
         $url = new PharUrl('https://example.com/foo-1.20.1.phar');
-        $release = new Release('foo', new Version('1.20.1'), $url, null);
+        $sigUrl = new Url($url . '.asc');
+        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('1.20.1'), new ExactVersionConstraint('1.20.1'));
 

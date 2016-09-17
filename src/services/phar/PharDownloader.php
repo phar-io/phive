@@ -51,7 +51,7 @@ class PharDownloader {
      */
     public function download(Release $release) {
         $pharFile = $this->downloadFile($release->getUrl());
-        $signatureFile = $this->downloadFile($this->getSignatureUrl($release->getUrl()));
+        $signatureFile = $this->downloadFile($release->getSignatureUrl());
 
         $signatureVerificationResult = $this->verifySignature(
             $pharFile,
@@ -86,15 +86,6 @@ class PharDownloader {
                 $e
             );
         }
-    }
-
-    /**
-     * @param Url $pharUrl
-     *
-     * @return Url
-     */
-    private function getSignatureUrl(Url $pharUrl) {
-        return new Url($pharUrl . '.asc');
     }
 
     /**

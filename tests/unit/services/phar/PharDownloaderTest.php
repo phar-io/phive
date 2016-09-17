@@ -38,7 +38,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
     public function testReturnsExpectedPharFile() {
         $sigUrl = new Url('https://example.com/foo.phar.asc');
         $url = new PharUrl('https://example.com/foo.phar');
-        $release = new Release('foo', new Version('1.0.0'), $url, null);
+        $release = new Release('foo', new Version('1.0.0'), $url, $sigUrl);
         $downloadedFile = new File(new Filename('foo.phar'), 'phar-content');
 
         $sigResponse = $this->prophesize(HttpResponse::class);
@@ -72,7 +72,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
     public function testThrowsExceptionIfSignatureVerificationFails() {
         $sigUrl = new Url('https://example.com/foo.phar.asc');
         $url = new PharUrl('https://example.com/foo.phar');
-        $release = new Release('foo', new Version('1.0.0'), $url, null);
+        $release = new Release('foo', new Version('1.0.0'), $url, $sigUrl);
 
         $sigResponse = $this->prophesize(HttpResponse::class);
         $sigResponse->getBody()->willReturn('phar-signature');
@@ -103,7 +103,7 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
     public function testThrowsExceptionIfChecksumVerificationFails() {
         $sigUrl = new Url('https://example.com/foo.phar.asc');
         $url = new PharUrl('https://example.com/foo.phar');
-        $release = new Release('foo', new Version('1.0.0'), $url, new Sha1Hash(sha1('not-matching')));
+        $release = new Release('foo', new Version('1.0.0'), $url, $sigUrl, new Sha1Hash(sha1('not-matching')));
 
         $sigResponse = $this->prophesize(HttpResponse::class);
         $sigResponse->getBody()->willReturn('phar-signature');

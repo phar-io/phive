@@ -34,13 +34,19 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
         $expectedReleases = new ReleaseCollection();
         $expectedReleases->add(
             new Release(
-                'foo', new Version('5.3.0'), new PharUrl('https://example.com/foo-5.3.0.phar'),
+                'foo',
+                new Version('5.3.0'),
+                new PharUrl('https://example.com/foo-5.3.0.phar'),
+                new Url('https://example.com/foo-5.3.0.phar.asc'),
                 new Sha1Hash('aa43f08c9402ca142f607fa2db0b1152cf248d49')
             )
         );
         $expectedReleases->add(
             new Release(
-                'foo', new Version('5.2.12'), new PharUrl('https://example.com/foo-5.2.12.phar'),
+                'foo',
+                new Version('5.2.12'),
+                new PharUrl('https://example.com/foo-5.2.12.phar'),
+                new Url('https://example.com/foo-5.2.12.phar.asc'),
                 new Sha256Hash('7a8755061d7ac2bc09f25bf6a867031fb945b4b25a6be1fb41b117893065f76c')
             )
         );
@@ -87,8 +93,14 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
             ]
         );
 
+        $signatureNode = $this->createMock(\DOMElement::class);
+        $signatureNode->method('getAttribute')->with('url')->willReturn($url . '.asc');
+
         $hashNodeList = $this->createMock(\DOMNodeList::class);
         $hashNodeList->method('item')->with('0')->willReturn($hashNode);
+
+        $signatureNodeList = $this->createMock(\DOMNodeList::class);
+        $signatureNodeList->method('item')->with('0')->willReturn($signatureNode);
 
         $node = $this->createMock(\DOMElement::class);
         $node->method('getAttribute')->willReturnMap(
@@ -97,7 +109,12 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
                 ['url', $url]
             ]
         );
-        $node->method('getElementsByTagName')->with('hash')->willReturn($hashNodeList);
+        $node->method('getElementsByTagName')->willReturnMap(
+            [
+                ['hash', $hashNodeList],
+                ['signature', $signatureNodeList]
+            ]
+        );
         return $node;
     }
 

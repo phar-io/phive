@@ -32,6 +32,7 @@ class PharIoRepository implements SourceRepository {
                     $requestedPhar->getAlias()->asString(),
                     new Version($releaseNode->getAttribute('version')),
                     new PharUrl($releaseNode->getAttribute('url')),
+                    $this->getSignatureUrl($releaseNode),
                     $this->getHash($releaseNode)
                 )
             );
@@ -56,6 +57,15 @@ class PharIoRepository implements SourceRepository {
                 return new Sha256Hash($hashNode->getAttribute('value'));
         }
         throw new InvalidHashException(sprintf('Unsupported Hash Type %s', $type));
+    }
+
+    private function getSignatureUrl(\DOMElement $releaseNode) {
+        /** @var \DOMElement $signatureNode */
+        $signatureNode = $releaseNode->getElementsByTagName('signature')->item(0);
+        if ($signatureNode->hasAttribute('url')) {
+            return new Url($signatureNode->getAttribute('url'));
+        }
+        return new Url($releaseNode->getAttribute('url') . '.asc');
     }
 
 }
