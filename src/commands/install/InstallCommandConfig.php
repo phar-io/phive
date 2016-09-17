@@ -72,7 +72,6 @@ class InstallCommandConfig {
      */
     private function getPharAliasFromConfiguredPhar(ConfiguredPhar $configuredPhar) {
         $versionConstraint = $configuredPhar->getVersionConstraint();
-        $versionToInstall = null;
         if ($configuredPhar->isInstalled() && $configuredPhar->getVersionConstraint()->complies($configuredPhar->getInstalledVersion())) {
             $versionToInstall = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
         } else {
