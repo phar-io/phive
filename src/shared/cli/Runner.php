@@ -104,7 +104,7 @@ class Runner {
             substr($file, $baseLen),
             $line
         );
-        if ($trace != null) {
+        if (is_array($trace)) {
             foreach ($trace as $pos => $step) {
                 $file = 'unknown file';
                 if (isset($step['file'])) {
