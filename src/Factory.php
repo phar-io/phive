@@ -86,11 +86,7 @@ class Factory {
      */
     public function getRemoveCommand() {
         return new RemoveCommand(
-            new RemoveCommandConfig($this->request->parse(new RemoveContext()), $this->getTargetDirectoryLocator()),
-            $this->getPharRegistry(),
-            $this->getPharService(),
-            $this->getOutput(),
-            $this->getPhiveXmlConfig()
+            new RemoveCommandConfig($this->request->parse(new RemoveContext()), $this->getTargetDirectoryLocator()), $this->getPharRegistry(), $this->getOutput(), $this->getPhiveXmlConfig()
         );
     }
 
@@ -151,12 +147,7 @@ class Factory {
      */
     public function getPurgeCommand() {
         return new PurgeCommand(
-            new PurgeCommandConfig(
-                $this->request->parse(new PurgeContext()),
-                $this->getConfig()
-            ),
-            $this->getPharRegistry(),
-            $this->getOutput()
+            $this->getPharRegistry(), $this->getOutput()
         );
     }
 
@@ -194,8 +185,7 @@ class Factory {
      */
     public function getSelfupdateCommand() {
         return new SelfupdateCommand(
-            $this->getPharDownloader(), $this->getGithubAliasResolver(), $this->getEnvironment(),
-            $this->getPhiveVersion(), $this->getOutput(), $this->getPharInstaller()
+            $this->getPharDownloader(), $this->getGithubAliasResolver(), $this->getEnvironment(), $this->getPhiveVersion(), $this->getOutput()
         );
     }
 
@@ -243,7 +233,7 @@ class Factory {
      */
     private function getEnvironment() {
         if (null === $this->environment) {
-            $locator = new EnvironmentLocator($this);
+            $locator = new EnvironmentLocator();
             $this->environment = $locator->getEnvironment(PHP_OS);
         }
 

@@ -4,18 +4,6 @@ namespace PharIo\Phive;
 class EnvironmentLocator {
 
     /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
-     * @param Factory $factory
-     */
-    public function __construct(Factory $factory) {
-        $this->factory = $factory;
-    }
-
-    /**
      * @param string $operatingSystem
      *
      * @return Environment

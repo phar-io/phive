@@ -27,7 +27,7 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
             ->method('removePhar')
             ->with($phar2);
 
-        $command = new PurgeCommand($config, $repository, $this->getOutputMock());
+        $command = new PurgeCommand($repository, $this->getOutputMock());
         $command->execute();
     }
 
@@ -77,7 +77,7 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
         $output->expects($this->once())
             ->method('writeInfo');
 
-        $command = new PurgeCommand($config, $repository, $output);
+        $command = new PurgeCommand($repository, $output);
         $command->execute();
     }
 }

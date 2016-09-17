@@ -31,34 +31,25 @@ class SelfupdateCommand implements Cli\Command {
     private $output;
 
     /**
-     * @var PharInstaller
-     */
-    private $pharInstaller;
-
-    /**
      * SelfupdateCommand constructor.
      *
-     * @param PharDownloader $pharDownloader
+     * @param PharDownloader      $pharDownloader
      * @param GithubAliasResolver $gitHubAliasResolver
-     * @param Environment $environment
-     * @param PhiveVersion $currentPhiveVersion
-     * @param Cli\Output $output
-     * @param PharInstaller $pharInstaller
+     * @param Environment         $environment
+     * @param PhiveVersion        $currentPhiveVersion
+     * @param Cli\Output          $output
+     *
+     * @internal param PharInstaller $pharInstaller
      */
     public function __construct(
-        PharDownloader $pharDownloader,
-        GithubAliasResolver $gitHubAliasResolver,
-        Environment $environment,
-        PhiveVersion $currentPhiveVersion,
-        Cli\Output $output,
-        PharInstaller $pharInstaller
+        PharDownloader $pharDownloader, GithubAliasResolver $gitHubAliasResolver, Environment $environment, PhiveVersion $currentPhiveVersion, Cli\Output $output
     ) {
         $this->pharDownloader = $pharDownloader;
         $this->gitHubAliasResolver = $gitHubAliasResolver;
         $this->environment = $environment;
         $this->currentPhiveVersion = $currentPhiveVersion;
         $this->output = $output;
-        $this->pharInstaller = $pharInstaller;
+
     }
 
     /**
