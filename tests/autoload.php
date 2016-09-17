@@ -8,7 +8,6 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'phario\\phive\\abstractversionconstrainttest' => '/unit/shared/versionconstraints/AbstractVersionConstraintTest.php',
-                'phario\\phive\\aliasresolvertest' => '/unit/services/phar/AliasResolverTest.php',
                 'phario\\phive\\anyversionconstrainttest' => '/unit/shared/versionconstraints/AnyVersionConstraintTest.php',
                 'phario\\phive\\batpharactivatortest' => '/unit/shared/file/BatPharActivatorTest.php',
                 'phario\\phive\\checksumservicetest' => '/unit/services/checksum/ChecksumServiceTest.php',
@@ -50,6 +49,7 @@ spl_autoload_register(
                 'phario\\phive\\pharactivatorlocatortest' => '/unit/shared/file/PharActivatorLocatorTest.php',
                 'phario\\phive\\pharaliastest' => '/unit/shared/phar/PharAliasTest.php',
                 'phario\\phive\\phardownloadertest' => '/unit/services/phar/PharDownloaderTest.php',
+                'phario\\phive\\pharioaliasresolvertest' => '/unit/services/phar/PharIoAliasResolverTest.php',
                 'phario\\phive\\phariorepositorytest' => '/unit/shared/repository/PharIoRepositoryTest.php',
                 'phario\\phive\\pharregistrytest' => '/unit/shared/PharRegistryTest.php',
                 'phario\\phive\\pharregressiontests\\installcommandtest' => '/phar/InstallCommandTest.php',
@@ -61,7 +61,6 @@ spl_autoload_register(
                 'phario\\phive\\phartest' => '/unit/shared/phar/PharTest.php',
                 'phario\\phive\\phartestbootstrap' => '/phar/PharTestBootstrap.php',
                 'phario\\phive\\phivexmlconfigtest' => '/unit/shared/config/PhiveXmlConfigTest.php',
-                'phario\\phive\\purgecommandconfigtest' => '/unit/commands/purge/PurgeCommandConfigTest.php',
                 'phario\\phive\\purgecommandtest' => '/unit/commands/purge/PurgeCommandTest.php',
                 'phario\\phive\\releasecollectiontest' => '/unit/shared/phar/ReleaseCollectionTest.php',
                 'phario\\phive\\releasetest' => '/unit/shared/phar/ReleaseTest.php',
