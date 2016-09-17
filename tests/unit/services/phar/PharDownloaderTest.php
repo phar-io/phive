@@ -35,65 +35,64 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->verificationResult = $this->prophesize(VerificationResult::class);
     }
 
-    public function testReturnsExpectedPharFileIfStatusCodeIs200() {
+    public function testReturnsExpectedPharFile() {
+        $sigUrl = new Url('https://example.com/foo.phar.asc');
         $url = new PharUrl('https://example.com/foo.phar');
         $release = new Release('foo', new Version('1.0.0'), $url, null);
-        $signatureUrl = new Url('https://example.com/foo.phar.asc');
-        $downloadedFile = new File(new Filename('foo.phar'), 'foo');
-        $this->fileDownloader->download($url)->willReturn($downloadedFile);
-        $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
+        $downloadedFile = new File(new Filename('foo.phar'), 'phar-content');
+
+        $sigResponse = $this->prophesize(HttpResponse::class);
+        $sigResponse->getBody()->willReturn('phar-signature');
+
+        $response = $this->prophesize(HttpResponse::class);
+        $response->getBody()->willReturn('phar-content');
+
+        $httpClient = $this->prophesize(HttpClient::class);
+        $httpClient->get($url)->willReturn($response->reveal());
+        $httpClient->get($sigUrl)->willReturn($sigResponse->reveal());
 
         $this->verificationResult->getFingerprint()->willReturn('fooFingerprint');
         $this->verificationResult->wasVerificationSuccessful()->willReturn(true);
-        $this->signatureVerifier->verify('foo', 'bar', [])->willReturn($this->verificationResult->reveal());
+        $this->signatureVerifier->verify('phar-content', 'phar-signature', [])->willReturn($this->verificationResult->reveal());
 
         $expected = new Phar('foo', new Version('1.0.0'), $downloadedFile, 'fooFingerprint');
 
         $downloader = new PharDownloader(
-            $this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal(), $this->getPharRegistryMock()
+            $httpClient->reveal(),
+            $this->signatureVerifier->reveal(),
+            $this->checksumService->reveal(),
+            $this->getPharRegistryMock()
         );
         $this->assertEquals($expected, $downloader->download($release));
-    }
-
-    public function testVerifiesChecksum() {
-        $url = new PharUrl('https://example.com/foo.phar');
-        $expectedHash = new Sha1Hash(sha1('foo'));
-        $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
-        $signatureUrl = new Url('https://example.com/foo.phar.asc');
-
-        $pharFile = new File(new Filename('foo.phar'), 'foo');
-        $this->fileDownloader->download($url)->willReturn($pharFile);
-        $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
-
-        $this->verificationResult->getFingerprint()->willReturn('foo');
-        $this->verificationResult->wasVerificationSuccessful()->willReturn(true);
-        $this->signatureVerifier->verify('foo', 'bar', [])->willReturn($this->verificationResult->reveal());
-
-        $this->checksumService->verify($expectedHash, $pharFile)->shouldBeCalled()->willReturn(true);
-
-        $downloader = new PharDownloader(
-            $this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal(), $this->getPharRegistryMock()
-        );
-        $downloader->download($release);
     }
 
     /**
      * @expectedException \PharIo\Phive\VerificationFailedException
      */
     public function testThrowsExceptionIfSignatureVerificationFails() {
+        $sigUrl = new Url('https://example.com/foo.phar.asc');
         $url = new PharUrl('https://example.com/foo.phar');
-        $expectedHash = new Sha1Hash(sha1('foo'));
-        $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
-        $signatureUrl = new Url('https://example.com/foo.phar.asc');
+        $release = new Release('foo', new Version('1.0.0'), $url, null);
 
-        $pharFile = new File(new Filename('foo.phar'), 'foo');
-        $this->fileDownloader->download($url)->willReturn($pharFile);
-        $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
+        $sigResponse = $this->prophesize(HttpResponse::class);
+        $sigResponse->getBody()->willReturn('phar-signature');
 
-        $this->signatureVerifier->verify('foo', 'bar', [])->willReturn($this->verificationResult->reveal());
+        $response = $this->prophesize(HttpResponse::class);
+        $response->getBody()->willReturn('phar-content');
+
+        $httpClient = $this->prophesize(HttpClient::class);
+        $httpClient->get($url)->willReturn($response->reveal());
+        $httpClient->get($sigUrl)->willReturn($sigResponse->reveal());
+
+        $this->verificationResult->getFingerprint()->willReturn('fooFingerprint');
+        $this->verificationResult->wasVerificationSuccessful()->willReturn(false);
+        $this->signatureVerifier->verify('phar-content', 'phar-signature', [])->willReturn($this->verificationResult->reveal());
 
         $downloader = new PharDownloader(
-            $this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal(), $this->getPharRegistryMock()
+            $httpClient->reveal(),
+            $this->signatureVerifier->reveal(),
+            $this->checksumService->reveal(),
+            $this->getPharRegistryMock()
         );
         $downloader->download($release);
     }
@@ -102,22 +101,27 @@ class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \PharIo\Phive\VerificationFailedException
      */
     public function testThrowsExceptionIfChecksumVerificationFails() {
+        $sigUrl = new Url('https://example.com/foo.phar.asc');
         $url = new PharUrl('https://example.com/foo.phar');
-        $expectedHash = new Sha1Hash(sha1('foo'));
-        $release = new Release('foo', new Version('1.0.0'), $url, $expectedHash);
-        $signatureUrl = new Url('https://example.com/foo.phar.asc');
+        $release = new Release('foo', new Version('1.0.0'), $url, new Sha1Hash(sha1('not-matching')));
 
-        $pharFile = new File(new Filename('foo.phar'), 'foo');
-        $this->fileDownloader->download($url)->willReturn($pharFile);
-        $this->fileDownloader->download($signatureUrl)->willReturn(new File(new Filename('foo.phar.asc'), 'bar'));
+        $sigResponse = $this->prophesize(HttpResponse::class);
+        $sigResponse->getBody()->willReturn('phar-signature');
 
-        $this->verificationResult->wasVerificationSuccessful()->willReturn(true);
-        $this->signatureVerifier->verify('foo', 'bar', [])->willReturn($this->verificationResult->reveal());
+        $response = $this->prophesize(HttpResponse::class);
+        $response->getBody()->willReturn('phar-content');
 
-        $this->checksumService->verify($expectedHash, $pharFile)->shouldBeCalled()->willReturn(false);
+        $httpClient = $this->prophesize(HttpClient::class);
+        $httpClient->get($url)->willReturn($response->reveal());
+        $httpClient->get($sigUrl)->willReturn($sigResponse->reveal());
+
+        $this->signatureVerifier->verify('phar-content', 'phar-signature', [])->willReturn($this->verificationResult->reveal());
 
         $downloader = new PharDownloader(
-            $this->fileDownloader->reveal(), $this->signatureVerifier->reveal(), $this->checksumService->reveal(), $this->getPharRegistryMock()
+            $httpClient->reveal(),
+            $this->signatureVerifier->reveal(),
+            $this->checksumService->reveal(),
+            $this->getPharRegistryMock()
         );
         $downloader->download($release);
     }

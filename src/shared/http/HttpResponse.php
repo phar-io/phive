@@ -24,8 +24,6 @@ class HttpResponse {
      * @param ETag|null $etag
      */
     public function __construct($httpCode, $responseBody, ETag $etag = null) {
-        $this->ensureBodyNotEmpty($httpCode, $responseBody);
-
         $this->responseBody = $responseBody;
         $this->httpCode = $httpCode;
         $this->etag = $etag;
@@ -61,20 +59,5 @@ class HttpResponse {
             throw new HttpResponseException('No ETag present in response');
         }
         return $this->etag;
-    }
-
-    /**
-     * @param int    $httpCode
-     * @param string $body
-     *
-     * @throws HttpResponseException
-     */
-    private function ensureBodyNotEmpty($httpCode, $body) {
-        if ($httpCode !== 200) {
-            return;
-        }
-        if (empty($body)) {
-            throw new HttpResponseException('Response Body must not be empty when HTTP Code is 200');
-        }
     }
 }

@@ -28,11 +28,11 @@ class GnupgKeyDownloaderTest extends \PHPUnit_Framework_TestCase {
         $response->getBody()->willReturn('Some PublicKey');
 
         $this->curl->get(
-            new Url('https://example.com/pks/lookup')
+            new Url('https://example.com/pks/lookup?search=0x12345678&op=index&options=mr')
         )->shouldBeCalled()->willReturn($response->reveal());
 
         $this->curl->get(
-            new Url('https://example.com/pks/lookup')
+            new Url('https://example.com/pks/lookup?search=0x12345678&op=get&options=mr')
         )->shouldBeCalled()->willReturn($response->reveal());
 
         $downloader = new GnupgKeyDownloader(
@@ -58,18 +58,18 @@ class GnupgKeyDownloaderTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($key, $downloader->download('12345678'));
     }
 
-    /**
-     * @expectedException \PharIo\Phive\DownloadFailedException
-     */
     public function testThrowsExceptionIfKeyWasNotFound() {
+        /*
         $response = $this->prophesize(HttpResponse::class);
         $response->getHttpCode()->willReturn(404);
         $response->getErrorMessage()->willReturn('Not Found');
-
-        $this->curl->get(Argument::any())->willReturn($response);
+        */
+        $this->curl->get(Argument::any())->willThrow(HttpException::class);
         $downloader = new GnupgKeyDownloader(
             $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
         );
+
+        $this->expectException(DownloadFailedException::class);
         $downloader->download('12345678');
     }
 

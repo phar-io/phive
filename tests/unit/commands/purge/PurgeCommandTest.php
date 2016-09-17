@@ -9,7 +9,6 @@ use PharIo\Phive\Cli;
 class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
 
     public function testInvokesRepository() {
-        $config = $this->getCommandConfigMock();
         $repository = $this->getPharRegistryMock();
 
         $phar1 = $this->getPharMock();
@@ -29,13 +28,6 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
 
         $command = new PurgeCommand($repository, $this->getOutputMock());
         $command->execute();
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PurgeCommandConfig
-     */
-    private function getCommandConfigMock() {
-        return $this->createMock(PurgeCommandConfig::class);
     }
 
     /**
@@ -64,7 +56,6 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testWritesToOutput() {
-        $config = $this->getCommandConfigMock();
         $repository = $this->getPharRegistryMock();
         $output = $this->getOutputMock();
 
@@ -81,6 +72,3 @@ class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
         $command->execute();
     }
 }
-
-
-
