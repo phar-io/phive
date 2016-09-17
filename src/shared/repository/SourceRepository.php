@@ -4,9 +4,9 @@ namespace PharIo\Phive;
 interface SourceRepository {
 
     /**
-     * @param PharAlias $alias
+     * @param RequestedPhar $requestedPhar
      *
      * @return ReleaseCollection
      */
-    public function getReleasesByAlias(PharAlias $alias);
+    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar);
 }

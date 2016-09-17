@@ -18,18 +18,18 @@ class PharIoRepository implements SourceRepository {
     }
 
     /**
-     * @param PharAlias $alias
+     * @param RequestedPhar $requestedPhar
      *
      * @return ReleaseCollection
      */
-    public function getReleasesByAlias(PharAlias $alias) {
+    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar) {
         $releases = new ReleaseCollection();
-        $query = sprintf('//phive:phar[@name="%s"]/phive:release', $alias);
+        $query = sprintf('//phive:phar[@name="%s"]/phive:release', $requestedPhar->getAlias()->asString());
         foreach ($this->xmlFile->query($query) as $releaseNode) {
             /** @var \DOMElement $releaseNode */
             $releases->add(
                 new Release(
-                    (string)$alias,
+                    $requestedPhar->getAlias()->asString(),
                     new Version($releaseNode->getAttribute('version')),
                     new PharUrl($releaseNode->getAttribute('url')),
                     $this->getHash($releaseNode)

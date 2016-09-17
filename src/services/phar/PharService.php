@@ -19,9 +19,9 @@ class PharService {
     private $pharRegistry;
 
     /**
-     * @var AliasResolverService
+     * @var RequestedPharResolverService
      */
-    private $aliasResolver;
+    private $requestedPharResolver;
 
     /**
      * @var Cli\Output
@@ -29,38 +29,43 @@ class PharService {
     private $output;
 
     /**
-     * @param PharDownloader       $downloader
-     * @param PharInstaller        $installer
-     * @param PharRegistry         $pharRegistry
-     * @param AliasResolverService $resolver
-     * @param Cli\Output           $output
+     * @param PharDownloader $downloader
+     * @param PharInstaller $installer
+     * @param PharRegistry $pharRegistry
+     * @param RequestedPharResolverService $requestedPharResolver
+     * @param Cli\Output $output
      */
     public function __construct(
         PharDownloader $downloader,
         PharInstaller $installer,
         PharRegistry $pharRegistry,
-        AliasResolverService $resolver,
+        RequestedPharResolverService $requestedPharResolver,
         Cli\Output $output
     ) {
         $this->downloader = $downloader;
         $this->installer = $installer;
         $this->pharRegistry = $pharRegistry;
-        $this->aliasResolver = $resolver;
+        $this->requestedPharResolver = $requestedPharResolver;
         $this->output = $output;
     }
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory     $destination
-     * @param bool          $makeCopy
+     * @param Directory $destination
+     * @param bool $makeCopy
      *
      * @return null|InstalledPhar
      */
     public function install(RequestedPhar $requestedPhar, Directory $destination, $makeCopy) {
-        $release = $this->getRelease($requestedPhar);
+        $release = $this->resolveToRelease($requestedPhar);
         $pharName = $release->getUrl()->getPharName();
         $phar = $this->getPharFromRelease($release);
-        $destinationFile = $destination->file($pharName);
+
+        if ($requestedPhar->hasLocation()) {
+            $destinationFile = $requestedPhar->getLocation();
+        } else {
+            $destinationFile = $destination->file($pharName);
+        }
 
         $this->installer->install($phar->getFile(), $destinationFile, $makeCopy);
         $this->pharRegistry->addUsage($phar, $destinationFile);
@@ -75,15 +80,17 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Filename      $location
-     * @param Version       $currentVersion
+     * @param Filename $location
+     * @param Version $currentVersion
      *
      * @return InstalledPhar|null
      */
     public function update(RequestedPhar $requestedPhar, Filename $location, Version $currentVersion) {
-        $release = $this->getRelease($requestedPhar);
+        $release = $this->resolveToRelease($requestedPhar);
 
-        if ($requestedPhar->getVersionConstraint()->complies($currentVersion) && !$release->getVersion()->isGreaterThan($currentVersion)) {
+        if ($requestedPhar->getVersionConstraint()->complies($currentVersion)
+            && !$release->getVersion()->isGreaterThan($currentVersion)
+        ) {
             $this->output->writeInfo(
                 sprintf(
                     '%s: %s is the newest version matching constraint %s, skipping.',
@@ -92,6 +99,7 @@ class PharService {
                     $requestedPhar->getVersionConstraint()->asString()
                 )
             );
+
             return null;
         }
 
@@ -126,29 +134,12 @@ class PharService {
     /**
      * @param RequestedPhar $requestedPhar
      *
-     * @throws DownloadFailedException
-     * @throws ResolveException
-     *
      * @return Release
      */
-    private function getRelease(RequestedPhar $requestedPhar) {
-        if ($requestedPhar->isAlias()) {
-            return $this->resolveAlias($requestedPhar->getAlias());
-        }
+    private function resolveToRelease(RequestedPhar $requestedPhar) {
+        $repository = $this->requestedPharResolver->resolve($requestedPhar);
+        $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
 
-        $url = $requestedPhar->getPharUrl();
-
-        return new Release($url->getPharName(), $url->getPharVersion(), $url, null);
-    }
-
-    /**
-     * @param PharAlias $alias
-     *
-     * @return Release
-     */
-    private function resolveAlias(PharAlias $alias) {
-        $repository = $this->aliasResolver->resolve($alias);
-        $releases = $repository->getReleasesByAlias($alias);
-        return $releases->getLatest($alias->getVersionToInstall());
+        return $releases->getLatest($requestedPhar->getLockedVersion());
     }
 }

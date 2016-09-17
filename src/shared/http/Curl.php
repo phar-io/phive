@@ -22,7 +22,7 @@ class Curl implements HttpClient {
     private $url;
 
     /**
-     * @var ETag
+     * @var ETag|null
      */
     private $etag;
 

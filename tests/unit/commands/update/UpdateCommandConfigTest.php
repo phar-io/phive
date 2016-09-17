@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli\Options;
 
 /**
- * @covers PharIo\Phive\UpdateCommandConfig
+ * @covers \PharIo\Phive\UpdateCommandConfig
  */
 class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
@@ -54,15 +54,19 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
             new ConfiguredPhar('phpunit', new AnyVersionConstraint())
         ];
 
-        $phpabPhar = new RequestedPharAlias(
-            new PharAlias('phpab', new ExactVersionConstraint('1.12.0'), new ExactVersionConstraint('1.12.0')
-            )
+        $phpabPhar = new RequestedPhar(
+            new PharAlias('phpab'),
+            new ExactVersionConstraint('1.12.0'),
+            new ExactVersionConstraint('1.12.0')
         );
-        $phpdocPhar = new RequestedPharAlias(
-            new PharAlias('phpdoc', new AnyVersionConstraint(), new AnyVersionConstraint())
+        $phpdocPhar = new RequestedPhar(
+            new PharAlias('phpdoc'),
+            new AnyVersionConstraint(), new AnyVersionConstraint()
         );
-        $phpunitPhar = new RequestedPharAlias(
-            new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint())
+        $phpunitPhar = new RequestedPhar(
+            new PharAlias('phpunit'),
+            new AnyVersionConstraint(),
+            new AnyVersionConstraint()
         );
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
@@ -93,11 +97,11 @@ class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
             new ConfiguredPhar('phpdoc', new AnyVersionConstraint())
         ];
 
-        $phpunitPhar = new RequestedPharAlias(
-            new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint())
+        $phpunitPhar = new RequestedPhar(
+            new PharAlias('phpunit'), new AnyVersionConstraint(), new AnyVersionConstraint()
         );
-        $phpabPhar = new RequestedPharAlias(
-            new PharAlias('phpab', new ExactVersionConstraint('1.12.0'), new ExactVersionConstraint('1.12.0'))
+        $phpabPhar = new RequestedPhar(
+            new PharAlias('phpab'), new ExactVersionConstraint('1.12.0'), new ExactVersionConstraint('1.12.0')
         );
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();

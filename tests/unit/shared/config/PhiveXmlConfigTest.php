@@ -101,14 +101,16 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
             [
                 ['url', false],
                 ['version', true],
-                ['installed', true]
+                ['installed', true],
+                ['location', true]
             ]
         );
         $node2->method('getAttribute')->willReturnMap(
             [
                 ['version', '5.2.12'],
                 ['name', 'phpunit'],
-                ['installed', '5.2.12']
+                ['installed', '5.2.12'],
+                ['location', './foo/phpunit']
             ]
         );
 
@@ -136,7 +138,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $config = new PhiveXmlConfig($configFile, $parserMock);
         $expected = [
             new ConfiguredPhar('https://example.com/phpunit-5.3.0.phar', new AnyVersionConstraint()),
-            new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12')),
+            new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12'), new Filename('./foo/phpunit')),
             new ConfiguredPhar('phpunit', new AnyVersionConstraint()),
         ];
         $actual = $config->getPhars();

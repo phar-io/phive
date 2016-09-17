@@ -153,10 +153,17 @@ class PhiveXmlConfig {
             if ($pharNode->hasAttribute('installed') && !empty($pharNode->getAttribute('installed'))) {
                 $pharVersion = new Version($pharNode->getAttribute('installed'));
             }
+            $location = null;
+            if ($pharNode->hasAttribute('location') && !empty($pharNode->getAttribute('location'))) {
+                $location = new Filename($pharNode->getAttribute('location'));
+                // workaround to make sure the directory gets created
+                $location->getDirectory();
+            }
             $phars[] = new ConfiguredPhar(
                 $pharName,
                 $this->versionConstraintParser->parse($versionConstraint),
-                $pharVersion
+                $pharVersion,
+                $location
             );
         }
 

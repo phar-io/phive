@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class PharTestBootstrap {
+class RegressionTestBootstrap {
 
     public function run() {
         echo "Building PHAR... \n";

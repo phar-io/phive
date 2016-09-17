@@ -2,12 +2,12 @@
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
          verbose="true"
-         bootstrap="tests/phar/bootstrap.php"
+         bootstrap="tests/regression/bootstrap.php"
          forceCoversAnnotation="true">
 
     <testsuites>
         <testsuite name="Phive">
-            <directory suffix="Test.php">tests/phar</directory>
+            <directory suffix="Test.php">tests/regression</directory>
         </testsuite>
     </testsuites>
 

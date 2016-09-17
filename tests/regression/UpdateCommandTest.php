@@ -1,7 +1,7 @@
 <?php
-namespace PharIo\Phive\PharRegressionTests;
+namespace PharIo\Phive\RegressionTests;
 
-class UpdateCommandTest extends PharTestCase {
+class UpdateCommandTest extends RegressionTestCase {
 
     public function testUpdatesSymlinkToUpdatedVersion() {
         $this->addPharToRegistry('phpunit', '5.3.4', 'phpunit-5.3.4.phar');

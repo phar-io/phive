@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class GithubAliasResolver extends AbstractAliasResolver {
+class GithubAliasResolver extends AbstractRequestedPharResolver {
 
     /**
      * @var FileDownloader
@@ -16,19 +16,23 @@ class GithubAliasResolver extends AbstractAliasResolver {
     }
 
     /**
-     * @param PharAlias $alias
+     * @param RequestedPhar $requestedPhar
      *
      * @return GithubRepository
      */
-    public function resolve(PharAlias $alias) {
-        $name = (string)$alias;
+    public function resolve(RequestedPhar $requestedPhar) {
+        if (!$requestedPhar->hasAlias()) {
+            return $this->tryNext($requestedPhar);
+        }
+
+        $name = $requestedPhar->getAlias()->asString();
         if (strpos($name, '/') === false) {
-            return $this->tryNext($alias);
+            return $this->tryNext($requestedPhar);
         }
         try {
             return $this->localResolve($name);
         } catch (HttpException $e) {
-            return $this->tryNext($alias);
+            return $this->tryNext($requestedPhar);
         }
     }
 

@@ -59,17 +59,23 @@ class UpdateCommandConfig {
             if (!empty($filter) && !in_array((string)$configuredPhar->getName(), $filter)) {
                 continue;
             }
+
             if (Url::isUrl($configuredPhar->getName())) {
-                $phars[] = new RequestedPharUrl(new PharUrl($configuredPhar->getName()));
+                $identifier = new PharUrl($configuredPhar->getName());
+            } elseif ($configuredPhar->hasUrl()) {
+                $identifier = new PharUrl($configuredPhar->getUrl());
             } else {
-                $phars[] = new RequestedPharAlias(
-                    new PharAlias(
-                        $configuredPhar->getName(),
-                        $configuredPhar->getVersionConstraint(),
-                        $configuredPhar->getVersionConstraint()
-                    )
-                );
+                $identifier = new PharAlias($configuredPhar->getName());
             }
+
+            $location = $configuredPhar->hasLocation() ? $configuredPhar->getLocation() : null;
+
+            $phars[] = new RequestedPhar(
+                    $identifier,
+                    $configuredPhar->getVersionConstraint(),
+                    $configuredPhar->getVersionConstraint(),
+                    $location
+            );
         }
         return $phars;
     }

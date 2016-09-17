@@ -30,8 +30,10 @@ class ComposerService {
             try {
                 $aliasName = $this->sourcesList->getAliasForComposerAlias(new ComposerAlias($required));
                 $versionConstraint = $parser->parse($constraint);
-                $list[] = new RequestedPharAlias(
-                    new PharAlias($aliasName, $versionConstraint, $versionConstraint)
+                $list[] = new RequestedPhar(
+                    new PharAlias($aliasName),
+                    $versionConstraint,
+                    $versionConstraint
                 );
             } catch (\Exception $e) {
                 continue;

@@ -55,13 +55,17 @@ class SelfupdateCommand implements Cli\Command {
      *
      */
     public function execute() {
-        $requestedPhar = new RequestedPharAlias(new PharAlias('phar-io/phive', new AnyVersionConstraint(), new AnyVersionConstraint()));
+        $requestedPhar = new RequestedPhar(
+            new PharAlias('phar-io/phive'),
+            new AnyVersionConstraint(),
+            new AnyVersionConstraint()
+        );
 
         $destination = new Filename($this->environment->getPhiveCommandPath());
 
-        $repository = $this->gitHubAliasResolver->resolve($requestedPhar->getAlias());
-        $releases = $repository->getReleasesByAlias($requestedPhar->getAlias());
-        $release = $releases->getLatest($requestedPhar->getAlias()->getVersionConstraint());
+        $repository = $this->gitHubAliasResolver->resolve($requestedPhar);
+        $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
+        $release = $releases->getLatest($requestedPhar->getVersionConstraint());
 
         if (!$release->getVersion()->isGreaterThan(new Version($this->currentPhiveVersion->getVersion()))) {
             $this->output->writeInfo('You already have the newest version of PHIVE.');

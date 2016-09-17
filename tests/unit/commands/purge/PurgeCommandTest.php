@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli;
 
 /**
- * @covers PharIo\Phive\PurgeCommand
+ * @covers \PharIo\Phive\PurgeCommand
  */
 class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
 

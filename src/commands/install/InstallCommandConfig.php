@@ -56,34 +56,26 @@ class InstallCommandConfig {
         $phars = [];
         foreach ($this->phiveXmlConfig->getPhars() as $configuredPhar) {
             if (Url::isUrl($configuredPhar->getName())) {
-                $phars[] = new RequestedPharUrl(new PharUrl($configuredPhar->getName()));
+                $identifier = new PharUrl($configuredPhar->getName());
+            } elseif ($configuredPhar->hasUrl()) {
+                $identifier = new PharUrl($configuredPhar->getUrl());
             } else {
-                $phars[] = $this->getPharAliasFromConfiguredPhar($configuredPhar);
+                $identifier = new PharAlias($configuredPhar->getName());
             }
+
+            $versionConstraint = $configuredPhar->getVersionConstraint();
+            if ($configuredPhar->isInstalled() && $configuredPhar->getVersionConstraint()->complies($configuredPhar->getInstalledVersion())) {
+                $versionToInstall = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
+            } else {
+                $versionToInstall = $versionConstraint;
+            }
+
+            $location = $configuredPhar->hasLocation() ? $configuredPhar->getLocation() : null;
+
+            $phars[] = new RequestedPhar($identifier, $configuredPhar->getVersionConstraint(), $versionToInstall, $location);
         }
 
         return $phars;
-    }
-
-    /**
-     * @param ConfiguredPhar $configuredPhar
-     *
-     * @return RequestedPharAlias
-     */
-    private function getPharAliasFromConfiguredPhar(ConfiguredPhar $configuredPhar) {
-        $versionConstraint = $configuredPhar->getVersionConstraint();
-        if ($configuredPhar->isInstalled() && $configuredPhar->getVersionConstraint()->complies($configuredPhar->getInstalledVersion())) {
-            $versionToInstall = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
-        } else {
-            $versionToInstall = $versionConstraint;
-        }
-        return new RequestedPharAlias(
-            new PharAlias(
-                $configuredPhar->getName(),
-                $versionConstraint,
-                $versionToInstall
-            )
-        );
     }
 
     /**
@@ -96,17 +88,20 @@ class InstallCommandConfig {
         $argCount = $this->cliOptions->getArgumentCount();
         for ($i = 0; $i < $argCount; $i++) {
             $argument = $this->cliOptions->getArgument($i);
+            $argumentParts = preg_split('/[@:=]/', $argument, 2, PREG_SPLIT_NO_EMPTY);
             if (Url::isUrl($argument)) {
-                $phars[] = new RequestedPharUrl(new PharUrl($argument));
+                $identifier = new PharUrl($argument);
+                $versionConstraint = new ExactVersionConstraint($identifier->getPharVersion()->getVersionString());
             } else {
-                $aliasSegments = preg_split('/[@:=]/', $argument, 2, PREG_SPLIT_NO_EMPTY);
-                if (count($aliasSegments) === 2) {
-                    $versionConstraint = (new VersionConstraintParser())->parse($aliasSegments[1]);
+                $identifier = new PharAlias($argumentParts[0]);
+                if (count($argumentParts) === 2) {
+                    $versionConstraint = (new VersionConstraintParser())->parse($argumentParts[1]);
                 } else {
                     $versionConstraint = new AnyVersionConstraint();
                 }
-                $phars[] = new RequestedPharAlias(new PharAlias($aliasSegments[0], $versionConstraint, $versionConstraint));
             }
+
+            $phars[] = new RequestedPhar($identifier, $versionConstraint, $versionConstraint);
         }
         return $phars;
     }

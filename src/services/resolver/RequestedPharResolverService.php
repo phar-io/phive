@@ -1,22 +1,22 @@
 <?php
 namespace PharIo\Phive;
 
-class AliasResolverService {
+class RequestedPharResolverService {
 
     /**
-     * @var AliasResolver
+     * @var RequestedPharResolver
      */
     private $first;
 
     /**
-     * @var AliasResolver
+     * @var RequestedPharResolver
      */
     private $last;
 
     /**
-     * @param AliasResolver $resolver
+     * @param RequestedPharResolver $resolver
      */
-    public function addResolver(AliasResolver $resolver) {
+    public function addResolver(RequestedPharResolver $resolver) {
         if ($this->first === null) {
             $this->first = $resolver;
         }
@@ -27,12 +27,12 @@ class AliasResolverService {
     }
 
     /**
-     * @param PharAlias $alias
+     * @param RequestedPhar $requestedPhar
      *
      * @return SourceRepository
      */
-    public function resolve(PharAlias $alias) {
-        return $this->first->resolve($alias);
+    public function resolve(RequestedPhar $requestedPhar) {
+        return $this->first->resolve($requestedPhar);
     }
 
 }

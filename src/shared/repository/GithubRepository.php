@@ -16,11 +16,11 @@ class GithubRepository implements SourceRepository {
     }
 
     /**
-     * @param PharAlias $alias
+     * @param RequestedPhar $requestedPhar
      *
      * @return ReleaseCollection
      */
-    public function getReleasesByAlias(PharAlias $alias) {
+    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar) {
         $releases = new ReleaseCollection();
 
         foreach ($this->jsonData->getParsed() as $entry) {
@@ -42,7 +42,7 @@ class GithubRepository implements SourceRepository {
 
             $releases->add(
                 // Github doesn't publish any hashes for the files :-(
-                new Release((string)$alias, $version, $pharUrl)
+                new Release($requestedPhar->getAlias()->asString(), $version, $pharUrl)
             );
         }
 

@@ -19,18 +19,34 @@ class ConfiguredPhar {
     private $installedVersion;
 
     /**
-     * @param string            $name
+     * @var Filename|null
+     */
+    private $location;
+
+    /**
+     * @var PharUrl|null
+     */
+    private $url;
+
+    /**
+     * @param string $name
      * @param VersionConstraint $versionConstraint
-     * @param Version|null      $installedVersion
+     * @param Version|null $installedVersion
+     * @param Filename|null $location
+     * @param PharUrl|null $url
      */
     public function __construct(
         $name,
         VersionConstraint $versionConstraint,
-        Version $installedVersion = null
+        Version $installedVersion = null,
+        Filename $location = null,
+        PharUrl $url = null
     ) {
         $this->name = $name;
         $this->versionConstraint = $versionConstraint;
         $this->installedVersion = $installedVersion;
+        $this->location = $location;
+        $this->url = $url;
     }
 
     /**
@@ -61,4 +77,31 @@ class ConfiguredPhar {
         return $this->installedVersion !== null;
     }
 
+    /**
+     * @return bool
+     */
+    public function hasLocation() {
+        return $this->location !== null;
+    }
+
+    /**
+     * @return Filename
+     */
+    public function getLocation() {
+        return $this->location;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasUrl() {
+        return $this->url !== null;
+    }
+
+    /**
+     * @return null|PharUrl
+     */
+    public function getUrl() {
+        return $this->url;
+    }
 }

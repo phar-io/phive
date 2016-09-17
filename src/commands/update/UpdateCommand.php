@@ -35,7 +35,7 @@ class UpdateCommand implements Cli\Command {
 
     public function execute() {
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
-            $alias = (string)$requestedPhar->getAlias();
+            $alias = $requestedPhar->getAlias()->asString();
             if (!$this->phiveXmlConfig->isPharInstalled($alias)) {
                 $installedPhar = $this->install($requestedPhar);
             } else {
@@ -66,7 +66,7 @@ class UpdateCommand implements Cli\Command {
      * @return InstalledPhar
      */
     private function update(RequestedPhar $requestedPhar, Version $currentVersion) {
-        $location = $this->phiveXmlConfig->getPharLocation((string)$requestedPhar->getAlias());
+        $location = $this->phiveXmlConfig->getPharLocation($requestedPhar->getAlias()->asString());
         return $this->pharService->update($requestedPhar, $location, $currentVersion);
     }
 

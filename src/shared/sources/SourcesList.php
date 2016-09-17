@@ -24,14 +24,14 @@ class SourcesList {
      * @throws SourcesListException
      */
     public function getSourceForAlias(PharAlias $alias) {
-        $query = sprintf('//phive:phar[@alias="%s"]/phive:repository', $alias);
+        $query = sprintf('//phive:phar[@alias="%s"]/phive:repository', $alias->asString());
         $repositoryNodes = $this->sourcesFile->query($query);
 
         if ($repositoryNodes->length === 0) {
-            throw new SourcesListException(sprintf('No repository found for alias %s', $alias));
+            throw new SourcesListException(sprintf('No repository found for alias %s', $alias->asString()));
         }
         if ($repositoryNodes->length > 1) {
-            throw new SourcesListException(sprintf('Multiple repositories found for alias %s', $alias));
+            throw new SourcesListException(sprintf('Multiple repositories found for alias %s', $alias->asString()));
         }
 
         /** @var \DOMElement $repositoryNode */

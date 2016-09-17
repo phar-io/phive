@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
 /**
- * @covers PharIo\Phive\PharIoRepository
+ * @covers \PharIo\Phive\PharIoRepository
  */
 class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
 
@@ -20,8 +20,13 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
             '7a8755061d7ac2bc09f25bf6a867031fb945b4b25a6be1fb41b117893065f76c'
         );
 
+
+
         $pharAlias = $this->getPharAliasMock();
-        $pharAlias->method('__toString')->willReturn('foo');
+        $pharAlias->method('asString')->willReturn('foo');
+
+        $requestedPhar = $this->getRequestedPharMock();
+        $requestedPhar->method('getAlias')->willReturn($pharAlias);
 
         $xmlFile = $this->getXmlFileMock();
         $xmlFile->method('query')->willReturn([$releaseNode1, $releaseNode2]);
@@ -41,7 +46,7 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
         );
 
         $repository = new PharIoRepository($xmlFile);
-        $this->assertEquals($expectedReleases, $repository->getReleasesByAlias($pharAlias));
+        $this->assertEquals($expectedReleases, $repository->getReleasesByRequestedPhar($requestedPhar));
     }
 
     public function testThrowsExceptionIfReleaseHasUnsupportedHashType() {
@@ -52,6 +57,9 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
             'bar'
         );
 
+        $requestedPhar = $this->getRequestedPharMock();
+        $requestedPhar->method('getAlias')->willReturn($this->getPharAliasMock());
+
         $xmlFile = $this->getXmlFileMock();
         $xmlFile->method('query')->willReturn([$releaseNode]);
 
@@ -59,7 +67,7 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
 
         $this->expectException(InvalidHashException::class);
 
-        $repository->getReleasesByAlias($this->getPharAliasMock());
+        $repository->getReleasesByRequestedPhar($requestedPhar);
     }
 
     /**
@@ -105,6 +113,13 @@ class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
      */
     private function getPharAliasMock() {
         return $this->createMock(PharAlias::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
+     */
+    private function getRequestedPharMock() {
+        return $this->createMock(RequestedPhar::class);
     }
 
 }

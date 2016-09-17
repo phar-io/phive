@@ -14,7 +14,7 @@ class HttpResponse {
     private $httpCode = 0;
 
     /**
-     * @var ETag
+     * @var ETag|null
      */
     private $etag;
 

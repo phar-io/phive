@@ -23,6 +23,11 @@ class PharIoAliasResolverTest extends \PHPUnit_Framework_TestCase {
 
     public function testReturnsRepository() {
         $alias = new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint());
+        $requestedPhar = new RequestedPhar(
+            $alias,
+            new AnyVersionConstraint(),
+            new AnyVersionConstraint()
+        );
         $url = new Url('https://example.com/bar');
         $source = new Source('phar.io', $url);
 
@@ -42,7 +47,7 @@ class PharIoAliasResolverTest extends \PHPUnit_Framework_TestCase {
             $this->fileDownloader->reveal()
         );
 
-        $this->assertInstanceOf(SourceRepository::class, $resolver->resolve($alias));
+        $this->assertInstanceOf(SourceRepository::class, $resolver->resolve($requestedPhar));
     }
 
 }

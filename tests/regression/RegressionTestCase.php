@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive\PharRegressionTests;
+namespace PharIo\Phive\RegressionTests;
 
 use PharIo\Phive\Directory;
 use PharIo\Phive\File;
@@ -11,7 +11,7 @@ use PharIo\Phive\Version;
 use PharIo\Phive\VersionConstraintParser;
 use PharIo\Phive\XmlFile;
 
-class PharTestCase extends \PHPUnit_Framework_TestCase {
+class RegressionTestCase extends \PHPUnit_Framework_TestCase {
 
     private $pharSize = 0;
 

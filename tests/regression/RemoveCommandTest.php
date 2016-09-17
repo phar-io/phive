@@ -1,7 +1,7 @@
 <?php
-namespace PharIo\Phive\PharRegressionTests;
+namespace PharIo\Phive\RegressionTests;
 
-class RemoveCommandTest extends PharTestCase {
+class RemoveCommandTest extends RegressionTestCase {
 
     public function testRemovesSymlink() {
         $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar', $this->getToolsDirectory()->file('phpunit'));

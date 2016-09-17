@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
 /**
- * @covers PharIo\Phive\UpdateCommand
+ * @covers \PharIo\Phive\UpdateCommand
  */
 class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
 
@@ -11,8 +11,12 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $config = $this->getCommandConfigMock();
         $pharService = $this->getPharServiceMock();
 
+        $alias = $this->getPharAliasMock();
+
         $requestedPhar1 = $this->getRequestedPharMock();
+        $requestedPhar1->method('getAlias')->willReturn($alias);
         $requestedPhar2 = $this->getRequestedPharMock();
+        $requestedPhar2->method('getAlias')->willReturn($alias);
 
         $installedPhar1 = $this->getInstalledPharMock();
         $installedPhar2 = $this->getInstalledPharMock();
@@ -97,6 +101,13 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
      */
     private function getFilenameMock() {
         return $this->createMock(Filename::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|PharAlias
+     */
+    private function getPharAliasMock() {
+        return $this->createMock(PharAlias::class);
     }
 }
 

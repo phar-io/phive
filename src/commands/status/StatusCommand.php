@@ -28,14 +28,18 @@ class StatusCommand implements Cli\Command {
 
         $this->output->writeText('PHARs configured in phive.xml:' . "\n\n");
 
-        $table = new ConsoleTable(['Alias/URL', 'Version Constraint', 'Installed']);
+        $table = new ConsoleTable(['Alias/URL', 'Version Constraint', 'Installed', 'Location']);
 
         foreach ($this->phiveXmlConfig->getPhars() as $phar) {
             $installed = '-';
             if ($phar->isInstalled()) {
                 $installed = $phar->getInstalledVersion()->getVersionString();
             }
-            $table->addRow([$phar->getName(), $phar->getVersionConstraint()->asString(), $installed]);
+            $location = $phar->hasLocation() ? $phar->getLocation()->asString() : '-';
+            $table->addRow(
+                [$phar->getName(), $phar->getVersionConstraint()->asString(), $installed, $location]
+            );
+
         }
 
         $this->output->writeText($table->asString());

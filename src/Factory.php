@@ -341,7 +341,7 @@ class Factory {
             $this->getPharDownloader(),
             $this->getPharInstaller(),
             $this->getPharRegistry(),
-            $this->getAliasResolverService(),
+            $this->getRequestedPharResolverService(),
             $this->getOutput()
         );
     }
@@ -458,6 +458,13 @@ class Factory {
     }
 
     /**
+     * @return DirectUrlResolver
+     */
+    private function getUrlResolver() {
+        return new DirectUrlResolver();
+    }
+
+    /**
      * @return SourcesList
      */
     private function getSourcesList() {
@@ -493,10 +500,10 @@ class Factory {
     }
 
     /**
-     * @return AliasResolverService
+     * @return RequestedPharResolverService
      */
-    private function getAliasResolverService() {
-        $service = new AliasResolverService();
+    private function getRequestedPharResolverService() {
+        $service = new RequestedPharResolverService();
 
         $service->addResolver(
             $this->getGithubAliasResolver()
@@ -510,6 +517,11 @@ class Factory {
         // phar.io
         $service->addResolver(
             $this->getPharIoAliasResolver($this->getRemoteSourcesListFileLoader())
+        );
+
+        // direct URLs
+        $service->addResolver(
+            $this->getUrlResolver()
         );
 
         return $service;

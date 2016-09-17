@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 /**
  * Resolves an alias to a list of Phar.io repository URLs
  */
-class PharIoAliasResolver extends AbstractAliasResolver {
+class PharIoAliasResolver extends AbstractRequestedPharResolver {
 
     /**
      * @var SourcesList
@@ -31,17 +31,20 @@ class PharIoAliasResolver extends AbstractAliasResolver {
     }
 
     /**
-     * @param PharAlias $alias
+     * @param RequestedPhar $requestedPhar
      *
      * @return SourceRepository
-     * @throws ResolveException
      */
-    public function resolve(PharAlias $alias) {
+    public function resolve(RequestedPhar $requestedPhar) {
+        if (!$requestedPhar->hasAlias()) {
+            return $this->tryNext($requestedPhar);
+        }
+
         try {
-            $source = $this->getSourcesList()->getSourceForAlias($alias);
+            $source = $this->getSourcesList()->getSourceForAlias($requestedPhar->getAlias());
             $file = $this->fileDownloader->download($source->getUrl());
         } catch (SourcesListException $e) {
-            return $this->tryNext($alias);
+            return $this->tryNext($requestedPhar);
         }
 
         switch ($source->getType()) {
@@ -61,7 +64,7 @@ class PharIoAliasResolver extends AbstractAliasResolver {
                 );
         }
 
-        return $this->tryNext($alias);
+        return $this->tryNext($requestedPhar);
     }
 
     /**

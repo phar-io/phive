@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class PharUrl extends Url {
+class PharUrl extends Url implements PharIdentifier {
 
     /**
      * @return string
@@ -31,6 +31,13 @@ class PharUrl extends Url {
         }
 
         return new Version($matches[1]);
+    }
+
+    /**
+     * @return string
+     */
+    public function asString() {
+        return (string)$this;
     }
 
 }

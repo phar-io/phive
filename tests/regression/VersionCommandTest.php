@@ -1,7 +1,7 @@
 <?php
-namespace PharIo\Phive\PharRegressionTests;
+namespace PharIo\Phive\RegressionTests;
 
-class VersionCommandTest extends PharTestCase {
+class VersionCommandTest extends RegressionTestCase {
 
     public function testOutput() {
         $result = $this->runPhiveCommand('version');

@@ -8,8 +8,8 @@
 /phpunit.xml
 /tools
 /vendor
-/tests/phar/fixtures/phive-home/phars.xml
-/tests/phar/fixtures/phive-home/phars
-/tests/phar/fixtures/phive-home/http-cache
-/tests/phar/under-test.phar
+/tests/regression/fixtures/phive-home/phars.xml
+/tests/regression/fixtures/phive-home/phars
+/tests/regression/fixtures/phive-home/http-cache
+/tests/regression/under-test.phar
 cache.properties

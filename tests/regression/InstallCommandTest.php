@@ -1,5 +1,5 @@
 <?php
-namespace PharIo\Phive\PharRegressionTests;
+namespace PharIo\Phive\RegressionTests;
 
 use PharIo\Phive\AnyVersionConstraint;
 use PharIo\Phive\Cli\Runner;
@@ -7,11 +7,9 @@ use PharIo\Phive\ConfiguredPhar;
 use PharIo\Phive\ExactVersionConstraint;
 use PharIo\Phive\Filename;
 use PharIo\Phive\InstalledPhar;
-use PharIo\Phive\PharAlias;
-use PharIo\Phive\RequestedPharAlias;
 use PharIo\Phive\Version;
 
-class InstallCommandTest extends PharTestCase {
+class InstallCommandTest extends RegressionTestCase {
 
     public function testInstallsPhar() {
         $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
@@ -36,7 +34,7 @@ class InstallCommandTest extends PharTestCase {
         $phiveXmlConfig = $this->getPhiveXmlConfig();
 
         $expectedPhars = [
-            new ConfiguredPhar('phpunit', new ExactVersionConstraint('5.3.1'), new Version('5.3.1'))
+            new ConfiguredPhar('phpunit', new ExactVersionConstraint('5.3.1'), new Version('5.3.1'), new Filename('./tools/phpunit'))
         ];
 
         $this->assertEquals($expectedPhars, $phiveXmlConfig->getPhars());

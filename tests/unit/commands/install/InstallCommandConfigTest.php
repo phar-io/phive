@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli\Options;
 
 /**
- * @covers PharIo\Phive\InstallCommandConfig
+ * @covers \PharIo\Phive\InstallCommandConfig
  */
 class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
@@ -79,8 +79,8 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ->willReturn([$configuredPhar1, $configuredPhar2]);
 
         $expectedPhars = [
-            new RequestedPharAlias(new PharAlias('Some Phar', new AnyVersionConstraint(), new AnyVersionConstraint())),
-            new RequestedPharAlias(new PharAlias('Some Other Phar', new ExactVersionConstraint('1.2.3'), new ExactVersionConstraint('1.2.3')))
+            new RequestedPhar(new PharAlias('Some Phar'), new AnyVersionConstraint(), new AnyVersionConstraint()),
+            new RequestedPhar(new PharAlias('Some Other Phar'), new ExactVersionConstraint('1.2.3'), new ExactVersionConstraint('1.2.3'))
         ];
 
         $commandConfig = new InstallCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
@@ -96,15 +96,15 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $options->expects($this->any())
             ->method('getArgument')
             ->willReturnMap([
-                [0, 'https://example.com/foo.phar'],
+                [0, 'https://example.com/foo-1.2.0.phar'],
                 [1, 'phpunit'],
                 [2, 'phpab@1.12.0']
             ]);
 
         $expected = [
-            new RequestedPharUrl(new PharUrl('https://example.com/foo.phar')),
-            new RequestedPharAlias(new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint())),
-            new RequestedPharAlias(new PharAlias('phpab', new ExactVersionConstraint('1.12.0'), new ExactVersionConstraint('1.12.0'))),
+            new RequestedPhar(new PharUrl('https://example.com/foo-1.2.0.phar'), new ExactVersionConstraint('1.2.0'), new ExactVersionConstraint('1.2.0')),
+            new RequestedPhar(new PharAlias('phpunit'), new AnyVersionConstraint(), new AnyVersionConstraint()),
+            new RequestedPhar(new PharAlias('phpab'), new ExactVersionConstraint('1.12.0'), new ExactVersionConstraint('1.12.0')),
         ];
 
         $commandConfig = new InstallCommandConfig($options, $this->getPhiveXmlConfigMock(), $this->getTargetDirectoryLocatorMock());

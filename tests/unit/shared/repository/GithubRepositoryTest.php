@@ -2,13 +2,16 @@
 namespace PharIo\Phive;
 
 /**
- * @covers PharIo\Phive\GithubRepository
+ * @covers \PharIo\Phive\GithubRepository
  */
 class GithubRepositoryTest extends \PHPUnit_Framework_TestCase {
 
     public function testReturnsExpectedReleases() {
         $pharAlias = $this->getPharAliasMock();
-        $pharAlias->method('__toString')->willReturn('foo');
+        $pharAlias->method('asString')->willReturn('foo');
+
+        $requestedPhar = $this->getRequestedPharMock();
+        $requestedPhar->method('getAlias')->willReturn($pharAlias);
 
         $entry1 = $this->getGithubEntry('5.3.0', 'https://example.com/foo-5.3.0.phar');
         $entry2 = $this->getGithubEntry('5.2.11', 'https://example.com/broken');
@@ -25,7 +28,7 @@ class GithubRepositoryTest extends \PHPUnit_Framework_TestCase {
         $repository = new GithubRepository($jsonData);
         $this->assertEquals(
             $expectedReleases,
-            $repository->getReleasesByAlias($pharAlias)
+            $repository->getReleasesByRequestedPhar($requestedPhar)
         );
     }
 
@@ -58,6 +61,13 @@ class GithubRepositoryTest extends \PHPUnit_Framework_TestCase {
      */
     private function getPharAliasMock() {
         return $this->createMock(PharAlias::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
+     */
+    private function getRequestedPharMock() {
+        return $this->createMock(RequestedPhar::class);
     }
 
 }
