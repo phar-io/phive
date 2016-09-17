@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
 class UrlRepository implements SourceRepository {
-    
+
     /**
      * @param RequestedPhar $requestedPhar
      *
@@ -11,7 +11,12 @@ class UrlRepository implements SourceRepository {
     public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar) {
         $releases = new ReleaseCollection();
         $releases->add(
-            new Release($requestedPhar->getUrl()->getPharName(), $requestedPhar->getUrl()->getPharVersion(), $requestedPhar->getUrl())
+            new Release(
+                $requestedPhar->getUrl()->getPharName(),
+                $requestedPhar->getUrl()->getPharVersion(),
+                $requestedPhar->getUrl(),
+                new Url($requestedPhar->getUrl()->asString() . '.asc')
+            )
         );
         return $releases;
     }
