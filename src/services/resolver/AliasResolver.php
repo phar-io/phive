@@ -9,7 +9,7 @@ interface AliasResolver {
     /**
      * @param PharAlias $alias
      *
-     * @return Source[]
+     * @return SourceRepository
      * @throws ResolveException
      */
     public function resolve(PharAlias $alias);
