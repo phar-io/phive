@@ -123,7 +123,6 @@ spl_autoload_register(
                 'phario\\phive\\pipeio' => '/shared/PipeIO.php',
                 'phario\\phive\\publickey' => '/services/key/PublicKey.php',
                 'phario\\phive\\purgecommand' => '/commands/purge/PurgeCommand.php',
-                'phario\\phive\\purgecommandconfig' => '/commands/purge/PurgeCommandConfig.php',
                 'phario\\phive\\purgecontext' => '/commands/purge/PurgeContext.php',
                 'phario\\phive\\release' => '/shared/phar/Release.php',
                 'phario\\phive\\releasecollection' => '/shared/phar/ReleaseCollection.php',
