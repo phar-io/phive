@@ -2,6 +2,16 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.6.2] - 2016-09-17
+
+### Changed
+* refined download progress visualisation
+* implemented HTTP-cache layer
+* internal refactoring
+
+### Fixed
+* [#78](https://github.com/phar-io/phive/issues/78): Custom location stored in `phive.xml` is now respected when installing and updating PHARs
+
 ## [0.6.1] - 2016-08-12
 
 ### Changed
@@ -111,8 +121,10 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ## [Unreleased]
 
-
-[Unreleased]: https://github.com/phar-io/phive/compare/0.5.0...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.6.2...HEAD
+[0.6.2]: https://github.com/phar-io/phive/compare/0.6.1...0.6.2
+[0.6.1]: https://github.com/phar-io/phive/compare/0.6.0...0.6.1
+[0.6.0]: https://github.com/phar-io/phive/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/phar-io/phive/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/phar-io/phive/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/phar-io/phive/compare/0.3.0...0.4.0
