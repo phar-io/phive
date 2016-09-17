@@ -49,8 +49,6 @@ class PharRegistry {
     }
 
     /**
-     * @todo this belongs elsewhere
-     *
      * @param File $pharFile
      */
     private function savePhar(File $pharFile) {

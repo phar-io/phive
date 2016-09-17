@@ -41,7 +41,6 @@ class UnixoidEnvironment extends Environment {
      * @return bool
      */
     public function supportsColoredOutput() {
-        // TODO check with 'tput colors'
         return true;
     }
 
