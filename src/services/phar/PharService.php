@@ -94,7 +94,7 @@ class PharService {
             $this->output->writeInfo(
                 sprintf(
                     '%s: %s is the newest version matching constraint %s, skipping.',
-                    $requestedPhar->getAlias(),
+                    $requestedPhar->getAlias()->asString(),
                     $currentVersion->getVersionString(),
                     $requestedPhar->getVersionConstraint()->asString()
                 )
