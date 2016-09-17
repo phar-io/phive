@@ -53,7 +53,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallByUrlGetsPharFromRepositoryAndInvokesInstaller() {
         $url = new PharUrl('https://example.com/foo-1.20.1.phar');
-        $release = new Release('foo', new Version('1.20.1'), $url, null);
+        $sigUrl = new PharUrl('https://example.com/foo-1.20.1.phar.asc');
+        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('1.20.1'), new ExactVersionConstraint('1.20.1'));
 
@@ -96,7 +97,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testUpdate() {
         $url = new PharUrl('https://example.com/foo-1.20.1.phar');
-        $release = new Release('foo', new Version('1.20.1'), $url, null);
+        $sigUrl = new PharUrl('https://example.com/foo-1.20.1.phar');
+        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
         $file = new File(new Filename('foo.phar'), 'bar');
         $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('1.20.1'), new ExactVersionConstraint('1.20.1'));
 
@@ -141,7 +143,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallHandlesDownloadFailedException() {
         $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
-        $release = new Release('foo', new Version('1.20.1'), $url, null);
+        $sigUrl = new PharUrl('https://example.com/phpunit-5.2.10.phar.asc');
+        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
         $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('5.2.10'), new ExactVersionConstraint('5.2.10'));
 
         $registry = $this->getPharRegistryMock();
@@ -179,7 +182,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallHandlesPharRegistryException() {
         $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
-        $release = new Release('foo', new Version('1.20.1'), $url, null);
+        $sigUrl = new PharUrl('https://example.com/phpunit-5.2.10.phar.asc');
+        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
         $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('5.2.10'), new ExactVersionConstraint('5.2.10'));
 
         $registry = $this->getPharRegistryMock();
@@ -215,7 +219,8 @@ class PharServiceTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstallHandlesVerificationFailedException() {
         $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
-        $release = new Release('foo', new Version('1.20.1'), $url, null);
+        $sigUrl = new PharUrl('https://example.com/phpunit-5.2.10.phar.asc');
+        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
         $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('5.2.10'), new ExactVersionConstraint('5.2.10'));
 
         $registry = $this->getPharRegistryMock();
