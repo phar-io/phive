@@ -21,7 +21,7 @@ class HttpResponse {
     /**
      * @param integer $httpCode
      * @param string $responseBody
-     * @param ETag $etag
+     * @param ETag|null $etag
      */
     public function __construct($httpCode, $responseBody, ETag $etag = null) {
         $this->ensureBodyNotEmpty($httpCode, $responseBody);

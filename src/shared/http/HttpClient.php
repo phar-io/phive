@@ -5,7 +5,7 @@ interface HttpClient {
 
     /**
      * @param Url $url
-     * @param ETag $etag
+     * @param ETag|null $etag
      *
      * @return HttpResponse
      */

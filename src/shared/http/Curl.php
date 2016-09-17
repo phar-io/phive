@@ -37,7 +37,7 @@ class Curl implements HttpClient {
 
     /**
      * @param Url $url
-     * @param ETag $etag
+     * @param ETag|null $etag
      *
      * @return HttpResponse
      */
@@ -86,7 +86,7 @@ class Curl implements HttpClient {
     /**
      * @param Url $url
      *
-     * @param ETag $etag
+     * @param ETag|null $etag
      *
      * @return resource
      */
