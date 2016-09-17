@@ -39,7 +39,6 @@ class StatusCommand implements Cli\Command {
             $table->addRow(
                 [$phar->getName(), $phar->getVersionConstraint()->asString(), $installed, $location]
             );
-
         }
 
         $this->output->writeText($table->asString());

@@ -71,10 +71,10 @@ class UpdateCommandConfig {
             $location = $configuredPhar->hasLocation() ? $configuredPhar->getLocation() : null;
 
             $phars[] = new RequestedPhar(
-                    $identifier,
-                    $configuredPhar->getVersionConstraint(),
-                    $configuredPhar->getVersionConstraint(),
-                    $location
+                $identifier,
+                $configuredPhar->getVersionConstraint(),
+                $configuredPhar->getVersionConstraint(),
+                $location
             );
         }
         return $phars;
