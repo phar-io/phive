@@ -23,7 +23,7 @@ class PharIoAliasResolver extends AbstractAliasResolver {
 
     /**
      * @param SourcesListFileLoader $loader
-     * @param FileDownloader $fileDownloader
+     * @param FileDownloader        $fileDownloader
      */
     public function __construct(SourcesListFileLoader $loader, FileDownloader $fileDownloader) {
         $this->loader = $loader;

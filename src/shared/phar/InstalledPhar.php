@@ -24,10 +24,10 @@ class InstalledPhar {
     private $location;
 
     /**
-     * @param string $name
-     * @param Version $installedVersion
+     * @param string            $name
+     * @param Version           $installedVersion
      * @param VersionConstraint $versionConstraint
-     * @param Filename $location
+     * @param Filename          $location
      */
     public function __construct(
         $name,

@@ -61,7 +61,7 @@ class UpdateCommand implements Cli\Command {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Version $currentVersion
+     * @param Version       $currentVersion
      *
      * @return InstalledPhar
      */

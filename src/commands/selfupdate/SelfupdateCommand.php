@@ -86,13 +86,12 @@ class SelfupdateCommand implements Cli\Command {
     }
 
     /**
-     * @param Phar $phar
+     * @param Phar     $phar
      * @param Filename $destination
      *
      * @throws InstallationFailedException
      */
-    private function installPhivePhar(Phar $phar, Filename $destination)
-    {
+    private function installPhivePhar(Phar $phar, Filename $destination) {
         $tmpFilename = tempnam(sys_get_temp_dir(), 'phive_selfupdate_');
 
         if ($tmpFilename === false) {

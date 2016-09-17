@@ -27,7 +27,7 @@ class Curl implements HttpClient {
     private $etag;
 
     /**
-     * @param CurlConfig $curlConfig
+     * @param CurlConfig          $curlConfig
      * @param HttpProgressHandler $progressHandler
      */
     public function __construct(CurlConfig $curlConfig, HttpProgressHandler $progressHandler) {
@@ -36,7 +36,7 @@ class Curl implements HttpClient {
     }
 
     /**
-     * @param Url $url
+     * @param Url       $url
      * @param ETag|null $etag
      *
      * @return HttpResponse
@@ -84,7 +84,7 @@ class Curl implements HttpClient {
     }
 
     /**
-     * @param Url $url
+     * @param Url       $url
      *
      * @param ETag|null $etag
      *

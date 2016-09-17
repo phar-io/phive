@@ -96,8 +96,7 @@ class Filename {
     /**
      * @return string
      */
-    private function getBasename()
-    {
+    private function getBasename() {
         return pathinfo($this, PATHINFO_BASENAME);
     }
 

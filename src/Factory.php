@@ -26,7 +26,7 @@ class Factory {
     private $environment;
 
     /**
-     * @param Cli\Request $request
+     * @param Cli\Request  $request
      * @param PhiveVersion $version
      */
     public function __construct(Cli\Request $request, PhiveVersion $version = null) {
@@ -305,8 +305,7 @@ class Factory {
     /**
      * @return HttpProgressRenderer
      */
-    private function getHttpProgressRenderer()
-    {
+    private function getHttpProgressRenderer() {
         return new HttpProgressRenderer($this->getOutput());
     }
 

@@ -19,8 +19,8 @@ class HttpResponse {
     private $etag;
 
     /**
-     * @param integer $httpCode
-     * @param string $responseBody
+     * @param integer   $httpCode
+     * @param string    $responseBody
      * @param ETag|null $etag
      */
     public function __construct($httpCode, $responseBody, ETag $etag = null) {
@@ -64,7 +64,7 @@ class HttpResponse {
     }
 
     /**
-     * @param int $httpCode
+     * @param int    $httpCode
      * @param string $body
      *
      * @throws HttpResponseException

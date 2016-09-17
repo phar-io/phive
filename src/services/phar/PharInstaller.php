@@ -19,8 +19,8 @@ class PharInstaller {
     private $pharActivator;
 
     /**
-     * @param Directory $pharDirectory
-     * @param Cli\Output $output
+     * @param Directory     $pharDirectory
+     * @param Cli\Output    $output
      * @param PharActivator $pharActivator
      */
     public function __construct(

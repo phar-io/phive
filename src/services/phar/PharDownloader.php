@@ -24,10 +24,10 @@ class PharDownloader {
     private $httpClient;
 
     /**
-     * @param HttpClient $httpClient
+     * @param HttpClient        $httpClient
      * @param SignatureVerifier $signatureVerifier
-     * @param ChecksumService $checksumService
-     * @param PharRegistry $pharRegistry
+     * @param ChecksumService   $checksumService
+     * @param PharRegistry      $pharRegistry
      */
     public function __construct(
         HttpClient $httpClient,
@@ -75,8 +75,7 @@ class PharDownloader {
      * @return File
      * @throws DownloadFailedException
      */
-    private function downloadFile(Url $url)
-    {
+    private function downloadFile(Url $url) {
         try {
             $response = $this->httpClient->get($url);
             return new File($url->getFilename(), $response->getBody());

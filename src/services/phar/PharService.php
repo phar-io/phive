@@ -29,11 +29,11 @@ class PharService {
     private $output;
 
     /**
-     * @param PharDownloader $downloader
-     * @param PharInstaller $installer
-     * @param PharRegistry $pharRegistry
+     * @param PharDownloader       $downloader
+     * @param PharInstaller        $installer
+     * @param PharRegistry         $pharRegistry
      * @param AliasResolverService $resolver
-     * @param Cli\Output $output
+     * @param Cli\Output           $output
      */
     public function __construct(
         PharDownloader $downloader,
@@ -51,8 +51,8 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory $destination
-     * @param bool $makeCopy
+     * @param Directory     $destination
+     * @param bool          $makeCopy
      *
      * @return null|InstalledPhar
      */
@@ -75,8 +75,8 @@ class PharService {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Filename $location
-     * @param Version $currentVersion
+     * @param Filename      $location
+     * @param Version       $currentVersion
      *
      * @return InstalledPhar|null
      */
@@ -106,7 +106,6 @@ class PharService {
             $location
         );
     }
-
 
     /**
      * @param Release $release

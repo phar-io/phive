@@ -116,7 +116,6 @@ class PhiveXmlConfig {
         return $this->getPharLocation($name)->exists() && $this->getPharNode($name)->hasAttribute('installed');
     }
 
-
     /**
      * @param string $name
      *

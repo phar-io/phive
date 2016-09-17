@@ -14,7 +14,7 @@ class FileDownloader {
     private $cache;
 
     /**
-     * @param HttpClient $httpClient
+     * @param HttpClient   $httpClient
      * @param CacheBackend $cache
      */
     public function __construct(HttpClient $httpClient, CacheBackend $cache) {

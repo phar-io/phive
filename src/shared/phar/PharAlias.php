@@ -19,7 +19,7 @@ class PharAlias {
     private $versionToInstall;
 
     /**
-     * @param string $name
+     * @param string            $name
      * @param VersionConstraint $versionConstraint
      * @param VersionConstraint $versionToInstall
      */
