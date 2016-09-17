@@ -10,5 +10,6 @@
 /vendor
 /tests/phar/fixtures/phive-home/phars.xml
 /tests/phar/fixtures/phive-home/phars
+/tests/phar/fixtures/phive-home/http-cache
 /tests/phar/under-test.phar
 cache.properties

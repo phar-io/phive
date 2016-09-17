@@ -1,9 +1,12 @@
 <?php
 namespace PharIo\Phive\PharRegressionTests;
 
+use PharIo\Phive\AnyVersionConstraint;
 use PharIo\Phive\Cli\Runner;
 use PharIo\Phive\ConfiguredPhar;
 use PharIo\Phive\ExactVersionConstraint;
+use PharIo\Phive\Filename;
+use PharIo\Phive\InstalledPhar;
 use PharIo\Phive\PharAlias;
 use PharIo\Phive\RequestedPharAlias;
 use PharIo\Phive\Version;
@@ -44,6 +47,26 @@ class InstallCommandTest extends PharTestCase {
         $this->expectExceptionCode(Runner::RC_PARAM_ERROR);
 
         $this->runPhiveCommand('install', ['--global', '--target tools', 'phpunit']);
+    }
+
+    public function testLinksPharToLocationConfiguredInPhiveXml()
+    {
+        $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
+
+        $phiveXmlConfig = $this->getPhiveXmlConfig();
+        $phiveXmlConfig->addPhar(
+            new InstalledPhar(
+                'phpunit',
+                new Version('5.3.1'),
+                new AnyVersionConstraint(),
+                new Filename('./foo/tests')
+            )
+        );
+
+        $this->runPhiveCommand('install');
+
+        $this->assertFileNotExists($this->getWorkingDirectory()->child('tools')->file('phpunit')->asString());
+        $this->assertFileExists($this->getWorkingDirectory()->child('foo')->file('tests')->asString());
     }
 
 }
