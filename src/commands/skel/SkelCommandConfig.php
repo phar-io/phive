@@ -22,7 +22,6 @@ class SkelCommandConfig {
     public function __construct(Cli\Options $cliOptions, $workingDirectory) {
         $this->cliOptions = $cliOptions;
         $this->workingDirectory = rtrim($workingDirectory, '/');
-
     }
 
     /**

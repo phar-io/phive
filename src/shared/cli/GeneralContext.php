@@ -128,4 +128,3 @@ abstract class GeneralContext implements Context {
         }
     }
 }
-

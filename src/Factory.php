@@ -86,7 +86,10 @@ class Factory {
      */
     public function getRemoveCommand() {
         return new RemoveCommand(
-            new RemoveCommandConfig($this->request->parse(new RemoveContext()), $this->getTargetDirectoryLocator()), $this->getPharRegistry(), $this->getOutput(), $this->getPhiveXmlConfig()
+            new RemoveCommandConfig($this->request->parse(new RemoveContext()), $this->getTargetDirectoryLocator()),
+            $this->getPharRegistry(),
+            $this->getOutput(),
+            $this->getPhiveXmlConfig()
         );
     }
 
@@ -108,7 +111,9 @@ class Factory {
     public function getInstallCommand() {
         return new InstallCommand(
             new InstallCommandConfig(
-                $this->request->parse(new InstallContext()), $this->getPhiveXmlConfig(), $this->getTargetDirectoryLocator()
+                $this->request->parse(new InstallContext()),
+                $this->getPhiveXmlConfig(),
+                $this->getTargetDirectoryLocator()
             ),
             $this->getPharService(),
             $this->getPhiveXmlConfig(),
@@ -147,7 +152,8 @@ class Factory {
      */
     public function getPurgeCommand() {
         return new PurgeCommand(
-            $this->getPharRegistry(), $this->getOutput()
+            $this->getPharRegistry(),
+            $this->getOutput()
         );
     }
 
@@ -185,7 +191,11 @@ class Factory {
      */
     public function getSelfupdateCommand() {
         return new SelfupdateCommand(
-            $this->getPharDownloader(), $this->getGithubAliasResolver(), $this->getEnvironment(), $this->getPhiveVersion(), $this->getOutput()
+            $this->getPharDownloader(),
+            $this->getGithubAliasResolver(),
+            $this->getEnvironment(),
+            $this->getPhiveVersion(),
+            $this->getOutput()
         );
     }
 
@@ -328,8 +338,11 @@ class Factory {
      */
     private function getPharService() {
         return new PharService(
-            $this->getPharDownloader(), $this->getPharInstaller(), $this->getPharRegistry(),
-            $this->getAliasResolverService(), $this->getOutput()
+            $this->getPharDownloader(),
+            $this->getPharInstaller(),
+            $this->getPharRegistry(),
+            $this->getAliasResolverService(),
+            $this->getOutput()
         );
     }
 
@@ -426,7 +439,9 @@ class Factory {
      */
     private function getPharInstaller() {
         return new PharInstaller(
-            $this->getConfig()->getHomeDirectory()->child('phars'), $this->getOutput(), $this->getFileLinker()
+            $this->getConfig()->getHomeDirectory()->child('phars'),
+            $this->getOutput(),
+            $this->getFileLinker()
         );
     }
 

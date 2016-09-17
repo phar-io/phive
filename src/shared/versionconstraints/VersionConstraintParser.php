@@ -58,11 +58,14 @@ class VersionConstraintParser {
         ];
         if ($version->getPatch()->isAny()) {
             $constraints[] = new SpecificMajorVersionConstraint(
-                $value, $version->getMajor()->getValue()
+                $value,
+                $version->getMajor()->getValue()
             );
         } else {
             $constraints[] = new SpecificMajorAndMinorVersionConstraint(
-                $value, $version->getMajor()->getValue(), $version->getMinor()->getValue()
+                $value,
+                $version->getMajor()->getValue(),
+                $version->getMinor()->getValue()
             );
         }
 

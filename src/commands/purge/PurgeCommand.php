@@ -40,7 +40,6 @@ class PurgeCommand implements Cli\Command {
                 )
             );
         }
-
     }
 
 }

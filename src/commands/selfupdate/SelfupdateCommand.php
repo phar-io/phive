@@ -49,7 +49,6 @@ class SelfupdateCommand implements Cli\Command {
         $this->environment = $environment;
         $this->currentPhiveVersion = $currentPhiveVersion;
         $this->output = $output;
-
     }
 
     /**

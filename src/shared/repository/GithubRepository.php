@@ -44,7 +44,6 @@ class GithubRepository implements SourceRepository {
                 // Github doesn't publish any hashes for the files :-(
                 new Release((string)$alias, $version, $pharUrl)
             );
-
         }
 
         return $releases;

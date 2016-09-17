@@ -132,7 +132,6 @@ class GnuPG {
                 $summary = 128;
                 break;
             }
-
         }
 
         if ($summary === false) {
@@ -173,7 +172,8 @@ class GnuPG {
     private function execute(array $params) {
         $devNull = stripos(PHP_OS, 'win') === 0 ? 'nul' : '/dev/null';
 
-        $argLine = sprintf('%s %s 2>%s',
+        $argLine = sprintf(
+            '%s %s 2>%s',
             join(' ', $this->getDefaultGpgParams()),
             join(' ', $params),
             $devNull

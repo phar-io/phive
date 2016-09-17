@@ -32,7 +32,6 @@ class FileDownloader {
     public function download(Url $url) {
 
         try {
-
             $cachedETag = $this->cache->hasEntry($url) ? $this->cache->getEtag($url) : null;
 
             $response = $this->httpClient->get($url, $cachedETag);
@@ -45,7 +44,6 @@ class FileDownloader {
                 $this->cache->storeEntry($url, $response->getETag(), $response->getBody());
             }
             return new File($url->getFilename(), $response->getBody());
-
         } catch (HttpException $e) {
             throw new DownloadFailedException(
                 sprintf(

@@ -62,7 +62,8 @@ class KeyService {
             $this->output->writeWarning(
                 "This is NOT a key that has been used to install previous versions of this PHAR.\n"
                 . "           While this can be perfectly valid (maybe the maintainer switched to a new key),\n"
-                . "           please make sure this key belongs to the maintainer of the PHAR you are going to install.");
+                . "           please make sure this key belongs to the maintainer of the PHAR you are going to install."
+            );
         }
 
         $this->output->writeText("\n" . $key->getInfo() . "\n\n");

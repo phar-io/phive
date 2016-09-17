@@ -23,7 +23,14 @@ class ComposerCommand extends InstallCommand {
      * @param Environment           $environment
      * @param Cli\Input             $input
      */
-    public function __construct(ComposerCommandConfig $config, ComposerService $composerService, PharService $pharService, PhiveXmlConfig $phiveXmlConfig, Environment $environment, Cli\Input $input) {
+    public function __construct(
+        ComposerCommandConfig $config,
+        ComposerService $composerService,
+        PharService $pharService,
+        PhiveXmlConfig $phiveXmlConfig,
+        Environment $environment,
+        Cli\Input $input
+    ) {
         parent::__construct($config, $pharService, $phiveXmlConfig, $environment);
         $this->composerService = $composerService;
         $this->input = $input;

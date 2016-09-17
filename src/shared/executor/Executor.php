@@ -33,7 +33,9 @@ class Executor {
         exec($command, $output, $rc);
 
         return new ExecutorResult(
-            $command, $output, $rc
+            $command,
+            $output,
+            $rc
         );
     }
 
@@ -41,7 +43,8 @@ class Executor {
         if (!$executable->exists()) {
             throw new ExecutorException(
                 sprintf(
-                    'Given executable "%s" does not exist', $executable->asString()
+                    'Given executable "%s" does not exist',
+                    $executable->asString()
                 ),
                 ExecutorException::NotFound
             );
@@ -52,7 +55,8 @@ class Executor {
         if (!$executable->isExecutable()) {
             throw new ExecutorException(
                 sprintf(
-                    'Given executable "%s" is not executable', $executable->asString()
+                    'Given executable "%s" is not executable',
+                    $executable->asString()
                 ),
                 ExecutorException::NotExecutable
             );
