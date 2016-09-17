@@ -51,4 +51,11 @@ class ExecutorResult {
     public function getOutput() {
         return $this->output;
     }
+
+    /**
+     * @return string
+     */
+    public function getCommand() {
+        return $this->command;
+    }
 }

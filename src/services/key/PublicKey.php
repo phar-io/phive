@@ -108,4 +108,11 @@ class PublicKey {
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getBits() {
+        return $this->bits;
+    }
+
 }
