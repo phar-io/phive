@@ -58,7 +58,7 @@ class InstallCommandConfig {
             if (Url::isUrl($configuredPhar->getName())) {
                 $identifier = new PharUrl($configuredPhar->getName());
             } elseif ($configuredPhar->hasUrl()) {
-                $identifier = new PharUrl($configuredPhar->getUrl());
+                $identifier = $configuredPhar->getUrl();
             } else {
                 $identifier = new PharAlias($configuredPhar->getName());
             }

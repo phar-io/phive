@@ -52,7 +52,7 @@ class UpdateCommand implements Cli\Command {
     /**
      * @param RequestedPhar $requestedPhar
      *
-     * @return null|InstalledPhar
+     * @return InstalledPhar|null
      */
     private function install(RequestedPhar $requestedPhar) {
         $targetDirectory = $this->config->getTargetDirectory();
@@ -63,7 +63,7 @@ class UpdateCommand implements Cli\Command {
      * @param RequestedPhar $requestedPhar
      * @param Version       $currentVersion
      *
-     * @return InstalledPhar
+     * @return InstalledPhar|null
      */
     private function update(RequestedPhar $requestedPhar, Version $currentVersion) {
         $location = $this->phiveXmlConfig->getPharLocation($requestedPhar->getAlias()->asString());
