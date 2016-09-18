@@ -88,6 +88,12 @@ class ConfiguredPhar {
      * @return Filename
      */
     public function getLocation() {
+        if (!$this->hasLocation()) {
+            throw new ConfiguredPharException(
+                'No location set',
+                ConfiguredPharException::NoLocation
+            );
+        }
         return $this->location;
     }
 
@@ -99,9 +105,15 @@ class ConfiguredPhar {
     }
 
     /**
-     * @return null|PharUrl
+     * @return PharUrl
      */
     public function getUrl() {
+        if (!$this->hasUrl()) {
+            throw new ConfiguredPharException(
+                'No URL set',
+                ConfiguredPharException::NoUrl
+            );
+        }
         return $this->url;
     }
 }
