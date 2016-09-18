@@ -66,8 +66,6 @@ spl_autoload_register(
                 'phario\\phive\\releasecollectiontest' => '/unit/shared/phar/ReleaseCollectionTest.php',
                 'phario\\phive\\releasetest' => '/unit/shared/phar/ReleaseTest.php',
                 'phario\\phive\\removecommandconfigtest' => '/unit/commands/remove/RemoveCommandConfigTest.php',
-                'phario\\phive\\requestedpharaliastest' => '/unit/shared/phar/RequestedPharAliasTest.php',
-                'phario\\phive\\requestedpharurltest' => '/unit/shared/phar/RequestedPharUrlTest.php',
                 'phario\\phive\\resetcommandconfigtest' => '/unit/commands/reset/ResetCommandConfigTest.php',
                 'phario\\phive\\resetcommandtest' => '/unit/commands/reset/ResetCommandTest.php',
                 'phario\\phive\\scalartestdataprovider' => '/unit/ScalarTestDataProvider.php',
