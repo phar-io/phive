@@ -64,15 +64,24 @@ class InstallCommandConfig {
             }
 
             $versionConstraint = $configuredPhar->getVersionConstraint();
-            if ($configuredPhar->isInstalled() && $configuredPhar->getVersionConstraint()->complies($configuredPhar->getInstalledVersion())) {
-                $versionToInstall = new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
+            if ($configuredPhar->isInstalled() &&
+                $configuredPhar->getVersionConstraint()->complies($configuredPhar->getInstalledVersion())
+            ) {
+                $versionToInstall = new ExactVersionConstraint(
+                    $configuredPhar->getInstalledVersion()->getVersionString()
+                );
             } else {
                 $versionToInstall = $versionConstraint;
             }
 
             $location = $configuredPhar->hasLocation() ? $configuredPhar->getLocation() : null;
 
-            $phars[] = new RequestedPhar($identifier, $configuredPhar->getVersionConstraint(), $versionToInstall, $location);
+            $phars[] = new RequestedPhar(
+                $identifier,
+                $configuredPhar->getVersionConstraint(),
+                $versionToInstall,
+                $location
+            );
         }
 
         return $phars;
@@ -88,11 +97,19 @@ class InstallCommandConfig {
         $argCount = $this->cliOptions->getArgumentCount();
         for ($i = 0; $i < $argCount; $i++) {
             $argument = $this->cliOptions->getArgument($i);
-            $argumentParts = preg_split('/[@:=]/', $argument, 2, PREG_SPLIT_NO_EMPTY);
             if (Url::isUrl($argument)) {
+                if (!Url::isHttpsUrl($argument)) {
+                    throw new InstallCommandConfigException(
+                        "Cannot install from non HTTPS URL",
+                        InstallCommandConfigException::UnsupportedProtocol
+                    );
+                }
                 $identifier = new PharUrl($argument);
-                $versionConstraint = new ExactVersionConstraint($identifier->getPharVersion()->getVersionString());
+                $versionConstraint = new ExactVersionConstraint(
+                    $identifier->getPharVersion()->getVersionString()
+                );
             } else {
+                $argumentParts = preg_split('/[@:=]/', $argument, 2, PREG_SPLIT_NO_EMPTY);
                 $identifier = new PharAlias($argumentParts[0]);
                 if (count($argumentParts) === 2) {
                     $versionConstraint = (new VersionConstraintParser())->parse($argumentParts[1]);

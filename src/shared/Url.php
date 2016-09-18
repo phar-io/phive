@@ -94,7 +94,10 @@ class Url {
      * @return bool
      */
     public static function isUrl($string) {
-        return strpos($string, 'https://') !== false;
+        return strpos($string, '://') !== false;
     }
 
+    public static function isHttpsUrl($string) {
+        return stripos($string, 'https://') === 0;
+    }
 }

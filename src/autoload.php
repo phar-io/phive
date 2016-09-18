@@ -9,7 +9,6 @@ spl_autoload_register(
             $classes = array(
                 'phario\\phive\\abstractrequestedpharresolver' => '/services/resolver/AbstractRequestedPharResolver.php',
                 'phario\\phive\\abstractversionconstraint' => '/shared/versionconstraints/AbstractVersionConstraint.php',
-                'phario\\phive\\aliaspharidentifier' => '/shared/phar/AliasPharIdentifier.php',
                 'phario\\phive\\anyversionconstraint' => '/shared/versionconstraints/AnyVersionConstraint.php',
                 'phario\\phive\\batpharactivator' => '/shared/file/BatPharActivator.php',
                 'phario\\phive\\cachebackend' => '/shared/http/CacheBackend.php',
@@ -89,6 +88,7 @@ spl_autoload_register(
                 'phario\\phive\\installationfailedexception' => '/shared/exceptions/InstallationFailedException.php',
                 'phario\\phive\\installcommand' => '/commands/install/InstallCommand.php',
                 'phario\\phive\\installcommandconfig' => '/commands/install/InstallCommandConfig.php',
+                'phario\\phive\\installcommandconfigexception' => '/commands/install/InstallCommandConfigException.php',
                 'phario\\phive\\installcontext' => '/commands/install/InstallContext.php',
                 'phario\\phive\\installedphar' => '/shared/phar/InstalledPhar.php',
                 'phario\\phive\\invalidhashexception' => '/shared/exceptions/InvalidHashException.php',
@@ -164,7 +164,6 @@ spl_autoload_register(
                 'phario\\phive\\updatecontext' => '/commands/update/UpdateContext.php',
                 'phario\\phive\\updaterepositorylistcommand' => '/commands/update-repository-list/UpdateRepositoryListCommand.php',
                 'phario\\phive\\url' => '/shared/Url.php',
-                'phario\\phive\\urlpharidentifier' => '/shared/phar/UrlPharIdentifier.php',
                 'phario\\phive\\urlrepository' => '/shared/repository/UrlRepository.php',
                 'phario\\phive\\verificationfailedexception' => '/shared/exceptions/VerificationFailedException.php',
                 'phario\\phive\\verificationresult' => '/services/signature/VerificationResult.php',
