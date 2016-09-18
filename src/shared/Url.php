@@ -87,7 +87,7 @@ class Url {
             return clone($this);
         }
         $sep = strpos($this->uri, '?') !== false ? '&' : '?';
-        return new self($this->uri . $sep . http_build_query($params,null,'&',PHP_QUERY_RFC3986));
+        return new self($this->uri . $sep . http_build_query($params, null, '&', PHP_QUERY_RFC3986));
     }
 
     /**
