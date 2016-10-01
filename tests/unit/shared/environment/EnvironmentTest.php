@@ -66,7 +66,9 @@ class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
         $env->getHomeDirectory();
     }
 
+    public function testSupportsColoredOutput() {
+
+        $env = new UnixoidEnvironment([]);
+        $this->markTestIncomplete( 'Under construction' );
+    }
 }
-
-
-
