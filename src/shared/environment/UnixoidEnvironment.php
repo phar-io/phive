@@ -41,7 +41,23 @@ class UnixoidEnvironment extends Environment {
      * @return bool
      */
     public function supportsColoredOutput() {
-        return true;
+
+        // Todo: Check the actual used output stream
+        if (! posix_isatty(STDOUT)) {
+            return false;
+        }
+
+        try {
+            $tput      = $this->getPathToCommand('tput');
+            $exit_code = null;
+            $result    = [];
+            exec("{$tput} colors", $result, $exit_code);
+            if (0 === (int)$exit_code && isset($result[0]) && 8 === (int)$result[0]) {
+                return true;
+            }
+        } catch (EnvironmentException $e) {}
+
+        return false;
     }
 
     /**

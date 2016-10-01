@@ -69,6 +69,9 @@ class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
     public function testSupportsColoredOutput() {
 
         $env = new UnixoidEnvironment([]);
-        $this->markTestIncomplete( 'Under construction' );
+        $this->assertInternalType(
+            'bool',
+            $env->supportsColoredOutput()
+        );
     }
 }
