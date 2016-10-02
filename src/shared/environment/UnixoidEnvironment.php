@@ -42,7 +42,7 @@ class UnixoidEnvironment extends Environment {
      */
     public function supportsColoredOutput() {
 
-        // Todo: Check the actual used output stream
+        // ConsoleOutput::writeText() uses STDOUT, too.
         if (! posix_isatty(STDOUT)) {
             return false;
         }
