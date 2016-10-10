@@ -52,7 +52,10 @@ class UnixoidEnvironment extends Environment {
             $exit_code = null;
             $result    = [];
             exec("{$tput} colors", $result, $exit_code);
-            if (0 === (int)$exit_code && isset($result[0]) && 8 === (int)$result[0]) {
+            if (0 !== (int)$exit_code) {
+                return false;
+            }
+            if (isset($result[0]) && 8 === (int)$result[0]) {
                 return true;
             }
         } catch (EnvironmentException $e) {}
