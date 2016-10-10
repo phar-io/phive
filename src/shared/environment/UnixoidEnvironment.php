@@ -49,7 +49,7 @@ class UnixoidEnvironment extends Environment {
 
         try {
             $tput      = $this->getPathToCommand('tput');
-            $exit_code = null;
+            $exit_code = -1;
             $result    = [];
             exec("{$tput} colors", $result, $exit_code);
             if (0 !== (int)$exit_code) {
