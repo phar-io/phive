@@ -31,6 +31,12 @@ class ConfiguredPharTest  extends \PHPUnit_Framework_TestCase {
         $this->assertSame($version, $configuredPhar->getInstalledVersion());
     }
 
+    public function testGetInstalledVersionThrowsExceptionIfPharIsNotInstalled() {
+        $configuredPhar = new ConfiguredPhar('foo', $this->getVersionConstraintMock());
+        $this->expectException(ConfiguredPharException::class);
+        $configuredPhar->getInstalledVersion();
+    }
+
     public function testHasLocation() {
         $configuredPhar = new ConfiguredPhar('foo', $this->getVersionConstraintMock());
         $this->assertFalse($configuredPhar->hasLocation());

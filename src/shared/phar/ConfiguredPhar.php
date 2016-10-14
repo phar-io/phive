@@ -64,9 +64,13 @@ class ConfiguredPhar {
     }
 
     /**
-     * @return Version|null
+     * @return Version
+     * @throws \PharIo\Phive\ConfiguredPharException
      */
     public function getInstalledVersion() {
+        if (!$this->isInstalled()) {
+            throw new ConfiguredPharException('Phar is not installed');
+        }
         return $this->installedVersion;
     }
 
@@ -86,6 +90,7 @@ class ConfiguredPhar {
 
     /**
      * @return Filename
+     * @throws \PharIo\Phive\ConfiguredPharException
      */
     public function getLocation() {
         if (!$this->hasLocation()) {
@@ -106,13 +111,11 @@ class ConfiguredPhar {
 
     /**
      * @return PharUrl
+     * @throws \PharIo\Phive\ConfiguredPharException
      */
     public function getUrl() {
         if (!$this->hasUrl()) {
-            throw new ConfiguredPharException(
-                'No URL set',
-                ConfiguredPharException::NoUrl
-            );
+            throw new ConfiguredPharException('No URL set', ConfiguredPharException::NoUrl);
         }
         return $this->url;
     }

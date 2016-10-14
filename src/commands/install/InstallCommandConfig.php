@@ -33,6 +33,8 @@ class InstallCommandConfig {
 
     /**
      * @return Directory
+     * @throws \PharIo\Phive\ConfigException
+     * @throws \PharIo\Phive\Cli\CommandOptionsException
      */
     public function getTargetDirectory() {
         return $this->targetDirectoryLocator->getTargetDirectory();
@@ -40,10 +42,13 @@ class InstallCommandConfig {
 
     /**
      * @return RequestedPhar[]
+     * @throws \PharIo\Phive\UnsupportedVersionConstraintException
+     * @throws \PharIo\Phive\InstallCommandConfigException
+     * @throws \PharIo\Phive\ConfiguredPharException
      * @throws Cli\CommandOptionsException
      */
     public function getRequestedPhars() {
-        if ($this->cliOptions->getArgumentCount() == 0) {
+        if ($this->cliOptions->getArgumentCount() === 0) {
             return $this->getPharsFromPhiveXmlConfig();
         }
         return $this->getPharsFromCliArguments();
@@ -51,35 +56,17 @@ class InstallCommandConfig {
 
     /**
      * @return RequestedPhar[]
+     * @throws \PharIo\Phive\ConfiguredPharException
      */
     private function getPharsFromPhiveXmlConfig() {
         $phars = [];
         foreach ($this->phiveXmlConfig->getPhars() as $configuredPhar) {
-            if (Url::isUrl($configuredPhar->getName())) {
-                $identifier = new PharUrl($configuredPhar->getName());
-            } elseif ($configuredPhar->hasUrl()) {
-                $identifier = $configuredPhar->getUrl();
-            } else {
-                $identifier = new PharAlias($configuredPhar->getName());
-            }
-
-            $versionConstraint = $configuredPhar->getVersionConstraint();
-            if ($configuredPhar->isInstalled() &&
-                $configuredPhar->getVersionConstraint()->complies($configuredPhar->getInstalledVersion())
-            ) {
-                $versionToInstall = new ExactVersionConstraint(
-                    $configuredPhar->getInstalledVersion()->getVersionString()
-                );
-            } else {
-                $versionToInstall = $versionConstraint;
-            }
-
             $location = $configuredPhar->hasLocation() ? $configuredPhar->getLocation() : null;
 
             $phars[] = new RequestedPhar(
-                $identifier,
+                $this->getIdentifier($configuredPhar),
                 $configuredPhar->getVersionConstraint(),
-                $versionToInstall,
+                $this->getVersionToInstall($configuredPhar),
                 $location
             );
         }
@@ -89,6 +76,7 @@ class InstallCommandConfig {
 
     /**
      * @return RequestedPhar[]
+     * @throws \PharIo\Phive\InstallCommandConfigException
      * @throws Cli\CommandOptionsException
      * @throws UnsupportedVersionConstraintException
      */
@@ -100,8 +88,7 @@ class InstallCommandConfig {
             if (Url::isUrl($argument)) {
                 if (!Url::isHttpsUrl($argument)) {
                     throw new InstallCommandConfigException(
-                        "Cannot install from non HTTPS URL",
-                        InstallCommandConfigException::UnsupportedProtocol
+                        'Cannot install from non HTTPS URL', InstallCommandConfigException::UnsupportedProtocol
                     );
                 }
                 $identifier = new PharUrl($argument);
@@ -142,6 +129,39 @@ class InstallCommandConfig {
      */
     public function doNotAddToPhiveXml() {
         return $this->cliOptions->hasOption('temporary') || $this->installGlobally();
+    }
+
+    /**
+     * @param ConfiguredPhar $configuredPhar
+     *
+     * @return PharAlias|PharUrl
+     * @throws \PharIo\Phive\ConfiguredPharException
+     */
+    private function getIdentifier(ConfiguredPhar $configuredPhar) {
+        if (Url::isUrl($configuredPhar->getName())) {
+            return new PharUrl($configuredPhar->getName());
+        }
+
+        if ($configuredPhar->hasUrl()) {
+            return $configuredPhar->getUrl();
+        }
+
+        return new PharAlias($configuredPhar->getName());
+    }
+
+    /**
+     * @param ConfiguredPhar $configuredPhar
+     *
+     * @return VersionConstraint
+     * @throws \PharIo\Phive\ConfiguredPharException
+     */
+    private function getVersionToInstall(ConfiguredPhar $configuredPhar) {
+        $versionConstraint = $configuredPhar->getVersionConstraint();
+        if ($configuredPhar->isInstalled() && $versionConstraint->complies($configuredPhar->getInstalledVersion())) {
+            return new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
+        }
+
+        return $versionConstraint;
     }
 
 }
