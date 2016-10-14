@@ -34,11 +34,4 @@ class WindowsEnvironment extends Environment {
     public function supportsColoredOutput() {
         return array_key_exists('ANSICON', $this->server) || array_key_exists('ConEmuANSI', $this->server);
     }
-
-    /**
-     * @return static
-     */
-    public static function fromSuperGlobals() {
-        return new static($_SERVER, new EnvironmentVariables());
-    }
 }
