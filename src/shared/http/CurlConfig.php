@@ -100,6 +100,14 @@ class CurlConfig {
             $options[CURLOPT_PROTOCOLS] = CURLPROTO_HTTPS;
         }
 
+        if (defined('CURLOPT_SSL_VERIFYSTATUS')) {
+            $options[CURLOPT_SSL_VERIFYSTATUS] = true;
+        }
+
+        if (defined('CURLOPT_TCP_FASTOPEN')) {
+            $options[CURLOPT_TCP_FASTOPEN] = true;
+        }
+
         return $options;
     }
 
