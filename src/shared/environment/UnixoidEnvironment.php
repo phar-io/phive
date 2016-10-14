@@ -42,8 +42,7 @@ class UnixoidEnvironment extends Environment {
      */
     public function supportsColoredOutput() {
 
-        // ConsoleOutput::writeText() uses STDOUT, too.
-        if (! posix_isatty(STDOUT)) {
+        if (!$this->isInteractive()) {
             return false;
         }
 

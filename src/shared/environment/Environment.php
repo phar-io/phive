@@ -115,6 +115,17 @@ abstract class Environment {
     }
 
     /**
+     * @return bool
+     */
+    public function isInteractive()
+    {
+        if (!function_exists('posix_isatty')) {
+            return true;
+        }
+        return @posix_isatty(STDOUT);
+    }
+
+    /**
      * @return string
      */
     abstract protected function getWhichCommand();
