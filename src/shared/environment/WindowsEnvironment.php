@@ -12,6 +12,7 @@ class WindowsEnvironment extends Environment {
 
     /**
      * @return Directory
+     * @throws \BadMethodCallException
      */
     public function getHomeDirectory() {
         if (!$this->hasHomeDirectory()) {
@@ -31,6 +32,13 @@ class WindowsEnvironment extends Environment {
      * @return bool
      */
     public function supportsColoredOutput() {
-        return false;
+        return array_key_exists('ANSICON', $this->server) || array_key_exists('ConEmuANSI', $this->server);
+    }
+
+    /**
+     * @return static
+     */
+    public static function fromSuperGlobals() {
+        return new static($_SERVER, new EnvironmentVariables());
     }
 }

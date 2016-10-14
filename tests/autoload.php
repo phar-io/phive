@@ -78,14 +78,15 @@ spl_autoload_register(
                 'phario\\phive\\staticphiveversiontest' => '/unit/shared/version/StaticPhiveVersionTest.php',
                 'phario\\phive\\targetdirectorylocatortest' => '/unit/commands/TargetDirectoryLocatorTest.php',
                 'phario\\phive\\teststreamwrapper' => '/unit/TestStreamWrapper.php',
-                'phario\\phive\\unixoidenvironmenttest' => '/unit/shared/environment/EnvironmentTest.php',
+                'phario\\phive\\unixoidenvironmenttest' => '/unit/shared/environment/UnixoidEnvironmentTest.php',
                 'phario\\phive\\unsupportedhashstub' => '/unit/services/checksum/stubs/UnsupportedHashStub.php',
                 'phario\\phive\\updatecommandconfigtest' => '/unit/commands/update/UpdateCommandConfigTest.php',
                 'phario\\phive\\updatecommandtest' => '/unit/commands/update/UpdateCommandTest.php',
                 'phario\\phive\\urltest' => '/unit/shared/UrlTest.php',
                 'phario\\phive\\versionconstraintgrouptest' => '/unit/shared/versionconstraints/VersionConstraintGroupTest.php',
                 'phario\\phive\\versionconstraintparsertest' => '/unit/shared/versionconstraints/VersionConstraintParserTest.php',
-                'phario\\phive\\versiontest' => '/unit/shared/version/VersionTest.php'
+                'phario\\phive\\versiontest' => '/unit/shared/version/VersionTest.php',
+                'phario\\phive\\windowsenvironmenttest' => '/unit/shared/environment/WindowsEnvironmentTest.php'
             );
         }
         $cn = strtolower($class);
