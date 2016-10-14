@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
 /**
- * @covers PharIo\Phive\HttpResponse
+ * @covers \PharIo\Phive\HttpResponse
  */
 class HttpResponseTest extends \PHPUnit_Framework_TestCase {
 
@@ -34,6 +34,28 @@ class HttpResponseTest extends \PHPUnit_Framework_TestCase {
     public function testGetBody($body) {
         $response = new HttpResponse(200, $body);
         $this->assertEquals($body, $response->getBody());
+    }
+
+    public function testHasETagReturnsTrueWhenEtagIsSet() {
+        $response = new HttpResponse(200, 'abc', $this->createMock(ETag::class));
+        $this->assertTrue($response->hasETag());
+    }
+
+    public function testHasETagReturnsFalseWhenNoEtagIsSet() {
+        $response = new HttpResponse(200, 'abc');
+        $this->assertFalse($response->hasETag());
+    }
+
+    public function testGetEtagThrowsExceptionIfNoETagIsAvailable() {
+        $response = new HttpResponse(200, 'abc');
+        $this->expectException(HttpResponseException::class);
+        $response->getETag();
+    }
+
+    public function testHETagCanBeRetrieved() {
+        $etag = $this->createMock(ETag::class);
+        $response = new HttpResponse(200, 'abc', $etag);
+        $this->assertEquals($etag, $response->getETag());
     }
 
 }

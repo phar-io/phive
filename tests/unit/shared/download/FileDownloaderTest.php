@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli\Output;
 
 /**
- * @covers PharIo\Phive\FileDownloader
+ * @covers \PharIo\Phive\FileDownloader
  */
 class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
 
@@ -33,6 +33,50 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
 
         $downloader = new FileDownloader($curl, $this->createMock(CacheBackend::class));
         $actual = $downloader->download(new Url('https://example.com/foo.phar'));
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testResponseWithETagWillBeStoredInCache() {
+        $url = new Url('https://example.com/foo.phar');
+        $etag = new ETag('abc');
+
+        $response = $this->getHttpResponseMock();
+        $response->method('getHttpCode')->willReturn(200);
+        $response->method('getBody')->willReturn('bar');
+        $response->method('hasETag')->willReturn(true);
+        $response->method('getETag')->willReturn($etag);
+
+        $curl = $this->getCurlMock();
+        $curl->method('get')->willReturn($response);
+
+        $cache = $this->createMock(CacheBackend::class);
+        $cache->expects($this->once())->method('storeEntry')->with(
+            $url, $etag, 'bar'
+        );
+
+        $downloader = new FileDownloader($curl, $cache);
+        $downloader->download($url);
+    }
+
+    public function testNotModifiedReturnsContentFromCache() {
+        $url = new Url('https://example.com/foo.phar');
+
+        $response = $this->getHttpResponseMock();
+        $response->method('getHttpCode')->willReturn(304);
+
+        $curl = $this->getCurlMock();
+        $curl->method('get')->willReturn($response);
+
+
+        $cache = $this->createMock(CacheBackend::class);
+        $cache->method('getContent')->with($url)->willReturn('bar');
+
+        $downloader = new FileDownloader($curl, $cache);
+        $downloader->download($url);
+
+        $actual = $downloader->download($url);
+        $expected = new File(new Filename('foo.phar'), 'bar');
 
         $this->assertEquals($expected, $actual);
     }
