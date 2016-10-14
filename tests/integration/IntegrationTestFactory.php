@@ -21,7 +21,8 @@ class IntegrationTestFactory extends Factory {
      */
     public function getShellBasedGnupg(Directory $gpgHome) {
         return new GnuPG(
-            new Executor($this->getConfig()->getGPGBinaryPath()),
+            new Executor(),
+            $this->getConfig()->getGPGBinaryPath(),
             new Directory(__DIR__),
             $gpgHome
         );

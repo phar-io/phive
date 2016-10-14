@@ -24,14 +24,20 @@ class GnuPG {
      * @var Directory
      */
     private $tmpDirectory;
+    /**
+     * @var Filename
+     */
+    private $gpgBinary;
 
     /**
-     * @param Executor  $executor
+     * @param Executor $executor
+     * @param Filename $gpgBinary
      * @param Directory $tmpDirectory
      * @param Directory $homeDirectory
      */
-    public function __construct(Executor $executor, Directory $tmpDirectory, Directory $homeDirectory) {
+    public function __construct(Executor $executor, Filename $gpgBinary, Directory $tmpDirectory, Directory $homeDirectory) {
         $this->executor = $executor;
+        $this->gpgBinary = $gpgBinary;
         $this->tmpDirectory = $tmpDirectory;
         $this->homeDirectory = $homeDirectory;
     }
@@ -49,7 +55,7 @@ class GnuPG {
         ]);
         unlink($tmpFile);
 
-        if (preg_match('=.*IMPORT_OK\s(\d+)\s(.*)=', join('', $result), $matches)) {
+        if (preg_match('=.*IMPORT_OK\s(\d+)\s(.*)=', implode('', $result), $matches)) {
             return [
                 'imported'    => (int)$matches[1],
                 'fingerprint' => $matches[2]
@@ -174,11 +180,11 @@ class GnuPG {
 
         $argLine = sprintf(
             '%s %s 2>%s',
-            join(' ', $this->getDefaultGpgParams()),
-            join(' ', $params),
+            implode(' ', $this->getDefaultGpgParams()),
+            implode(' ', $params),
             $devNull
         );
-        $result = $this->executor->execute($argLine);
+        $result = $this->executor->execute($this->gpgBinary, $argLine);
         return $result->getOutput();
     }
 

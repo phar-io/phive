@@ -2,38 +2,25 @@
 namespace PharIo\Phive;
 
 class Executor {
-
     /**
-     * @var Filename
-     */
-    private $executable;
-
-    /**
-     * Executor constructor.
-     *
-     * @param Filename $executable
-     */
-    public function __construct(Filename $executable) {
-        $this->ensureFileExists($executable);
-        $this->ensureExecutable($executable);
-        $this->executable = $executable;
-    }
-
-    /**
+     * @param Filename $commandFilename
      * @param string $argLine
      *
      * @return ExecutorResult
      */
-    public function execute($argLine) {
-        $command = sprintf(
+    public function execute(Filename $commandFilename, $argLine) {
+        $this->ensureFileExists($commandFilename);
+        $this->ensureExecutable($commandFilename);
+
+        $executable = sprintf(
             '%s %s',
-            escapeshellarg($this->executable->asString()),
+            escapeshellarg($commandFilename->asString()),
             $argLine
         );
-        exec($command, $output, $rc);
+        exec($executable, $output, $rc);
 
         return new ExecutorResult(
-            $command,
+            $executable,
             $output,
             $rc
         );

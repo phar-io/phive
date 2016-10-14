@@ -4,6 +4,20 @@ namespace PharIo\Phive;
 class UnixoidEnvironment extends Environment {
 
     /**
+     * @var Executor
+     */
+    private $executor;
+
+    /**
+     * @param array $server
+     * @param Executor $executor
+     */
+    public function __construct(array $server, Executor $executor) {
+        parent::__construct($server);
+        $this->executor = $executor;
+    }
+
+    /**
      * @return bool
      */
     public function hasHomeDirectory() {
@@ -39,27 +53,19 @@ class UnixoidEnvironment extends Environment {
 
     /**
      * @return bool
+     * @throws \PharIo\Phive\EnvironmentException
      */
     public function supportsColoredOutput() {
-
         if (!$this->isInteractive()) {
             return false;
         }
 
-        try {
-            $tput      = $this->getPathToCommand('tput');
-            $exit_code = -1;
-            $result    = [];
-            exec("{$tput} colors", $result, $exit_code);
-            if (0 !== (int)$exit_code) {
-                return false;
-            }
-            if (isset($result[0]) && 8 === (int)$result[0]) {
-                return true;
-            }
-        } catch (EnvironmentException $e) {}
-
-        return false;
+        $tput = $this->getPathToCommand('tput');
+        $commandResult = $this->executor->execute($tput, 'colors');
+        if (!$commandResult->isSuccess()) {
+            return false;
+        }
+        return (int)$commandResult->getOutput()[0] >= 8;
     }
 
     /**
@@ -68,4 +74,12 @@ class UnixoidEnvironment extends Environment {
     protected function getWhichCommand() {
         return 'which';
     }
+
+    /**
+     * @return UnixoidEnvironment
+     */
+    public static function fromSuperGlobals() {
+        return new static($_SERVER, new Executor());
+    }
+
 }

@@ -14,7 +14,7 @@ class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
      * @param bool   $expected
      */
     public function testHasProxy($server, $expected) {
-        $env = new UnixoidEnvironment($server);
+        $env = new UnixoidEnvironment($server, $this->getExecutorMock());
         $this->assertSame($expected, $env->hasProxy());
     }
 
@@ -31,7 +31,7 @@ class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
      * @param string $proxy
      */
     public function testGetProxy($proxy) {
-        $env = new UnixoidEnvironment(['https_proxy' => $proxy]);
+        $env = new UnixoidEnvironment(['https_proxy' => $proxy], $this->getExecutorMock());
         $this->assertSame($proxy, $env->getProxy());
     }
 
@@ -46,7 +46,7 @@ class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
      *
      */
     public function testGetHomeDirectory() {
-        $env = new UnixoidEnvironment(['HOME' => __DIR__]);
+        $env = new UnixoidEnvironment(['HOME' => __DIR__], $this->getExecutorMock());
         $this->assertSame(__DIR__, (string)$env->getHomeDirectory());
     }
 
@@ -54,7 +54,7 @@ class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \BadMethodCallException
      */
     public function testGetProxyThrowsExceptionIfProxyIsNotSet() {
-        $env = new UnixoidEnvironment([]);
+        $env = new UnixoidEnvironment([], $this->getExecutorMock());
         $env->getProxy();
     }
 
@@ -62,16 +62,42 @@ class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
      * @expectedException \BadMethodCallException
      */
     public function testGetHomeDirectoryThrowsExceptionIfHomeIsNotSet() {
-        $env = new UnixoidEnvironment([]);
+        $env = new UnixoidEnvironment([], $this->getExecutorMock());
         $env->getHomeDirectory();
     }
 
-    public function testSupportsColoredOutput() {
+    /**
+     * @dataProvider tputCommandDataProvider
+     *
+     * @param int $commandExitCode
+     * @param string $commandOutput
+     * @param bool $expectedResult
+     */
+    public function testSupportsColoredOutput($commandExitCode, $commandOutput, $expectedResult) {
 
-        $env = new UnixoidEnvironment([]);
-        $this->assertInternalType(
-            'bool',
-            $env->supportsColoredOutput()
-        );
+        $result = new ExecutorResult('tput', [$commandOutput], $commandExitCode);
+        $executor = $this->getExecutorMock();
+        $executor->method('execute')->willReturn($result);
+
+        $env = new UnixoidEnvironment([], $executor);
+        $this->assertSame($expectedResult, $env->supportsColoredOutput());
+    }
+
+    public static function tputCommandDataProvider() {
+        return [
+            [1, '', false],
+            [2, '', false],
+            [0, '0', false],
+            [0, '7', false],
+            [0, '8', true],
+            [0, '255', true]
+        ];
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Executor
+     */
+    private function getExecutorMock() {
+        return $this->createMock(Executor::class);
     }
 }
