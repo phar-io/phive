@@ -73,7 +73,7 @@ class PharService {
         return new InstalledPhar(
             $release->getName(),
             $release->getVersion(),
-            $requestedPhar->getVersionConstraint(),
+            $this->getInstalledVersionConstraint($requestedPhar->getVersionConstraint(), $release->getVersion()),
             $destinationFile
         );
     }
@@ -141,5 +141,24 @@ class PharService {
         $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
 
         return $releases->getLatest($requestedPhar->getLockedVersion());
+    }
+
+    /**
+     * @param VersionConstraint $requestedVersionConstraint
+     * @param Version $installedVersion
+     *
+     * @return VersionConstraint
+     */
+    private function getInstalledVersionConstraint(VersionConstraint $requestedVersionConstraint, Version $installedVersion) {
+        if (!$requestedVersionConstraint instanceof AnyVersionConstraint) {
+            return $requestedVersionConstraint;
+        }
+        return new VersionConstraintGroup(
+            sprintf('^%s', $installedVersion->getVersionString()),
+            [
+                new GreaterThanOrEqualToVersionConstraint($installedVersion->getVersionString(), $installedVersion),
+                new SpecificMajorVersionConstraint($installedVersion->getVersionString(), $installedVersion->getMajor()->getValue())
+            ]
+        );
     }
 }
