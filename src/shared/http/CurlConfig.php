@@ -77,17 +77,18 @@ class CurlConfig {
      */
     public function asCurlOptArray() {
         $options = [
-            CURLOPT_MAXREDIRS      => 5,
-            CURLOPT_CONNECTTIMEOUT => 5,
-            CURLOPT_TIMEOUT        => 60,
-            CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_FAILONERROR    => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_USERAGENT      => $this->userAgent,
-            CURLOPT_PROXY          => $this->proxyUrl,
-            CURLOPT_PROXYUSERPWD   => $this->proxyCredentials
+            CURLOPT_MAXREDIRS       => 5,
+            CURLOPT_CONNECTTIMEOUT  => 30,
+            CURLOPT_SSL_VERIFYHOST  => 2,
+            CURLOPT_SSL_VERIFYPEER  => true,
+            CURLOPT_FAILONERROR     => true,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_FOLLOWLOCATION  => true,
+            CURLOPT_USERAGENT       => $this->userAgent,
+            CURLOPT_PROXY           => $this->proxyUrl,
+            CURLOPT_PROXYUSERPWD    => $this->proxyCredentials,
+            CURLOPT_LOW_SPEED_TIME  => 30,
+            CURLOPT_LOW_SPEED_LIMIT => 128
         ];
 
         /*
