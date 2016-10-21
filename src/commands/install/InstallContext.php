@@ -5,6 +5,9 @@ use PharIo\Phive\Cli\GeneralContext;
 
 class InstallContext extends GeneralContext {
 
+    /**
+     * @return array
+     */
     protected function getKnownOptions() {
         return [
             'target'         => 't',
@@ -15,6 +18,9 @@ class InstallContext extends GeneralContext {
         ];
     }
 
+    /**
+     * @return array
+     */
     protected function getConflictingOptions() {
         return [
             ['global' => 'temporary'],
@@ -22,6 +28,10 @@ class InstallContext extends GeneralContext {
         ];
     }
 
+    /**
+     * @param string $option
+     * @return bool
+     */
     public function requiresValue($option) {
         return in_array($option, ['target', 'trust-gpg-keys'], true);
     }

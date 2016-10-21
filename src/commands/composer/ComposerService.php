@@ -42,6 +42,10 @@ class ComposerService {
         return $list;
     }
 
+    /**
+     * @param Filename $composerFilename
+     * @return array
+     */
     private function getRequires(Filename $composerFilename) {
         if (!$composerFilename->exists()) {
             throw new \InvalidArgumentException(

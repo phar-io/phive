@@ -42,6 +42,11 @@ class SourcesList {
         );
     }
 
+    /**
+     * @param ComposerAlias $alias
+     * @return string
+     * @throws SourcesListException
+     */
     public function getAliasForComposerAlias(ComposerAlias $alias) {
         $query = sprintf('//phive:phar[@composer="%s"]', $alias);
         $result = $this->sourcesFile->query($query);

@@ -34,9 +34,6 @@ class SkelCommand implements Cli\Command {
         $this->now = $now;
     }
 
-    /**
-     *
-     */
     public function execute() {
         $skeleton = file_get_contents($this->config->getTemplateFilename());
         $skeleton = $this->replacePlaceholder($skeleton, '%%VERSION%%', $this->version->getVersion());

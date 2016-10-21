@@ -9,14 +9,24 @@ class PhiveContext extends GeneralContext {
         return ['home' => false];
     }
 
+    /**
+     * @param string $option
+     * @return bool
+     */
     public function requiresValue($option) {
         return $option === 'home';
     }
 
+    /**
+     * @return bool
+     */
     public function acceptsArguments() {
         return $this->getOptions()->getArgumentCount() === 0;
     }
 
+    /**
+     * @return bool
+     */
     public function canContinue() {
         return $this->acceptsArguments();
     }

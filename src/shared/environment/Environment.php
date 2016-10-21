@@ -130,6 +130,9 @@ abstract class Environment {
      */
     abstract protected function getWhichCommand();
 
+    /**
+     * @return bool
+     */
     private function isHHVM() {
         return defined('HHVM_VERSION');
     }

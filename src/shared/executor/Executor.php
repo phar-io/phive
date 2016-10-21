@@ -26,6 +26,10 @@ class Executor {
         );
     }
 
+    /**
+     * @param Filename $executable
+     * @throws ExecutorException
+     */
     private function ensureFileExists(Filename $executable) {
         if (!$executable->exists()) {
             throw new ExecutorException(
@@ -38,6 +42,10 @@ class Executor {
         }
     }
 
+    /**
+     * @param Filename $executable
+     * @throws ExecutorException
+     */
     private function ensureExecutable(Filename $executable) {
         if (!$executable->isExecutable()) {
             throw new ExecutorException(

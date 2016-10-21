@@ -31,9 +31,6 @@ class ListCommand implements Cli\Command {
         $this->output = $output;
     }
 
-    /**
-     *
-     */
     public function execute() {
         $localAliases = $this->localSources->getAliases();
         if (count($localAliases) > 0) {

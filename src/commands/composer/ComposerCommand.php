@@ -48,7 +48,7 @@ class ComposerCommand extends InstallCommand {
     }
 
     /**
-     * @return ComposerCommandConfig
+     * @return InstallCommandConfig
      */
     protected function getConfig() {
         return parent::getConfig();
