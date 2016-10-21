@@ -17,9 +17,6 @@ class UpdateRepositoryListCommand implements Command {
         $this->loader = $loader;
     }
 
-    /**
-     *
-     */
     public function execute() {
         $this->loader->downloadFromSource();
     }

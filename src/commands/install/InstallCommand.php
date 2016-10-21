@@ -43,9 +43,6 @@ class InstallCommand implements Cli\Command {
         $this->environment = $environment;
     }
 
-    /**
-     *
-     */
     public function execute() {
         $targetDirectory = $this->getTargetDirectory();
 

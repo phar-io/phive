@@ -51,9 +51,6 @@ class SelfupdateCommand implements Cli\Command {
         $this->output = $output;
     }
 
-    /**
-     *
-     */
     public function execute() {
         $requestedPhar = new RequestedPhar(
             new PharAlias('phar-io/phive'),
