@@ -94,6 +94,7 @@ class Directory {
         }
         try {
             mkdir($path, $this->mode, true);
+            chmod($path, $this->mode);
             clearstatcache(true, $path);
         } catch (\ErrorException $e) {
             throw new DirectoryException(

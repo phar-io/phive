@@ -11,6 +11,9 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
 
     protected function setUp() {
         $this->testDir = __DIR__ . '/../../../data/directory';
+        if (file_exists(sys_get_temp_dir() . '/test')) {
+            rmdir(sys_get_temp_dir() . '/test');
+        }
     }
 
     public function testCanBeConvertedToString() {
