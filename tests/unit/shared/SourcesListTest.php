@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\Version\AnyVersionConstraint;
+
 /**
  * @covers PharIo\Phive\SourcesList
  */

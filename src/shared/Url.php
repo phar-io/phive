@@ -68,6 +68,8 @@ class Url {
 
     /**
      * @param string $uri
+     *
+     * @return array
      */
     private function parseURL($uri) {
         $components = parse_url($uri);

@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\Version\Version;
+use PharIo\Version\VersionConstraint;
+
 class InstalledPhar {
 
     /**

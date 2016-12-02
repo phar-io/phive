@@ -2,6 +2,7 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
+use PharIo\Version\VersionConstraintParser;
 
 class Factory {
 

@@ -1,8 +1,6 @@
 <?php
 namespace PharIo\Phive;
 
-use PharIo\Phive\Cli\Output;
-
 /**
  * @covers \PharIo\Phive\FileDownloader
  */

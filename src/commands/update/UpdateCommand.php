@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\Version\Version;
+
 class UpdateCommand implements Cli\Command {
 
     /**

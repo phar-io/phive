@@ -1,6 +1,13 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\Version\AndVersionConstraintGroup;
+use PharIo\Version\AnyVersionConstraint;
+use PharIo\Version\GreaterThanOrEqualToVersionConstraint;
+use PharIo\Version\SpecificMajorVersionConstraint;
+use PharIo\Version\Version;
+use PharIo\Version\VersionConstraint;
+
 class PharService {
 
     /**
@@ -153,7 +160,7 @@ class PharService {
         if (!$requestedVersionConstraint instanceof AnyVersionConstraint) {
             return $requestedVersionConstraint;
         }
-        return new VersionConstraintGroup(
+        return new AndVersionConstraintGroup(
             sprintf('^%s', $installedVersion->getVersionString()),
             [
                 new GreaterThanOrEqualToVersionConstraint($installedVersion->getVersionString(), $installedVersion),

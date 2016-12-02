@@ -2,6 +2,8 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
+use PharIo\Version\AnyVersionConstraint;
+use PharIo\Version\Version;
 
 class SelfupdateCommand implements Cli\Command {
 

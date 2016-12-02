@@ -1,13 +1,13 @@
 <?php
 namespace PharIo\Phive\RegressionTests;
 
-use PharIo\Phive\AnyVersionConstraint;
 use PharIo\Phive\Cli\Runner;
 use PharIo\Phive\ConfiguredPhar;
-use PharIo\Phive\ExactVersionConstraint;
 use PharIo\Phive\Filename;
 use PharIo\Phive\InstalledPhar;
-use PharIo\Phive\Version;
+use PharIo\Version\AnyVersionConstraint;
+use PharIo\Version\ExactVersionConstraint;
+use PharIo\Version\Version;
 
 class InstallCommandTest extends RegressionTestCase {
 

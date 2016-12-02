@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\Version\Version;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**

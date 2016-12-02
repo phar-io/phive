@@ -2,6 +2,10 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
+use PharIo\Version\AnyVersionConstraint;
+use PharIo\Version\ExactVersionConstraint;
+use PharIo\Version\VersionConstraint;
+use PharIo\Version\VersionConstraintParser;
 
 class InstallCommandConfig {
 

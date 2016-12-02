@@ -7,9 +7,9 @@ use PharIo\Phive\Filename;
 use PharIo\Phive\Phar;
 use PharIo\Phive\PharRegistry;
 use PharIo\Phive\PhiveXmlConfig;
-use PharIo\Phive\Version;
-use PharIo\Phive\VersionConstraintParser;
 use PharIo\Phive\XmlFile;
+use PharIo\Version\Version;
+use PharIo\Version\VersionConstraintParser;
 
 class RegressionTestCase extends \PHPUnit_Framework_TestCase {
 

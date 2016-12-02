@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\Version\AnyVersionConstraint;
+use PharIo\Version\ExactVersionConstraint;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**

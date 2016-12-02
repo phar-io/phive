@@ -1,6 +1,11 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\Version\AnyVersionConstraint;
+use PharIo\Version\ExactVersionConstraint;
+use PharIo\Version\Version;
+use PharIo\Version\VersionConstraintParser;
+
 /**
  * @covers PharIo\Phive\PhiveXmlConfig
  */
