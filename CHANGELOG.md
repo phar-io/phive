@@ -2,6 +2,19 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.6.3] - 2017-??-??
+
+### Changed
+* Added Signature url into release infos
+* internal refactoring
+
+### Fixed
+* [#80](https://github.com/phar-io/phive/issues/80): Check if running environment supports colored output
+* [#82](https://github.com/phar-io/phive/issues/82): Timeout for slow downloads
+* [#84](https://github.com/phar-io/phive/issues/84): Use caret operator by default
+* [#89](https://github.com/phar-io/phive/issues/89): Use phar-io/version library
+* [#95](https://github.com/phar-io/phive/issues/95): Composer command fails with error
+
 ## [0.6.2] - 2016-09-17
 
 ### Changed
@@ -33,7 +46,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 ## [0.5.0] - 2016-07-15
 
 ### Added
-* Added exit code 5 to signal parameter validation errors  
+* Added exit code 5 to signal parameter validation errors
 * [#7](https://github.com/phar-io/phive/issues/7): Implement selfupdate command
 * [#17](https://github.com/phar-io/phive/issues/17): Add support for custom repository list
 * [#13](https://github.com/phar-io/phive/issues/13): Implement status command
@@ -41,7 +54,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ### Changed
 * via [PR #56](https://github.com/phar-io/phive/pull/57) by [sebastianbergmann](https://github.com/sebastianbergmann): Changelog rewritten to respect the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
-* [#29](https://github.com/phar-io/phive/issues/29) and [#55](https://github.com/phar-io/phive/issues/55): Rewritten CLI parameter processing code 
+* [#29](https://github.com/phar-io/phive/issues/29) and [#55](https://github.com/phar-io/phive/issues/55): Rewritten CLI parameter processing code
 * Phive now exits with code 10 in case of an internal error (previously: 5)
 * [#38](https://github.com/phar-io/phive/issues/38): installed version of a PHAR is now added to phive.xml and respected by the install command
 * [#63](https://github.com/phar-io/phive/issues/63): Disallow the combined used of `--target` and `--global` in `phive install`
