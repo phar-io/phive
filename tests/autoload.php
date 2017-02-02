@@ -7,8 +7,6 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'phario\\phive\\abstractversionconstrainttest' => '/unit/shared/versionconstraints/AbstractVersionConstraintTest.php',
-                'phario\\phive\\anyversionconstrainttest' => '/unit/shared/versionconstraints/AnyVersionConstraintTest.php',
                 'phario\\phive\\batpharactivatortest' => '/unit/shared/file/BatPharActivatorTest.php',
                 'phario\\phive\\checksumservicetest' => '/unit/services/checksum/ChecksumServiceTest.php',
                 'phario\\phive\\commandlocatortest' => '/unit/CommandLocatorTest.php',
@@ -20,7 +18,7 @@ spl_autoload_register(
                 'phario\\phive\\consoleinputtest' => '/unit/shared/cli/ConsoleInputTest.php',
                 'phario\\phive\\curlconfigtest' => '/unit/shared/http/CurlConfigTest.php',
                 'phario\\phive\\directorytest' => '/unit/shared/file/DirectoryTest.php',
-                'phario\\phive\\exactversionconstrainttest' => '/unit/shared/versionconstraints/ExactVersionConstraintTest.php',
+                'phario\\phive\\etagtest' => '/unit/shared/http/ETagTest.php',
                 'phario\\phive\\factorytest' => '/unit/FactoryTest.php',
                 'phario\\phive\\filedownloadertest' => '/unit/shared/download/FileDownloaderTest.php',
                 'phario\\phive\\filenametest' => '/unit/shared/file/FilenameTest.php',
@@ -32,7 +30,6 @@ spl_autoload_register(
                 'phario\\phive\\gnupgsignatureverifiertest' => '/unit/services/signature/gpg/GnupgSignatureVerifierTest.php',
                 'phario\\phive\\gnupgtest' => '/unit/shared/GnuPGTest.php',
                 'phario\\phive\\gnupgverificationresulttest' => '/unit/services/signature/gpg/GnupgVerificationResultTest.php',
-                'phario\\phive\\greaterthanorequaltoversionconstrainttest' => '/unit/shared/versionconstraints/GreaterThanOrEqualToVersionConstraintTest.php',
                 'phario\\phive\\helpcommandtest' => '/unit/commands/help/HelpCommandTest.php',
                 'phario\\phive\\httpprogressupdatetest' => '/unit/shared/http/HttpProgressUpdateTest.php',
                 'phario\\phive\\httpresponsetest' => '/unit/shared/http/HttpResponseTest.php',
@@ -73,8 +70,6 @@ spl_autoload_register(
                 'phario\\phive\\sha256hashtest' => '/unit/shared/hash/sha/Sha256HashTest.php',
                 'phario\\phive\\skelcommandconfigtest' => '/unit/commands/skel/SkelCommandConfigTest.php',
                 'phario\\phive\\sourceslisttest' => '/unit/shared/SourcesListTest.php',
-                'phario\\phive\\specificmajorandminorversionconstrainttest' => '/unit/shared/versionconstraints/SpecificMajorAndMinorVersionConstraintTest.php',
-                'phario\\phive\\specificmajorversionconstrainttest' => '/unit/shared/versionconstraints/SpecificMajorVersionConstraintTest.php',
                 'phario\\phive\\staticphiveversiontest' => '/unit/shared/version/StaticPhiveVersionTest.php',
                 'phario\\phive\\targetdirectorylocatortest' => '/unit/commands/TargetDirectoryLocatorTest.php',
                 'phario\\phive\\teststreamwrapper' => '/unit/TestStreamWrapper.php',
@@ -83,9 +78,6 @@ spl_autoload_register(
                 'phario\\phive\\updatecommandconfigtest' => '/unit/commands/update/UpdateCommandConfigTest.php',
                 'phario\\phive\\updatecommandtest' => '/unit/commands/update/UpdateCommandTest.php',
                 'phario\\phive\\urltest' => '/unit/shared/UrlTest.php',
-                'phario\\phive\\versionconstraintgrouptest' => '/unit/shared/versionconstraints/VersionConstraintGroupTest.php',
-                'phario\\phive\\versionconstraintparsertest' => '/unit/shared/versionconstraints/VersionConstraintParserTest.php',
-                'phario\\phive\\versiontest' => '/unit/shared/version/VersionTest.php',
                 'phario\\phive\\windowsenvironmenttest' => '/unit/shared/environment/WindowsEnvironmentTest.php'
             );
         }

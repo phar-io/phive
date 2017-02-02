@@ -8,8 +8,6 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'phario\\phive\\abstractrequestedpharresolver' => '/services/resolver/AbstractRequestedPharResolver.php',
-                'phario\\phive\\abstractversionconstraint' => '/shared/versionconstraints/AbstractVersionConstraint.php',
-                'phario\\phive\\anyversionconstraint' => '/shared/versionconstraints/AnyVersionConstraint.php',
                 'phario\\phive\\batpharactivator' => '/shared/file/BatPharActivator.php',
                 'phario\\phive\\cachebackend' => '/shared/http/CacheBackend.php',
                 'phario\\phive\\checksumservice' => '/services/checksum/ChecksumService.php',
@@ -55,7 +53,6 @@ spl_autoload_register(
                 'phario\\phive\\environmentlocator' => '/shared/environment/EnvironmentLocator.php',
                 'phario\\phive\\errorexception' => '/shared/exceptions/ErrorException.php',
                 'phario\\phive\\etag' => '/shared/http/ETag.php',
-                'phario\\phive\\exactversionconstraint' => '/shared/versionconstraints/ExactVersionConstraint.php',
                 'phario\\phive\\exception' => '/shared/exceptions/Exception.php',
                 'phario\\phive\\executor' => '/shared/executor/Executor.php',
                 'phario\\phive\\executorexception' => '/shared/exceptions/ExecutorException.php',
@@ -76,7 +73,6 @@ spl_autoload_register(
                 'phario\\phive\\gnupgkeyimporter' => '/services/key/gpg/GnupgKeyImporter.php',
                 'phario\\phive\\gnupgsignatureverifier' => '/services/signature/gpg/GnupgSignatureVerifier.php',
                 'phario\\phive\\gnupgverificationresult' => '/services/signature/gpg/GnupgVerificationResult.php',
-                'phario\\phive\\greaterthanorequaltoversionconstraint' => '/shared/versionconstraints/GreaterThanOrEqualToVersionConstraint.php',
                 'phario\\phive\\hash' => '/shared/hash/Hash.php',
                 'phario\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
                 'phario\\phive\\httpclient' => '/shared/http/HttpClient.php',
@@ -152,8 +148,6 @@ spl_autoload_register(
                 'phario\\phive\\sourceslist' => '/shared/sources/SourcesList.php',
                 'phario\\phive\\sourceslistexception' => '/shared/exceptions/SourcesListException.php',
                 'phario\\phive\\sourceslistfileloader' => '/shared/sources/SourcesListFileLoader.php',
-                'phario\\phive\\specificmajorandminorversionconstraint' => '/shared/versionconstraints/SpecificMajorAndMinorVersionConstraint.php',
-                'phario\\phive\\specificmajorversionconstraint' => '/shared/versionconstraints/SpecificMajorVersionConstraint.php',
                 'phario\\phive\\staticphiveversion' => '/shared/version/StaticPhiveVersion.php',
                 'phario\\phive\\statuscommand' => '/commands/status/StatusCommand.php',
                 'phario\\phive\\symlinkpharactivator' => '/shared/file/SymlinkPharActivator.php',
@@ -168,12 +162,7 @@ spl_autoload_register(
                 'phario\\phive\\urlrepository' => '/shared/repository/UrlRepository.php',
                 'phario\\phive\\verificationfailedexception' => '/shared/exceptions/VerificationFailedException.php',
                 'phario\\phive\\verificationresult' => '/services/signature/VerificationResult.php',
-                'phario\\phive\\version' => '/shared/version/Version.php',
                 'phario\\phive\\versioncommand' => '/commands/version/VersionCommand.php',
-                'phario\\phive\\versionconstraint' => '/shared/versionconstraints/VersionConstraint.php',
-                'phario\\phive\\versionconstraintgroup' => '/shared/versionconstraints/VersionConstraintGroup.php',
-                'phario\\phive\\versionconstraintparser' => '/shared/versionconstraints/VersionConstraintParser.php',
-                'phario\\phive\\versionnumber' => '/shared/version/VersionNumber.php',
                 'phario\\phive\\windowsenvironment' => '/shared/environment/WindowsEnvironment.php',
                 'phario\\phive\\xmlfile' => '/shared/XmlFile.php'
             );
