@@ -100,11 +100,6 @@ class CurlConfig {
             $options[CURLOPT_PROTOCOLS] = CURLPROTO_HTTPS;
         }
 
-        /* Added in PHP 7.0.7 */
-        if (defined('CURLOPT_SSL_VERIFYSTATUS')) {
-            $options[CURLOPT_SSL_VERIFYSTATUS] = true;
-        }
-
         /* Added in PHP 7.0.7 and requires Curl 7.49+ */
         if (defined('CURLOPT_TCP_FASTOPEN')) {
             $options[CURLOPT_TCP_FASTOPEN] = true;
