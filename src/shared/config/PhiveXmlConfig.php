@@ -90,13 +90,13 @@ class PhiveXmlConfig {
     }
 
     /**
-     * @param string $name
-     *
-     * @throws ConfigException
+     * @param RequestedPhar $phar
      *
      * @return Version
+     * @throws ConfigException
      */
-    public function getPharVersion($name) {
+    public function getPharVersion(RequestedPhar $phar) {
+        $name = $phar->asString();
         if (!$this->hasPharNode($name)) {
             throw new ConfigException(sprintf('PHAR %s not found in phive.xml', $name));
         }
@@ -108,11 +108,12 @@ class PhiveXmlConfig {
     }
 
     /**
-     * @param string $name
+     * @param RequestedPhar $phar
      *
      * @return bool
      */
-    public function isPharInstalled($name) {
+    public function isPharInstalled(RequestedPhar $phar) {
+        $name = $phar->asString();
         if (!$this->hasPharLocation($name)) {
             return false;
         }
