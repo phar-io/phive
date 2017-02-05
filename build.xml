@@ -104,7 +104,7 @@
         <exec executable="${basedir}/phpdox" />
     </target>
 
-    <target name="phar" description="Create PHAR archive of Phive and its dependencies">
+    <target name="phar" description="Create PHAR archive of Phive and its dependencies" depends="composer-no-dev">
 
         <delete>
             <fileset dir="${basedir}/build/phar">
@@ -152,6 +152,18 @@
 
     </target>
 
+    <target name="composer" description="Install composer dependencies (including dev)">
+        <exec executable="composer">
+            <arg value="install"/>
+        </exec>
+    </target>
+
+    <target name="composer-no-dev" description="Install composer dependencies (without dev)">
+        <exec executable="composer">
+            <arg value="install"/>
+            <arg value="--no-dev"/>
+        </exec>
+    </target>
 
     <target name="build" depends="clean,lint,parallelTasks,phpunit"/>
 </project>
