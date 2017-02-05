@@ -94,6 +94,22 @@ class Filename {
     }
 
     /**
+     * @param string $content
+     *
+     * @return int
+     */
+    public function putContent($content) {
+        return file_put_contents($this->asString(), $content);
+    }
+
+    /**
+     * @return bool
+     */
+    public function delete() {
+        return unlink($this->asString());
+    }
+
+    /**
      * @return string
      */
     private function getBasename() {

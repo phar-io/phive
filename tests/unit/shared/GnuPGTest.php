@@ -2,156 +2,140 @@
 namespace PharIo\Phive;
 
 /**
- * @covers PharIo\Phive\GnuPG
+ * @covers \PharIo\Phive\GnuPG
  */
 class GnuPGTest extends \PHPUnit_Framework_TestCase {
 
-    public function testImportReturnsExpectedArray() {
-        $this->markTestSkipped('Needs to be rewritten after refactoring of GnuPG');
-        $executable = $this->getFilenameMock();
-        $homeDirectory = $this->getDirectoryMock();
-        $tmpDirectory = $this->getDirectoryMock();
-
-        $key = 'SomeKey';
-        $status = 'IMPORT_OK 1 foo';
-
-        $pipeIO = $this->getPipeIOMock();
-        $pipeIO->expects($this->once())
-            ->method('writeToPipe')
-            ->with(PipeIO::PIPE_STDIN, $key);
-        $pipeIO->method('readFromPipe')->willReturn($status);
-
-        $expected = [
-            'imported'    => 1,
-            'fingerprint' => 'foo'
-        ];
-
-        $gnupg = new GnuPG($executable, $tmpDirectory, $homeDirectory);
-        $this->assertEquals($expected, $gnupg->import($key));
-    }
-
-    public function testImportReturnsExpectedArrayWhenImportFails() {
-        $this->markTestSkipped('Needs to be rewritten after refactoring of GnuPG');
-        $executable = $this->getFilenameMock();
-        $homeDirectory = $this->getDirectoryMock();
-        $tmpDirectory = $this->getDirectoryMock();
-
-        $key = 'SomeKey';
-        $status = 'ERROR';
-
-        $pipeIO = $this->getPipeIOMock();
-        $pipeIO->expects($this->once())
-            ->method('writeToPipe')
-            ->with(PipeIO::PIPE_STDIN, $key);
-        $pipeIO->method('readFromPipe')->willReturn($status);
-
-        $expected = ['imported' => 0];
-
-        $gnupg = new GnuPG($executable, $tmpDirectory, $homeDirectory);
-        $this->assertEquals($expected, $gnupg->import($key));
-    }
-
     /**
-     * @dataProvider verificationStatusProvider
+     * @dataProvider importExecutionResultProvider
      *
-     * @param string $status
-     * @param string $expectedFingerprint
-     * @param int    $expectedValidity
-     * @param string $expectedTimestamp
-     * @param int    $expectedSummary
+     * @param $executionOutput
+     * @param array $expectedResult
      */
-    public function testVerifyReturnsExpectedArray(
-        $status, $expectedFingerprint, $expectedValidity, $expectedTimestamp, $expectedSummary
-    ) {
-        $this->markTestSkipped('Needs to be rewritten after refactoring of GnuPG');
-        $executable = $this->getFilenameMock();
-        $homeDirectory = $this->getDirectoryMock();
+    public function testImportReturnsExpectedArray($executionOutput, array $expectedResult) {
+        $executorResult = $this->getExecutorResultMock();
+        $executorResult->method('getOutput')->willReturn($executionOutput);
+        $executor = $this->getExecutorMock();
+        $executor->method('execute')->willReturn($executorResult);
+
+        $gpgBinary = $this->getFilenameMock();
+
+        $tmpFile = $this->getFilenameMock();
         $tmpDirectory = $this->getDirectoryMock();
+        $tmpDirectory->method('file')->willReturn($tmpFile);
 
-        $message = 'Some Message';
-        $signature = 'Some Signature';
-        $pipeIO = $this->getPipeIOMock();
-        $pipeIO->method('readFromPipe')->willReturn($status);
+        $homeDirectory = $this->getDirectoryMock();
+        $gpg = new GnuPG($executor, $gpgBinary, $tmpDirectory, $homeDirectory);
 
-        $gnupg = new GnuPG($executable, $tmpDirectory, $homeDirectory);
+        $actual = $gpg->import('someKey');
 
-        $expected = [
+        $this->assertSame($expectedResult, $actual);
+    }
+
+    public static function importExecutionResultProvider() {
+        return [
             [
-                'fingerprint' => $expectedFingerprint,
-                'validity'    => $expectedValidity,
-                'timestamp'   => $expectedTimestamp,
-                'status'      => $status,
-                'summary'     => $expectedSummary
+                'executionOutput' => ['IMPORT_OK 1 someFingerprint'],
+                'expectedResult' => [
+                    'imported' => 1,
+                    'fingerprint' => 'someFingerprint'
+                ]
+            ],
+            [
+                'executionOutput' => ['ERROR'],
+                'expectedResult' => [
+                    'imported' => 0
+                ]
             ]
         ];
-
-        $actual = $gnupg->verify($message, $signature);
-
-        $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @dataProvider invalidVerificationStatusProvider
+     /**
+     * @dataProvider verifyExecutionResultProvider
      *
-     * @param string $status
+     * @param $executionOutput
+     * @param array|bool $expectedResult
      */
-    public function testVerifyReturnsFalseOnInvalidResult($status) {
-        $this->markTestSkipped('Needs to be rewritten after refactoring of GnuPG');
-        $executable = $this->getFilenameMock();
-        $homeDirectory = $this->getDirectoryMock();
+    public function testVerifyReturnsExpectedArray($executionOutput, $expectedResult) {
+        $executorResult = $this->getExecutorResultMock();
+        $executorResult->method('getOutput')->willReturn($executionOutput);
+        $executor = $this->getExecutorMock();
+        $executor->method('execute')->willReturn($executorResult);
+
+        $gpgBinary = $this->getFilenameMock();
+
+        $tmpFile = $this->getFilenameMock();
         $tmpDirectory = $this->getDirectoryMock();
+        $tmpDirectory->method('file')->willReturn($tmpFile);
 
-        $message = 'Some Message';
-        $signature = 'Some Signature';
-        $pipeIO = $this->getPipeIOMock();
-        $pipeIO->method('readFromPipe')->willReturn($status);
+        $homeDirectory = $this->getDirectoryMock();
+        $gpg = new GnuPG($executor, $gpgBinary, $tmpDirectory, $homeDirectory);
 
-        $gnupg = new GnuPG($executable, $tmpDirectory, $homeDirectory);
+        $actual = $gpg->verify('someMessage', 'someSignature');
 
-        $actual = $gnupg->verify($message, $signature);
-
-        $this->assertFalse($actual);
+        $this->assertEquals($expectedResult, $actual);
     }
 
-    public static function verificationStatusProvider() {
+    public static function verifyExecutionResultProvider() {
         return [
-            'Valid Signature' => [
-                '[GNUPG:] VALIDSIG SomeFingerprint 2015-04-28 1461855515',
-                'SomeFingerprint',
-                0,
-                '1461855515',
-                0
+            [
+                'executionOutput' => [
+                    'SomeUnimportantLine',
+                    '[GNUPG:] VALIDSIG D8406D0D82947747A394072C20A 2014-07-19 1405769272 0 4 0 1 10 00 D8C20A'
+                ],
+                'expectedResult' => [
+                    [
+                        'fingerprint' => 'D8406D0D82947747A394072C20A',
+                        'validity' => 0,
+                        'timestamp' => '1405769272',
+                        'status' => [
+                            0 => 'SomeUnimportantLine',
+                            1 => '[GNUPG:] VALIDSIG D8406D0D82947747A394072C20A 2014-07-19 1405769272 0 4 0 1 10 00 D8C20A'
+                        ],
+                        'summary' => 0
+                    ]
+                ]
             ],
-            'Bad Signature'   => [
-                '[GNUPG:] BADSIG 4AA394086372C20A Sebastian Bergmann <sb@sebastian-bergmann.de>',
-                '4AA394086372C20A',
-                0,
-                0,
-                4
+            [
+                'executionOutput' => ['[GNUPG:] BADSIG 4AA394086372C20A Sebastian Bergmann <sb@sebastian-bergmann.de>'],
+                'expectedResult' => [
+                    [
+                        'fingerprint' => '4AA394086372C20A',
+                        'validity' => 0,
+                        'timestamp' => 0,
+                        'status' => [
+                            0 => '[GNUPG:] BADSIG 4AA394086372C20A Sebastian Bergmann <sb@sebastian-bergmann.de>'
+                        ],
+                        'summary' => 4
+                    ]
+                ]
             ],
-            'Signature Error' => [
-                '[GNUPG:] ERRSIG 4AA394086372C20A 1 10 00 1405769272 9',
-                '4AA394086372C20A',
-                0,
-                1405769272,
-                128
+            [
+                'executionOutput' => ['[GNUPG:] ERRSIG 4AA394086372C20A 1 10 00 1405769272 9'],
+                'expectedResult' => [
+                    [
+                        'fingerprint' => '4AA394086372C20A',
+                        'validity' => 0,
+                        'timestamp' => '1405769272',
+                        'status' => [
+                            0 => '[GNUPG:] ERRSIG 4AA394086372C20A 1 10 00 1405769272 9'
+                        ],
+                        'summary' => 128
+                    ]
+                ]
+            ],
+            [
+                'executionOutput' => ['SOME ERROR'],
+                'expectedResult' => false
             ]
         ];
     }
 
-    public function invalidVerificationStatusProvider() {
-        return [
-            ['foo'],
-            ['[GNUPG:] FOO'],
-            ['[GNUPG:] FOO BAR BAZ']
-        ];
-    }
-
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Filename
+     * @return \PHPUnit_Framework_MockObject_MockObject|ExecutorResult
      */
-    private function getFilenameMock() {
-        return $this->createMock(Filename::class);
+    private function getExecutorResultMock() {
+        return $this->createMock(ExecutorResult::class);
     }
 
     /**
@@ -162,10 +146,19 @@ class GnuPGTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PipeIO
+     * @return \PHPUnit_Framework_MockObject_MockObject|Filename
      */
-    private function getPipeIOMock() {
-        return $this->createMock(PipeIO::class);
+    private function getFilenameMock() {
+        return $this->createMock(Filename::class);
     }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Executor
+     */
+    private function getExecutorMock() {
+        return $this->createMock(Executor::class);
+    }
+
+
 
 }

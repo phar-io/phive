@@ -53,7 +53,7 @@ class GnuPG {
             '--import',
             escapeshellarg($tmpFile->asString())
         ]);
-        unlink($tmpFile);
+        $tmpFile->delete();
 
         if (preg_match('=.*IMPORT_OK\s(\d+)\s(.*)=', implode('', $result), $matches)) {
             return [
@@ -80,8 +80,8 @@ class GnuPG {
             escapeshellarg($messageFile->asString())
         ]);
 
-        unlink($signatureFile);
-        unlink($messageFile);
+        $signatureFile->delete();
+        $messageFile->delete();
 
         return $this->parseVerifyOutput($result);
     }
@@ -195,7 +195,7 @@ class GnuPG {
      */
     private function createTemporaryFile($content) {
         $tmpFile = $this->tmpDirectory->file(uniqid('phive_gpg_', true));
-        file_put_contents($tmpFile->asString(), $content);
+        $tmpFile->putContent($content);
         return $tmpFile;
     }
 
