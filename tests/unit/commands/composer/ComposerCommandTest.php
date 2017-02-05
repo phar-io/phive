@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli\Input;
 
 /**
- * @covers PharIo\Phive\ComposerCommand
+ * @covers \PharIo\Phive\ComposerCommand
  */
 class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
 

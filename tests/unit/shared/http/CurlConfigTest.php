@@ -17,13 +17,13 @@ class CurlConfigTest extends \PHPUnit_Framework_TestCase {
         $config = new CurlConfig('foo');
         $expectedDefaults = [
             CURLOPT_MAXREDIRS       => 5,
-            CURLOPT_CONNECTTIMEOUT  => 30,
+            CURLOPT_CONNECTTIMEOUT  => 60,
             CURLOPT_SSL_VERIFYHOST  => 2,
             CURLOPT_SSL_VERIFYPEER  => true,
             CURLOPT_FAILONERROR     => true,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_FOLLOWLOCATION  => true,
-            CURLOPT_LOW_SPEED_TIME  => 30,
+            CURLOPT_LOW_SPEED_TIME  => 90,
             CURLOPT_LOW_SPEED_LIMIT => 128
         ];
         $actual = $config->asCurlOptArray();

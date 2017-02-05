@@ -113,4 +113,11 @@ class RequestedPhar {
     public function getLocation() {
         return $this->location;
     }
+
+    /**
+     * @return string
+     */
+    public function asString() {
+        return $this->identifier->asString();
+    }
 }
