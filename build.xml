@@ -131,7 +131,7 @@
             <arg path="${basedir}/build/phar/bootstrap.php.in"/>
             <arg value="--basedir" />
             <arg path="${basedir}" />
-            <arg path="${source}" />
+            <arg path="${basedir}/composer.json" />
             <arg path="${basedir}/conf" />
         </exec>
 
