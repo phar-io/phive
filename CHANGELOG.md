@@ -2,17 +2,17 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [0.6.3] - 2017-??-??
+## [0.6.3] - 2017-02-05
 
 ### Changed
 * Added Signature url into release infos
 * internal refactoring
+* [#89](https://github.com/phar-io/phive/issues/89): Use phar-io/version library
+* [#84](https://github.com/phar-io/phive/issues/84): Use caret operator by default
 
 ### Fixed
 * [#80](https://github.com/phar-io/phive/issues/80): Check if running environment supports colored output
 * [#82](https://github.com/phar-io/phive/issues/82): Timeout for slow downloads
-* [#84](https://github.com/phar-io/phive/issues/84): Use caret operator by default
-* [#89](https://github.com/phar-io/phive/issues/89): Use phar-io/version library
 * [#95](https://github.com/phar-io/phive/issues/95): Composer command fails with error
 
 ## [0.6.2] - 2016-09-17
@@ -134,7 +134,8 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.6.2...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.6.3...HEAD
+[0.6.3]: https://github.com/phar-io/phive/compare/0.6.2...0.6.3
 [0.6.2]: https://github.com/phar-io/phive/compare/0.6.1...0.6.2
 [0.6.1]: https://github.com/phar-io/phive/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/phar-io/phive/compare/0.5.0...0.6.0
