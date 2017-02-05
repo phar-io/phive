@@ -16,8 +16,10 @@ class UpdateCommandTest extends \PHPUnit_Framework_TestCase {
         $alias = $this->getPharAliasMock();
 
         $requestedPhar1 = $this->getRequestedPharMock();
+        $requestedPhar1->method('hasAlias')->willReturn(true);
         $requestedPhar1->method('getAlias')->willReturn($alias);
         $requestedPhar2 = $this->getRequestedPharMock();
+        $requestedPhar2->method('hasAlias')->willReturn(true);
         $requestedPhar2->method('getAlias')->willReturn($alias);
 
         $installedPhar1 = $this->getInstalledPharMock();
