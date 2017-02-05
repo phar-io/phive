@@ -12,16 +12,11 @@ class TestStreamWrapper {
 
     static $protocolMaps = [];
 
-    /**
-     * die gespeicherten Werte
-     */
     static $map = [];
 
     protected $_protocol;
 
     /**
-     * Contains the data read from DataPool
-     *
      * @var string
      */
     protected $_data;
@@ -37,8 +32,6 @@ class TestStreamWrapper {
     protected $_position = 0;
 
     /**
-     * PublicKey of Slot
-     *
      * @var string
      */
     protected $_key;
@@ -49,10 +42,6 @@ class TestStreamWrapper {
     protected $_path;
 
     /**
-     * registriert ein neues Protokoll
-     *
-     * @static
-     *
      * @param string $proto
      * @param string $dir
      */
@@ -65,11 +54,6 @@ class TestStreamWrapper {
         stream_wrapper_register($protocol, get_called_class());
     }
 
-    /**
-     * meldet alle Protokolle ab und entfernt die Einträge
-     *
-     * @static
-     */
     public static function unregister() {
         foreach (array_keys(static::$protocolMaps) as $protocol) {
             stream_wrapper_unregister($protocol);
@@ -80,8 +64,6 @@ class TestStreamWrapper {
     }
 
     /**
-     * Binary-safe file or stream read
-     *
      * @param int $count
      *
      * @return string
@@ -121,8 +103,6 @@ class TestStreamWrapper {
     }
 
     /**
-     * Opens file or stream
-     *
      * @param string $path
      * @param string $mode
      * @param string $options
@@ -153,10 +133,8 @@ class TestStreamWrapper {
     }
 
     /**
-     * Translates the uri
-     *
      * @param string $uri
-     * @param        $baseDir
+     * @param string $baseDir
      *
      * @return string
      */
@@ -179,8 +157,6 @@ class TestStreamWrapper {
     }
 
     /**
-     * Ermittelt die Größe von $data und speichert sie in einer Property
-     *
      * @param $data
      *
      * @return void
@@ -190,8 +166,6 @@ class TestStreamWrapper {
     }
 
     /**
-     * Retrieve information about a file
-     *
      * @param $path
      * @param $flags
      *

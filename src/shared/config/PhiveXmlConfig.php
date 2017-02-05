@@ -17,7 +17,7 @@ class PhiveXmlConfig {
     private $versionConstraintParser;
 
     /**
-     * @param XmlFile                 $configFile
+     * @param XmlFile $configFile
      * @param VersionConstraintParser $versionConstraintParser
      */
     public function __construct(XmlFile $configFile, VersionConstraintParser $versionConstraintParser) {

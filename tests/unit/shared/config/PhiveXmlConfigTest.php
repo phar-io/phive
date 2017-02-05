@@ -7,7 +7,7 @@ use PharIo\Version\Version;
 use PharIo\Version\VersionConstraintParser;
 
 /**
- * @covers PharIo\Phive\PhiveXmlConfig
+ * @covers \PharIo\Phive\PhiveXmlConfig
  */
 class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
 
@@ -115,7 +115,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
                 ['version', '5.2.12'],
                 ['name', 'phpunit'],
                 ['installed', '5.2.12'],
-                ['location', './foo/phpunit']
+                ['location', __DIR__ . '/fixtures/tools/phpunit']
             ]
         );
 
@@ -143,7 +143,7 @@ class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
         $config = new PhiveXmlConfig($configFile, $parserMock);
         $expected = [
             new ConfiguredPhar('https://example.com/phpunit-5.3.0.phar', new AnyVersionConstraint()),
-            new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12'), new Filename('./foo/phpunit')),
+            new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12'), new Filename(__DIR__ . '/fixtures/tools/phpunit')),
             new ConfiguredPhar('phpunit', new AnyVersionConstraint()),
         ];
         $actual = $config->getPhars();
