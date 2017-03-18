@@ -11,14 +11,9 @@ class InstallCommand implements Cli\Command {
     private $config;
 
     /**
-     * @var PharService
+     * @var InstallService
      */
-    private $pharService;
-
-    /**
-     * @var PhiveXmlConfig
-     */
-    private $phiveXmlConfig;
+    private $installService;
 
     /**
      * @var Environment
@@ -26,21 +21,26 @@ class InstallCommand implements Cli\Command {
     private $environment;
 
     /**
+     * @var RequestedPharResolverService
+     */
+    private $pharResolver;
+
+    /**
      * @param InstallCommandConfig $config
-     * @param PharService          $pharService
-     * @param PhiveXmlConfig       $phiveXmlConfig
-     * @param Environment          $environment
+     * @param InstallService $installService
+     * @param Environment $environment
+     * @param RequestedPharResolverService $pharResolver
      */
     public function __construct(
         InstallCommandConfig $config,
-        PharService $pharService,
-        PhiveXmlConfig $phiveXmlConfig,
-        Environment $environment
+        InstallService $installService,
+        Environment $environment,
+        RequestedPharResolverService $pharResolver
     ) {
         $this->config = $config;
-        $this->pharService = $pharService;
-        $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->installService = $installService;
         $this->environment = $environment;
+        $this->pharResolver = $pharResolver;
     }
 
     public function execute() {
@@ -56,11 +56,37 @@ class InstallCommand implements Cli\Command {
      * @param Directory     $targetDirectory
      */
     protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory) {
-        $installedPhar = $this->pharService->install($requestedPhar, $targetDirectory, $this->getConfig()->makeCopy());
-        if (null === $installedPhar || $this->getConfig()->doNotAddToPhiveXml()) {
-            return;
+
+        $release = $this->resolveToRelease($requestedPhar);
+        $destination = $this->getDestination($release->getUrl()->getPharName(), $requestedPhar, $targetDirectory);
+
+        $this->installService->execute($release, $requestedPhar->getVersionConstraint(), $destination, false);
+    }
+
+    /**
+     * @param RequestedPhar $requestedPhar
+     *
+     * @return Release
+     */
+    private function resolveToRelease(RequestedPhar $requestedPhar) {
+        $repository = $this->pharResolver->resolve($requestedPhar);
+        $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
+
+        return $releases->getLatest($requestedPhar->getLockedVersion());
+    }
+
+    /**
+     * @param string $pharName
+     * @param RequestedPhar $requestedPhar
+     * @param Directory $destination
+     *
+     * @return Filename
+     */
+    private function getDestination($pharName, RequestedPhar $requestedPhar, Directory $destination) {
+        if ($requestedPhar->hasLocation()) {
+            return $requestedPhar->getLocation();
         }
-        $this->phiveXmlConfig->addPhar($installedPhar);
+        return $destination->file($pharName);
     }
 
     /**

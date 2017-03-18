@@ -139,39 +139,75 @@ class PhiveXmlConfig {
     }
 
     /**
+     * @param string $name
+     * @param Version $version
+     *
+     * @return \DOMElement
+     */
+    private function getPharNodeWithSpecificInstalledVersion($name, Version $version) {
+        return $this->configFile->query(
+            sprintf('//phive:phar[@name="%s" and @installed="%s"]', mb_strtolower($name), $version->getVersionString())
+        )->item(0);
+    }
+
+    /**
      * @return ConfiguredPhar[]
      */
     public function getPhars() {
         $phars = [];
         /** @var \DOMElement $pharNode */
         foreach ($this->configFile->query('//phive:phar') as $pharNode) {
-            if ($pharNode->hasAttribute('url')) {
-                $url = new PharUrl($pharNode->getAttribute('url'));
-                $pharName = (string)$url;
-                $versionConstraint = $url->getPharVersion()->getVersionString();
-            } else {
-                $pharName = $pharNode->getAttribute('name');
-                $versionConstraint = $pharNode->getAttribute('version');
-            }
-            $pharVersion = null;
-            if ($pharNode->hasAttribute('installed') && !empty($pharNode->getAttribute('installed'))) {
-                $pharVersion = new Version($pharNode->getAttribute('installed'));
-            }
-            $location = null;
-            if ($pharNode->hasAttribute('location') && !empty($pharNode->getAttribute('location'))) {
-                $location = new Filename($pharNode->getAttribute('location'));
-                // workaround to make sure the directory gets created
-                $location->getDirectory();
-            }
-            $phars[] = new ConfiguredPhar(
-                $pharName,
-                $this->versionConstraintParser->parse($versionConstraint),
-                $pharVersion,
-                $location
-            );
+            $phars[] =$this->nodeToConfiguredPhar($pharNode);
         }
 
         return $phars;
+    }
+
+    /**
+     * @param string $name
+     * @param Version $version
+     *
+     * @return bool
+     */
+    public function hasConfiguredPhar($name, Version $version) {
+        return $this->getPharNodeWithSpecificInstalledVersion($name, $version) !== null;
+    }
+
+    /**
+     * @param string $name
+     * @param Version $version
+     *
+     * @return ConfiguredPhar
+     */
+    public function getConfiguredPhar($name, Version $version) {
+        return $this->nodeToConfiguredPhar($this->getPharNodeWithSpecificInstalledVersion($name, $version));
+    }
+
+    private function nodeToConfiguredPhar(\DOMElement $pharNode) {
+        if ($pharNode->hasAttribute('url')) {
+            $url = new PharUrl($pharNode->getAttribute('url'));
+            $pharName = (string)$url;
+            $versionConstraint = $url->getPharVersion()->getVersionString();
+        } else {
+            $pharName = $pharNode->getAttribute('name');
+            $versionConstraint = $pharNode->getAttribute('version');
+        }
+        $pharVersion = null;
+        if ($pharNode->hasAttribute('installed') && !empty($pharNode->getAttribute('installed'))) {
+            $pharVersion = new Version($pharNode->getAttribute('installed'));
+        }
+        $location = null;
+        if ($pharNode->hasAttribute('location') && !empty($pharNode->getAttribute('location'))) {
+            $location = new Filename($pharNode->getAttribute('location'));
+            // workaround to make sure the directory gets created
+            $location->getDirectory();
+        }
+        return new ConfiguredPhar(
+            $pharName,
+            $this->versionConstraintParser->parse($versionConstraint),
+            $pharVersion,
+            $location
+        );
     }
 
     /**

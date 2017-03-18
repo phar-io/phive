@@ -116,9 +116,9 @@ class Factory {
                 $this->getPhiveXmlConfig(),
                 $this->getTargetDirectoryLocator()
             ),
-            $this->getPharService(),
-            $this->getPhiveXmlConfig(),
-            $this->getEnvironment()
+            $this->getInstallService(),
+            $this->getEnvironment(),
+            $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
         );
     }
 
@@ -126,13 +126,18 @@ class Factory {
      * @return UpdateCommand
      */
     public function getUpdateCommand() {
+        $config = new UpdateCommandConfig(
+            $this->request->parse(new UpdateContext()),
+            $this->getPhiveXmlConfig(),
+            $this->getTargetDirectoryLocator()
+        );
+
+        $resolvingStrategy = $config->preferOffline() ? $this->getLocalFirstResolvingStrategy() : $this->getRemoteFirstResolvingStrategy();
+
         return new UpdateCommand(
-            new UpdateCommandConfig(
-                $this->request->parse(new UpdateContext()),
-                $this->getPhiveXmlConfig(),
-                $this->getTargetDirectoryLocator()
-            ),
-            $this->getPharService(),
+            $config,
+            $this->getInstallService(),
+            $this->getRequestedPharResolverBuilder()->build($resolvingStrategy),
             $this->getPhiveXmlConfig()
         );
     }
@@ -170,10 +175,11 @@ class Factory {
                 $this->getEnvironment()->getWorkingDirectory()
             ),
             $this->getComposerService(),
-            $this->getPharService(),
+            $this->getInstallService(),
             $this->getPhiveXmlConfig(),
             $this->getEnvironment(),
-            $this->getConsoleInput()
+            $this->getConsoleInput(),
+            $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
         );
     }
 
@@ -217,7 +223,7 @@ class Factory {
     /**
      * @return Cli\Output
      */
-    private function getOutput() {
+    public function getOutput() {
         return (new Cli\OutputLocator(new Cli\OutputFactory()))->getOutput($this->getEnvironment());
     }
 
@@ -230,6 +236,18 @@ class Factory {
         }
 
         return $this->version;
+    }
+
+    /**
+     * @return InstallService
+     */
+    private function getInstallService() {
+        return new InstallService(
+            $this->getPhiveXmlConfig(),
+            $this->getPharInstaller(),
+            $this->getPharRegistry(),
+            $this->getPharService()
+        );
     }
 
     /**
@@ -254,7 +272,7 @@ class Factory {
     /**
      * @return RemoteSourcesListFileLoader
      */
-    private function getRemoteSourcesListFileLoader() {
+    public function getRemoteSourcesListFileLoader() {
         return new RemoteSourcesListFileLoader(
             $this->getConfig()->getSourcesListUrl(),
             $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
@@ -266,7 +284,7 @@ class Factory {
     /**
      * @return LocalSourcesListFileLoader
      */
-    private function getLocalSourcesListFileLoader() {
+    public function getLocalSourcesListFileLoader() {
         return new LocalSourcesListFileLoader(
             $this->getConfig()->getHomeDirectory()->file('local.xml')
         );
@@ -275,7 +293,7 @@ class Factory {
     /**
      * @return Config
      */
-    protected function getConfig() {
+    public function getConfig() {
         return new Config(
             $this->getEnvironment(),
             $this->request->getOptions()
@@ -285,7 +303,7 @@ class Factory {
     /**
      * @return FileDownloader
      */
-    private function getFileDownloader() {
+    public function getFileDownloader() {
         return new FileDownloader(
             $this->getCurl(),
             $this->getFileStorageCacheBackend()
@@ -323,7 +341,7 @@ class Factory {
     /**
      * @return PharRegistry
      */
-    private function getPharRegistry() {
+    public function getPharRegistry() {
         return new PharRegistry(
             new XmlFile(
                 $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
@@ -339,11 +357,8 @@ class Factory {
      */
     private function getPharService() {
         return new PharService(
-            $this->getPharDownloader(),
-            $this->getPharInstaller(),
             $this->getPharRegistry(),
-            $this->getRequestedPharResolverService(),
-            $this->getOutput()
+            $this->getPharDownloader()
         );
     }
 
@@ -445,38 +460,7 @@ class Factory {
         );
     }
 
-    /**
-     * @param SourcesListFileLoader $sourcesListFileLoader
-     *
-     * @return PharIoAliasResolver
-     */
-    private function getPharIoAliasResolver(SourcesListFileLoader $sourcesListFileLoader) {
-        return new PharIoAliasResolver(
-            $sourcesListFileLoader,
-            $this->getFileDownloader()
-        );
-    }
 
-    /**
-     * @return DirectUrlResolver
-     */
-    private function getUrlResolver() {
-        return new DirectUrlResolver();
-    }
-
-    /**
-     * @return SourcesList
-     */
-    private function getSourcesList() {
-        return $this->getRemoteSourcesListFileLoader()->load();
-    }
-
-    /**
-     * @return SourcesList
-     */
-    private function getLocalSourcesList() {
-        return $this->getLocalSourcesListFileLoader()->load();
-    }
 
     /**
      * @return PhiveXmlConfig
@@ -502,35 +486,14 @@ class Factory {
     /**
      * @return RequestedPharResolverService
      */
-    private function getRequestedPharResolverService() {
-        $service = new RequestedPharResolverService();
-
-        $service->addResolver(
-            $this->getGithubAliasResolver()
-        );
-
-        // local
-        $service->addResolver(
-            $this->getPharIoAliasResolver($this->getLocalSourcesListFileLoader())
-        );
-
-        // phar.io
-        $service->addResolver(
-            $this->getPharIoAliasResolver($this->getRemoteSourcesListFileLoader())
-        );
-
-        // direct URLs
-        $service->addResolver(
-            $this->getUrlResolver()
-        );
-
-        return $service;
+    public function getRequestedPharResolverService() {
+        return new RequestedPharResolverService();
     }
 
     /**
      * @return GithubAliasResolver
      */
-    private function getGithubAliasResolver() {
+    public function getGithubAliasResolver() {
         return new GithubAliasResolver($this->getFileDownloader());
     }
 
@@ -553,5 +516,47 @@ class Factory {
      */
     private function getFileStorageCacheBackend() {
         return new FileStorageCacheBackend($this->getConfig()->getHomeDirectory()->child('http-cache'));
+    }
+
+    /**
+     * @return RequestedPharResolverServiceBuilder
+     */
+    private function getRequestedPharResolverBuilder() {
+        return new RequestedPharResolverServiceBuilder($this);
+    }
+
+    /**
+     * @return SourcesList
+     */
+    private function getSourcesList() {
+        return $this->getRemoteSourcesListFileLoader()->load();
+    }
+
+    /**
+     * @return SourcesList
+     */
+    private function getLocalSourcesList() {
+        return $this->getLocalSourcesListFileLoader()->load();
+    }
+
+    /**
+     * @return LocalFirstResolvingStrategy
+     */
+    private function getLocalFirstResolvingStrategy() {
+        return new LocalFirstResolvingStrategy($this->getRequestedPharResolverFactory());
+    }
+
+    /**
+     * @return RemoteFirstResolvingStrategy
+     */
+    private function getRemoteFirstResolvingStrategy() {
+        return new RemoteFirstResolvingStrategy($this->getRequestedPharResolverFactory());
+    }
+
+    /**
+     * @return RequestedPharResolverFactory
+     */
+    private function getRequestedPharResolverFactory() {
+        return new RequestedPharResolverFactory($this);
     }
 }

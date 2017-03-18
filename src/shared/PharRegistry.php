@@ -51,6 +51,19 @@ class PharRegistry {
     }
 
     /**
+     * @param string $name
+     *
+     * @return Phar[]
+     */
+    public function getPhars($name) {
+        $phars = [];
+        foreach ($this->dbFile->query(sprintf('//phive:phar[@name="%s"]', $name)) as $pharNode) {
+            $phars[] = $this->nodetoPhar($pharNode);
+        }
+        return $phars;
+    }
+
+    /**
      * @param File $pharFile
      */
     private function savePhar(File $pharFile) {

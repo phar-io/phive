@@ -3,7 +3,7 @@ namespace PharIo\Phive;
 
 use PharIo\Version\VersionConstraint;
 
-class ReleaseCollection {
+class ReleaseCollection implements \Countable {
 
     /**
      * @var Release[]
@@ -16,6 +16,14 @@ class ReleaseCollection {
     public function add(Release $release) {
         $this->releases[] = $release;
     }
+
+    /**
+     * @return int
+     */
+    public function count() {
+        return count($this->releases);
+    }
+
 
     /**
      * @param VersionConstraint $versionConstraint

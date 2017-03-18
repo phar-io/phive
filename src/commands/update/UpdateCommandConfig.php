@@ -49,6 +49,13 @@ class UpdateCommandConfig {
     }
 
     /**
+     * @return bool
+     */
+    public function preferOffline() {
+        return $this->cliOptions->hasOption('prefer-offline');
+    }
+
+    /**
      * @param array $filter
      *
      * @return RequestedPhar[]

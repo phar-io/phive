@@ -1,346 +1,97 @@
 <?php
 namespace PharIo\Phive;
 
-use PharIo\Phive\Cli;
-use PharIo\Version\AnyVersionConstraint;
-use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\PharService
  */
 class PharServiceTest extends \PHPUnit_Framework_TestCase {
+    public function testReturnsPharFromRegistryIfItExists() {
+        $phar = $this->getPharMock();
+        $name = 'some Phar';
+        $version = new Version('1.0.0');
 
-    public function testInstallByUrlDownloadsPharAndInvokesInstaller() {
-        $url = new PharUrl('https://example.com/foo-1.20.1.phar');
-        $sigUrl = new Url($url . '.asc');
-        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
-        $file = new File(new Filename('foo.phar'), 'bar');
-        $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('1.20.1'), new ExactVersionConstraint('1.20.1'));
-
-        $expectedPhar = new Phar('foo', new Version('1.20.1'), $file);
-
-        $registry = $this->getPharRegistryMock();
-        $registry->method('hasPhar')
-            ->with('foo', new Version('1.20.1'))
-            ->willReturn(false);
-        $registry->expects($this->once())->method('addPhar');
-        $registry->expects($this->once())->method('addUsage')
-            ->with($expectedPhar, new Filename('/tmp/foo'));
-
-        $downloader = $this->getPharDownloaderMock();
-        $downloader->expects($this->once())->method('download')->with($release)->willReturn($expectedPhar);
-
-        $installer = $this->getPharInstallerMock();
-        $installer->method('install')
-            ->with($file, new Filename('/tmp/foo'), true);
-
-        $directory = $this->getDirectoryMock();
-        $directory->expects($this->once())->method('file')->willReturn(new Filename('/tmp/foo'));
-
-        $releases = $this->getReleasesCollectionMock();
-        $releases->method('getLatest')->willReturn($release);
-
-        $repository = $this->getSourceRepositoryMock();
-        $repository->method('getReleasesByRequestedPhar')->willReturn($releases);
-
-        $resolver = $this->getAliasResolverServiceMock();
-        $resolver->method('resolve')->willReturn($repository);
-
-        $service = new PharService(
-            $downloader, $installer, $registry, $resolver, $this->getOutputMock()
-        );
-
-        $service->install($requestedPhar, $directory, true);
-    }
-
-    public function testInstallByUrlGetsPharFromRepositoryAndInvokesInstaller() {
-        $url = new PharUrl('https://example.com/foo-1.20.1.phar');
-        $sigUrl = new PharUrl('https://example.com/foo-1.20.1.phar.asc');
-        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
-        $file = new File(new Filename('foo.phar'), 'bar');
-        $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('1.20.1'), new ExactVersionConstraint('1.20.1'));
-
-        $phar = new Phar('foo', new Version('1.20.1'), $file);
+        $release = $this->getReleaseMock();
+        $release->method('getName')->willReturn($name);
+        $release->method('getVersion')->willReturn($version);
 
         $registry = $this->getPharRegistryMock();
-        $registry->method('hasPhar')
-            ->with('foo', new Version('1.20.1'))
-            ->willReturn(true);
-        $registry->method('getPhar')
-            ->with('foo', new Version('1.20.1'))
-            ->willReturn($phar);
-        $registry->expects($this->once())->method('addUsage')
-            ->with($phar, new Filename('/tmp/foo'));
-
-        $installer = $this->getPharInstallerMock();
-        $installer->expects($this->once())
-            ->method('install')
-            ->with($file, new Filename('/tmp/foo'), true);
-
-        $directory = $this->getDirectoryMock();
-        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
-
-        $releases = $this->getReleasesCollectionMock();
-        $releases->method('getLatest')->willReturn($release);
-
-        $repository = $this->getSourceRepositoryMock();
-        $repository->method('getReleasesByRequestedPhar')->willReturn($releases);
-
-        $resolver = $this->getAliasResolverServiceMock();
-        $resolver->method('resolve')->willReturn($repository);
-
-        $service = new PharService(
-            $this->getPharDownloaderMock(), $installer, $registry, $resolver,
-            $this->getOutputMock()
-        );
-
-        $service->install($requestedPhar, $directory, true);
-    }
-
-    public function testUpdate() {
-        $url = new PharUrl('https://example.com/foo-1.20.1.phar');
-        $sigUrl = new PharUrl('https://example.com/foo-1.20.1.phar');
-        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
-        $file = new File(new Filename('foo.phar'), 'bar');
-        $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('1.20.1'), new ExactVersionConstraint('1.20.1'));
-
-        $phar = new Phar('foo', new Version('1.20.1'), $file);
-
-        $registry = $this->getPharRegistryMock();
-        $registry->method('hasPhar')
-            ->with('foo', new Version('1.20.1'))
-            ->willReturn(true);
-        $registry->method('getPhar')
-            ->with('foo', new Version('1.20.1'))
-            ->willReturn($phar);
         $registry->expects($this->once())
-            ->method('addUsage')
-            ->with($phar, new Filename('/tmp/foo'));
-
-        $installer = $this->getPharInstallerMock();
-        $installer->expects($this->once())
-            ->method('install')
-            ->with($file, new Filename('/tmp/foo'), false);
-
-        $filename = new Filename('/tmp/foo');
-
-        $currentVersion = new Version('0.0.0');
-
-        $releases = $this->getReleasesCollectionMock();
-        $releases->method('getLatest')->willReturn($release);
-
-        $repository = $this->getSourceRepositoryMock();
-        $repository->method('getReleasesByRequestedPhar')->willReturn($releases);
-
-        $resolver = $this->getAliasResolverServiceMock();
-        $resolver->method('resolve')->willReturn($repository);
-
-        $service = new PharService(
-            $this->getPharDownloaderMock(), $installer, $registry, $resolver,
-            $this->getOutputMock()
-        );
-
-        $service->update($requestedPhar, $filename, $currentVersion);
-    }
-
-    public function testInstallHandlesDownloadFailedException() {
-        $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
-        $sigUrl = new PharUrl('https://example.com/phpunit-5.2.10.phar.asc');
-        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
-        $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('5.2.10'), new ExactVersionConstraint('5.2.10'));
-
-        $registry = $this->getPharRegistryMock();
-        $registry->method('hasPhar')->willReturn(false);
+            ->method('hasPhar')
+            ->with($name, $version)
+            ->willReturn(true);
+        $registry->expects($this->once())
+            ->method('getPhar')
+            ->with($name, $version)
+            ->willReturn($phar);
 
         $downloader = $this->getPharDownloaderMock();
-        $downloader->method('download')->willThrowException(new DownloadFailedException());
 
-        $output = $this->getOutputMock();
-        $output->expects($this->never())->method('writeError');
+        $downloader->expects($this->never())
+            ->method('download');
 
-        $installer = $this->getPharInstallerMock();
-        $installer->expects($this->never())->method('install');
-
-        $directory = $this->getDirectoryMock();
-        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
-
-        $releases = $this->getReleasesCollectionMock();
-        $releases->method('getLatest')->willReturn($release);
-
-        $repository = $this->getSourceRepositoryMock();
-        $repository->method('getReleasesByRequestedPhar')->willReturn($releases);
-
-        $resolver = $this->getAliasResolverServiceMock();
-        $resolver->method('resolve')->willReturn($repository);
-
-        $this->expectException(DownloadFailedException::class);
-
-        $service = new PharService(
-            $downloader, $installer, $registry, $resolver, $output
-        );
-
-        $service->install($requestedPhar, $directory, false);
+        $service = new PharService($registry, $downloader);
+        $this->assertSame($phar, $service->getPharFromRelease($release));
     }
 
-    public function testInstallHandlesPharRegistryException() {
-        $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
-        $sigUrl = new PharUrl('https://example.com/phpunit-5.2.10.phar.asc');
-        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
-        $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('5.2.10'), new ExactVersionConstraint('5.2.10'));
+    public function testDownloadsPharIfNotPresentInRegistry()
+    {
+        $phar = $this->getPharMock();
+        $name = 'some Phar';
+        $version = new Version('1.0.0');
+
+        $release = $this->getReleaseMock();
+        $release->method('getName')->willReturn($name);
+        $release->method('getVersion')->willReturn($version);
 
         $registry = $this->getPharRegistryMock();
-        $registry->method('hasPhar')->willReturn(true);
-        $registry->method('getPhar')->willThrowException(new PharRegistryException());
-
-        $output = $this->getOutputMock();
-        $output->expects($this->never())->method('writeError');
-
-        $installer = $this->getPharInstallerMock();
-        $installer->expects($this->never())->method('install');
-
-        $directory = $this->getDirectoryMock();
-        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
-
-        $releases = $this->getReleasesCollectionMock();
-        $releases->method('getLatest')->willReturn($release);
-
-        $repository = $this->getSourceRepositoryMock();
-        $repository->method('getReleasesByRequestedPhar')->willReturn($releases);
-
-        $resolver = $this->getAliasResolverServiceMock();
-        $resolver->method('resolve')->willReturn($repository);
-
-        $service = new PharService(
-            $this->getPharDownloaderMock(), $installer, $registry, $resolver, $output
-        );
-
-        $this->expectException(PharRegistryException::class);
-
-        $service->install($requestedPhar, $directory, false);
-    }
-
-    public function testInstallHandlesVerificationFailedException() {
-        $url = new PharUrl('https://example.com/phpunit-5.2.10.phar');
-        $sigUrl = new PharUrl('https://example.com/phpunit-5.2.10.phar.asc');
-        $release = new Release('foo', new Version('1.20.1'), $url, $sigUrl);
-        $requestedPhar = new RequestedPhar($url, new ExactVersionConstraint('5.2.10'), new ExactVersionConstraint('5.2.10'));
-
-        $registry = $this->getPharRegistryMock();
-        $registry->method('hasPhar')->willReturn(false);
+        $registry->expects($this->once())
+            ->method('hasPhar')
+            ->with($name, $version)
+            ->willReturn(false);
 
         $downloader = $this->getPharDownloaderMock();
-        $downloader->method('download')->willThrowException(new VerificationFailedException());
 
-        $output = $this->getOutputMock();
-        $output->expects($this->never())->method('writeError');
+        $downloader->expects($this->once())
+            ->method('download')
+            ->with($release)
+            ->willReturn($phar);
 
-        $installer = $this->getPharInstallerMock();
-        $installer->expects($this->never())->method('install');
-
-        $directory = $this->getDirectoryMock();
-        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
-
-        $this->expectException(VerificationFailedException::class);
-
-        $releases = $this->getReleasesCollectionMock();
-        $releases->method('getLatest')->willReturn($release);
-
-        $repository = $this->getSourceRepositoryMock();
-        $repository->method('getReleasesByRequestedPhar')->willReturn($releases);
-
-        $resolver = $this->getAliasResolverServiceMock();
-        $resolver->method('resolve')->willReturn($repository);
-
-        $service = new PharService(
-            $downloader, $installer, $registry, $resolver, $output
-        );
-
-        $service->install($requestedPhar, $directory, false);
-    }
-
-    public function testInstallHandlesResolveException() {
-        $requestedPhar = new RequestedPhar(new PharAlias('phpunit'), new AnyVersionConstraint(), new AnyVersionConstraint());
-
-        $resolver = $this->getAliasResolverServiceMock();
-        $resolver->method('resolve')
-            ->willThrowException(new ResolveException());
-
-        $output = $this->getOutputMock();
-        $output->expects($this->never())->method('writeError');
-
-        $installer = $this->getPharInstallerMock();
-        $installer->expects($this->never())->method('install');
-
-        $directory = $this->getDirectoryMock();
-        $directory->method('file')->willReturn(new Filename('/tmp/foo'));
-
-        $this->expectException(ResolveException::class);
-
-        $service = new PharService(
-            $this->getPharDownloaderMock(), $installer, $this->getPharRegistryMock(), $resolver, $output
-        );
-
-        $service->install($requestedPhar, $directory, false);
+        $service = new PharService($registry, $downloader);
+        $this->assertSame($phar, $service->getPharFromRelease($release));
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     * @return PHPUnit_Framework_MockObject_MockObject|Phar
      */
-    private function getDirectoryMock() {
-        return $this->createMock(Directory::class);
+    private function getPharMock()
+    {
+        return $this->createMock(Phar::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharDownloader
+     * @return PHPUnit_Framework_MockObject_MockObject|Release
      */
-    private function getPharDownloaderMock() {
-        return $this->createMock(PharDownloader::class);
+    private function getReleaseMock()
+    {
+        return $this->createMock(Release::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharInstaller
+     * @return PHPUnit_Framework_MockObject_MockObject|PharRegistry
      */
-    private function getPharInstallerMock() {
-        return $this->createMock(PharInstaller::class);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
-     */
-    private function getPharRegistryMock() {
+    private function getPharRegistryMock()
+    {
         return $this->createMock(PharRegistry::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPharResolverService
+     * @return PHPUnit_Framework_MockObject_MockObject|PharDownloader
      */
-    private function getAliasResolverServiceMock() {
-        return $this->createMock(RequestedPharResolverService::class);
+    private function getPharDownloaderMock()
+    {
+        return $this->createMock(PharDownloader::class);
     }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
-     */
-    private function getOutputMock() {
-        return $this->createMock(Cli\Output::class);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|SourceRepository
-     */
-    private function getSourceRepositoryMock() {
-        return $this->createMock(SourceRepository::class);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|ReleaseCollection
-     */
-    private function getReleasesCollectionMock() {
-        return $this->createMock(ReleaseCollection::class);
-    }
-
 }
-
-
-

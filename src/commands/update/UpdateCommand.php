@@ -1,8 +1,6 @@
 <?php
 namespace PharIo\Phive;
 
-use PharIo\Version\Version;
-
 class UpdateCommand implements Cli\Command {
 
     /**
@@ -11,78 +9,63 @@ class UpdateCommand implements Cli\Command {
     private $config;
 
     /**
-     * @var PharService
+     * @var InstallService
      */
-    private $pharService;
+    private $installService;
+
+    /**
+     * @var RequestedPharResolverService
+     */
+    private $pharResolver;
 
     /**
      * @var PhiveXmlConfig
      */
-    private $phiveXmlConfig;
+    private $phiveXml;
 
     /**
      * @param UpdateCommandConfig $updateCommandConfig
-     * @param PharService         $pharService
-     * @param PhiveXmlConfig      $phiveXmlConfig
+     * @param InstallService $installService
+     * @param RequestedPharResolverService $pharResolver
+     * @param PhiveXmlConfig $phiveXml
      */
     public function __construct(
         UpdateCommandConfig $updateCommandConfig,
-        PharService $pharService,
-        PhiveXmlConfig $phiveXmlConfig
+        InstallService $installService,
+        RequestedPharResolverService $pharResolver,
+        PhiveXmlConfig $phiveXml
     ) {
         $this->config = $updateCommandConfig;
-        $this->pharService = $pharService;
-        $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->installService = $installService;
+        $this->pharResolver = $pharResolver;
+        $this->phiveXml = $phiveXml;
     }
 
     public function execute() {
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
-            if (!$requestedPhar->hasAlias()) {
-                continue;
-            }
+            $release = $this->resolveToRelease($requestedPhar);
 
-            $installedPhar = $this->installOrUpdate($requestedPhar);
-
-            if (null === $installedPhar) {
-                continue;
-            }
-
-            $this->phiveXmlConfig->addPhar($installedPhar);
+            $this->installService->execute(
+                $release,
+                $requestedPhar->getVersionConstraint(),
+                $this->phiveXml->getPharLocation($release->getName()),
+                false
+            );
         }
     }
 
     /**
      * @param RequestedPhar $requestedPhar
      *
-     * @return InstalledPhar|null
+     * @return Release
      */
-    private function install(RequestedPhar $requestedPhar) {
-        $targetDirectory = $this->config->getTargetDirectory();
-        return $this->pharService->install($requestedPhar, $targetDirectory, false);
+    private function resolveToRelease(RequestedPhar $requestedPhar) {
+        $repository = $this->pharResolver->resolve($requestedPhar);
+        $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
+
+        return $releases->getLatest($requestedPhar->getVersionConstraint());
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     * @param Version       $currentVersion
-     *
-     * @return InstalledPhar|null
-     */
-    private function update(RequestedPhar $requestedPhar, Version $currentVersion) {
-        $location = $this->phiveXmlConfig->getPharLocation($requestedPhar->getAlias()->asString());
-        return $this->pharService->update($requestedPhar, $location, $currentVersion);
-    }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return null|InstalledPhar
-     */
-    private function installOrUpdate(RequestedPhar $requestedPhar) {
-        if (!$this->phiveXmlConfig->isPharInstalled($requestedPhar)) {
-            return $this->install($requestedPhar);
-        }
-        $currentVersion = $this->phiveXmlConfig->getPharVersion($requestedPhar);
-        return $this->update($requestedPhar, $currentVersion);
-    }
 
 }
