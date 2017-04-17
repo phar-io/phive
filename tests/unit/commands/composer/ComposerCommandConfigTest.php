@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli\Options;
 
 /**
- * @covers PharIo\Phive\ComposerCommandConfig
+ * @covers \PharIo\Phive\ComposerCommandConfig
  */
 class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
 
@@ -19,30 +19,12 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $commandConfig = new ComposerCommandConfig(
             $this->getOptionsMock(),
             $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
             $locator,
             $directory
         );
 
         $this->assertSame($directory, $commandConfig->getTargetDirectory());
-    }
-
-    /**
-     * @dataProvider boolProvider
-     *
-     * @param bool $value
-     */
-    public function testInstallGlobally($value) {
-        $options = $this->getOptionsMock();
-        $options->method('hasOption')->with('global')->willReturn($value);
-
-        $commandConfig = new ComposerCommandConfig(
-            $options,
-            $this->getPhiveXmlConfigMock(),
-            $this->getTargetDirectoryLocatorMock(),
-            $this->getDirectoryMock()
-        );
-
-        $this->assertSame($value, $commandConfig->installGlobally());
     }
 
     /**
@@ -64,6 +46,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $commandConfig = new ComposerCommandConfig(
             $options,
             $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
             $this->getTargetDirectoryLocatorMock(),
             $this->getDirectoryMock()
         );
@@ -90,6 +73,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $commandConfig = new ComposerCommandConfig(
             $options,
             $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
             $this->getTargetDirectoryLocatorMock(),
             $this->getDirectoryMock()
         );
@@ -106,6 +90,7 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $commandConfig = new ComposerCommandConfig(
             $this->getOptionsMock(),
             $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
             $this->getTargetDirectoryLocatorMock(),
             $directory
         );
@@ -162,6 +147,13 @@ class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
      */
     private function getTargetDirectoryLocatorMock() {
         return $this->createMock(TargetDirectoryLocator::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     */
+    private function getEnvironmentMock() {
+        return $this->createMock(Environment::class);
     }
 
 }

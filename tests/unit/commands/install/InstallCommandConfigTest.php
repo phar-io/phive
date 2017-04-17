@@ -18,7 +18,12 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $locator = $this->getTargetDirectoryLocatorMock();
         $locator->method('getTargetDirectory')->willReturn($directory);
 
-        $commandConfig = new InstallCommandConfig($this->getOptionsMock(), $this->getPhiveXmlConfigMock(), $locator);
+        $commandConfig = new InstallCommandConfig(
+            $this->getOptionsMock(),
+            $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
+            $locator
+        );
 
         $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
@@ -43,28 +48,12 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
         $commandConfig = new InstallCommandConfig(
             $options,
             $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
             $this->getTargetDirectoryLocatorMock(),
             $this->getDirectoryMock()
         );
 
         $this->assertSame($expected, $commandConfig->makeCopy());
-    }
-
-
-    /**
-     * @dataProvider boolProvider
-     *
-     * @param $switch
-     */
-    public function testInstallGlobally($switch) {
-        $options = $this->getOptionsMock();
-        $options->expects($this->once())
-            ->method('hasOption')
-            ->with('global')
-            ->willReturn($switch);
-
-        $commandConfig = new InstallCommandConfig($options, $this->getPhiveXmlConfigMock(), $this->getTargetDirectoryLocatorMock());
-        $this->assertSame($switch, $commandConfig->installGlobally());
     }
 
     public function testGetRequestedPharsFromPhiveXmlConfig() {
@@ -86,7 +75,12 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             new RequestedPhar(new PharAlias('Some Other Phar'), new ExactVersionConstraint('1.2.3'), new ExactVersionConstraint('1.2.3'))
         ];
 
-        $commandConfig = new InstallCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
+        $commandConfig = new InstallCommandConfig(
+            $options,
+            $phiveXmlConfig,
+            $this->getEnvironmentMock(),
+            $this->getTargetDirectoryLocatorMock()
+        );
         $this->assertEquals($expectedPhars, $commandConfig->getRequestedPhars());
     }
 
@@ -110,7 +104,12 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             new RequestedPhar(new PharAlias('phpab'), new ExactVersionConstraint('1.12.0'), new ExactVersionConstraint('1.12.0')),
         ];
 
-        $commandConfig = new InstallCommandConfig($options, $this->getPhiveXmlConfigMock(), $this->getTargetDirectoryLocatorMock());
+        $commandConfig = new InstallCommandConfig(
+            $options,
+            $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
+            $this->getTargetDirectoryLocatorMock()
+        );
         $this->assertEquals($expected, $commandConfig->getRequestedPhars());
     }
 
@@ -125,7 +124,13 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
             ->method('hasOption')
             ->willReturn($switch);
 
-        $config = new InstallCommandConfig($options, $this->getPhiveXmlConfigMock(), $this->getTargetDirectoryLocatorMock());
+        $config = new InstallCommandConfig(
+            $options,
+            $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
+            $this->getTargetDirectoryLocatorMock()
+        );
+
         $this->assertSame($switch, $config->doNotAddToPhiveXml());
     }
     
@@ -166,6 +171,13 @@ class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
      */
     private function getPhiveXmlConfigMock() {
         return $this->createMock(PhiveXmlConfig::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     */
+    private function getEnvironmentMock() {
+        return $this->createMock(Environment::class);
     }
 
 }

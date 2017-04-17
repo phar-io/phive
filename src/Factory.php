@@ -114,10 +114,11 @@ class Factory {
             new InstallCommandConfig(
                 $this->request->parse(new InstallContext()),
                 $this->getPhiveXmlConfig(),
+                $this->getEnvironment(),
                 $this->getTargetDirectoryLocator()
             ),
             $this->getInstallService(),
-            $this->getEnvironment(),
+
             $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
         );
     }
@@ -171,13 +172,13 @@ class Factory {
             new ComposerCommandConfig(
                 $this->request->parse(new ComposerContext()),
                 $this->getPhiveXmlConfig(),
+                $this->getEnvironment(),
                 $this->getTargetDirectoryLocator(),
                 $this->getEnvironment()->getWorkingDirectory()
             ),
             $this->getComposerService(),
             $this->getInstallService(),
             $this->getPhiveXmlConfig(),
-            $this->getEnvironment(),
             $this->getConsoleInput(),
             $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
         );

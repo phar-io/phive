@@ -6,7 +6,7 @@ class DirectUrlResolver extends AbstractRequestedPharResolver {
     /**
      * @param RequestedPhar $requestedPhar
      *
-     * @return UrlRepository
+     * @return SourceRepository
      */
     public function resolve(RequestedPhar $requestedPhar) {
         if (!$requestedPhar->hasUrl()) {

@@ -20,18 +20,30 @@ class InstallCommandConfig {
     private $phiveXmlConfig;
 
     /**
+     * @var Environment
+     */
+    private $environment;
+
+    /**
      * @var TargetDirectoryLocator
      */
     private $targetDirectoryLocator;
 
     /**
-     * @param Cli\Options            $options
-     * @param PhiveXmlConfig         $phiveXmlConfig
+     * @param Cli\Options $options
+     * @param PhiveXmlConfig $phiveXmlConfig
+     * @param Environment $environment
      * @param TargetDirectoryLocator $targetDirectoryLocator
      */
-    public function __construct(Cli\Options $options, PhiveXmlConfig $phiveXmlConfig, TargetDirectoryLocator $targetDirectoryLocator) {
+    public function __construct(
+        Cli\Options $options,
+        PhiveXmlConfig $phiveXmlConfig,
+        Environment $environment,
+        TargetDirectoryLocator $targetDirectoryLocator
+    ) {
         $this->cliOptions = $options;
         $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->environment = $environment;
         $this->targetDirectoryLocator = $targetDirectoryLocator;
     }
 
@@ -41,6 +53,9 @@ class InstallCommandConfig {
      * @throws \PharIo\Phive\Cli\CommandOptionsException
      */
     public function getTargetDirectory() {
+        if ($this->installGlobally()) {
+            return new Directory(dirname($this->environment->getBinaryName()));
+        }
         return $this->targetDirectoryLocator->getTargetDirectory();
     }
 
@@ -117,7 +132,7 @@ class InstallCommandConfig {
     /**
      * @return bool
      */
-    public function installGlobally() {
+    private function installGlobally() {
         return $this->cliOptions->hasOption('global');
     }
 

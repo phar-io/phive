@@ -20,7 +20,6 @@ class ComposerCommand extends InstallCommand {
      * @param ComposerService $composerService
      * @param InstallService $installService
      * @param PhiveXmlConfig $phiveXmlConfig
-     * @param Environment $environment
      * @param Cli\Input $input
      * @param RequestedPharResolverService $pharResolver
      */
@@ -29,17 +28,16 @@ class ComposerCommand extends InstallCommand {
         ComposerService $composerService,
         InstallService $installService,
         PhiveXmlConfig $phiveXmlConfig,
-        Environment $environment,
         Cli\Input $input,
         RequestedPharResolverService $pharResolver
     ) {
-        parent::__construct($config, $installService, $environment, $pharResolver);
+        parent::__construct($config, $installService, $pharResolver);
         $this->composerService = $composerService;
         $this->input = $input;
     }
 
     public function execute() {
-        $targetDirectory = $this->getTargetDirectory();
+        $targetDirectory = $this->getConfig()->getTargetDirectory();
 
         foreach ($this->composerService->findCandidates($this->getConfig()->getComposerFilename()) as $candidate) {
             if (!$this->input->confirm(sprintf('Install %s ?', $candidate->asString()))) {

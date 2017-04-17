@@ -16,11 +16,6 @@ class InstallCommand implements Cli\Command {
     private $installService;
 
     /**
-     * @var Environment
-     */
-    private $environment;
-
-    /**
      * @var RequestedPharResolverService
      */
     private $pharResolver;
@@ -28,23 +23,20 @@ class InstallCommand implements Cli\Command {
     /**
      * @param InstallCommandConfig $config
      * @param InstallService $installService
-     * @param Environment $environment
      * @param RequestedPharResolverService $pharResolver
      */
     public function __construct(
         InstallCommandConfig $config,
         InstallService $installService,
-        Environment $environment,
         RequestedPharResolverService $pharResolver
     ) {
         $this->config = $config;
         $this->installService = $installService;
-        $this->environment = $environment;
         $this->pharResolver = $pharResolver;
     }
 
     public function execute() {
-        $targetDirectory = $this->getTargetDirectory();
+        $targetDirectory = $this->getConfig()->getTargetDirectory();
 
         foreach ($this->getConfig()->getRequestedPhars() as $requestedPhar) {
             $this->installRequestedPhar($requestedPhar, $targetDirectory);
@@ -53,7 +45,7 @@ class InstallCommand implements Cli\Command {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory     $targetDirectory
+     * @param Directory $targetDirectory
      */
     protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory) {
 
@@ -87,16 +79,6 @@ class InstallCommand implements Cli\Command {
             return $requestedPhar->getLocation();
         }
         return $destination->file($pharName);
-    }
-
-    /**
-     * @return Directory
-     */
-    protected function getTargetDirectory() {
-        if ($this->getConfig()->installGlobally()) {
-            return new Directory(dirname($this->environment->getBinaryName()));
-        }
-        return $this->getConfig()->getTargetDirectory();
     }
 
     /**

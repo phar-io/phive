@@ -75,6 +75,10 @@ class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSupportsColoredOutput($commandExitCode, $commandOutput, $expectedResult) {
 
+        if (!function_exists('posix_isatty') || !posix_isatty(STDOUT)) {
+            $this->markTestSkipped('requires tty');
+        }
+
         $result = new ExecutorResult('tput', [$commandOutput], $commandExitCode);
         $executor = $this->getExecutorMock();
         $executor->method('execute')->willReturn($result);

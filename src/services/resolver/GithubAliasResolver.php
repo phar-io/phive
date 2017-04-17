@@ -18,7 +18,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
     /**
      * @param RequestedPhar $requestedPhar
      *
-     * @return GithubRepository
+     * @return SourceRepository
      */
     public function resolve(RequestedPhar $requestedPhar) {
         if (!$requestedPhar->hasAlias()) {
