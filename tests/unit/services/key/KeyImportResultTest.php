@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\KeyImportResult
+ * @covers \PharIo\Phive\KeyImportResult
  */
-class KeyImportResultTest extends \PHPUnit_Framework_TestCase {
+class KeyImportResultTest extends TestCase {
 
     use ScalarTestDataProvider;
 

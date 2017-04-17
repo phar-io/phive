@@ -3,11 +3,12 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\CommandOptionsException;
 use PharIo\Phive\Cli\Options;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\Cli\Options
+ * @covers \PharIo\Phive\Cli\Options
  */
-class OptionsTest extends \PHPUnit_Framework_TestCase {
+class OptionsTest extends TestCase {
 
     /**
      * @var Options

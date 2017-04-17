@@ -1,7 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
-class GnupgKeyImporterTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class GnupgKeyImporterTest extends TestCase {
 
     public function testImport() {
         $gnupg = $this->prophesize(\Gnupg::class);

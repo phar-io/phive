@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Options;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\TargetDirectoryLocator
+ * @covers \PharIo\Phive\TargetDirectoryLocator
  */
-class TargetDirectoryLocatorTest extends \PHPUnit_Framework_TestCase {
+class TargetDirectoryLocatorTest extends TestCase {
 
     public function testGetTargetDirectoryReturnsDefault() {
         $directory = $this->getDirectoryMock();

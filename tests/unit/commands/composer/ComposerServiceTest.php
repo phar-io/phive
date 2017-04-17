@@ -3,12 +3,13 @@ namespace PharIo\Phive;
 
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @covers \PharIo\Phive\ComposerService
  */
-class ComposerServiceTest extends \PHPUnit_Framework_TestCase {
+class ComposerServiceTest extends TestCase {
 
     public function testFindCandidatesReturnsExpectedPhars() {
         $filename = new Filename(__DIR__ . '/fixtures/composer.json');

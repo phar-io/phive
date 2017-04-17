@@ -1,12 +1,13 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * @covers PharIo\Phive\GnupgSignatureVerifier
+ * @covers \PharIo\Phive\GnupgSignatureVerifier
  */
-class GnupgSignatureVerifierTest extends \PHPUnit_Framework_TestCase {
+class GnupgSignatureVerifierTest extends TestCase {
 
     /**
      * @var \Gnupg|ObjectProphecy

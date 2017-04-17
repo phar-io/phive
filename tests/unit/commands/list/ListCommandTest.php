@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Output;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\ListCommand
+ * @covers \PharIo\Phive\ListCommand
  */
-class ListCommandTest extends \PHPUnit_Framework_TestCase {
+class ListCommandTest extends TestCase {
 
     public function testWritesExpectedAliasesToOutput() {
         $sourcesList = $this->getSourcesListMock();

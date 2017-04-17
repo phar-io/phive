@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\Phar
+ * @covers \PharIo\Phive\Phar
  */
-class PharTest extends \PHPUnit_Framework_TestCase {
+class PharTest extends TestCase {
 
     use ScalarTestDataProvider;
 

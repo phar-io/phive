@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\Filename
+ * @covers \PharIo\Phive\Filename
  */
-class FilenameTest extends \PHPUnit_Framework_TestCase {
+class FilenameTest extends TestCase {
 
     public function testCanBeConvertedToString() {
         $this->assertEquals(

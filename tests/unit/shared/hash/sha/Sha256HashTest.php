@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\Sha256Hash
+ * @covers \PharIo\Phive\Sha256Hash
  */
-class Sha256HashTest extends \PHPUnit_Framework_TestCase {
+class Sha256HashTest extends TestCase {
 
     public static function invalidHashProvider() {
         return [

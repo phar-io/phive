@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\GnupgVerificationResult
+ * @covers \PharIo\Phive\GnupgVerificationResult
  */
-class GnupgVerificationResultTest extends \PHPUnit_Framework_TestCase {
+class GnupgVerificationResultTest extends TestCase {
 
     /**
      * @dataProvider knownKeyProvider

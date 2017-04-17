@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\BatPharActivator
+ * @covers \PharIo\Phive\BatPharActivator
  */
-class BatPharActivatorTest extends \PHPUnit_Framework_TestCase {
+class BatPharActivatorTest extends TestCase {
 
     public function testCreatesExpectedBatFile() {
         $activator = new BatPharActivator('foo ##PHAR_FILENAME## bar');

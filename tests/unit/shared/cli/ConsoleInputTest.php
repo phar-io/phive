@@ -3,11 +3,12 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\ConsoleInput;
 use PharIo\Phive\Cli\Output;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\Cli\ConsoleInput
+ * @covers \PharIo\Phive\Cli\ConsoleInput
  */
-class ConsoleInputTest extends \PHPUnit_Framework_TestCase {
+class ConsoleInputTest extends TestCase {
 
     use ScalarTestDataProvider;
 

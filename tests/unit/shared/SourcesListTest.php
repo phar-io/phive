@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\AnyVersionConstraint;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\SourcesList
+ * @covers \PharIo\Phive\SourcesList
  */
-class SourcesListTest extends \PHPUnit_Framework_TestCase {
+class SourcesListTest extends TestCase {
 
     public function testThrowsExceptionForUnknownAlias() {
         $this->expectException(SourcesListException::class);

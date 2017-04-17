@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\LocalSslCertificate
+ * @covers \PharIo\Phive\LocalSslCertificate
  */
-class LocalSslCertificateTest extends \PHPUnit_Framework_TestCase {
+class LocalSslCertificateTest extends TestCase {
 
     public function testGetHostname() {
         $certificate = new LocalSslCertificate('example.com', __DIR__ . '/fixtures/foo.pem');

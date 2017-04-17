@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Options;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\ComposerCommandConfig
  */
-class ComposerCommandConfigTest extends \PHPUnit_Framework_TestCase {
+class ComposerCommandConfigTest extends TestCase {
 
     use ScalarTestDataProvider;
 

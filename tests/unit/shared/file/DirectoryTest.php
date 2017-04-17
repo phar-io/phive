@@ -1,11 +1,13 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\Directory
- * @uses   PharIo\Phive\DirectoryException
+ * @covers \PharIo\Phive\Directory
+ * @uses   \PharIo\Phive\DirectoryException
  */
-class DirectoryTest extends \PHPUnit_Framework_TestCase {
+class DirectoryTest extends TestCase {
 
     private $testDir;
 

@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\GithubRepository
  */
-class GithubRepositoryTest extends \PHPUnit_Framework_TestCase {
+class GithubRepositoryTest extends TestCase {
 
     public function testReturnsExpectedReleases() {
         $pharAlias = $this->getPharAliasMock();

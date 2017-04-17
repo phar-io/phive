@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\PharIoRepository
  */
-class PharIoRepositoryTest extends \PHPUnit_Framework_TestCase {
+class PharIoRepositoryTest extends TestCase {
 
     public function testReturnsExpectedReleases() {
         $releaseNode1 = $this->getReleaseNodeMock(

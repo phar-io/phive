@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers \PharIo\Phive\WindowsEnvironment
  */
-class WindowsEnvironmentTest extends \PHPUnit_Framework_TestCase {
+class WindowsEnvironmentTest extends TestCase {
 
 
     public function testSupportsColoredOutputReturnsFalse() {

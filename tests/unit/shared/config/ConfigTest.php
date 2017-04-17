@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Options;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\Config
+ * @covers \PharIo\Phive\Config
  */
-class ConfigTest extends \PHPUnit_Framework_TestCase {
+class ConfigTest extends TestCase {
 
     public function testGetHomeDirectory() {
         $homeDirectory = $this->getDirectoryMock();

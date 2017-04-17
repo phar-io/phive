@@ -1,11 +1,13 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\StaticPhiveVersion
- * @covers PharIo\Phive\PhiveVersion
+ * @covers \PharIo\Phive\StaticPhiveVersion
+ * @covers \PharIo\Phive\PhiveVersion
  */
-class StaticPhiveVersionTest extends \PHPUnit_Framework_TestCase {
+class StaticPhiveVersionTest extends TestCase {
 
     public function testGetVersionString() {
         $version = new StaticPhiveVersion('4.2.1');

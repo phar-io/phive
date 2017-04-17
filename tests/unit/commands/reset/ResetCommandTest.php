@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\ResetCommand
+ * @covers \PharIo\Phive\ResetCommand
  */
-class ResetCommandTest extends \PHPUnit_Framework_TestCase {
+class ResetCommandTest extends TestCase {
 
     public function testInstallsExpectedPhars() {
         $pharRegistry = $this->getPharRegistryMock();

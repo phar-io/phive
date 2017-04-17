@@ -1,11 +1,13 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\GitAwarePhiveVersion
- * @covers PharIo\Phive\PhiveVersion
+ * @covers \PharIo\Phive\GitAwarePhiveVersion
+ * @covers \PharIo\Phive\PhiveVersion
  */
-class GitAwarePhiveVersionTest extends \PHPUnit_Framework_TestCase {
+class GitAwarePhiveVersionTest extends TestCase {
 
     public function testGetVersionStringReturnsTagFromGit() {
         $git = $this->getGitMock();

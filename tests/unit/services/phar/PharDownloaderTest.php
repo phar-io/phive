@@ -2,12 +2,13 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * @covers PharIo\Phive\PharDownloader
+ * @covers \PharIo\Phive\PharDownloader
  */
-class PharDownloaderTest extends \PHPUnit_Framework_TestCase {
+class PharDownloaderTest extends TestCase {
 
     /**
      * @var FileDownloader|ObjectProphecy

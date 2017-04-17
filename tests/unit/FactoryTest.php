@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Request;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\Factory
+ * @covers \PharIo\Phive\Factory
  */
-class FactoryTest extends \PHPUnit_Framework_TestCase {
+class FactoryTest extends TestCase {
 
     /**
      * @dataProvider factoryMethodProvider

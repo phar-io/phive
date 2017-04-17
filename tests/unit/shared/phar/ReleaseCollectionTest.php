@@ -3,11 +3,12 @@ namespace PharIo\Phive;
 
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\ReleaseCollection
+ * @covers \PharIo\Phive\ReleaseCollection
  */
-class ReleaseCollectionTest extends \PHPUnit_Framework_TestCase {
+class ReleaseCollectionTest extends TestCase {
 
     public function testAdd() {
         $releases = new ReleaseCollection();

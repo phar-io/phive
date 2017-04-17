@@ -1,7 +1,9 @@
 <?php
 namespace PharIo\Phive\IntegrationTests;
 
-class IntegrationTestCase extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class IntegrationTestCase extends TestCase {
 
     public function getFactory() {
         return new IntegrationTestFactory();

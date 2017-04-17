@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Options;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\RemoveCommandConfig
+ * @covers \PharIo\Phive\RemoveCommandConfig
  */
-class RemoveCommandConfigTest extends \PHPUnit_Framework_TestCase {
+class RemoveCommandConfigTest extends TestCase {
 
     public function testGetTargetDirectory() {
         $directory = $this->getDirectoryMock();

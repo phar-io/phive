@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\KeyService
+ * @covers \PharIo\Phive\KeyService
  */
-class KeyServiceTest extends \PHPUnit_Framework_TestCase {
+class KeyServiceTest extends TestCase {
 
     public function testInvokesImporter() {
         $input = $this->getInputMock();

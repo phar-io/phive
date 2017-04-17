@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers \PharIo\Phive\Url
  */
-class UrlTest extends \PHPUnit_Framework_TestCase {
+class UrlTest extends TestCase {
 
     /**
      * @dataProvider invalidUriProvider

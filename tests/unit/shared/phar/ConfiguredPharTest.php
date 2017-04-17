@@ -3,11 +3,12 @@ namespace PharIo\Phive;
 
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\ConfiguredPhar
  */
-class ConfiguredPharTest  extends \PHPUnit_Framework_TestCase {
+class ConfiguredPharTest  extends TestCase {
     public function testGetName() {
         $name = 'somePhar';
         $configuredPhar = new ConfiguredPhar($name, $this->getVersionConstraintMock());

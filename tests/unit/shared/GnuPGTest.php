@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers \PharIo\Phive\GnuPG
  */
-class GnuPGTest extends \PHPUnit_Framework_TestCase {
+class GnuPGTest extends TestCase {
 
     /**
      * @dataProvider importExecutionResultProvider

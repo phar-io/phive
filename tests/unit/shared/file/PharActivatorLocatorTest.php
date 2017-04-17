@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\PharActivatorLocator
+ * @covers \PharIo\Phive\PharActivatorLocator
  */
-class PharActivatorLocatorTest extends \PHPUnit_Framework_TestCase {
+class PharActivatorLocatorTest extends TestCase {
 
     /**
      * @dataProvider returnsExpectedActivatorDataProvider

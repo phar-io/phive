@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Output;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\HelpCommand
+ * @covers \PharIo\Phive\HelpCommand
  */
-class HelpCommandTest extends \PHPUnit_Framework_TestCase {
+class HelpCommandTest extends TestCase {
 
     public function testWritesExpectedTextToOutput() {
         $output = $this->getOutputMock();

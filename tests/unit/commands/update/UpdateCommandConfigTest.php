@@ -4,11 +4,12 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli\Options;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\UpdateCommandConfig
  */
-class UpdateCommandConfigTest extends \PHPUnit_Framework_TestCase {
+class UpdateCommandConfigTest extends TestCase {
 
     use ScalarTestDataProvider;
 

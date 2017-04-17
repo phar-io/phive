@@ -1,19 +1,21 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\UnixoidEnvironment
- * @covers PharIo\Phive\Environment
+ * @covers \PharIo\Phive\UnixoidEnvironment
+ * @covers \PharIo\Phive\Environment
  */
-class UnixoidEnvironmentTest extends \PHPUnit_Framework_TestCase {
+class UnixoidEnvironmentTest extends TestCase {
 
     /**
      * @dataProvider hasProxyProvider
      *
-     * @param string $server
-     * @param bool   $expected
+     * @param array $server
+     * @param bool $expected
      */
-    public function testHasProxy($server, $expected) {
+    public function testHasProxy(array $server, $expected) {
         $env = new UnixoidEnvironment($server, $this->getExecutorMock());
         $this->assertSame($expected, $env->hasProxy());
     }

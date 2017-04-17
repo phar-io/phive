@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\File
+ * @covers \PharIo\Phive\File
  */
-class FileTest extends \PHPUnit_Framework_TestCase {
+class FileTest extends TestCase {
 
     /**
      * @dataProvider sha1HashProvider
@@ -56,7 +58,7 @@ class FileTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @uses PharIo\Phive\Filename
+     * @uses \PharIo\Phive\Filename
      */
     public function testSaveAs() {
         $target = sys_get_temp_dir() . '/testfile';

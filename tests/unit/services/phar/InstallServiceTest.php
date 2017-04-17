@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers \PharIo\Phive\InstallService
  */
-class InstallServiceTest extends \PHPUnit_Framework_TestCase {
+class InstallServiceTest extends TestCase {
 
     public function testService() {
         $this->markTestIncomplete('Needs to be rewritten');

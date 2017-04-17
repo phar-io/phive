@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\CurlConfig
+ * @covers \PharIo\Phive\CurlConfig
  */
-class CurlConfigTest extends \PHPUnit_Framework_TestCase {
+class CurlConfigTest extends TestCase {
 
     public function testPutsUserAgentInCurlOptArray() {
         $config = new CurlConfig('Some Agent');

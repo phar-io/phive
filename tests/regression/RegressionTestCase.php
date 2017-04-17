@@ -10,8 +10,9 @@ use PharIo\Phive\PhiveXmlConfig;
 use PharIo\Phive\XmlFile;
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraintParser;
+use PHPUnit\Framework\TestCase;
 
-class RegressionTestCase extends \PHPUnit_Framework_TestCase {
+class RegressionTestCase extends TestCase {
 
     private $pharSize = 0;
 

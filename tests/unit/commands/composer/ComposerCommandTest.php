@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers \PharIo\Phive\ComposerCommand
  */
-class ComposerCommandTest extends \PHPUnit_Framework_TestCase {
+class ComposerCommandTest extends TestCase {
 
     public function testCommand() {
         $this->markTestIncomplete('Needs to be rewritten');

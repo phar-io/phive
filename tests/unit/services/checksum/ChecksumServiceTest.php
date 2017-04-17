@@ -1,12 +1,13 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * @covers PharIo\Phive\ChecksumService
+ * @covers \PharIo\Phive\ChecksumService
  */
-class ChecksumServiceTest extends \PHPUnit_Framework_TestCase {
+class ChecksumServiceTest extends TestCase {
 
     public static function hashProvider() {
         return [

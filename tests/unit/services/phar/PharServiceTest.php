@@ -2,12 +2,13 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\PharService
  */
-class PharServiceTest extends \PHPUnit_Framework_TestCase {
+class PharServiceTest extends TestCase {
     public function testReturnsPharFromRegistryIfItExists() {
         $phar = $this->getPharMock();
         $name = 'some Phar';

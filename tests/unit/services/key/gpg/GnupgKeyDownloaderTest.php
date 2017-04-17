@@ -2,10 +2,11 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
-class GnupgKeyDownloaderTest extends \PHPUnit_Framework_TestCase {
+class GnupgKeyDownloaderTest extends TestCase {
 
     /**
      * @var Curl|ObjectProphecy

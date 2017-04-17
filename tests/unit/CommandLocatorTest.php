@@ -2,12 +2,13 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\MethodProphecy;
 
 /**
- * @covers PharIo\Phive\CommandLocator
+ * @covers \PharIo\Phive\CommandLocator
  */
-class CommandLocatorTest extends \PHPUnit_Framework_TestCase {
+class CommandLocatorTest extends TestCase {
 
     /**
      * @dataProvider commandProvider

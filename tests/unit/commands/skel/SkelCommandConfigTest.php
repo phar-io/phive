@@ -2,12 +2,13 @@
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
- * @covers PharIo\Phive\SkelCommandConfig
+ * @covers \PharIo\Phive\SkelCommandConfig
  */
-class SkelCommandConfigTest extends \PHPUnit_Framework_TestCase {
+class SkelCommandConfigTest extends TestCase {
 
     /**
      * @var CLI\Options|ObjectProphecy

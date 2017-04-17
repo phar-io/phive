@@ -5,11 +5,12 @@ use PharIo\Phive\Cli\Options;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\InstallCommandConfig
  */
-class InstallCommandConfigTest extends \PHPUnit_Framework_TestCase {
+class InstallCommandConfigTest extends TestCase {
 
     use ScalarTestDataProvider;
 

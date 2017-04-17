@@ -3,11 +3,12 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
 use PharIo\Version\Version;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\PurgeCommand
  */
-class PurgeCommandTest extends \PHPUnit_Framework_TestCase {
+class PurgeCommandTest extends TestCase {
 
     public function testInvokesRepository() {
         $repository = $this->getPharRegistryMock();

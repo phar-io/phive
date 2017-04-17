@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers \PharIo\Phive\HttpResponse
  */
-class HttpResponseTest extends \PHPUnit_Framework_TestCase {
+class HttpResponseTest extends TestCase {
 
     use ScalarTestDataProvider;
 

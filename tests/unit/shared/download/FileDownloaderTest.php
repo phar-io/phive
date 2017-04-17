@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @covers \PharIo\Phive\FileDownloader
  */
-class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
+class FileDownloaderTest extends TestCase {
 
     public function testDownloadThrowsExceptionIfResponseHttpCodeIsNot200() {
         $response = $this->getHttpResponseMock();
@@ -15,7 +17,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
 
         $this->expectException(DownloadFailedException::class);
 
-        $downloader = new FileDownloader($curl, $this->createMock(CacheBackend::class));
+        $downloader = new FileDownloader($curl, $this->getCacheBackendMock());
         $downloader->download(new Url('https://example.com/foo.phar'));
     }
 
@@ -29,7 +31,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
 
         $expected = new File(new Filename('foo.phar'), 'bar');
 
-        $downloader = new FileDownloader($curl, $this->createMock(CacheBackend::class));
+        $downloader = new FileDownloader($curl, $this->getCacheBackendMock());
         $actual = $downloader->download(new Url('https://example.com/foo.phar'));
 
         $this->assertEquals($expected, $actual);
@@ -48,7 +50,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
         $curl = $this->getCurlMock();
         $curl->method('get')->willReturn($response);
 
-        $cache = $this->createMock(CacheBackend::class);
+        $cache = $this->getCacheBackendMock();
         $cache->expects($this->once())->method('storeEntry')->with(
             $url, $etag, 'bar'
         );
@@ -67,7 +69,7 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
         $curl->method('get')->willReturn($response);
 
 
-        $cache = $this->createMock(CacheBackend::class);
+        $cache = $this->getCacheBackendMock();
         $cache->method('getContent')->with($url)->willReturn('bar');
 
         $downloader = new FileDownloader($curl, $cache);
@@ -91,6 +93,14 @@ class FileDownloaderTest extends \PHPUnit_Framework_TestCase {
      */
     private function getCurlMock() {
         return $this->createMock(Curl::class);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|CacheBackend
+     */
+    private function getCacheBackendMock()
+    {
+        return $this->createMock(CacheBackend::class);
     }
 
 }

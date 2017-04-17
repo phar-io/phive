@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\AnyVersionConstraint;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\PharIoAliasResolver
  */
-class PharIoAliasResolverTest extends \PHPUnit_Framework_TestCase {
+class PharIoAliasResolverTest extends TestCase {
 
     /**
      * @var SourcesList

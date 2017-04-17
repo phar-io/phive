@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
+use PHPUnit\Framework\TestCase;
 
 /**
- * @covers PharIo\Phive\PharRegistry
+ * @covers \PharIo\Phive\PharRegistry
  */
-class PharRegistryTest extends \PHPUnit_Framework_TestCase {
+class PharRegistryTest extends TestCase {
 
     public function testReturnsExpectedUnusedPhars() {
         $repo = new PharRegistry(

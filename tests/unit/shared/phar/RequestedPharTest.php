@@ -2,11 +2,12 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\VersionConstraint;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\RequestedPhar
  */
-class RequestedPharTest extends \PHPUnit_Framework_TestCase {
+class RequestedPharTest extends TestCase {
 
     /**
      * @dataProvider pharIdentifierProvider

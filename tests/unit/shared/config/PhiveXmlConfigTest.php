@@ -5,11 +5,12 @@ use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraintParser;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\PhiveXmlConfig
  */
-class PhiveXmlConfigTest extends \PHPUnit_Framework_TestCase {
+class PhiveXmlConfigTest extends TestCase {
 
     public function testAddPharUpdatesExistingNode() {
         $node = $this->getDomElementMock();

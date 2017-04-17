@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\ResetCommandConfig
+ * @covers \PharIo\Phive\ResetCommandConfig
  */
-class ResetCommandConfigTest extends \PHPUnit_Framework_TestCase {
+class ResetCommandConfigTest extends TestCase {
 
     public function testGetAliases() {
         $options = $this->getOptionsMock();

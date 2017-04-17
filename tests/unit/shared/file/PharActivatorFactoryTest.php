@@ -1,10 +1,12 @@
 <?php
 namespace PharIo\Phive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
- * @covers PharIo\Phive\PharActivatorFactory
+ * @covers \PharIo\Phive\PharActivatorFactory
  */
-class PharActivatorFactoryTest extends \PHPUnit_Framework_TestCase {
+class PharActivatorFactoryTest extends TestCase {
 
     public function testGetBatPharActivator() {
         $factory = new PharActivatorFactory();
