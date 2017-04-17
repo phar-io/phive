@@ -1,5 +1,4 @@
-
-##The Phar Installation and Verification Environment (PHIVE)
+## The Phar Installation and Verification Environment (PHIVE)
 
 Installation and verification of [phar](http://php.net/phar) distributed PHP applications has never been this easy!
 
@@ -19,7 +18,7 @@ tools. And fight their potential dependency conflicts.
 No more! Now you can rely on PHIVE to install and manage your project's tooling needs without all the hassle and without
 cluttered dependencies!
 
-##Getting PHIVE
+## Getting PHIVE
 
 Installation of PHIVE is easy and about the last time you have to do anything phar related manually.
 Grab your copy of PHIVE from the [releases](https://github.com/phar-io/phive/releases) section at our GitHub page or
@@ -32,7 +31,7 @@ follow these simple steps:
     chmod +x phive.phar
     sudo mv phive.phar /usr/bin/phive
 
-##Sample Usages
+## Sample Usages
 
 Once installed, PHIVE is ready for action. Some example invocations are shown below:
 
@@ -42,7 +41,7 @@ Once installed, PHIVE is ready for action. Some example invocations are shown be
     phive install https://phar.phpunit.de/phpunit-4.8.6.phar
     phive install --temporary phpunit@~5.0
 
-##How it works
+## How it works
 
 PHIVE makes installation easy by downloading the phar archive from the given location, including the verification of
 the certificate supplied by the server. Once downloaded, the archive's SHA1/SHA256/SHA512 hash is verified and so its
@@ -52,7 +51,7 @@ Instead of redownloading the same phar multiple times, the archive is kept at a 
 and only a symbolic link is created for the project. You can of course also explicitly request a copy of the phar to
 be made in favor of symbolic links (use -copy).
 
-##Contributing
+## Contributing
 
 PHIVE and phar.io are open source projects released under the BSD license. You are welcome to join the development
 team!
