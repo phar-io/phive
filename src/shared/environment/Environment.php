@@ -120,7 +120,7 @@ abstract class Environment {
     public function isInteractive()
     {
         if (!function_exists('posix_isatty')) {
-            return true;
+            return false;
         }
         return @posix_isatty(STDOUT);
     }
