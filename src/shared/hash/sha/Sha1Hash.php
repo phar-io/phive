@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\File;
+
 class Sha1Hash implements Hash {
 
     /**
@@ -14,6 +16,15 @@ class Sha1Hash implements Hash {
     public function __construct($value) {
         $this->validateValue($value);
         $this->value = $value;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return Hash
+     */
+    public static function forContent($content) {
+        return new static(sha1($content));
     }
 
     /**
@@ -33,7 +44,7 @@ class Sha1Hash implements Hash {
      * @return bool
      */
     public function equals(Hash $otherHash) {
-        return $otherHash instanceof Sha1Hash && $otherHash->asString() == $this->asString();
+        return $otherHash instanceof Sha1Hash && $otherHash->asString() === $this->asString();
     }
 
     /**

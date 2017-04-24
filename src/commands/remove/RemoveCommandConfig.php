@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
 use PharIo\Phive\Cli;
 
 class RemoveCommandConfig {

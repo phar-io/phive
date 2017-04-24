@@ -10,6 +10,10 @@ class UnsupportedHashStub implements Hash {
         return 'foo';
     }
 
+    public static function forContent($content) {
+        return new static();
+    }
+
     /**
      * @param Hash $otherHash
      *

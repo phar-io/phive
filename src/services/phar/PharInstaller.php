@@ -1,6 +1,10 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\File;
+use PharIo\FileSystem\Filename;
+
 class PharInstaller {
 
     /**

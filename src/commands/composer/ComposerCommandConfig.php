@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli;
 
 class ComposerCommandConfig extends InstallCommandConfig {

@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\File;
+
 class Sha256Hash implements Hash {
 
     /**
@@ -14,6 +16,15 @@ class Sha256Hash implements Hash {
     public function __construct($value) {
         $this->validateValue($value);
         $this->value = $value;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return Hash
+     */
+    public static function forContent($content) {
+        return new static(hash('sha256', $content));
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\File;
+
 class ChecksumService {
 
     /**
@@ -14,10 +16,10 @@ class ChecksumService {
         $hashClass = get_class($expectedHash);
         switch ($hashClass) {
             case Sha1Hash::class:
-                $actual = $file->getSha1Hash();
+                $actual = Sha1Hash::forContent($file->getContent());
                 break;
             case Sha256Hash::class:
-                $actual = $file->getSha256Hash();
+                $actual = Sha256Hash::forContent($file->getContent());
                 break;
             default:
                 throw new InvalidHashException(sprintf('%s is not supported', $hashClass));

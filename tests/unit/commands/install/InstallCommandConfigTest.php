@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
 use PharIo\Phive\Cli\Options;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
@@ -134,7 +135,7 @@ class InstallCommandConfigTest extends TestCase {
 
         $this->assertSame($switch, $config->doNotAddToPhiveXml());
     }
-    
+
     /**
      * @return array
      */

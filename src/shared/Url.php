@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Filename;
+
 class Url {
 
     /**

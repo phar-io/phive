@@ -1,9 +1,9 @@
 <?php
 namespace PharIo\Phive\RegressionTests;
 
+use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Runner;
 use PharIo\Phive\ConfiguredPhar;
-use PharIo\Phive\Filename;
 use PharIo\Phive\InstalledPhar;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;

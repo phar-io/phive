@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\GnuPG\Factory as GnuPGFactory;
+use PharIo\GnuPG\GnuPG;
 use PharIo\Phive\Cli;
 use PharIo\Version\VersionConstraintParser;
 
@@ -387,22 +389,8 @@ class Factory {
      */
     private function getGnupg() {
         $home = $this->getConfig()->getHomeDirectory()->child('gpg');
-        if (extension_loaded('gnupg')) {
-            putenv('GNUPGHOME=' . $home);
-            $gpg = new \Gnupg();
-            $gpg->seterrormode(\Gnupg::ERROR_EXCEPTION);
-        } else {
-            $gpg = new GnuPG(
-                new Executor(),
-                $this->getConfig()->getGPGBinaryPath(),
-                $home->child('temp'),
-                $home
-            );
-            if (!class_exists('\Gnupg')) {
-                class_alias(GnuPG::class, '\Gnupg');
-            }
-        }
-        return $gpg;
+        $bin  = $this->getConfig()->getGPGBinaryPath();
+        return (new GnuPGFactory($bin))->createGnuPG($home);
     }
 
     /**

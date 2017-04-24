@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\File;
 use PharIo\Phive\Cli;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;

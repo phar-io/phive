@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\Filename;
+
 class UnixoidEnvironment extends Environment {
 
     /**

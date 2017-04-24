@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
+
 class GitAwarePhiveVersion extends PhiveVersion {
 
     const UNKNOWN_VERSION = 'unknown';

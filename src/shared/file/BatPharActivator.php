@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Filename;
+
 class BatPharActivator implements PharActivator {
 
     const PHAR_PLACEHOLDER = '##PHAR_FILENAME##';

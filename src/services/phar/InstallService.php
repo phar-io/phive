@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Filename;
 use PharIo\Version\AndVersionConstraintGroup;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\GreaterThanOrEqualToVersionConstraint;

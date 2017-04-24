@@ -1,6 +1,8 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\File;
+use PharIo\FileSystem\Filename;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -37,10 +39,10 @@ class ChecksumServiceTest extends TestCase {
      */
     public function testVerifiesSha1Checksum($expectedHash, $actualHash, $expected) {
         $expectedHash = new Sha1Hash(hash('sha1', $expectedHash));
-        $actualHash = new Sha1Hash(hash('sha1', $actualHash));
 
+        /** @var File|ObjectProphecy $file */
         $file = $this->getFileProphecy();
-        $file->getSha1Hash()->willReturn($actualHash);
+        $file->getContent()->willReturn($actualHash);
 
         $service = new ChecksumService();
         $this->assertSame($expected, $service->verify($expectedHash, $file->reveal()));
@@ -64,10 +66,9 @@ class ChecksumServiceTest extends TestCase {
      */
     public function testVerifiesSha256Checksum($expectedHash, $actualHash, $expected) {
         $expectedHash = new Sha256Hash(hash('sha256', $expectedHash));
-        $actualHash = new Sha256Hash(hash('sha256', $actualHash));
 
         $file = $this->getFileProphecy();
-        $file->getSha256Hash()->willReturn($actualHash);
+        $file->getContent()->willReturn($actualHash);
 
         $service = new ChecksumService();
         $this->assertSame($expected, $service->verify($expectedHash, $file->reveal()));

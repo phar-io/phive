@@ -1,6 +1,9 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\File;
+use PharIo\FileSystem\Filename;
 use PharIo\Version\Version;
 
 class PharRegistry {
@@ -36,7 +39,7 @@ class PharRegistry {
             'location',
             $this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFile()->getFilename()
         );
-        $hashNode = $this->dbFile->createElement('hash', $phar->getFile()->getSha1Hash()->asString());
+        $hashNode = $this->dbFile->createElement('hash', Sha1Hash::forContent($phar->getFile()->getContent())->asString());
         $hashNode->setAttribute('type', 'sha1');
         $pharNode->appendChild($hashNode);
 

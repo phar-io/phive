@@ -1,9 +1,9 @@
 <?php
 namespace PharIo\Phive\RegressionTests;
 
-use PharIo\Phive\Directory;
-use PharIo\Phive\File;
-use PharIo\Phive\Filename;
+use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\File;
+use PharIo\FileSystem\Filename;
 use PharIo\Phive\Phar;
 use PharIo\Phive\PharRegistry;
 use PharIo\Phive\PhiveXmlConfig;

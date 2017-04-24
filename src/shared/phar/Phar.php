@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\File;
 use PharIo\Version\Version;
 
 class Phar {
