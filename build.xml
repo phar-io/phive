@@ -2,7 +2,10 @@
 <project name="Phive" default="build" basedir=".">
     <property name="source" value="src"/>
 
-    <target name="clean" description="Clean up and create artifact directories">
+    <target name="setup" depends="clean,composer-no-dev,install-tools,generate-autoloader"/>
+    <target name="build" depends="setup,lint,test"/>
+
+    <target name="clean" unless="clean.done" description="Clean up and create artifact directories">
         <delete dir="${basedir}/build/docs"/>
         <delete dir="${basedir}/build/coverage"/>
         <delete dir="${basedir}/build/logs"/>
@@ -14,6 +17,8 @@
         <mkdir dir="${basedir}/build/logs"/>
         <mkdir dir="${basedir}/build/pdepend"/>
         <mkdir dir="${basedir}/build/phpab"/>
+
+        <property name="clean.done" value="true"/>
     </target>
 
     <target name="lint">
@@ -32,76 +37,34 @@
         </apply>
     </target>
 
-    <target name="phpab">
-        <exec executable="phpab">
-            <arg line="--cache ${basedir}/build/phpab/autoload.cache -1 -o src/autoload.php" />
-            <arg path="src" />
-        </exec>
-        <exec executable="phpab">
-            <arg line="--cache ${basedir}/build/phpab/autoload.cache -1 -o tests/autoload.php" />
-            <arg path="tests" />
-        </exec>
+    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
+        <property name="prepare.done" value="true"/>
     </target>
 
-    <target name="phpunit" description="Run unit tests using PHPUnit">
-        <exec executable="${basedir}/tools/phpunit" failonerror="true"/>
+    <target name="-tools-installed">
+        <available file="${basedir}/tools/phpunit" property="tools-installed" type="file"/>
     </target>
 
-    <target name="parallelTasks"
-            description="Run the pdepend, phpmd, phpcpd, phpcs and phploc tasks in parallel using a maximum of 2 threads.">
-        <parallel threadCount="2">
-            <sequential>
-                <antcall target="pdepend"/>
-                <antcall target="phpmd"/>
-            </sequential>
-            <antcall target="phpcpd"/>
-            <antcall target="phpcs"/>
-            <antcall target="phploc"/>
-        </parallel>
-    </target>
-
-    <target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
-        <exec executable="pdepend">
-            <arg line="--jdepend-xml=${basedir}/build/logs/jdepend.xml
-              --jdepend-chart=${basedir}/build/pdepend/dependencies.svg
-              --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg
-              ${source}"/>
+    <target name="install-tools" unless="tools-installed" depends="-tools-installed" description="Install tools with Phive">
+        <exec executable="phive" taskname="phive">
+            <arg value="install"/>
+            <arg value="--trust-gpg-keys" />
+            <arg value="4AA394086372C20A,2A8299CE842DD38C" />
+            <arg value="phpab" />
+            <arg value="phpunit@^5.7" />
         </exec>
     </target>
 
-    <target name="phpmd" description="Generate pmd.xml using PHPMD">
-        <exec executable="phpmd">
-            <arg line="${source}
-              xml
-              codesize,design,naming,unusedcode
-              --reportfile ${basedir}/build/logs/pmd.xml"/>
+    <target name="generate-autoloader" depends="install-tools" description="Generate autoloader using PHPAB">
+        <exec executable="${basedir}/tools/phpab" taskname="phpab">
+            <arg value="--output"/>
+            <arg path="${basedir}/src/autoload.php"/>
+            <arg path="${basedir}/src"/>
         </exec>
     </target>
 
-    <target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
-        <exec executable="phpcpd">
-            <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml ${source}"/>
-        </exec>
-    </target>
-
-    <target name="phploc" description="Generate phploc.xml">
-        <exec executable="phploc">
-            <arg line="--count-tests --log-xml ${basedir}/build/logs/phploc.xml ${source} tests"/>
-        </exec>
-    </target>
-
-    <target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
-        <exec executable="phpcs" output="/dev/null">
-            <arg line="--report=checkstyle
-              --report-file=${basedir}/build/logs/checkstyle.xml
-              --standard=phpcs.xml
-              ${source}"/>
-        </exec>
-    </target>
-
-    <target name="docs">
-        <delete dir="${basedir}/build/docs" />
-        <exec executable="${basedir}/phpdox" />
+    <target name="test" depends="generate-autoloader" description="Run tests">
+        <exec executable="${basedir}/tools/phpunit" taskname="phpunit"/>
     </target>
 
     <target name="phar" description="Create PHAR archive of Phive and its dependencies" depends="composer-no-dev">
@@ -117,7 +80,7 @@
             <arg value="${basedir}/phive version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
         </exec>
 
-        <exec executable="phpab" failonerror="true">
+        <exec executable="${basedir}/tools/phpab" failonerror="true">
             <arg value="--var"/>
             <arg value="VERSION=${version}"/>
             <arg value="--all"/>
@@ -165,5 +128,5 @@
         </exec>
     </target>
 
-    <target name="build" depends="clean,lint,parallelTasks,phpunit"/>
+
 </project>
