@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-class Sha1Hash extends BaseHash {
+class Sha384Hash extends BaseHash {
 
     /**
      * @param string $content
@@ -9,7 +9,7 @@ class Sha1Hash extends BaseHash {
      * @return Hash
      */
     public static function forContent($content) {
-        return new static(hash('sha1', $content));
+        return new static(hash('sha384', $content));
     }
 
     /**
@@ -18,8 +18,8 @@ class Sha1Hash extends BaseHash {
      * @throws InvalidHashException
      */
     protected function ensureValidHash($hash) {
-        if (!preg_match('/^[0-9a-f]{40}$/i', $hash)) {
-            throw new InvalidHashException(sprintf('%s is not a valid SHA-1 hash', $hash));
+        if (!preg_match('/^[0-9a-f]{96}$/i', $hash)) {
+            throw new InvalidHashException(sprintf('%s is not a valid SHA-385 hash', $hash));
         }
     }
 

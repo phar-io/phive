@@ -45,18 +45,23 @@ class PharIoRepository implements SourceRepository {
     /**
      * @param \DOMElement $releaseNode
      *
-     * @return Sha1Hash|Sha256Hash
+     * @return Hash
      * @throws InvalidHashException
      */
     private function getHash(\DOMElement $releaseNode) {
         /** @var \DOMElement $hashNode */
         $hashNode = $releaseNode->getElementsByTagName('hash')->item(0);
         $type = $hashNode->getAttribute('type');
+        $hashValue = $hashNode->getAttribute('value');
         switch ($type) {
             case 'sha-1':
-                return new Sha1Hash($hashNode->getAttribute('value'));
+                return new Sha1Hash($hashValue);
             case 'sha-256':
-                return new Sha256Hash($hashNode->getAttribute('value'));
+                return new Sha256Hash($hashValue);
+            case 'sha-384':
+                return new Sha384Hash($hashValue);
+            case 'sha-512':
+                return new Sha512Hash($hashValue);
         }
         throw new InvalidHashException(sprintf('Unsupported Hash Type %s', $type));
     }

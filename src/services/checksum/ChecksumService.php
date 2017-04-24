@@ -21,6 +21,12 @@ class ChecksumService {
             case Sha256Hash::class:
                 $actual = Sha256Hash::forContent($file->getContent());
                 break;
+            case Sha384Hash::class:
+                $actual = Sha384Hash::forContent($file->getContent());
+                break;
+            case Sha512Hash::class:
+                $actual = Sha512Hash::forContent($file->getContent());
+                break;
             default:
                 throw new InvalidHashException(sprintf('%s is not supported', $hashClass));
         }

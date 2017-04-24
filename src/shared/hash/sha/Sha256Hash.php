@@ -1,22 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-use PharIo\FileSystem\File;
-
-class Sha256Hash implements Hash {
-
-    /**
-     * @var string
-     */
-    private $value = '';
-
-    /**
-     * @param string $value
-     */
-    public function __construct($value) {
-        $this->validateValue($value);
-        $this->value = $value;
-    }
+class Sha256Hash extends BaseHash {
 
     /**
      * @param string $content
@@ -28,30 +13,14 @@ class Sha256Hash implements Hash {
     }
 
     /**
-     * @param string $value
+     * @param string $hash
      *
      * @throws InvalidHashException
      */
-    private function validateValue($value) {
-        if (!preg_match('/^[0-9a-f]{64}$/i', $value)) {
-            throw new InvalidHashException(sprintf('%s is not a valid SHA-256 hash', $value));
+    protected function ensureValidHash($hash) {
+        if (!preg_match('/^[0-9a-f]{64}$/i', $hash)) {
+            throw new InvalidHashException(sprintf('%s is not a valid SHA-256 hash', $hash));
         }
-    }
-
-    /**
-     * @param Hash $otherHash
-     *
-     * @return bool
-     */
-    public function equals(Hash $otherHash) {
-        return $otherHash instanceof Sha256Hash && $otherHash->asString() == $this->asString();
-    }
-
-    /**
-     * @return string
-     */
-    public function asString() {
-        return $this->value;
     }
 
 }
