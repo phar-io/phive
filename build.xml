@@ -44,7 +44,7 @@
     </target>
 
     <target name="phpunit" description="Run unit tests using PHPUnit">
-        <exec executable="phpunit" failonerror="true"/>
+        <exec executable="${basedir}/tools/phpunit" failonerror="true"/>
     </target>
 
     <target name="parallelTasks"
