@@ -4,6 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+    "hash": "e0b0a25a755b9b4b6403a937dbc636a2",
     "content-hash": "ee5e39e9e78722f76a627a23f9862bf6",
     "packages": [
         {
@@ -59,12 +60,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/filesystem.git",
-                "reference": "e07f79250ee80860143db060c2eeabeea83ef5a2"
+                "reference": "63957b2f24de4187d32f55a8c888b959c84cb4d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/e07f79250ee80860143db060c2eeabeea83ef5a2",
-                "reference": "e07f79250ee80860143db060c2eeabeea83ef5a2",
+                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/63957b2f24de4187d32f55a8c888b959c84cb4d5",
+                "reference": "63957b2f24de4187d32f55a8c888b959c84cb4d5",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +98,7 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2017-03-20 14:49:57"
+            "time": "2017-04-25 20:43:28"
         },
         {
             "name": "phar-io/gnupg",
@@ -192,7 +193,7 @@
                 }
             ],
             "description": "Library for handling version information and constraints",
-            "time": "2017-03-05T17:38:23+00:00"
+            "time": "2017-03-05 17:38:23"
         }
     ],
     "packages-dev": [],
