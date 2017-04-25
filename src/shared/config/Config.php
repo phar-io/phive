@@ -16,14 +16,25 @@ class Config {
      * @var Options
      */
     private $cliOptions;
+    /**
+     * @var \DateTimeImmutable
+     */
+    private $now;
 
     /**
      * @param Environment $environment
-     * @param Options     $cliOptions
+     * @param Options $cliOptions
+     * @param \DateTimeImmutable|null $now
      */
-    public function __construct(Environment $environment, Options $cliOptions) {
+    public function __construct(
+        Environment $environment, Options $cliOptions, \DateTimeImmutable $now = null
+    ) {
         $this->environment = $environment;
         $this->cliOptions = $cliOptions;
+        if ($now === null) {
+            $now = new \DateTimeImmutable();
+        }
+        $this->now = $now;
     }
 
     /**
@@ -70,6 +81,9 @@ class Config {
         return new Url('https://phar.io/data/repositories.xml');
     }
 
+    /**
+     * @return KeyIdCollection
+     */
     public function getTrustedKeyIds() {
         $idList = new KeyIdCollection();
         if ($this->cliOptions->hasOption('trust-gpg-keys')) {
@@ -78,6 +92,13 @@ class Config {
             }
         }
         return $idList;
+    }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getMaxAgeForSourcesList() {
+        return $this->now->sub(new \DateInterval('P7D'));
     }
 
 }

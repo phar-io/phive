@@ -26,28 +26,36 @@ class RemoteSourcesListFileLoader implements SourcesListFileLoader {
     private $output;
 
     /**
-     * @param Url            $sourceUrl
-     * @param Filename       $filename
+     * @var \DateTimeImmutable
+     */
+    private $maxAge;
+
+    /**
+     * @param Url $sourceUrl
+     * @param Filename $filename
      * @param FileDownloader $fileDownloader
-     * @param Cli\Output     $output
+     * @param Cli\Output $output
+     * @param \DateTimeImmutable $maxAge
      */
     public function __construct(
         Url $sourceUrl,
         Filename $filename,
         FileDownloader $fileDownloader,
-        Cli\Output $output
+        Cli\Output $output,
+        \DateTimeImmutable $maxAge
     ) {
         $this->sourceUrl = $sourceUrl;
         $this->filename = $filename;
         $this->fileDownloader = $fileDownloader;
         $this->output = $output;
+        $this->maxAge = $maxAge;
     }
 
     /**
      * @return SourcesList
      */
     public function load() {
-        if (!$this->filename->exists()) {
+        if (!$this->filename->exists() || $this->filename->isOlderThan($this->maxAge)) {
             $this->downloadFromSource();
         }
         return new SourcesList(

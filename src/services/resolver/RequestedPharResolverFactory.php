@@ -45,12 +45,7 @@ class RequestedPharResolverFactory {
      * @return RemoteSourcesListFileLoader
      */
     public function getRemoteSourcesListFileLoader() {
-        return new RemoteSourcesListFileLoader(
-            $this->factory->getConfig()->getSourcesListUrl(),
-            $this->factory->getConfig()->getHomeDirectory()->file('repositories.xml'),
-            $this->factory->getFileDownloader(),
-            $this->factory->getOutput()
-        );
+        return $this->factory->getRemoteSourcesListFileLoader();
     }
 
     /**

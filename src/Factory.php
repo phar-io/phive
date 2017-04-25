@@ -280,7 +280,8 @@ class Factory {
             $this->getConfig()->getSourcesListUrl(),
             $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
             $this->getFileDownloader(),
-            $this->getOutput()
+            $this->getOutput(),
+            $this->getConfig()->getMaxAgeForSourcesList()
         );
     }
 

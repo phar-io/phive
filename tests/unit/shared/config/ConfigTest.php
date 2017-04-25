@@ -89,6 +89,14 @@ class ConfigTest extends TestCase {
         );
     }
 
+    public function testReturnsExpectedMaxAgeForSourcesList() {
+        $now = new \DateTimeImmutable('25.04.2017 12:23:12');
+        $config = new Config($this->getEnvironmentMock(), $this->getOptionsMock(), $now);
+        $expected = new \DateTimeImmutable('18.04.2017 12:23:12');
+
+        $this->assertEquals($expected, $config->getMaxAgeForSourcesList());
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Environment
      */
