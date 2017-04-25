@@ -49,10 +49,12 @@ skel
 status
     Get a list of configured PHARs for the current directory
 
-update [<alias1> <alias2> ...]
+update [--prefer-offline] [<alias1> <alias2> ...]
     Update PHARs configured in the project's phive.xml to the newest applicable version.
 
-    alias    If one or more aliases are provided, only those will be updated
+    --prefer-offline    Try to use local PHARs first, only connect to remote repositories if no local PHAR satisfies the given version constraint.
+
+    alias               If one or more aliases are provided, only those will be updated
 
 update-repository-list
     Update the alias list of known PHAR distributed applications and libraries

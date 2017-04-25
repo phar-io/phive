@@ -41,6 +41,10 @@ Once installed, PHIVE is ready for action. Some example invocations are shown be
     phive install https://phar.phpunit.de/phpunit-4.8.6.phar
     phive install --temporary phpunit@~5.0
 
+    phive update
+    phive update --prefer-offline
+    phive update phpunit
+
 ## How it works
 
 PHIVE makes installation easy by downloading the phar archive from the given location, including the verification of
