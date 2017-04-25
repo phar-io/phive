@@ -31,7 +31,7 @@ abstract class BaseHash implements Hash {
      * @return bool
      */
     public function equals(Hash $otherHash) {
-        return hash_equals($this->hash, $otherHash->hash);
+        return hash_equals($this->hash, $otherHash->asString());
     }
 
     abstract protected function ensureValidHash($hash);
