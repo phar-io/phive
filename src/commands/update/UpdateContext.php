@@ -10,7 +10,8 @@ class UpdateContext extends GeneralContext {
      */
     protected function getKnownOptions() {
         return [
-            'prefer-offline' => false
+            'prefer-offline' => false,
+            'global'         => 'g'
         ];
     }
 

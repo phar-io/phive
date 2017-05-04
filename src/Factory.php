@@ -92,7 +92,7 @@ class Factory {
             new RemoveCommandConfig($this->request->parse(new RemoveContext()), $this->getTargetDirectoryLocator()),
             $this->getPharRegistry(),
             $this->getOutput(),
-            $this->getPhiveXmlConfig()
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global'))
         );
     }
 
@@ -115,7 +115,7 @@ class Factory {
         return new InstallCommand(
             new InstallCommandConfig(
                 $this->request->parse(new InstallContext()),
-                $this->getPhiveXmlConfig(),
+                $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
                 $this->getEnvironment(),
                 $this->getTargetDirectoryLocator()
             ),
@@ -131,7 +131,7 @@ class Factory {
     public function getUpdateCommand() {
         $config = new UpdateCommandConfig(
             $this->request->parse(new UpdateContext()),
-            $this->getPhiveXmlConfig(),
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
             $this->getTargetDirectoryLocator()
         );
 
@@ -141,7 +141,7 @@ class Factory {
             $config,
             $this->getInstallService(),
             $this->getRequestedPharResolverBuilder()->build($resolvingStrategy),
-            $this->getPhiveXmlConfig()
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global'))
         );
     }
 
@@ -173,14 +173,14 @@ class Factory {
         return new ComposerCommand(
             new ComposerCommandConfig(
                 $this->request->parse(new ComposerContext()),
-                $this->getPhiveXmlConfig(),
+                $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
                 $this->getEnvironment(),
                 $this->getTargetDirectoryLocator(),
                 $this->getEnvironment()->getWorkingDirectory()
             ),
             $this->getComposerService(),
             $this->getInstallService(),
-            $this->getPhiveXmlConfig(),
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
             $this->getConsoleInput(),
             $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
         );
@@ -191,7 +191,7 @@ class Factory {
      */
     public function getStatusCommand() {
         return new StatusCommand(
-            $this->getPhiveXmlConfig(),
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
             $this->getOutput()
         );
     }
@@ -213,7 +213,11 @@ class Factory {
      * @return TargetDirectoryLocator
      */
     private function getTargetDirectoryLocator() {
-        return new TargetDirectoryLocator($this->getConfig(), $this->getPhiveXmlConfig(), $this->request->getOptions());
+        return new TargetDirectoryLocator(
+            $this->getConfig(),
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            $this->request->getOptions()
+        );
     }
 
     /**
@@ -246,7 +250,7 @@ class Factory {
      */
     private function getInstallService() {
         return new InstallService(
-            $this->getPhiveXmlConfig(),
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
             $this->getPharInstaller(),
             $this->getPharRegistry(),
             $this->getPharService()
@@ -451,18 +455,29 @@ class Factory {
     }
 
 
-
     /**
+     * @param bool $global
+     *
      * @return PhiveXmlConfig
      */
-    private function getPhiveXmlConfig() {
+    private function getPhiveXmlConfig($global) {
         return new PhiveXmlConfig(
             new XmlFile(
-                $this->getEnvironment()->getWorkingDirectory()->file('phive.xml'),
+                $this->getPhiveXmlConfigFileLocator()->getFile($global),
                 'https://phar.io/phive',
                 'phive'
             ),
             new VersionConstraintParser()
+        );
+    }
+
+    /**
+     * @return PhiveXmlConfigFileLocator
+     */
+    private function getPhiveXmlConfigFileLocator() {
+        return new PhiveXmlConfigFileLocator(
+            $this->getEnvironment(),
+            $this->getConfig()
         );
     }
 
