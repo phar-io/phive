@@ -97,6 +97,21 @@ class ConfigTest extends TestCase {
         $this->assertEquals($expected, $config->getMaxAgeForSourcesList());
     }
 
+    public function testGetTrustedKeyIds() {
+        $expected = new KeyIdCollection();
+        $expected->addKeyId('id1');
+        $expected->addKeyId('id2');
+
+        $options = $this->getOptionsMock();
+        $options->method('hasOption')->with('trust-gpg-keys')->willReturn(true);
+        $options->method('getOption')->with('trust-gpg-keys')->willReturn('id1,id2');
+
+        $config = new Config($this->getEnvironmentMock(), $options);
+        $actual = $config->getTrustedKeyIds();
+
+        $this->assertEquals($expected, $actual);
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Environment
      */

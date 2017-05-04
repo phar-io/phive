@@ -13,7 +13,7 @@ class SymlinkPharActivator implements PharActivator {
      */
     public function activate(Filename $pharLocation, Filename $linkDestination) {
         symlink($pharLocation->asString(), $linkDestination->asString());
-        return new Filename($linkDestination->asString());
+        return $linkDestination;
     }
 
 }

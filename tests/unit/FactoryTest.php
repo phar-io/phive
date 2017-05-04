@@ -43,9 +43,35 @@ class FactoryTest extends TestCase {
             ['getUpdateCommand', UpdateCommand::class],
             ['getListCommand', ListCommand::class],
             ['getPurgeCommand', PurgeCommand::class],
-            ['getComposerCommand', ComposerCommand::class]
+            ['getComposerCommand', ComposerCommand::class],
+            ['getStatusCommand', StatusCommand::class],
+            ['getSelfupdateCommand', SelfupdateCommand::class],
         ];
     }
+
+    /**
+     * @backupGlobals true
+     */
+    public function testGetCurlSetsProxyFromEnvironment() {
+        $_SERVER['https_proxy'] = 'http://example.com';
+
+        $request = $this->getRequestMock();
+        $options = $this->getOptionsMock();
+        $request->method('parse')->willReturn($options);
+        $request->method('getOptions')->willReturn($options);
+
+        $factory = new Factory($request);
+
+        $factory->getFileDownloader();
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     */
+    private function getEnvironmentMock() {
+        return $this->createMock(Environment::class);
+    }
+
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Request

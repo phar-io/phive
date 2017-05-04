@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\Sha1Hash
+ * @covers \PharIo\Phive\BaseHash
  */
 class Sha1HashTest extends TestCase {
 
@@ -52,6 +53,13 @@ class Sha1HashTest extends TestCase {
         $hash = new Sha1Hash('174f7e679a514cf52fd63c96659b10d470e65ec0');
         $otherHash = new Sha1Hash('aa43f08c9402ca142f607fa2db0b1152cf248d49');
         $this->assertFalse($hash->equals($otherHash));
+    }
+
+    public function testForContentCreatesExpectedHash() {
+        $expected = new Sha1Hash('0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33');
+        $actual = Sha1Hash::forContent('foo');
+
+        $this->assertEquals($expected, $actual);
     }
 }
 

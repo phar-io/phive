@@ -24,6 +24,9 @@
     "phar-io/filesystem": "1.0.x-dev",
     "phar-io/gnupg": "^1.0"
   },
+  "require-dev": {
+    "mikey179/vfsStream": "^1.6.4"
+  },
   "suggest": {
     "ext-gnupg": "*"
   },

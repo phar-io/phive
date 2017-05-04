@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root xmlns="https://phar.io/phive/test">
+    <parent>
+        <child>
+            <node1>Node 1 Value</node1>
+        </child>
+    </parent>
+</root>

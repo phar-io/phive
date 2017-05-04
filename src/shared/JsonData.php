@@ -9,13 +9,11 @@ class JsonData {
     private $raw;
 
     /**
-     * @var array|\stdClass
+     * @var \stdClass
      */
     private $parsed;
 
     /**
-     * JsonData constructor.
-     *
      * @param string $raw
      *
      * @throws \InvalidArgumentException
@@ -40,12 +38,17 @@ class JsonData {
     }
 
     /**
-     * @return array|\stdClass
+     * @return \stdClass
      */
     public function getParsed() {
         return $this->parsed;
     }
 
+    /**
+     * @param string $fragmentSpecification
+     *
+     * @return bool
+     */
     public function hasFragment($fragmentSpecification) {
         try {
             $this->getFragment($fragmentSpecification);
@@ -55,6 +58,11 @@ class JsonData {
         }
     }
 
+    /**
+     * @param string $fragmentSpecification
+     *
+     * @return mixed|\stdClass
+     */
     public function getFragment($fragmentSpecification) {
         $data = $this->parsed;
         foreach (explode('.', $fragmentSpecification) as $key) {
