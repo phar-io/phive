@@ -13,7 +13,7 @@ before_install:
   - sudo mv phive.phar /usr/bin/phive
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source --no-dev
+  - travis_retry composer install --no-interaction --prefer-source
   - phive install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C phpab phpunit@^5.7
 
 script: ./tools/phpunit
