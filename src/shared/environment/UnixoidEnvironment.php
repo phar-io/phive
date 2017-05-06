@@ -63,6 +63,10 @@ class UnixoidEnvironment extends Environment {
             return false;
         }
 
+        if (!array_key_exists('TERM', $this->server)) {
+            return false;
+        }
+
         $tput = $this->getPathToCommand('tput');
         $commandResult = $this->executor->execute($tput, 'colors');
         if (!$commandResult->isSuccess()) {
