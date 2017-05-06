@@ -85,7 +85,7 @@ class UnixoidEnvironmentTest extends TestCase {
         $executor = $this->getExecutorMock();
         $executor->method('execute')->willReturn($result);
 
-        $env = new UnixoidEnvironment([], $executor);
+        $env = new UnixoidEnvironment(['TERM' => 'xterm'], $executor);
         $this->assertSame($expectedResult, $env->supportsColoredOutput());
     }
 
