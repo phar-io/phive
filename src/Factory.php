@@ -181,7 +181,9 @@ class Factory {
             $this->getComposerService(),
             $this->getInstallService(),
             $this->getConsoleInput(),
-            $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
+            $this->getRequestedPharResolverBuilder()->build(
+                $this->getLocalFirstResolvingStrategy()
+            )
         );
     }
 
