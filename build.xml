@@ -2,7 +2,7 @@
 <project name="Phive" default="build" basedir=".">
     <property name="source" value="src"/>
 
-    <target name="setup" depends="clean,composer-no-dev,install-tools,generate-autoloader"/>
+    <target name="setup" depends="clean,composer,install-tools,generate-autoloader"/>
     <target name="build" depends="setup,lint,test"/>
 
     <target name="clean" unless="clean.done" description="Clean up and create artifact directories">
