@@ -180,7 +180,6 @@ class Factory {
             ),
             $this->getComposerService(),
             $this->getInstallService(),
-            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
             $this->getConsoleInput(),
             $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
         );
