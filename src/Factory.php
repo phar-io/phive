@@ -324,14 +324,19 @@ class Factory {
      */
     private function getCurl() {
         if (null === $this->curlConfig) {
-            $this->curlConfig = new CurlConfig('Phive ' . $this->getPhiveVersion()->getVersion());
+            $environment = $this->getEnvironment();
+            $this->curlConfig = new CurlConfig(
+                sprintf('Phive %s on %s',
+                    $this->getPhiveVersion()->getVersion(),
+                    $environment->getRuntimeString()
+                    )
+            );
             $this->curlConfig->addLocalSslCertificate(
                 new LocalSslCertificate(
                     'hkps.pool.sks-keyservers.net',
                     __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
                 )
             );
-            $environment = $this->getEnvironment();
             if ($environment->hasProxy()) {
                 $this->curlConfig->setProxy($environment->getProxy());
             }
