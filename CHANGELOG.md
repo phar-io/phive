@@ -16,6 +16,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 ### Changed
 
 * [#99](https://github.com/phar-io/phive/issues/99): Tests are now compatible with PHPUnit 6
+* [#104](https://github.com/phar-io/phive/issues/104): Allow `v` and `V` as a version prefix on GitHub repositories
 
 ### Fixed
 

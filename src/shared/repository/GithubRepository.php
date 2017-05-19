@@ -1,7 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
-use PharIo\Version\Version;
+use PharIo\Version\InvalidVersionException;
 
 class GithubRepository implements SourceRepository {
 
@@ -26,8 +26,11 @@ class GithubRepository implements SourceRepository {
         $releases = new ReleaseCollection();
 
         foreach ($this->jsonData->getParsed() as $entry) {
-            $version = new Version($entry->tag_name);
-
+            try {
+                $version = new GitHubVersion($entry->tag_name);
+            } catch(InvalidVersionException $exception) {
+                continue;
+            }
             $pharUrl = null;
             $signatureUrl = null;
             foreach ($entry->assets as $asset) {

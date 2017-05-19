@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <repositories xmlns="https://phar.io/repository-list">
 
+    <phar alias="phpab" composer="theseer/autoload">
+        <repository type="github" url="https://api.github.com/repos/theseer/autoload/releases" />
+    </phar>
+    <phar alias="phpcpd" composer="sebastian/phpcpd">
+        <repository url="https://phar.phpunit.de/phive.xml"/>
+    </phar>
+    <phar alias="phpdox" composer="theseer/phpdox">
+        <repository type="github" url="https://api.github.com/repos/theseer/phpdox/releases" />
+    </phar>
+    <phar alias="phploc" composer="phploc/phploc">
+        <repository url="https://phar.phpunit.de/phive.xml"/>
+    </phar>
     <phar alias="phpunit" composer="phpunit/phpunit">
         <repository url="https://phar.phpunit.de/phive.xml"/>
+    </phar>
+    <phar alias="phpbu" composer="phpbu/phpbu">
+        <repository url="https://phar.phpbu.de/phive.xml"/>
+    </phar>
+    <phar alias="dephpend" composer="dephpend/dephpend">
+        <repository url="https://phar.dephpend.com/phive.xml"/>
+    </phar>
+    <phar alias="phpdocumentor" composer="phpdocumentor/phpdocumentor">
+        <repository type="github" url="https://api.github.com/repos/phpdocumentor/phpdocumentor2/releases" />
+    </phar>
+    <phar alias="carbon" composer="jpuck/carbon-console">
+        <repository type="github" url="https://api.github.com/repos/jpuck/carbon-console/releases" />
+    </phar>
+    <phar alias="composer-require-checker" composer="maglnet/composer-require-checker">
+        <repository type="github" url="https://api.github.com/repos/maglnet/ComposerRequireChecker/releases" />
     </phar>
 
 </repositories>
