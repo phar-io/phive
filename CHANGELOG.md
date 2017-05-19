@@ -2,6 +2,28 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.7.0] - 2017-05-19
+
+### Added
+
+`phive install` will now try to install PHARs from the local cache first before connecting to remote repositories. 
+`phive update` will always look for newer versions in remote repositories first unless the `--prefer-offline` flag
+ is provided.
+
+* [#103](https://github.com/phar-io/phive/issues/103): Added automatic periodic updates of `repositories.xml`
+* [#87](https://github.com/phar-io/phive/issues/87): Implement `--prefer-offline` commandline option for update command  
+
+### Changed
+
+* [#99](https://github.com/phar-io/phive/issues/99): Tests are now compatible with PHPUnit 6
+
+### Fixed
+
+* [#102](https://github.com/phar-io/phive/issues/102): Global installations are now tracked in `~/.phive/phive.xml` 
+and do not affect project-specific `phive.xml` files anymore
+* [#96](https://github.com/phar-io/phive/issues/96): `phive.xml` is not altered when `phive install` did not install 
+any changed PHARs
+
 ## [0.6.3] - 2017-02-05
 
 ### Changed
@@ -134,7 +156,8 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.6.3...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.7.0...HEAD
+[0.7.0]: https://github.com/phar-io/phive/compare/0.6.3...0.7.0
 [0.6.3]: https://github.com/phar-io/phive/compare/0.6.2...0.6.3
 [0.6.2]: https://github.com/phar-io/phive/compare/0.6.1...0.6.2
 [0.6.1]: https://github.com/phar-io/phive/compare/0.6.0...0.6.1
