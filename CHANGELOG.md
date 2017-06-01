@@ -157,6 +157,10 @@ any changed PHARs
 
 ## [Unreleased]
 
+### Changed
+
+* [#105](https://github.com/phar-io/phive/issues/105): Always link PHARs to `/usr/bin` on Linux and to `/usr/local/bin` on macOS. 
+
 [Unreleased]: https://github.com/phar-io/phive/compare/0.7.0...HEAD
 [0.7.0]: https://github.com/phar-io/phive/compare/0.6.3...0.7.0
 [0.6.3]: https://github.com/phar-io/phive/compare/0.6.2...0.6.3

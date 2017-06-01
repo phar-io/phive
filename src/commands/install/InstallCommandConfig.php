@@ -55,7 +55,7 @@ class InstallCommandConfig {
      */
     public function getTargetDirectory() {
         if ($this->installGlobally()) {
-            return new Directory(dirname($this->environment->getBinaryName()));
+            return $this->environment->getGlobalBinDir();
         }
         return $this->targetDirectoryLocator->getTargetDirectory();
     }

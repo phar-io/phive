@@ -129,6 +129,11 @@ abstract class Environment {
     }
 
     /**
+     * @return Directory
+     */
+    abstract public function getGlobalBinDir();
+
+    /**
      * @return string
      */
     abstract protected function getWhichCommand();

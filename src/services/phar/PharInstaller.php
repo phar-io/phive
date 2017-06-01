@@ -65,12 +65,22 @@ class PharInstaller {
     }
 
     /**
-     * @param File     $phar
+     * @param File $phar
      * @param Filename $destination
+     *
+     * @throws LinkCreationFailedException
      */
     private function link(File $phar, Filename $destination) {
-        $linkFilename = $this->pharActivator->activate($this->pharDirectory->file($phar->getFilename()), $destination);
-        $this->output->writeInfo(sprintf('Linking %s to %s', $phar->getFilename(), $linkFilename->asString()));
+        try {
+            $linkFilename = $this->pharActivator->activate($this->pharDirectory->file($phar->getFilename()), $destination);
+            $this->output->writeInfo(sprintf('Linking %s to %s', $phar->getFilename(), $linkFilename->asString()));
+        } catch (FileNotWritableException $exception) {
+            $message = sprintf(
+                'Could not create symlink %s because the destination is not writable.',
+                $destination->asString()
+            );
+            throw new LinkCreationFailedException($message);
+        }
     }
 
 }

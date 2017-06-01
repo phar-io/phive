@@ -89,4 +89,10 @@ class UnixoidEnvironment extends Environment {
         return new static($_SERVER, new Executor());
     }
 
+    /**
+     * @return Directory
+     */
+    public function getGlobalBinDir() {
+        return new Directory('/usr/bin');
+    }
 }

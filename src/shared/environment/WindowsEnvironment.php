@@ -36,4 +36,11 @@ class WindowsEnvironment extends Environment {
     public function supportsColoredOutput() {
         return array_key_exists('ANSICON', $this->server) || array_key_exists('ConEmuANSI', $this->server);
     }
+
+    /**
+     * @return Directory
+     */
+    public function getGlobalBinDir() {
+        return new Directory(dirname($this->getBinaryName()));
+    }
 }
