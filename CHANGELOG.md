@@ -2,6 +2,16 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.7.1] - 2017-06-02
+
+### Changed
+
+* [#105](https://github.com/phar-io/phive/issues/105): Always link PHARs to `/usr/bin` on Linux and to `/usr/local/bin` on macOS. 
+
+### Fixed
+
+* [#107](https://github.com/phar-io/phive/issues/107): Installing multiple PHARs when `~/.phive/phars.xml` does not exist works as expected now.
+
 ## [0.7.0] - 2017-05-19
 
 ### Added
@@ -157,11 +167,9 @@ any changed PHARs
 
 ## [Unreleased]
 
-### Changed
 
-* [#105](https://github.com/phar-io/phive/issues/105): Always link PHARs to `/usr/bin` on Linux and to `/usr/local/bin` on macOS. 
-
-[Unreleased]: https://github.com/phar-io/phive/compare/0.7.0...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.7.1...HEAD
+[0.7.1]: https://github.com/phar-io/phive/compare/0.7.0...0.7.1
 [0.7.0]: https://github.com/phar-io/phive/compare/0.6.3...0.7.0
 [0.6.3]: https://github.com/phar-io/phive/compare/0.6.2...0.6.3
 [0.6.2]: https://github.com/phar-io/phive/compare/0.6.1...0.6.2
