@@ -29,6 +29,11 @@ class Factory {
     private $environment;
 
     /**
+     * @var PharRegistry
+     */
+    private $registry;
+
+    /**
      * @param Cli\Request  $request
      * @param PhiveVersion $version
      */
@@ -356,14 +361,17 @@ class Factory {
      * @return PharRegistry
      */
     public function getPharRegistry() {
-        return new PharRegistry(
-            new XmlFile(
-                $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
-                'https://phar.io/phive/installdb',
-                'phars'
-            ),
-            $this->getConfig()->getHomeDirectory()->child('phars')
-        );
+        if ($this->registry === null) {
+            $this->registry = new PharRegistry(
+                new XmlFile(
+                    $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
+                    'https://phar.io/phive/installdb',
+                    'phars'
+                ),
+                $this->getConfig()->getHomeDirectory()->child('phars')
+            );
+        }
+        return $this->registry;
     }
 
     /**
