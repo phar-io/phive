@@ -31,6 +31,10 @@ class ConfiguredPhar {
      * @var PharUrl|null
      */
     private $url;
+    /**
+     * @var bool
+     */
+    private $copy;
 
     /**
      * @param string $name
@@ -38,19 +42,22 @@ class ConfiguredPhar {
      * @param Version|null $installedVersion
      * @param Filename|null $location
      * @param PharUrl|null $url
+     * @param bool $copy
      */
     public function __construct(
         $name,
         VersionConstraint $versionConstraint,
         Version $installedVersion = null,
         Filename $location = null,
-        PharUrl $url = null
+        PharUrl $url = null,
+        $copy = false
     ) {
         $this->name = $name;
         $this->versionConstraint = $versionConstraint;
         $this->installedVersion = $installedVersion;
         $this->location = $location;
         $this->url = $url;
+        $this->copy = $copy;
     }
 
     /**
@@ -122,5 +129,12 @@ class ConfiguredPhar {
             throw new ConfiguredPharException('No URL set', ConfiguredPharException::NoUrl);
         }
         return $this->url;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCopy() {
+        return $this->copy;
     }
 }

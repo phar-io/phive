@@ -65,7 +65,6 @@ class InstallService {
             if ($configuredPhar->getVersionConstraint()->asString() === $versionConstraint->asString()) {
                 return;
             }
-
         }
 
         $this->phiveXml->addPhar(
@@ -73,7 +72,8 @@ class InstallService {
                 $phar->getName(),
                 $release->getVersion(),
                 $this->getInstalledVersionConstraint($versionConstraint, $release->getVersion()),
-                $destination
+                $destination,
+                $makeCopy
             )
         );
     }

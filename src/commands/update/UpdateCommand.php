@@ -49,7 +49,7 @@ class UpdateCommand implements Cli\Command {
                 $release,
                 $requestedPhar->getVersionConstraint(),
                 $this->phiveXml->getPharLocation($release->getName()),
-                false
+                $requestedPhar->makeCopy()
             );
         }
     }

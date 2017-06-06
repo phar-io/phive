@@ -55,7 +55,7 @@ class InstallCommand implements Cli\Command {
         $destination = $this->getDestination($release->getUrl()->getPharName(), $requestedPhar, $targetDirectory);
 
         $this->installService->execute(
-            $release, $requestedPhar->getVersionConstraint(), $destination, $this->config->makeCopy()
+            $release, $requestedPhar->getVersionConstraint(), $destination, $requestedPhar->makeCopy()
         );
     }
 

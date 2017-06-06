@@ -45,6 +45,11 @@ class PhiveXmlConfig {
         $pharNode->setAttribute('version', $installedPhar->getVersionConstraint()->asString());
         $pharNode->setAttribute('installed', $installedPhar->getInstalledVersion()->getVersionString());
         $pharNode->setAttribute('location', $installedPhar->getLocation()->getRelativePathTo($xmlFileDirectory));
+
+        if ($installedPhar->isCopy()) {
+            $pharNode->setAttribute('copy', 'true');
+        }
+
         $this->configFile->save();
     }
 
@@ -204,11 +209,16 @@ class PhiveXmlConfig {
             // workaround to make sure the directory gets created
             $location->getDirectory();
         }
+
+        $isCopy = $pharNode->hasAttribute('copy') && $pharNode->getAttribute('copy') === 'true';
+
         return new ConfiguredPhar(
             $pharName,
             $this->versionConstraintParser->parse($versionConstraint),
             $pharVersion,
-            $location
+            $location,
+            null,
+            $isCopy
         );
     }
 

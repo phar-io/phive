@@ -83,7 +83,8 @@ class UpdateCommandConfig {
                 $identifier,
                 $configuredPhar->getVersionConstraint(),
                 $configuredPhar->getVersionConstraint(),
-                $location
+                $location,
+                $configuredPhar->isCopy()
             );
         }
         return $phars;

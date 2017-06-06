@@ -30,34 +30,6 @@ class InstallCommandConfigTest extends TestCase {
         $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
 
-
-    /**
-     * @dataProvider makeCopyProvider
-     *
-     * @param bool $hasCopyOption
-     * @param bool $hasGlobalOption
-     * @param bool $expected
-     */
-    public function testMakeCopy($hasCopyOption, $hasGlobalOption, $expected) {
-        $options = $this->getOptionsMock();
-        $options->method('hasOption')->willReturnMap(
-            [
-                ['copy', $hasCopyOption],
-                ['global', $hasGlobalOption]
-            ]
-        );
-
-        $commandConfig = new InstallCommandConfig(
-            $options,
-            $this->getPhiveXmlConfigMock(),
-            $this->getEnvironmentMock(),
-            $this->getTargetDirectoryLocatorMock(),
-            $this->getDirectoryMock()
-        );
-
-        $this->assertSame($expected, $commandConfig->makeCopy());
-    }
-
     public function testGetRequestedPharsFromPhiveXmlConfig() {
         $options = $this->getOptionsMock();
         $options->expects($this->once())
@@ -134,17 +106,6 @@ class InstallCommandConfigTest extends TestCase {
         );
 
         $this->assertSame($switch, $config->doNotAddToPhiveXml());
-    }
-
-    /**
-     * @return array
-     */
-    public static function makeCopyProvider() {
-        return [
-            [true, false, true],
-            [false, false, false],
-            [false, true, true]
-        ];
     }
 
     /**

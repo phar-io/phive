@@ -28,21 +28,29 @@ class InstalledPhar {
     private $location;
 
     /**
-     * @param string            $name
-     * @param Version           $installedVersion
+     * @var bool
+     */
+    private $copy = false;
+
+    /**
+     * @param string $name
+     * @param Version $installedVersion
      * @param VersionConstraint $versionConstraint
-     * @param Filename          $location
+     * @param Filename $location
+     * @param bool $copy
      */
     public function __construct(
         $name,
         Version $installedVersion,
         VersionConstraint $versionConstraint,
-        Filename $location
+        Filename $location,
+        $copy
     ) {
         $this->name = $name;
         $this->installedVersion = $installedVersion;
         $this->versionConstraint = $versionConstraint;
         $this->location = $location;
+        $this->copy = $copy;
     }
 
     /**
@@ -71,5 +79,12 @@ class InstalledPhar {
      */
     public function getLocation() {
         return $this->location;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCopy() {
+        return $this->copy;
     }
 }

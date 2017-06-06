@@ -72,7 +72,8 @@ class InstallCommandTest extends RegressionTestCase {
                 'phpunit',
                 new Version('5.3.1'),
                 new AnyVersionConstraint(),
-                new Filename('./foo/tests')
+                new Filename('./foo/tests'),
+                false
             )
         );
 

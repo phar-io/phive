@@ -31,33 +31,6 @@ class ComposerCommandConfigTest extends TestCase {
     }
 
     /**
-     * @dataProvider makeCopyProvider
-     *
-     * @param bool $hasCopyOption
-     * @param bool $hasGlobalOption
-     * @param bool $expected
-     */
-    public function testMakeCopy($hasCopyOption, $hasGlobalOption, $expected) {
-        $options = $this->getOptionsMock();
-        $options->method('hasOption')->willReturnMap(
-            [
-                ['copy', $hasCopyOption],
-                ['global', $hasGlobalOption]
-            ]
-        );
-
-        $commandConfig = new ComposerCommandConfig(
-            $options,
-            $this->getPhiveXmlConfigMock(),
-            $this->getEnvironmentMock(),
-            $this->getTargetDirectoryLocatorMock(),
-            $this->getDirectoryMock()
-        );
-
-        $this->assertSame($expected, $commandConfig->makeCopy());
-    }
-
-    /**
      * @dataProvider doNotAddToPhiveXmlProvider
      *
      * @param bool $temporaryValue
@@ -110,17 +83,6 @@ class ComposerCommandConfigTest extends TestCase {
             [true, true, true],
             [false, true, true],
             [false, false, false],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public static function makeCopyProvider() {
-        return [
-            [true, false, true],
-            [false, false, false],
-            [false, true, true]
         ];
     }
 

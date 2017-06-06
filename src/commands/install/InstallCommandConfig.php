@@ -87,7 +87,8 @@ class InstallCommandConfig {
                 $this->getIdentifier($configuredPhar),
                 $configuredPhar->getVersionConstraint(),
                 $this->getVersionToInstall($configuredPhar),
-                $location
+                $location,
+                $configuredPhar->isCopy()
             );
         }
 
@@ -125,7 +126,9 @@ class InstallCommandConfig {
                 }
             }
 
-            $phars[] = new RequestedPhar($identifier, $versionConstraint, $versionConstraint);
+            $phars[] = new RequestedPhar(
+                $identifier, $versionConstraint, $versionConstraint, null, $this->makeCopy()
+            );
         }
         return $phars;
     }
@@ -140,7 +143,7 @@ class InstallCommandConfig {
     /**
      * @return bool
      */
-    public function makeCopy() {
+    private function makeCopy() {
         return $this->cliOptions->hasOption('copy') || $this->installGlobally();
     }
 

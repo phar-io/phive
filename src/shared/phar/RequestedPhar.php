@@ -25,23 +25,30 @@ class RequestedPhar {
      * @var Filename|null
      */
     private $location;
+    /**
+     * @var bool
+     */
+    private $makeCopy;
 
     /**
      * @param PharIdentifier $identifier
      * @param VersionConstraint $versionConstraint
      * @param VersionConstraint $lockedVersion
      * @param Filename|null $location
+     * @param bool $makeCopy
      */
     public function __construct(
         PharIdentifier $identifier,
         VersionConstraint $versionConstraint,
         VersionConstraint $lockedVersion,
-        Filename $location = null
+        Filename $location = null,
+        $makeCopy = false
     ) {
         $this->identifier = $identifier;
         $this->versionConstraint = $versionConstraint;
         $this->lockedVersion = $lockedVersion;
         $this->location = $location;
+        $this->makeCopy = $makeCopy;
     }
 
     /**
@@ -120,5 +127,12 @@ class RequestedPhar {
      */
     public function asString() {
         return $this->identifier->asString();
+    }
+
+    /**
+     * @return bool
+     */
+    public function makeCopy() {
+        return $this->makeCopy;
     }
 }
