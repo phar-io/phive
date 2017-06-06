@@ -125,7 +125,6 @@ class Factory {
                 $this->getTargetDirectoryLocator()
             ),
             $this->getInstallService(),
-
             $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
         );
     }
@@ -464,7 +463,7 @@ class Factory {
         return new PharInstaller(
             $this->getConfig()->getHomeDirectory()->child('phars'),
             $this->getOutput(),
-            $this->getFileLinker()
+            $this->getPharActivator()
         );
     }
 
@@ -519,14 +518,14 @@ class Factory {
     /**
      * @return PharActivator
      */
-    private function getFileLinker() {
-        return $this->getFileLinkerLocator()->getPharActivator($this->getEnvironment());
+    private function getPharActivator() {
+        return $this->getPharActivatorLocator()->getPharActivator($this->getEnvironment());
     }
 
     /**
      * @return PharActivatorLocator
      */
-    private function getFileLinkerLocator() {
+    private function getPharActivatorLocator() {
         return new PharActivatorLocator(new PharActivatorFactory());
     }
 
