@@ -2,6 +2,12 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.7.2] - 2017-06-06
+
+### Fixed
+
+* [#108](https://github.com/phar-io/phive/issues/108): PHAR files are always symlinked on install, even with "-c" option
+
 ## [0.7.1] - 2017-06-02
 
 ### Changed
@@ -168,7 +174,8 @@ any changed PHARs
 ## [Unreleased]
 
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.7.1...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.7.2...HEAD
+[0.7.2]: https://github.com/phar-io/phive/compare/0.7.1...0.7.2
 [0.7.1]: https://github.com/phar-io/phive/compare/0.7.0...0.7.1
 [0.7.0]: https://github.com/phar-io/phive/compare/0.6.3...0.7.0
 [0.6.3]: https://github.com/phar-io/phive/compare/0.6.2...0.6.3
