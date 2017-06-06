@@ -148,7 +148,21 @@ class RegressionTestCase extends TestCase {
      * @param string $target
      */
     protected function assertSymlinkTargetEquals($filename, $target) {
+        $this->assertTrue(
+            is_link($filename),
+            sprintf('Failed asserting that %s is a symlink.', $filename)
+        );
         $this->assertEquals($target, readlink($filename));
+    }
+
+    /**
+     * @param string $filename
+     */
+    protected function assertFileIsNotASymlink($filename) {
+        $this->assertNotTrue(
+            is_link($filename),
+            sprintf('Failed asserting that %s is not a symlink.', $filename)
+        );
     }
 
     /**

@@ -22,6 +22,21 @@ class InstallCommandTest extends RegressionTestCase {
         );
     }
 
+    public function testCopiesPhar() {
+        $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
+
+        $this->runPhiveCommand('install', ['--copy', 'phpunit@5.3.1']);
+
+        $target = $this->getToolsDirectory()->file('phpunit')->asString();
+
+        $this->assertFileIsNotASymlink($target);
+
+        $this->assertFileEquals(
+            $this->getPhiveHomeDirectory()->child('phars')->file('phpunit-5.3.1.phar')->asString(),
+            $target
+        );
+    }
+
     public function testAddsPharNodeToPhiveXmlConfig() {
         $phiveXmlConfig = $this->getPhiveXmlConfig();
         $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
