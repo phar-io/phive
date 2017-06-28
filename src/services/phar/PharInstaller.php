@@ -59,8 +59,8 @@ class PharInstaller {
      * @param Filename $destination
      */
     private function copy(File $phar, Filename $destination) {
-        $this->output->writeInfo(sprintf('Copying %s to %s', $phar->getFilename(), $destination->asString()));
-        copy($this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFilename(), $destination->asString());
+        $this->output->writeInfo(sprintf('Copying %s to %s', basename($phar->getFilename()), $destination->asString()));
+        copy($phar->getFilename(), $destination->asString());
         chmod($destination, 0755);
     }
 
@@ -72,7 +72,7 @@ class PharInstaller {
      */
     private function link(File $phar, Filename $destination) {
         try {
-            $linkFilename = $this->pharActivator->activate($this->pharDirectory->file($phar->getFilename()), $destination);
+            $linkFilename = $this->pharActivator->activate($phar->getFilename(), $destination);
             $this->output->writeInfo(sprintf('Linking %s to %s', $phar->getFilename(), $linkFilename->asString()));
         } catch (FileNotWritableException $exception) {
             $message = sprintf(

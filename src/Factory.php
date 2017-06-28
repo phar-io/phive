@@ -258,7 +258,8 @@ class Factory {
             $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
             $this->getPharInstaller(),
             $this->getPharRegistry(),
-            $this->getPharService()
+            $this->getPharService(),
+            $this->getDependencyChecker()
         );
     }
 
@@ -576,5 +577,9 @@ class Factory {
      */
     private function getRequestedPharResolverFactory() {
         return new RequestedPharResolverFactory($this);
+    }
+
+    private function getDependencyChecker() {
+        return new CompatibilityChecker();
     }
 }

@@ -33,9 +33,7 @@ class PharService {
             return $this->registry->getPhar($release->getName(), $release->getVersion());
         }
         $phar = $this->downloader->download($release);
-        $this->registry->addPhar($phar);
-
-        return $phar;
+        return $this->registry->addPhar($phar);
     }
 
 }

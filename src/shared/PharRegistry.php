@@ -29,9 +29,11 @@ class PharRegistry {
 
     /**
      * @param Phar $phar
+     *
+     * @return Phar
      */
     public function addPhar(Phar $phar) {
-        $this->savePhar($phar->getFile());
+        $destinationFile = $this->savePhar($phar->getFile());
         $pharNode = $this->dbFile->createElement('phar');
         $pharNode->setAttribute('name', $phar->getName());
         $pharNode->setAttribute('version', $phar->getVersion()->getVersionString());
@@ -51,6 +53,13 @@ class PharRegistry {
 
         $this->dbFile->addElement($pharNode);
         $this->dbFile->save();
+
+        return new Phar(
+            $phar->getName(),
+            $phar->getVersion(),
+            new File($destinationFile, $phar->getFile()->getContent()),
+            $phar->getSignatureFingerprint()
+        );
     }
 
     /**
@@ -68,11 +77,14 @@ class PharRegistry {
 
     /**
      * @param File $pharFile
+     *
+     * @return Filename
      */
     private function savePhar(File $pharFile) {
-        $destination = $this->getPharDestination($pharFile);
-        file_put_contents($destination, $pharFile->getContent());
+        $destination = new Filename($this->getPharDestination($pharFile));
+        $pharFile->saveAs($destination);
         chmod($destination, 0755);
+        return $destination;
     }
 
     /**
@@ -161,7 +173,7 @@ class PharRegistry {
      * @return File
      */
     private function loadPharFile($filename) {
-        return new File(new Filename(pathinfo($filename, PATHINFO_BASENAME)), file_get_contents($filename));
+        return new File(new Filename($filename), file_get_contents($filename));
     }
 
     /**
