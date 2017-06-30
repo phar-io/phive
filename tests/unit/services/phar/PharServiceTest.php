@@ -53,6 +53,11 @@ class PharServiceTest extends TestCase {
             ->with($name, $version)
             ->willReturn(false);
 
+        $registry->expects($this->once())
+            ->method('addPhar')
+            ->with($phar)
+            ->willReturn($phar);
+
         $downloader = $this->getPharDownloaderMock();
 
         $downloader->expects($this->once())

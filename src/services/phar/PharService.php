@@ -30,10 +30,13 @@ class PharService {
     public function getPharFromRelease(Release $release) {
 
         if ($this->registry->hasPhar($release->getName(), $release->getVersion())) {
+
             return $this->registry->getPhar($release->getName(), $release->getVersion());
         }
-        $phar = $this->downloader->download($release);
-        return $this->registry->addPhar($phar);
+
+        return $this->registry->addPhar(
+            $this->downloader->download($release)
+        );
     }
 
 }

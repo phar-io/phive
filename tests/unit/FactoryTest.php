@@ -53,6 +53,8 @@ class FactoryTest extends TestCase {
      * @backupGlobals true
      */
     public function testGetCurlSetsProxyFromEnvironment() {
+        $this->markTestIncomplete();
+
         $_SERVER['https_proxy'] = 'http://example.com';
 
         $request = $this->getRequestMock();
