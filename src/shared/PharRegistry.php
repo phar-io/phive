@@ -58,7 +58,7 @@ class PharRegistry {
             $phar->getName(),
             $phar->getVersion(),
             new File($destinationFile, $phar->getFile()->getContent()),
-            $phar->getSignatureFingerprint()
+            $phar->hasSignatureFingerprint() ? $phar->getSignatureFingerprint() : null
         );
     }
 
