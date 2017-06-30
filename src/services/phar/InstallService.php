@@ -32,29 +32,29 @@ class InstallService {
     private $pharService;
 
     /**
-     * @var CompatibilityChecker
+     * @var CompatibilityService
      */
-    private $compatibilityChecker;
+    private $compatibilityService;
 
     /**
      * @param PhiveXmlConfig       $phiveXml
      * @param PharInstaller        $installer
      * @param PharRegistry         $registry
      * @param PharService          $pharService
-     * @param CompatibilityChecker $compatibilityChecker
+     * @param CompatibilityService $compatibilityChecker
      */
     public function __construct(
         PhiveXmlConfig $phiveXml,
         PharInstaller $installer,
         PharRegistry $registry,
         PharService $pharService,
-        CompatibilityChecker $compatibilityChecker
+        CompatibilityService $compatibilityChecker
     ) {
         $this->phiveXml             = $phiveXml;
         $this->installer            = $installer;
         $this->registry             = $registry;
         $this->pharService          = $pharService;
-        $this->compatibilityChecker = $compatibilityChecker;
+        $this->compatibilityService = $compatibilityChecker;
     }
 
     /**
@@ -65,13 +65,8 @@ class InstallService {
      */
     public function execute(Release $release, VersionConstraint $versionConstraint, Filename $destination, $makeCopy) {
         $phar = $this->pharService->getPharFromRelease($release);
-        if ($phar->hasManifest()) {
-            $result = $this->compatibilityChecker->checkCompatibility($phar);
-            if (!$result->isCompatible()) {
-                throw new \RuntimeException(
-                    "Your Environment is not capable to use this phar.\n\n" . $result->asString()
-                );
-            }
+        if (!$this->compatibilityService->canRun($phar)) {
+            return;
         }
 
         $this->installer->install($phar->getFile(), $destination, $makeCopy);

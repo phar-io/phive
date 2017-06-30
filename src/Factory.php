@@ -259,7 +259,7 @@ class Factory {
             $this->getPharInstaller(),
             $this->getPharRegistry(),
             $this->getPharService(),
-            $this->getDependencyChecker()
+            $this->getCompatibilityService()
         );
     }
 
@@ -579,7 +579,10 @@ class Factory {
         return new RequestedPharResolverFactory($this);
     }
 
-    private function getDependencyChecker() {
-        return new CompatibilityChecker();
+    private function getCompatibilityService() {
+        return new CompatibilityService(
+            $this->getOutput(),
+            $this->getConsoleInput()
+        );
     }
 }
