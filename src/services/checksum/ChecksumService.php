@@ -30,6 +30,7 @@ class ChecksumService {
             default:
                 throw new InvalidHashException(sprintf('%s is not supported', $hashClass));
         }
+
         return $actual->equals($expectedHash);
     }
 

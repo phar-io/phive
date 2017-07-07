@@ -12,6 +12,7 @@ class DirectUrlResolver extends AbstractRequestedPharResolver {
         if (!$requestedPhar->hasUrl()) {
             return $this->tryNext($requestedPhar);
         }
+
         return new UrlRepository();
     }
 }

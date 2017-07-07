@@ -9,7 +9,7 @@ class RemoveContext extends GeneralContext {
      */
     protected function getKnownOptions() {
         return [
-            'global'         => 'g'
+            'global' => 'g'
         ];
     }
 }

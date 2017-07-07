@@ -15,6 +15,7 @@ class SymlinkPharActivator implements PharActivator {
         $this->ensureDestinationIsWritable($linkDestination);
 
         symlink($pharLocation->asString(), $linkDestination->asString());
+
         return $linkDestination;
     }
 

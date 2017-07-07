@@ -68,21 +68,27 @@ class Runner {
             $this->ensureFitness();
             $this->setupRuntime();
             $this->execute();
+
             return self::RC_OK;
         } catch (RunnerException $e) {
             $this->showException($e);
+
             return $e->getCode();
         } catch (ErrorException $e) {
             $this->showErrorWithTrace($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
+
             return self::RC_BUG_FOUND;
         } catch (Exception $e) {
             $this->showException($e);
+
             return self::RC_ERROR;
         } catch (\Exception $e) {
             $this->showErrorWithTrace($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
+
             return self::RC_BUG_FOUND;
         } catch (\Throwable $t) {
             $this->showErrorWithTrace($t->getMessage(), $t->getFile(), $t->getLine(), $t->getTrace());
+
             return self::RC_BUG_FOUND;
         }
     }
@@ -188,6 +194,7 @@ class Runner {
             if ($options->hasArgument(0)) {
                 return $options->getArgument(0);
             }
+
             return 'help';
         } catch (RequestException $e) {
             throw new RunnerException(

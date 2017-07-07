@@ -80,6 +80,7 @@ class Curl implements HttpClient {
         if (strtolower($parts[0]) === 'etag') {
             $this->etag = new ETag(trim($parts[1]));
         }
+
         return mb_strlen($line);
     }
 

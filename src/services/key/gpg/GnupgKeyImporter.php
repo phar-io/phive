@@ -22,6 +22,7 @@ class GnupgKeyImporter implements KeyImporter {
      */
     public function importKey($key) {
         $result = $this->gnupg->import($key);
+
         return new KeyImportResult(
             $result['imported'],
             isset($result['fingerprint']) ? $result['fingerprint'] : ''

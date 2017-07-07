@@ -52,6 +52,7 @@ class JsonData {
     public function hasFragment($fragmentSpecification) {
         try {
             $this->getFragment($fragmentSpecification);
+
             return true;
         } catch (\InvalidArgumentException $e) {
             return false;
@@ -73,6 +74,7 @@ class JsonData {
             }
             $data = $data->{$key};
         }
+
         return $data;
     }
 

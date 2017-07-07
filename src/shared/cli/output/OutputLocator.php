@@ -26,6 +26,7 @@ class OutputLocator {
         if ($environment->supportsColoredOutput()) {
             return $this->factory->getColoredConsoleOutput();
         }
+
         return $this->factory->getConsoleOutput();
     }
 

@@ -41,8 +41,10 @@ class GnupgSignatureVerifier implements SignatureVerifier {
                 if (!$importResult->isSuccess()) {
                     return $result;
                 }
+
                 return $this->attemptVerification($message, $signature);
             }
+
             return $result;
         } catch (\Exception $e) {
             throw new VerificationFailedException($e->getMessage(), $e->getCode(), $e);

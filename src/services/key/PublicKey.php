@@ -66,6 +66,7 @@ class PublicKey {
         }
         $info[] = '';
         $info[] = "\tCreated: " . $this->created->format('Y-m-d');
+
         return join("\n", $info);
     }
 

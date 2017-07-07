@@ -44,6 +44,7 @@ class TargetDirectoryLocator {
         if ($this->phiveXmlConfig->hasTargetDirectory()) {
             return $this->phiveXmlConfig->getTargetDirectory();
         }
+
         return $this->config->getToolsDirectory();
     }
 

@@ -64,6 +64,7 @@ class XmlFile {
         if ($ctx === null) {
             $ctx = $this->getDom()->documentElement;
         }
+
         return $this->getXPath()->query($xpath, $ctx);
     }
 
@@ -105,6 +106,7 @@ class XmlFile {
      */
     public function getDom() {
         $this->init();
+
         return $this->dom;
     }
 
@@ -113,6 +115,7 @@ class XmlFile {
      */
     private function getXPath() {
         $this->init();
+
         return $this->xPath;
     }
 

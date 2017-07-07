@@ -24,6 +24,7 @@ class PharActivatorLocator {
         if ($environment instanceof WindowsEnvironment) {
             return $this->factory->getBatPharActivator();
         }
+
         return $this->factory->getSymlinkPharActivator();
     }
 

@@ -20,6 +20,7 @@ class WindowsEnvironment extends Environment {
         if (!$this->hasHomeDirectory()) {
             throw new \BadMethodCallException('No home directory set in environment');
         }
+
         return new Directory($this->server['HOMEDRIVE'] . $this->server['HOMEPATH']);
     }
 

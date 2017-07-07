@@ -73,6 +73,7 @@ abstract class GeneralContext implements Context {
         if (!is_string($char) || strlen($char) !== 1) {
             throw new ContextException('short option must be a string of length 1');
         }
+
         return in_array($char, $this->getKnownOptions(), true);
     }
 
@@ -86,6 +87,7 @@ abstract class GeneralContext implements Context {
         if (!$this->hasOptionForChar($char)) {
             throw new ContextException('No short option with this char');
         }
+
         return array_search($char, $this->getKnownOptions(), true);
     }
 

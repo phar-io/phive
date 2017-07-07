@@ -24,7 +24,6 @@ class ReleaseCollection implements \Countable {
         return count($this->releases);
     }
 
-
     /**
      * @param VersionConstraint $versionConstraint
      *
@@ -45,6 +44,7 @@ class ReleaseCollection implements \Countable {
         if ($latest === null) {
             throw new ReleaseException('No matching release found');
         }
+
         return $latest;
     }
 

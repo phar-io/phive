@@ -23,8 +23,8 @@ class InstallCommand implements Cli\Command {
     private $pharResolver;
 
     /**
-     * @param InstallCommandConfig $config
-     * @param InstallService $installService
+     * @param InstallCommandConfig         $config
+     * @param InstallService               $installService
      * @param RequestedPharResolverService $pharResolver
      */
     public function __construct(
@@ -47,7 +47,7 @@ class InstallCommand implements Cli\Command {
 
     /**
      * @param RequestedPhar $requestedPhar
-     * @param Directory $targetDirectory
+     * @param Directory     $targetDirectory
      */
     protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory) {
 
@@ -72,9 +72,9 @@ class InstallCommand implements Cli\Command {
     }
 
     /**
-     * @param string $pharName
+     * @param string        $pharName
      * @param RequestedPhar $requestedPhar
-     * @param Directory $destination
+     * @param Directory     $destination
      *
      * @return Filename
      */
@@ -82,6 +82,7 @@ class InstallCommand implements Cli\Command {
         if ($requestedPhar->hasLocation()) {
             return $requestedPhar->getLocation();
         }
+
         return $destination->file($pharName);
     }
 

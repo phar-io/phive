@@ -73,6 +73,7 @@ class Request {
             throw new \OutOfBoundsException('No more parameters');
         }
         $this->pos++;
+
         return $this->argv[$this->pos];
     }
 

@@ -15,6 +15,7 @@ class EnvironmentLocator {
         if (strtoupper(substr($operatingSystem, 0, 3)) === 'WIN') {
             return WindowsEnvironment::fromSuperGlobals();
         }
+
         return UnixoidEnvironment::fromSuperGlobals();
     }
 

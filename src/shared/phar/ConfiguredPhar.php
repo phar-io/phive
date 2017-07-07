@@ -31,18 +31,19 @@ class ConfiguredPhar {
      * @var PharUrl|null
      */
     private $url;
+
     /**
      * @var bool
      */
     private $copy;
 
     /**
-     * @param string $name
+     * @param string            $name
      * @param VersionConstraint $versionConstraint
-     * @param Version|null $installedVersion
-     * @param Filename|null $location
-     * @param PharUrl|null $url
-     * @param bool $copy
+     * @param Version|null      $installedVersion
+     * @param Filename|null     $location
+     * @param PharUrl|null      $url
+     * @param bool              $copy
      */
     public function __construct(
         $name,
@@ -82,6 +83,7 @@ class ConfiguredPhar {
         if (!$this->isInstalled()) {
             throw new ConfiguredPharException('Phar is not installed');
         }
+
         return $this->installedVersion;
     }
 
@@ -110,6 +112,7 @@ class ConfiguredPhar {
                 ConfiguredPharException::NoLocation
             );
         }
+
         return $this->location;
     }
 
@@ -128,6 +131,7 @@ class ConfiguredPhar {
         if (!$this->hasUrl()) {
             throw new ConfiguredPharException('No URL set', ConfiguredPharException::NoUrl);
         }
+
         return $this->url;
     }
 

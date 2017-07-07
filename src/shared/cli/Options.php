@@ -43,6 +43,7 @@ class Options {
                 CommandOptionsException::NoSuchOption
             );
         }
+
         return $this->options[$name];
     }
 
@@ -64,6 +65,7 @@ class Options {
                 CommandOptionsException::InvalidArgumentIndex
             );
         }
+
         return $this->arguments[$index];
     }
 
@@ -79,6 +81,7 @@ class Options {
         $result = new Options();
         $result->arguments = $this->arguments;
         $result->options = array_merge($this->options, $options->options);
+
         return $result;
     }
 

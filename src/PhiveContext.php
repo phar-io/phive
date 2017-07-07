@@ -11,6 +11,7 @@ class PhiveContext extends GeneralContext {
 
     /**
      * @param string $option
+     *
      * @return bool
      */
     public function requiresValue($option) {

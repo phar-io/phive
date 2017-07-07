@@ -36,6 +36,7 @@ class GitAwarePhiveVersion extends PhiveVersion {
 
         if (!$this->git->isRepository($phiveRoot)) {
             $this->version = self::UNKNOWN_VERSION;
+
             return $this->version;
         }
 

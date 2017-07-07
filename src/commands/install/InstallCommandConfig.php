@@ -31,9 +31,9 @@ class InstallCommandConfig {
     private $targetDirectoryLocator;
 
     /**
-     * @param Cli\Options $options
-     * @param PhiveXmlConfig $phiveXmlConfig
-     * @param Environment $environment
+     * @param Cli\Options            $options
+     * @param PhiveXmlConfig         $phiveXmlConfig
+     * @param Environment            $environment
      * @param TargetDirectoryLocator $targetDirectoryLocator
      */
     public function __construct(
@@ -57,6 +57,7 @@ class InstallCommandConfig {
         if ($this->installGlobally()) {
             return $this->environment->getGlobalBinDir();
         }
+
         return $this->targetDirectoryLocator->getTargetDirectory();
     }
 
@@ -71,6 +72,7 @@ class InstallCommandConfig {
         if ($this->cliOptions->getArgumentCount() === 0) {
             return $this->getPharsFromPhiveXmlConfig();
         }
+
         return $this->getPharsFromCliArguments();
     }
 
@@ -130,6 +132,7 @@ class InstallCommandConfig {
                 $identifier, $versionConstraint, $versionConstraint, null, $this->makeCopy()
             );
         }
+
         return $phars;
     }
 

@@ -334,7 +334,7 @@ class Factory {
                 sprintf('Phive %s on %s',
                     $this->getPhiveVersion()->getVersion(),
                     $environment->getRuntimeString()
-                    )
+                )
             );
             $this->curlConfig->addLocalSslCertificate(
                 new LocalSslCertificate(
@@ -371,6 +371,7 @@ class Factory {
                 $this->getConfig()->getHomeDirectory()->child('phars')
             );
         }
+
         return $this->registry;
     }
 
@@ -408,7 +409,8 @@ class Factory {
      */
     private function getGnupg() {
         $home = $this->getConfig()->getHomeDirectory()->child('gpg');
-        $bin  = $this->getConfig()->getGPGBinaryPath();
+        $bin = $this->getConfig()->getGPGBinaryPath();
+
         return (new GnuPGFactory($bin))->createGnuPG($home);
     }
 
@@ -467,7 +469,6 @@ class Factory {
             $this->getPharActivator()
         );
     }
-
 
     /**
      * @param bool $global

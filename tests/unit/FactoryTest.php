@@ -74,7 +74,6 @@ class FactoryTest extends TestCase {
         return $this->createMock(Environment::class);
     }
 
-
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Request
      */

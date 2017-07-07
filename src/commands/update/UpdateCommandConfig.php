@@ -40,6 +40,7 @@ class UpdateCommandConfig {
      */
     public function getRequestedPhars() {
         $filter = $this->getPharsFromCliArguments();
+
         return $this->getPharAliasesFromPhiveXmlConfig($filter);
     }
 
@@ -87,6 +88,7 @@ class UpdateCommandConfig {
                 $configuredPhar->isCopy()
             );
         }
+
         return $phars;
     }
 
@@ -100,6 +102,7 @@ class UpdateCommandConfig {
         for ($i = 0; $i < $argCount; $i++) {
             $phars[] = $this->cliOptions->getArgument($i);
         }
+
         return $phars;
     }
 }

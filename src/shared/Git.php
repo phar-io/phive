@@ -46,6 +46,7 @@ class Git {
         if ($returnCode !== 0) {
             throw new GitException('Could not determine most recent tag');
         }
+
         return $tag;
     }
 

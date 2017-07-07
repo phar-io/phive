@@ -72,6 +72,7 @@ class PharRegistry {
         foreach ($this->dbFile->query(sprintf('//phive:phar[@name="%s"]', $name)) as $pharNode) {
             $phars[] = $this->nodetoPhar($pharNode);
         }
+
         return $phars;
     }
 
@@ -84,6 +85,7 @@ class PharRegistry {
         $destination = new Filename($this->getPharDestination($pharFile));
         $pharFile->saveAs($destination);
         chmod($destination, 0755);
+
         return $destination;
     }
 
@@ -232,6 +234,7 @@ class PharRegistry {
         foreach ($this->dbFile->query('//phive:phar[not(phive:usage)]') as $pharNode) {
             $unusedPhars[] = $this->nodetoPhar($pharNode);
         }
+
         return $unusedPhars;
     }
 
@@ -264,6 +267,7 @@ class PharRegistry {
             }
             $fingerprints[] = $fingerprintNode->nodeValue;
         }
+
         return array_unique($fingerprints);
     }
 

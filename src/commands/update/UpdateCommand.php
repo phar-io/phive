@@ -24,10 +24,10 @@ class UpdateCommand implements Cli\Command {
     private $phiveXml;
 
     /**
-     * @param UpdateCommandConfig $updateCommandConfig
-     * @param InstallService $installService
+     * @param UpdateCommandConfig          $updateCommandConfig
+     * @param InstallService               $installService
      * @param RequestedPharResolverService $pharResolver
-     * @param PhiveXmlConfig $phiveXml
+     * @param PhiveXmlConfig               $phiveXml
      */
     public function __construct(
         UpdateCommandConfig $updateCommandConfig,
@@ -65,7 +65,5 @@ class UpdateCommand implements Cli\Command {
 
         return $releases->getLatest($requestedPhar->getVersionConstraint());
     }
-
-
 
 }

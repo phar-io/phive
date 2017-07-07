@@ -28,6 +28,7 @@ class FileStorageCacheBackend implements CacheBackend {
         if (!$this->basedir->hasChild($url->getHostname())) {
             return false;
         }
+
         return $this->basedir->child($url->getHostname())->hasChild(
             $this->translateUrlToName($url)
         );

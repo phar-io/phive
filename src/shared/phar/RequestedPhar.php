@@ -25,17 +25,18 @@ class RequestedPhar {
      * @var Filename|null
      */
     private $location;
+
     /**
      * @var bool
      */
     private $makeCopy;
 
     /**
-     * @param PharIdentifier $identifier
+     * @param PharIdentifier    $identifier
      * @param VersionConstraint $versionConstraint
      * @param VersionConstraint $lockedVersion
-     * @param Filename|null $location
-     * @param bool $makeCopy
+     * @param Filename|null     $location
+     * @param bool              $makeCopy
      */
     public function __construct(
         PharIdentifier $identifier,

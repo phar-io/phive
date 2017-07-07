@@ -39,6 +39,7 @@ class PharIoRepository implements SourceRepository {
                 )
             );
         }
+
         return $releases;
     }
 
@@ -72,6 +73,7 @@ class PharIoRepository implements SourceRepository {
         if ($signatureNode->hasAttribute('url')) {
             return new Url($signatureNode->getAttribute('url'));
         }
+
         return new Url($releaseNode->getAttribute('url') . '.asc');
     }
 

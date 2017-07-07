@@ -50,18 +50,18 @@ class InstallService {
         PharService $pharService,
         CompatibilityService $compatibilityChecker
     ) {
-        $this->phiveXml             = $phiveXml;
-        $this->installer            = $installer;
-        $this->registry             = $registry;
-        $this->pharService          = $pharService;
+        $this->phiveXml = $phiveXml;
+        $this->installer = $installer;
+        $this->registry = $registry;
+        $this->pharService = $pharService;
         $this->compatibilityService = $compatibilityChecker;
     }
 
     /**
-     * @param Release $release
+     * @param Release           $release
      * @param VersionConstraint $versionConstraint
-     * @param Filename $destination
-     * @param bool $makeCopy
+     * @param Filename          $destination
+     * @param bool              $makeCopy
      */
     public function execute(Release $release, VersionConstraint $versionConstraint, Filename $destination, $makeCopy) {
         $phar = $this->pharService->getPharFromRelease($release);
@@ -92,7 +92,7 @@ class InstallService {
 
     /**
      * @param VersionConstraint $requestedVersionConstraint
-     * @param Version $installedVersion
+     * @param Version           $installedVersion
      *
      * @return VersionConstraint
      */
@@ -100,6 +100,7 @@ class InstallService {
         if (!$requestedVersionConstraint instanceof AnyVersionConstraint) {
             return $requestedVersionConstraint;
         }
+
         return new AndVersionConstraintGroup(
             sprintf('^%s', $installedVersion->getVersionString()),
             [

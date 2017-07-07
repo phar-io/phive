@@ -53,6 +53,7 @@ class HttpProgressRenderer implements HttpProgressHandler {
                 $update->getDownloadPercent()
             )
         );
+
         return true;
     }
 
@@ -69,6 +70,7 @@ class HttpProgressRenderer implements HttpProgressHandler {
         if ($expected >= 1024) { // KB
             return number_format($current / 1024, 2) . ' KB';
         }
+
         return $current . ' B';
     }
 
@@ -80,6 +82,7 @@ class HttpProgressRenderer implements HttpProgressHandler {
     private function getProgressBar($downloadPercent) {
         $barCount = floor($downloadPercent / 2.5);
         $barString = str_pad('', $barCount, '=') . '>';
+
         return str_pad($barString, 40, ' ', STR_PAD_RIGHT);
     }
 

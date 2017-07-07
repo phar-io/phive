@@ -18,7 +18,7 @@ class PhiveXmlConfigFileLocator {
 
     /**
      * @param Environment $environment
-     * @param Config $config
+     * @param Config      $config
      */
     public function __construct(Environment $environment, Config $config) {
         $this->environment = $environment;
@@ -34,6 +34,7 @@ class PhiveXmlConfigFileLocator {
         if ($global) {
             return $this->config->getHomeDirectory()->file(self::FILENAME);
         }
+
         return $this->environment->getWorkingDirectory()->file(self::FILENAME);
     }
 

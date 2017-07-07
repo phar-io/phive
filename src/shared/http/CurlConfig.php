@@ -59,6 +59,7 @@ class CurlConfig {
         if (!$this->hasLocalSslCertificate($hostname)) {
             throw new CurlException(sprintf('No local certificate for hostname %s found', $hostname));
         }
+
         return $this->localSslCertificates[$hostname];
     }
 

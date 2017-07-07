@@ -6,7 +6,7 @@ use PharIo\FileSystem\Filename;
 class Executor {
     /**
      * @param Filename $commandFilename
-     * @param string $argLine
+     * @param string   $argLine
      *
      * @return ExecutorResult
      */
@@ -30,6 +30,7 @@ class Executor {
 
     /**
      * @param Filename $executable
+     *
      * @throws ExecutorException
      */
     private function ensureFileExists(Filename $executable) {
@@ -46,6 +47,7 @@ class Executor {
 
     /**
      * @param Filename $executable
+     *
      * @throws ExecutorException
      */
     private function ensureExecutable(Filename $executable) {

@@ -14,7 +14,7 @@ class PharService {
     private $downloader;
 
     /**
-     * @param PharRegistry $registry
+     * @param PharRegistry   $registry
      * @param PharDownloader $downloader
      */
     public function __construct(PharRegistry $registry, PharDownloader $downloader) {

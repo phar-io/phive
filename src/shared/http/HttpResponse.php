@@ -58,6 +58,7 @@ class HttpResponse {
         if (!$this->hasETag()) {
             throw new HttpResponseException('No ETag present in response');
         }
+
         return $this->etag;
     }
 }

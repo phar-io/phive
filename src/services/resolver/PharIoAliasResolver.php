@@ -57,6 +57,7 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
             case 'phar.io':
                 $filename = new Filename(tempnam(sys_get_temp_dir(), 'repo_'));
                 $file->saveAs($filename);
+
                 return new PharIoRepository(
                     new XmlFile(
                         $filename,
@@ -76,6 +77,7 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
         if ($this->sources === null) {
             $this->sources = $this->loader->load();
         }
+
         return $this->sources;
     }
 

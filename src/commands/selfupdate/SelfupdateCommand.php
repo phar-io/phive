@@ -69,6 +69,7 @@ class SelfupdateCommand implements Cli\Command {
 
         if (!$release->getVersion()->isGreaterThan(new Version($this->currentPhiveVersion->getVersion()))) {
             $this->output->writeInfo('You already have the newest version of PHIVE.');
+
             return;
         }
 
@@ -77,9 +78,11 @@ class SelfupdateCommand implements Cli\Command {
             $this->installPhivePhar($phar, $destination);
         } catch (DownloadFailedException $e) {
             $this->output->writeError('Downloading the new version failed: ' . $e->getMessage());
+
             return;
         } catch (InstallationFailedException $e) {
             $this->output->writeError('Installing the new version failed: ' . $e->getMessage());
+
             return;
         }
 

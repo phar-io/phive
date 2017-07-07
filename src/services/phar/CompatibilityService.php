@@ -27,7 +27,7 @@ class CompatibilityService {
      */
     public function __construct(Output $output, Input $input) {
         $this->output = $output;
-        $this->input  = $input;
+        $this->input = $input;
     }
 
     /**
@@ -43,7 +43,7 @@ class CompatibilityService {
 
         $manifest = $phar->getManifest();
 
-        foreach($manifest->getRequirements() as $requirement) {
+        foreach ($manifest->getRequirements() as $requirement) {
 
             switch (true) {
 
@@ -60,7 +60,7 @@ class CompatibilityService {
                 }
 
                 case $requirement instanceof PhpExtensionRequirement: {
-                    if (!extension_loaded( (string)$requirement)) {
+                    if (!extension_loaded((string)$requirement)) {
                         $issues[] = sprintf(
                             'Extension %s is required, but not installed or activated', $requirement
                         );
@@ -73,7 +73,7 @@ class CompatibilityService {
             return true;
         }
 
-       return $this->confirmInstallation($issues);
+        return $this->confirmInstallation($issues);
     }
 
     private function confirmInstallation(array $issues) {
@@ -83,6 +83,7 @@ class CompatibilityService {
         );
 
         $this->output->writeWarning($warning);
+
         return $this->input->confirm('Install anyway?', false);
     }
 }

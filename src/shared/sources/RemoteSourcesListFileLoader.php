@@ -31,10 +31,10 @@ class RemoteSourcesListFileLoader implements SourcesListFileLoader {
     private $maxAge;
 
     /**
-     * @param Url $sourceUrl
-     * @param Filename $filename
-     * @param FileDownloader $fileDownloader
-     * @param Cli\Output $output
+     * @param Url                $sourceUrl
+     * @param Filename           $filename
+     * @param FileDownloader     $fileDownloader
+     * @param Cli\Output         $output
      * @param \DateTimeImmutable $maxAge
      */
     public function __construct(
@@ -58,6 +58,7 @@ class RemoteSourcesListFileLoader implements SourcesListFileLoader {
         if (!$this->filename->exists() || $this->filename->isOlderThan($this->maxAge)) {
             $this->downloadFromSource();
         }
+
         return new SourcesList(
             new XmlFile(
                 $this->filename,

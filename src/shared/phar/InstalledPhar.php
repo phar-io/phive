@@ -33,11 +33,11 @@ class InstalledPhar {
     private $copy = false;
 
     /**
-     * @param string $name
-     * @param Version $installedVersion
+     * @param string            $name
+     * @param Version           $installedVersion
      * @param VersionConstraint $versionConstraint
-     * @param Filename $location
-     * @param bool $copy
+     * @param Filename          $location
+     * @param bool              $copy
      */
     public function __construct(
         $name,

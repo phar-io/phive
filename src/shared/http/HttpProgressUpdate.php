@@ -82,6 +82,7 @@ class HttpProgressUpdate {
         if ($this->expectedDown === 0) {
             return 0;
         }
+
         return round($this->received / ($this->expectedDown / 100));
     }
 
@@ -89,6 +90,7 @@ class HttpProgressUpdate {
         if ($this->expectedUp === 0) {
             return 0;
         }
+
         return round($this->sent / ($this->expectedUp / 100));
     }
 

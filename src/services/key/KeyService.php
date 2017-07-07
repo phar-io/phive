@@ -70,6 +70,7 @@ class KeyService {
 
         if (!$this->allowedToImport($key)) {
             $this->output->writeError(sprintf('User declined import of key %s', $key->getId()));
+
             return new KeyImportResult(0);
         }
 

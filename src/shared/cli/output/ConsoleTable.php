@@ -62,6 +62,7 @@ class ConsoleTable {
         foreach ($this->rows as $row) {
             $colWidth = max($colWidth, strlen($row[$index]));
         }
+
         return $colWidth + self::COLUMN_PADDING;
     }
 }

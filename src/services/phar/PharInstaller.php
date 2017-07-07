@@ -49,6 +49,7 @@ class PharInstaller {
 
         if ($copy) {
             $this->copy($phar, $destination);
+
             return;
         }
         $this->link($phar, $destination);
@@ -65,7 +66,7 @@ class PharInstaller {
     }
 
     /**
-     * @param File $phar
+     * @param File     $phar
      * @param Filename $destination
      *
      * @throws LinkCreationFailedException

@@ -28,7 +28,7 @@ class GithubRepository implements SourceRepository {
         foreach ($this->jsonData->getParsed() as $entry) {
             try {
                 $version = new GitHubVersion($entry->tag_name);
-            } catch(InvalidVersionException $exception) {
+            } catch (InvalidVersionException $exception) {
                 continue;
             }
             $pharUrl = null;

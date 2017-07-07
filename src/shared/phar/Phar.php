@@ -79,6 +79,7 @@ class Phar {
         if (!$this->hasSignatureFingerprint()) {
             throw new PharException('No signature fingerprint set');
         }
+
         return $this->signatureFingerprint;
     }
 

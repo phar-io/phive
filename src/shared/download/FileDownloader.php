@@ -45,6 +45,7 @@ class FileDownloader {
             if ($response->hasETag()) {
                 $this->cache->storeEntry($url, $response->getETag(), $response->getBody());
             }
+
             return new File($url->getFilename(), $response->getBody());
         } catch (HttpException $e) {
             throw new DownloadFailedException(

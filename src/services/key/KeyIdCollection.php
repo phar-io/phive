@@ -17,6 +17,7 @@ class KeyIdCollection {
 
     /**
      * @param $keyId
+     *
      * @return bool
      */
     public function has($keyId) {

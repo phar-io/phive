@@ -18,6 +18,7 @@ class UrlRepository implements SourceRepository {
                 new Url($requestedPhar->getUrl()->asString() . '.asc')
             )
         );
+
         return $releases;
     }
 

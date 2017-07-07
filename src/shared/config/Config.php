@@ -16,14 +16,15 @@ class Config {
      * @var Options
      */
     private $cliOptions;
+
     /**
      * @var \DateTimeImmutable
      */
     private $now;
 
     /**
-     * @param Environment $environment
-     * @param Options $cliOptions
+     * @param Environment             $environment
+     * @param Options                 $cliOptions
      * @param \DateTimeImmutable|null $now
      */
     public function __construct(
@@ -44,6 +45,7 @@ class Config {
         if ($this->cliOptions->hasOption('home')) {
             return new Directory($this->cliOptions->getOption('home'));
         }
+
         return $this->environment->getHomeDirectory()->child('.phive');
     }
 
@@ -91,6 +93,7 @@ class Config {
                 $idList->addKeyId($id);
             }
         }
+
         return $idList;
     }
 

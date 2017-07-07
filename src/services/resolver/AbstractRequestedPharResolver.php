@@ -25,6 +25,7 @@ abstract class AbstractRequestedPharResolver implements RequestedPharResolver {
         if ($this->next === null) {
             throw new ResolveException(sprintf('Could not resolve requested PHAR %s', $requestedPhar->getIdentifier()->asString()));
         }
+
         return $this->next->resolve($requestedPhar);
     }
 

@@ -68,6 +68,7 @@ class PharDownloader {
                 sprintf('Wrong checksum! Expected %s', $release->getExpectedHash()->asString())
             );
         }
+
         return new Phar($release->getName(), $release->getVersion(), $pharFile, $signatureVerificationResult->getFingerprint());
     }
 
@@ -80,6 +81,7 @@ class PharDownloader {
     private function downloadFile(Url $url) {
         try {
             $response = $this->httpClient->get($url);
+
             return new File($url->getFilename(), $response->getBody());
         } catch (HttpException $e) {
             throw new DownloadFailedException(

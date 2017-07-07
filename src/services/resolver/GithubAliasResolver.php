@@ -48,6 +48,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
         );
 
         $file = $this->fileDownloader->download($url);
+
         return new GithubRepository(
             new JsonData($file->getContent())
         );

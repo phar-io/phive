@@ -36,6 +36,7 @@ class SourcesList {
 
         /** @var \DOMElement $repositoryNode */
         $repositoryNode = $repositoryNodes->item(0);
+
         return new Source(
             $repositoryNode->getAttribute('type') ?: 'phar.io',
             new Url($repositoryNode->getAttribute('url'))
@@ -44,6 +45,7 @@ class SourcesList {
 
     /**
      * @param ComposerAlias $alias
+     *
      * @return string
      * @throws SourcesListException
      */
@@ -59,6 +61,7 @@ class SourcesList {
 
         /** @var \DOMElement $pharNode */
         $pharNode = $result->item(0);
+
         return $pharNode->getAttribute('alias');
     }
 
@@ -71,6 +74,7 @@ class SourcesList {
             /** @var \DOMElement $node */
             $result[] = $node->getAttribute('alias');
         }
+
         return $result;
     }
 

@@ -12,7 +12,7 @@ class UnixoidEnvironment extends Environment {
     private $executor;
 
     /**
-     * @param array $server
+     * @param array    $server
      * @param Executor $executor
      */
     public function __construct(array $server, Executor $executor) {
@@ -36,6 +36,7 @@ class UnixoidEnvironment extends Environment {
         if (!$this->hasHomeDirectory()) {
             throw new \BadMethodCallException('No home directory set in environment');
         }
+
         return new Directory($this->server['HOME']);
     }
 
@@ -51,6 +52,7 @@ class UnixoidEnvironment extends Environment {
             throw new EnvironmentException(sprintf('Command %s not found', $command));
         }
         $resultLines = explode("\n", $result);
+
         return new Filename($resultLines[0]);
     }
 
@@ -72,6 +74,7 @@ class UnixoidEnvironment extends Environment {
         if (!$commandResult->isSuccess()) {
             return false;
         }
+
         return (int)$commandResult->getOutput()[0] >= 8;
     }
 

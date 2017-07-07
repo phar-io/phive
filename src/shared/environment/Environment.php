@@ -34,6 +34,7 @@ abstract class Environment {
             throw new EnvironmentException(sprintf('Command %s not found', $command));
         }
         $resultLines = explode("\n", $result);
+
         return new Filename($resultLines[0]);
     }
 
@@ -66,6 +67,7 @@ abstract class Environment {
         if (!$this->hasProxy()) {
             throw new \BadMethodCallException('No proxy set in environment');
         }
+
         return $this->server['https_proxy'];
     }
 
@@ -114,17 +116,18 @@ abstract class Environment {
         if ($this->isHHVM()) {
             return HHVM_VERSION;
         }
+
         return PHP_VERSION;
     }
 
     /**
      * @return bool
      */
-    public function isInteractive()
-    {
+    public function isInteractive() {
         if (!function_exists('posix_isatty')) {
             return false;
         }
+
         return @posix_isatty(STDOUT);
     }
 

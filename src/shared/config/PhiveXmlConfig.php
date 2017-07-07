@@ -19,7 +19,7 @@ class PhiveXmlConfig {
     private $versionConstraintParser;
 
     /**
-     * @param XmlFile $configFile
+     * @param XmlFile                 $configFile
      * @param VersionConstraintParser $versionConstraintParser
      */
     public function __construct(XmlFile $configFile, VersionConstraintParser $versionConstraintParser) {
@@ -81,6 +81,7 @@ class PhiveXmlConfig {
         if (is_dir($locationAttribute)) {
             return (new Directory($locationAttribute))->file($name)->withAbsolutePath();
         }
+
         return (new Filename($locationAttribute))->withAbsolutePath();
     }
 
@@ -111,6 +112,7 @@ class PhiveXmlConfig {
         if (!$pharNode->hasAttribute('installed')) {
             throw new ConfigException(sprintf('PHAR %s has no installed version', $name));
         }
+
         return new Version($pharNode->getAttribute('installed'));
     }
 
@@ -124,6 +126,7 @@ class PhiveXmlConfig {
         if (!$this->hasPharLocation($name)) {
             return false;
         }
+
         return $this->getPharLocation($name)->exists() && $this->getPharNode($name)->hasAttribute('installed');
     }
 
@@ -146,7 +149,7 @@ class PhiveXmlConfig {
     }
 
     /**
-     * @param string $name
+     * @param string  $name
      * @param Version $version
      *
      * @return \DOMElement
@@ -164,14 +167,14 @@ class PhiveXmlConfig {
         $phars = [];
         /** @var \DOMElement $pharNode */
         foreach ($this->configFile->query('//phive:phar') as $pharNode) {
-            $phars[] =$this->nodeToConfiguredPhar($pharNode);
+            $phars[] = $this->nodeToConfiguredPhar($pharNode);
         }
 
         return $phars;
     }
 
     /**
-     * @param string $name
+     * @param string  $name
      * @param Version $version
      *
      * @return bool
@@ -181,7 +184,7 @@ class PhiveXmlConfig {
     }
 
     /**
-     * @param string $name
+     * @param string  $name
      * @param Version $version
      *
      * @return ConfiguredPhar
@@ -238,6 +241,7 @@ class PhiveXmlConfig {
         if ($node === null) {
             throw new ConfigException('Tools directory is not configured in phive.xml');
         }
+
         return new Directory($node->nodeValue);
     }
 

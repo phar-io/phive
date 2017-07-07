@@ -33,7 +33,7 @@ class ComposerCommand extends InstallCommand {
     ) {
         parent::__construct($config, $installService, $pharResolver);
         $this->composerService = $composerService;
-        $this->input           = $input;
+        $this->input = $input;
     }
 
     public function execute() {

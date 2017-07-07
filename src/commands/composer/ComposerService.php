@@ -42,11 +42,13 @@ class ComposerService {
                 continue;
             }
         }
+
         return $list;
     }
 
     /**
      * @param Filename $composerFilename
+     *
      * @return array
      */
     private function getRequires(Filename $composerFilename) {
