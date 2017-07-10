@@ -463,11 +463,7 @@ class Factory {
      * @return PharInstaller
      */
     private function getPharInstaller() {
-        return new PharInstaller(
-            $this->getConfig()->getHomeDirectory()->child('phars'),
-            $this->getOutput(),
-            $this->getPharActivator()
-        );
+        return new PharInstaller($this->getOutput(), $this->getPharActivator());
     }
 
     /**

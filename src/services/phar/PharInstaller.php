@@ -1,16 +1,10 @@
 <?php
 namespace PharIo\Phive;
 
-use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
 
 class PharInstaller {
-
-    /**
-     * @var Directory
-     */
-    private $pharDirectory = '';
 
     /**
      * @var Cli\Output
@@ -23,16 +17,10 @@ class PharInstaller {
     private $pharActivator;
 
     /**
-     * @param Directory     $pharDirectory
-     * @param Cli\Output    $output
+     * @param Cli\Output $output
      * @param PharActivator $pharActivator
      */
-    public function __construct(
-        Directory $pharDirectory,
-        Cli\Output $output,
-        PharActivator $pharActivator
-    ) {
-        $this->pharDirectory = $pharDirectory;
+    public function __construct(Cli\Output $output, PharActivator $pharActivator) {
         $this->output = $output;
         $this->pharActivator = $pharActivator;
     }
