@@ -173,6 +173,10 @@ any changed PHARs
 
 ## [Unreleased]
 
+### Added
+
+* [#94](https://github.com/phar-io/phive/issues/94): Check if a PHAR's requirements are met during installation
+* [#86](https://github.com/phar-io/phive/issues/86): Add global option `--no-progress`
 
 [Unreleased]: https://github.com/phar-io/phive/compare/0.7.2...HEAD
 [0.7.2]: https://github.com/phar-io/phive/compare/0.7.1...0.7.2

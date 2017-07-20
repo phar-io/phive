@@ -1,7 +1,8 @@
 Usage: %phive [global-options] <command> [arguments]
 
 Global options:
-    --home  Set a custom Phive home directory (default: ~/.phive)
+    --home         Set a custom Phive home directory (default: ~/.phive)
+    --no-progress  Do not print progress updates during file downloads
 
 Commands:
 

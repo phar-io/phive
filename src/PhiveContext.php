@@ -6,7 +6,10 @@ use PharIo\Phive\Cli\GeneralContext;
 class PhiveContext extends GeneralContext {
 
     protected function getKnownOptions() {
-        return ['home' => false];
+        return [
+            'home' => false,
+            'no-progress' => false
+        ];
     }
 
     /**

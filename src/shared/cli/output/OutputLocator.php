@@ -19,15 +19,16 @@ class OutputLocator {
 
     /**
      * @param Environment $environment
+     * @param bool $printProgressUpdates
      *
      * @return Output
      */
-    public function getOutput(Environment $environment) {
+    public function getOutput(Environment $environment, $printProgressUpdates) {
         if ($environment->supportsColoredOutput()) {
-            return $this->factory->getColoredConsoleOutput();
+            return $this->factory->getColoredConsoleOutput($printProgressUpdates);
         }
 
-        return $this->factory->getConsoleOutput();
+        return $this->factory->getConsoleOutput($printProgressUpdates);
     }
 
 }

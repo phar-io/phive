@@ -13,10 +13,17 @@ class ConsoleOutput implements Output {
     private $verbosity = self::VERBOSE_INFO;
 
     /**
-     * @param int $verbosity
+     * @var bool
      */
-    public function __construct($verbosity) {
+    private $printProgressUpdates = true;
+
+    /**
+     * @param int $verbosity
+     * @param bool $printProgressUpdates
+     */
+    public function __construct($verbosity, $printProgressUpdates) {
         $this->setVerbosity($verbosity);
+        $this->printProgressUpdates = $printProgressUpdates;
     }
 
     /**
@@ -42,7 +49,7 @@ class ConsoleOutput implements Output {
      * @param string $progressMessage
      */
     public function writeProgress($progressMessage) {
-        if ($this->verbosity >= self::VERBOSE_INFO) {
+        if ($this->verbosity >= self::VERBOSE_INFO && $this->printProgressUpdates) {
             $this->writeText(sprintf("\e[G%s\e[K", $progressMessage));
         }
     }

@@ -236,7 +236,10 @@ class Factory {
      * @return Cli\Output
      */
     public function getOutput() {
-        return (new Cli\OutputLocator(new Cli\OutputFactory()))->getOutput($this->getEnvironment());
+        return (new Cli\OutputLocator(new Cli\OutputFactory()))->getOutput(
+            $this->getEnvironment(),
+            !$this->request->getOptions()->hasOption('no-progress')
+        );
     }
 
     /**
