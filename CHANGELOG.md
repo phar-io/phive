@@ -2,6 +2,13 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.8.0] - 2017-08-26
+
+### Added
+
+* [#94](https://github.com/phar-io/phive/issues/94): Check if a PHAR's requirements are met during installation
+* [#86](https://github.com/phar-io/phive/issues/86): Add global option `--no-progress`
+
 ## [0.7.2] - 2017-06-06
 
 ### Fixed
@@ -173,12 +180,9 @@ any changed PHARs
 
 ## [Unreleased]
 
-### Added
 
-* [#94](https://github.com/phar-io/phive/issues/94): Check if a PHAR's requirements are met during installation
-* [#86](https://github.com/phar-io/phive/issues/86): Add global option `--no-progress`
-
-[Unreleased]: https://github.com/phar-io/phive/compare/0.7.2...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.8.0...HEAD
+[0.8.0]: https://github.com/phar-io/phive/compare/0.7.2...0.8.0
 [0.7.2]: https://github.com/phar-io/phive/compare/0.7.1...0.7.2
 [0.7.1]: https://github.com/phar-io/phive/compare/0.7.0...0.7.1
 [0.7.0]: https://github.com/phar-io/phive/compare/0.6.3...0.7.0
