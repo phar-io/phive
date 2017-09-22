@@ -350,7 +350,10 @@ class Factory {
             }
         }
 
-        return new Curl($this->curlConfig, $this->getHttpProgressRenderer());
+        return new RetryingHttpClient(
+            new Curl($this->curlConfig, $this->getHttpProgressRenderer()),
+            5
+        );
     }
 
     /**
