@@ -56,6 +56,54 @@ class ConfiguredPharTest  extends TestCase {
         $this->assertSame($location, $configuredPhar->getLocation());
     }
 
+    public function testGetLocationThrowsExceptionWhenNoLocationIsSet() {
+        $configuredPhar = new ConfiguredPhar('foo', $this->getVersionConstraintMock(), $this->getVersionMock(), null);
+        $this->expectException(ConfiguredPharException::class);
+        $configuredPhar->getLocation();
+    }
+
+    public function testHasUrl() {
+        $configuredPhar = new ConfiguredPhar('foo', $this->getVersionConstraintMock(), null, null, null);
+        $this->assertFalse($configuredPhar->hasUrl());
+
+        $configuredPhar = new ConfiguredPhar(
+            'foo', $this->getVersionConstraintMock(), null, null,
+            $this->createMock(PharUrl::class)
+        );
+        $this->assertTrue($configuredPhar->hasUrl());
+    }
+
+    public function testGetUrl() {
+        $url = $this->createMock(PharUrl::class);
+        $configuredPhar = new ConfiguredPhar(
+            'foo', $this->getVersionConstraintMock(), null, null,
+            $url
+        );
+        $this->assertSame($url, $configuredPhar->getUrl());
+    }
+
+    public function testGetUrlThrowsExceptionWhenNoneIsSet() {
+        $configuredPhar = new ConfiguredPhar('foo', $this->getVersionConstraintMock());
+        $this->expectException(ConfiguredPharException::class);
+        $configuredPhar->getUrl();
+    }
+
+    public function testIsCopy() {
+        $configuredPhar = new ConfiguredPhar(
+            'foo', $this->getVersionConstraintMock(), null, null, null,
+            true
+        );
+
+        $this->assertTrue($configuredPhar->isCopy());
+
+        $configuredPhar = new ConfiguredPhar(
+            'foo', $this->getVersionConstraintMock(), null, null, null,
+            false
+        );
+
+        $this->assertFalse($configuredPhar->isCopy());
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Filename
      */
