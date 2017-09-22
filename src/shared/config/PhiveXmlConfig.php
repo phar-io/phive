@@ -145,7 +145,13 @@ class PhiveXmlConfig {
      * @return \DOMElement
      */
     private function getPharNode($name) {
-        return $this->configFile->query(sprintf('//phive:phar[@name="%s"]', mb_strtolower($name)))->item(0);
+        /** @var \DOMElement $pharItemNode */
+        foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {
+            if (mb_strtolower($pharItemNode->getAttribute('name')) === mb_strtolower($name)) {
+                return $pharItemNode;
+            }
+        }
+        return null;
     }
 
     /**
@@ -155,9 +161,14 @@ class PhiveXmlConfig {
      * @return \DOMElement
      */
     private function getPharNodeWithSpecificInstalledVersion($name, Version $version) {
-        return $this->configFile->query(
-            sprintf('//phive:phar[@name="%s" and @installed="%s"]', mb_strtolower($name), $version->getVersionString())
-        )->item(0);
+        /** @var \DOMElement $pharItemNode */
+        foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {
+            if (mb_strtolower($pharItemNode->getAttribute('name')) === mb_strtolower($name) &&
+                $pharItemNode->getAttribute('version') === $version->getVersionString()) {
+                return $pharItemNode;
+            }
+        }
+        return null;
     }
 
     /**

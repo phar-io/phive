@@ -16,9 +16,12 @@ class PhiveXmlConfigTest extends TestCase {
 
     public function testAddPharUpdatesExistingNode() {
         $node = $this->getDomElementMock();
-        $node->expects($this->at(0))->method('setAttribute')
+        $node->method('getAttribute')
+            ->with('name')
+            ->willReturn('phpunit');
+        $node->expects($this->at(2))->method('setAttribute')
             ->with('version', '5.3.0');
-        $node->expects($this->at(1))->method('setAttribute')
+        $node->expects($this->at(3))->method('setAttribute')
             ->with('installed', '5.3.0');
 
         $items = $this->getDomNodeListMock();
@@ -26,8 +29,8 @@ class PhiveXmlConfigTest extends TestCase {
 
         $configFile = $this->getXmlFileMock();
         $configFile->method('query')
-            ->with('//phive:phar[@name="phpunit"]')
-            ->willReturn($items);
+            ->with('//phive:phar')
+            ->willReturn([$node]);
 
         $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'), new ExactVersionConstraint('5.3.0'));
 
@@ -51,22 +54,26 @@ class PhiveXmlConfigTest extends TestCase {
         $config->addPhar($installedPhar);
     }
 
+    public function testFindsPharNodesWithoutMatchingCase()
+    {
+        $xmlFile = new XmlFile(new Filename(__DIR__ . '/fixtures/phive.xml'), 'https://phar.io/phive', 'phive');
+        $config = new PhiveXmlConfig($xmlFile, new VersionConstraintParser());
+        $this->assertTrue($config->hasPhar('theseer/AUTOLOAD'));
+    }
+
     public function testAddPharCreatesNewNode() {
         $node = $this->getDomElementMock();
-        $node->expects($this->at(0))
+        $node->expects($this->at(1))
             ->method('setAttribute')
             ->with('name', 'phpunit');
-        $node->expects($this->at(1))
+        $node->expects($this->at(2))
             ->method('setAttribute')
             ->with('version', '5.3.0');
 
-        $items = $this->getDomNodeListMock();
-        $items->method('item')->with(0)->willReturn(null);
-
         $configFile = $this->getXmlFileMock();
         $configFile->method('query')
-            ->with('//phive:phar[@name="phpunit"]')
-            ->willReturn($items);
+            ->with('//phive:phar')
+            ->willReturn([$node]);
         $configFile->expects($this->once())->method('createElement')->with('phar')
             ->willReturn($node);
         $configFile->expects($this->once())->method('addElement')->with($node);

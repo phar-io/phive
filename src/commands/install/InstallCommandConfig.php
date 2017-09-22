@@ -120,7 +120,7 @@ class InstallCommandConfig {
                 );
             } else {
                 $argumentParts = preg_split('/[@:=]/', $argument, 2, PREG_SPLIT_NO_EMPTY);
-                $identifier = new PharAlias($argumentParts[0]);
+                $identifier = new PharAlias(mb_strtolower($argumentParts[0]));
                 if (count($argumentParts) === 2) {
                     $versionConstraint = (new VersionConstraintParser())->parse($argumentParts[1]);
                 } else {
