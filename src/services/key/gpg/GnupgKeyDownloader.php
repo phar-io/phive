@@ -59,7 +59,7 @@ class GnupgKeyDownloader implements KeyDownloader {
                 continue;
             }
 
-            $this->output->writeInfo('Sucessfully downloaded key');
+            $this->output->writeInfo('Successfully downloaded key');
 
             return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
         }
