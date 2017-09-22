@@ -5,6 +5,7 @@ use PharIo\FileSystem\Directory;
 use PharIo\Phive\Cli\Options;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
+use PharIo\Version\SpecificMajorAndMinorVersionConstraint;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 
@@ -106,6 +107,34 @@ class InstallCommandConfigTest extends TestCase {
         );
 
         $this->assertSame($switch, $config->doNotAddToPhiveXml());
+    }
+
+    public function testConvertsRequestedPharAliasToLowercase()
+    {
+        $options = $this->getOptionsMock();
+        $options->expects($this->any())
+            ->method('getArgumentCount')
+            ->willReturn(2);
+
+        $options->expects($this->any())
+            ->method('getArgument')
+            ->willReturnMap([
+                [0, 'PHPUNIT'],
+                [1, 'theseer/AUTOLOAD']
+            ]);
+
+        $expected = [
+            new RequestedPhar(new PharAlias('phpunit'), new AnyVersionConstraint(), new AnyVersionConstraint()),
+            new RequestedPhar(new PharAlias('theseer/autoload'), new AnyVersionConstraint(), new AnyVersionConstraint())
+        ];
+
+        $commandConfig = new InstallCommandConfig(
+            $options,
+            $this->getPhiveXmlConfigMock(),
+            $this->getEnvironmentMock(),
+            $this->getTargetDirectoryLocatorMock()
+        );
+        $this->assertEquals($expected, $commandConfig->getRequestedPhars());
     }
 
     /**
