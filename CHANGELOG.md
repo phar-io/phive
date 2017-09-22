@@ -2,6 +2,16 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.8.1] - 2017-09-22
+
+### Added
+
+* [#114](https://github.com/phar-io/phive/issues/114): Retry HTTP requests up to five times
+
+### Fixed
+
+* [#113](https://github.com/phar-io/phive/issues/113): Fixed a case sensitivity issue with PHAR aliases   
+
 ## [0.8.0] - 2017-08-26
 
 ### Added
@@ -181,7 +191,8 @@ any changed PHARs
 ## [Unreleased]
 
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.8.0...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.8.1...HEAD
+[0.8.0]: https://github.com/phar-io/phive/compare/0.8.0...0.8.1
 [0.8.0]: https://github.com/phar-io/phive/compare/0.7.2...0.8.0
 [0.7.2]: https://github.com/phar-io/phive/compare/0.7.1...0.7.2
 [0.7.1]: https://github.com/phar-io/phive/compare/0.7.0...0.7.1
