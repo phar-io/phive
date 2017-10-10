@@ -2,6 +2,13 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.8.2] - 2017-10-10
+
+### Fixed
+
+* [#115](https://github.com/phar-io/phive/issues/115): Fixed an uncaught exception when 
+trying to install from a non-existing GitHub repository alias 
+
 ## [0.8.1] - 2017-09-22
 
 ### Added
@@ -190,9 +197,9 @@ any changed PHARs
 
 ## [Unreleased]
 
-
-[Unreleased]: https://github.com/phar-io/phive/compare/0.8.1...HEAD
-[0.8.0]: https://github.com/phar-io/phive/compare/0.8.0...0.8.1
+[Unreleased]: https://github.com/phar-io/phive/compare/0.8.2...HEAD
+[0.8.2]: https://github.com/phar-io/phive/compare/0.8.1...0.8.2
+[0.8.1]: https://github.com/phar-io/phive/compare/0.8.0...0.8.1
 [0.8.0]: https://github.com/phar-io/phive/compare/0.7.2...0.8.0
 [0.7.2]: https://github.com/phar-io/phive/compare/0.7.1...0.7.2
 [0.7.1]: https://github.com/phar-io/phive/compare/0.7.0...0.7.1
