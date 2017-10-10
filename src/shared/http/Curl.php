@@ -118,27 +118,30 @@ class Curl implements HttpClient {
      *
      * @return HttpResponse
      * @throws HttpException
+     * @throws HttpNotFoundException
      */
     private function exec($ch) {
         try {
             $result = curl_exec($ch);
-            if (curl_errno($ch) !== 0) {
-                throw new HttpException(
-                    curl_error($ch) . ' (while requesting ' . $this->url . ')',
-                    curl_errno($ch)
-                );
+            $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if (in_array($httpCode, [200, 304])) {
+                return new HttpResponse($httpCode, $result, $this->etag);
             }
 
-            $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if (!in_array($httpCode, [200, 304])) {
+            if ($httpCode > 0) {
                 throw new HttpException(
                     sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url),
                     $httpCode
                 );
             }
 
-            return new HttpResponse($httpCode, $result, $this->etag);
-        } catch (CurlException $e) {
+            throw new HttpException(
+                curl_error($ch) . ' (while requesting ' . $this->url . ')',
+                curl_errno($ch)
+            );
+
+        } catch (CurlConfigException $e) {
             throw new HttpException(
                 '[CurlException] ' . $e->getMessage() . ' (while requesting ' . $this->url . ')',
                 $e->getCode(),

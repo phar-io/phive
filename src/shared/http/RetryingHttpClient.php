@@ -50,6 +50,7 @@ class RetryingHttpClient implements HttpClient {
             if (isset($this->retryCodes[$e->getCode()]) && $this->triesPerformed < $this->maxTries) {
                 return $this->doTry($url, $etag);
             }
+            throw $e;
         }
     }
 

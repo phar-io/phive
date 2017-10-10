@@ -46,7 +46,7 @@ spl_autoload_register(
                 'phario\\phive\\configuredpharexception' => '/shared/phar/ConfiguredPharException.php',
                 'phario\\phive\\curl' => '/shared/http/Curl.php',
                 'phario\\phive\\curlconfig' => '/shared/http/CurlConfig.php',
-                'phario\\phive\\curlexception' => '/shared/exceptions/CurlException.php',
+                'phario\\phive\\curlconfigexception' => '/shared/exceptions/CurlConfigException.php',
                 'phario\\phive\\directoryexception' => '/shared/exceptions/DirectoryException.php',
                 'phario\\phive\\directurlresolver' => '/services/resolver/DirectUrlResolver.php',
                 'phario\\phive\\downloadfailedexception' => '/shared/exceptions/DownloadFailedException.php',

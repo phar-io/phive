@@ -31,7 +31,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
         }
         try {
             return $this->localResolve($name);
-        } catch (HttpException $e) {
+        } catch (DownloadFailedException $e) {
             return $this->tryNext($requestedPhar);
         }
     }

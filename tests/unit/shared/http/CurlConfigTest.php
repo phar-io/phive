@@ -64,7 +64,7 @@ class CurlConfigTest extends TestCase {
     }
 
     /**
-     * @expectedException \PharIo\Phive\CurlException
+     * @expectedException \PharIo\Phive\CurlConfigException
      */
     public function testGetLocalSslCertificateThrowsExceptionIfCertificateDoesNotExist() {
         $config = new CurlConfig('foo');

@@ -53,11 +53,11 @@ class CurlConfig {
      * @param string $hostname
      *
      * @return LocalSslCertificate
-     * @throws CurlException
+     * @throws CurlConfigException
      */
     public function getLocalSslCertificate($hostname) {
         if (!$this->hasLocalSslCertificate($hostname)) {
-            throw new CurlException(sprintf('No local certificate for hostname %s found', $hostname));
+            throw new CurlConfigException(sprintf('No local certificate for hostname %s found', $hostname));
         }
 
         return $this->localSslCertificates[$hostname];
