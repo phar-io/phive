@@ -210,7 +210,7 @@ class PharRegistry {
      */
     public function removePhar(Phar $phar) {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        unlink($this->getPharDestination($phar->getFile()));
+        $phar->getFile()->getFilename()->delete();
         $pharNode->parentNode->removeChild($pharNode);
         $this->dbFile->save();
     }
