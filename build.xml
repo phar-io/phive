@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Phive" default="build" basedir=".">
+
+    <!-- Load dist.build.properties and build.properties as configuration -->
+    <property file="dist.build.properties" prefix="configuration" />
+    <property file="build.properties" prefix="configuration"/>
+
+    <property name="gpg.user" value="${configuration.gpg.user}"/>
+    <property name="gpg.keys.trusted" value="${configuration.gpg.keys.trusted}"/>
+
     <property name="source" value="src"/>
 
     <target name="setup" depends="clean,composer,install-tools,generate-autoloader"/>
@@ -49,7 +57,7 @@
         <exec executable="phive" taskname="phive">
             <arg value="install"/>
             <arg value="--trust-gpg-keys" />
-            <arg value="4AA394086372C20A,2A8299CE842DD38C" />
+            <arg value="${gpg.keys.trusted}" />
             <arg value="phpab" />
             <arg value="phpunit@^5.7" />
         </exec>
@@ -106,7 +114,7 @@
 
         <exec executable="gpg">
             <arg value="--local-user" />
-            <arg value="team@phar.io" />
+            <arg value="${gpg.user}" />
             <arg value="--detach-sign" />
             <arg value="--output" />
             <arg path="${basedir}/build/phar/phive-${version}.phar.asc" />
