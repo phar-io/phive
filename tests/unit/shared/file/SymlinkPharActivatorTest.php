@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 class SymlinkPharActivatorTest extends TestCase {
 
     public function setUp() {
+        if (stripos(PHP_OS, 'win') === 0) {
+            $this->markTestSkipped('PHP does not support symlinks on Windows.');
+        }
         $this->deleteTestSymlink();
     }
 
