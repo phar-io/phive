@@ -33,9 +33,9 @@ class WindowsPharActivator implements PharActivator {
 
         $destination = new Filename($linkDestination->asString().'.phar');
         if ($this->addFileLink($pharLocation, $destination)) {
-            $template = str_replace(self::PHAR_PLACEHOLDER, $destination->asString(), $this->template);
+            $template = str_replace(self::PHAR_PLACEHOLDER, '%~dp0'.basename($destination), $this->template);
         } else {
-            $template = str_replace(self::PHAR_PLACEHOLDER, $pharLocation->asString(), $this->template);
+            $template = str_replace(self::PHAR_PLACEHOLDER, $pharLocation->withAbsolutePath(), $this->template);
         }
         $linkFilename = new Filename($linkDestination->asString().'.bat');
         file_put_contents($linkFilename, $template);
@@ -52,12 +52,22 @@ class WindowsPharActivator implements PharActivator {
     private function addFileLink(Filename $source, Filename $target) {
         $output = [];
         $returnValue = 0;
-        exec(
-            'mklink /H '.escapeshellarg($source).' '.escapeshellarg($target),
-            $output,
-            $returnValue
-        );
-        return $returnValue === 0;
+        if (file_exists($target)) {
+            unlink($target);
+        }
+        $command = 'mklink /h '.self::escapeShellFileArg($target).' '.self::escapeShellFileArg($source);
+        exec($command, $output, $returnValue);
+        return $returnValue === 0 && file_exists($target);
+    }
+
+    /**
+     * Ensure the OS specific directory separator and escape the filename for use as a argument in a shell command.
+     *
+     * @param Filename $filename
+     * @return string
+     */
+    private static function escapeShellFileArg(Filename $filename) {
+        return escapeshellarg(str_replace('/', DIRECTORY_SEPARATOR, $filename->withAbsolutePath()));
     }
 
     /**
