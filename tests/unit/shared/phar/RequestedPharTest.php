@@ -38,7 +38,7 @@ class RequestedPharTest extends TestCase {
             $this->getVersionConstraintMock()
         );
 
-        $this->assertSame(!$isAlias, $phar->hasUrl());
+        $this->assertNotSame($isAlias, $phar->hasUrl());
     }
 
     public function testAsStringReturnsExpectedValue() {
