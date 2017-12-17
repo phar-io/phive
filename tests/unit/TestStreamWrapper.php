@@ -177,9 +177,9 @@ class TestStreamWrapper {
         // exist. This is consistent with PHP's plain filesystem stream wrapper.
         if ($flags & STREAM_URL_STAT_QUIET || !file_exists($translatedPath)) {
             return @stat($translatedPath);
-        } else {
-            return stat($translatedPath);
         }
+
+        return stat($translatedPath);
     }
 
 }
