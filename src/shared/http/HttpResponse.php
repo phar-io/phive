@@ -79,12 +79,14 @@ class HttpResponse {
     /**
      * @return bool
      */
-    private function hasRateLimit() {
+    public function hasRateLimit() {
         return $this->rateLimit !== null;
     }
 
     /**
      * @return RateLimit
+     *
+     * @throws HttpResponseException
      */
     public function getRateLimit() {
         if (!$this->hasRateLimit()) {
