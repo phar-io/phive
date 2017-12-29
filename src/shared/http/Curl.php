@@ -147,7 +147,7 @@ class Curl implements HttpClient {
      * @throws HttpException
      */
     private function execRequest() {
-        $this->rateLimitHeader = [];
+        $this->rateLimitHeaders = [];
 
         $result = curl_exec($this->curlHandle);
 
