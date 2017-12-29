@@ -16,6 +16,11 @@ class FileDownloader {
     private $cache;
 
     /**
+     * @var RateLimit
+     */
+    private $rateLimit;
+
+    /**
      * @param HttpClient   $httpClient
      * @param CacheBackend $cache
      */
@@ -31,6 +36,7 @@ class FileDownloader {
      * @throws DownloadFailedException
      */
     public function download(Url $url) {
+        $this->rateLimit = null;
         $cachedETag = $this->cache->hasEntry($url) ? $this->cache->getEtag($url) : null;
 
         try {
@@ -45,12 +51,17 @@ class FileDownloader {
             );
         }
 
+        if ($response->hasRateLimit()) {
+            $this->rateLimit = $response->getRateLimit();
+        }
+
         if (!$response->isSuccess()) {
             throw new DownloadFailedException(
                 sprintf('Failed to download load %s: HTTP Code %d', $url, $response->getHttpCode()),
                 $response->getHttpCode()
             );
         }
+
 
         if ($response->getHttpCode() === 304) {
             return new File($url->getFilename(), $this->cache->getContent($url));
@@ -62,5 +73,20 @@ class FileDownloader {
 
         return new File($url->getFilename(), $response->getBody());
     }
+
+    public function hasRateLimit() {
+        return $this->rateLimit !== null;
+    }
+
+    /**
+     * @return RateLimit
+     */
+    public function getRateLimit() {
+        if (!$this->hasRateLimit()) {
+            throw new FileDownloaderException('No RateLimit available');
+        }
+        return $this->rateLimit;
+    }
+
 
 }

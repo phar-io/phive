@@ -62,6 +62,7 @@ spl_autoload_register(
                 'phario\\phive\\extensionsmissingexception' => '/shared/exceptions/ExtensionsMissingException.php',
                 'phario\\phive\\factory' => '/Factory.php',
                 'phario\\phive\\filedownloader' => '/shared/download/FileDownloader.php',
+                'phario\\phive\\filedownloaderexception' => '/shared/FileDownloaderException.php',
                 'phario\\phive\\filenotwritableexception' => '/shared/exceptions/FileNotWritableException.php',
                 'phario\\phive\\filestoragecachebackend' => '/shared/http/FileStorageCacheBackend.php',
                 'phario\\phive\\git' => '/shared/Git.php',
