@@ -47,9 +47,11 @@ class PharDownloaderTest extends TestCase {
 
         $sigResponse = $this->prophesize(HttpResponse::class);
         $sigResponse->getBody()->willReturn('phar-signature');
+        $sigResponse->isSuccess()->willReturn(true);
 
         $response = $this->prophesize(HttpResponse::class);
         $response->getBody()->willReturn('phar-content');
+        $response->isSuccess()->willReturn(true);
 
         $httpClient = $this->prophesize(HttpClient::class);
         $httpClient->get($url)->willReturn($response->reveal());
@@ -80,9 +82,11 @@ class PharDownloaderTest extends TestCase {
 
         $sigResponse = $this->prophesize(HttpResponse::class);
         $sigResponse->getBody()->willReturn('phar-signature');
+        $sigResponse->isSuccess()->willReturn(true);
 
         $response = $this->prophesize(HttpResponse::class);
         $response->getBody()->willReturn('phar-content');
+        $response->isSuccess()->willReturn(true);
 
         $httpClient = $this->prophesize(HttpClient::class);
         $httpClient->get($url)->willReturn($response->reveal());
@@ -111,9 +115,11 @@ class PharDownloaderTest extends TestCase {
 
         $sigResponse = $this->prophesize(HttpResponse::class);
         $sigResponse->getBody()->willReturn('phar-signature');
+        $sigResponse->isSuccess()->willReturn(true);
 
         $response = $this->prophesize(HttpResponse::class);
         $response->getBody()->willReturn('phar-content');
+        $response->isSuccess()->willReturn(true);
 
         $httpClient = $this->prophesize(HttpClient::class);
         $httpClient->get($url)->willReturn($response->reveal());

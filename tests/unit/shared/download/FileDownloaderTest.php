@@ -27,6 +27,7 @@ class FileDownloaderTest extends TestCase {
         $response = $this->getHttpResponseMock();
         $response->method('getHttpCode')->willReturn(200);
         $response->method('getBody')->willReturn('bar');
+        $response->method('isSuccess')->willReturn(true);
 
         $curl = $this->getCurlMock();
         $curl->method('get')->willReturn($response);
@@ -48,6 +49,7 @@ class FileDownloaderTest extends TestCase {
         $response->method('getBody')->willReturn('bar');
         $response->method('hasETag')->willReturn(true);
         $response->method('getETag')->willReturn($etag);
+        $response->method('isSuccess')->willReturn(true);
 
         $curl = $this->getCurlMock();
         $curl->method('get')->willReturn($response);
@@ -66,6 +68,7 @@ class FileDownloaderTest extends TestCase {
 
         $response = $this->getHttpResponseMock();
         $response->method('getHttpCode')->willReturn(304);
+        $response->method('isSuccess')->willReturn(true);
 
         $curl = $this->getCurlMock();
         $curl->method('get')->willReturn($response);

@@ -27,6 +27,7 @@ class GnupgKeyDownloaderTest extends TestCase {
         $response = $this->prophesize(HttpResponse::class);
         $response->getHttpCode()->willReturn(200);
         $response->getBody()->willReturn('Some PublicKey');
+        $response->isNotFound()->willReturn(false);
 
         $this->curl->get(
             new Url('https://example.com/pks/lookup?search=0x12345678&op=index&options=mr')
@@ -47,6 +48,7 @@ class GnupgKeyDownloaderTest extends TestCase {
         $response->getHttpCode()->willReturn(200);
         $response->getBody()->willReturn('Some Key Info');
         $response->getBody()->willReturn('Some Public Key Data');
+        $response->isNotFound()->willReturn(false);
 
         $this->curl->get(Argument::any())
             ->willReturn($response->reveal());

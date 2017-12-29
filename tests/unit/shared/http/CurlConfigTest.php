@@ -22,7 +22,7 @@ class CurlConfigTest extends TestCase {
             CURLOPT_CONNECTTIMEOUT  => 60,
             CURLOPT_SSL_VERIFYHOST  => 2,
             CURLOPT_SSL_VERIFYPEER  => true,
-            CURLOPT_FAILONERROR     => true,
+            CURLOPT_FAILONERROR     => false,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_FOLLOWLOCATION  => true,
             CURLOPT_LOW_SPEED_TIME  => 90,
