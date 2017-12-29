@@ -104,7 +104,6 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
     private function updateRateLimit() {
         if ($this->fileDownloader->hasRateLimit()) {
             $this->rateLimit = $this->fileDownloader->getRateLimit();
-            var_dump('From Request: ' . $this->rateLimit->getRemaining());
             return;
         }
 
@@ -113,7 +112,6 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
             $this->rateLimit->getRemaining() - 1,
             $this->rateLimit->getResetTime()
         );
-        var_dump('Manual updated: ' . $this->rateLimit->getRemaining());
     }
 
 }
