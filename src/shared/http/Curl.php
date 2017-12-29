@@ -41,6 +41,25 @@ class Curl implements HttpClient {
      *
      * @throws HttpException
      */
+    public function head(Url $url, ETag $etag = null) {
+        $this->url = $url;
+        $this->etag = $etag;
+
+        $this->setupCurlInstance();
+        curl_setopt($this->curlHandle, CURLOPT_NOBODY, true);
+        curl_setopt($this->curlHandle, CURLOPT_NOPROGRESS, true);
+
+        return $this->execRequest();
+    }
+
+    /**
+     * @param Url       $url
+     * @param ETag|null $etag
+     *
+     * @return HttpResponse
+     *
+     * @throws HttpException
+     */
     public function get(Url $url, ETag $etag = null) {
         $this->url = $url;
         $this->etag = $etag;
@@ -98,9 +117,8 @@ class Curl implements HttpClient {
 
         curl_setopt_array($ch, $this->config->asCurlOptArray());
         curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'handleHeaderInput']);
-
+        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
 
         $headers = [];
         if ($this->etag !== null) {

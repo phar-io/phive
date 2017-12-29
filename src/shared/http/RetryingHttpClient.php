@@ -43,22 +43,27 @@ class RetryingHttpClient implements HttpClient {
         $this->output = $output;
     }
 
-    public function get(Url $url, ETag $etag = null) {
+    public function head(Url $url, ETag $etag = null) {
         $this->triesPerformed = 0;
-        return $this->doTry($url, $etag);
+        return $this->doTry('head', $url, $etag);
     }
 
-    private function doTry(Url $url, ETag $etag = null) {
+    public function get(Url $url, ETag $etag = null) {
+        $this->triesPerformed = 0;
+        return $this->doTry('get', $url, $etag);
+    }
+
+    private function doTry($method, Url $url, ETag $etag = null) {
         try {
             $this->triesPerformed++;
-            return $this->client->get($url, $etag);
+            return $this->client->$method($url, $etag);
         } catch (HttpException $e) {
-            if (isset($this->retryCodes[$e->getCode()]) && $this->triesPerformed < $this->maxTries) {
+            if ($this->triesPerformed < $this->maxTries && isset($this->retryCodes[$e->getCode()])) {
                 $this->output->writeInfo(
                     sprintf('HTTP Request failed (%s) - retrying in 2 seconds', $e->getCode())
                 );
                 sleep(2);
-                return $this->doTry($url, $etag);
+                return $this->doTry($method, $url, $etag);
             }
             throw $e;
         }
