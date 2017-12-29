@@ -130,6 +130,7 @@ spl_autoload_register(
                 'phario\\phive\\publickey' => '/services/key/PublicKey.php',
                 'phario\\phive\\purgecommand' => '/commands/purge/PurgeCommand.php',
                 'phario\\phive\\purgecontext' => '/commands/purge/PurgeContext.php',
+                'phario\\phive\\ratelimit' => '/shared/http/RateLimit.php',
                 'phario\\phive\\release' => '/shared/phar/Release.php',
                 'phario\\phive\\releasecollection' => '/shared/phar/ReleaseCollection.php',
                 'phario\\phive\\releaseexception' => '/shared/exceptions/ReleaseException.php',

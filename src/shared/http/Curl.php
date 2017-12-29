@@ -6,25 +6,23 @@ namespace PharIo\Phive;
  */
 class Curl implements HttpClient {
 
-    /**
-     * @var CurlConfig
-     */
+    /** @var CurlConfig */
     private $config;
 
-    /**
-     * @var HttpProgressHandler
-     */
+    /** @var HttpProgressHandler */
     private $progressHandler;
 
-    /**
-     * @var Url
-     */
+    /** @var Url */
     private $url;
 
-    /**
-     * @var ETag|null
-     */
+    /** @var Etag */
     private $etag;
+
+    /** @var array */
+    private $rateLimitHeaders = [];
+
+    /** @var resource */
+    private $curlHandle;
 
     /**
      * @param CurlConfig          $curlConfig
@@ -40,15 +38,16 @@ class Curl implements HttpClient {
      * @param ETag|null $etag
      *
      * @return HttpResponse
+     *
+     * @throws HttpException
      */
     public function get(Url $url, ETag $etag = null) {
         $this->url = $url;
-        $ch = $this->getCurlInstance($this->url, $etag);
+        $this->etag = $etag;
 
         $this->progressHandler->start($url);
-
-        $result = $this->exec($ch);
-
+        $this->setupCurlInstance();
+        $result = $this->execRequest();
         $this->progressHandler->finished();
 
         return $result;
@@ -64,6 +63,11 @@ class Curl implements HttpClient {
      * @return int
      */
     private function handleProgressInfo($ch, $expectedDown, $received, $expectedUp, $sent) {
+        $httpCode = (int)curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
+        if ($httpCode >= 400) {
+            return 0;
+        }
+
         return $this->progressHandler->handleUpdate(
             new HttpProgressUpdate($this->url, $expectedDown, $received, $expectedUp, $sent)
         ) ? 0 : 1;
@@ -77,83 +81,90 @@ class Curl implements HttpClient {
      */
     private function handleHeaderInput($ch, $line) {
         $parts = explode(':', trim($line));
+
         if (strtolower($parts[0]) === 'etag') {
             $this->etag = new ETag(trim($parts[1]));
+        }
+
+        if (strpos($parts[0], 'X-RateLimit-') !== false) {
+            $this->rateLimitHeaders[substr($parts[0],12)] = trim($parts[1]);
         }
 
         return mb_strlen($line);
     }
 
-    /**
-     * @param Url       $url
-     *
-     * @param ETag|null $etag
-     *
-     * @return resource
-     */
-    private function getCurlInstance(Url $url, ETag $etag = null) {
-        $ch = curl_init($url);
-        curl_setopt_array($ch, $this->config->asCurlOptArray());
+    private function setupCurlInstance() {
+        $ch = curl_init($this->url);
 
+        curl_setopt_array($ch, $this->config->asCurlOptArray());
         curl_setopt($ch, CURLOPT_NOPROGRESS, false);
         curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'handleHeaderInput']);
 
-        if ($etag !== null) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'If-None-Match: ' . $etag->asString()
-            ]);
+
+        $headers = [];
+        if ($this->etag !== null) {
+            $headers[] = 'If-None-Match: ' . $this->etag->asString();
         }
 
-        $hostname = $url->getHostname();
+        $hostname = $this->url->getHostname();
         if ($this->config->hasLocalSslCertificate($hostname)) {
             curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname)->getCertificateFile());
         }
 
-        return $ch;
+        if ($this->config->hasAuthenticationToken($hostname)) {
+            $headers[] = sprintf('Authorization: token %s', $this->config->getAuthenticationToken($hostname));
+        }
+
+        if (count($headers) > 0) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
+
+        $this->curlHandle = $ch;
     }
 
     /**
-     * @param $ch
-     *
      * @return HttpResponse
+     *
      * @throws HttpException
-     * @throws HttpNotFoundException
      */
-    private function exec($ch) {
-        try {
-            $result = curl_exec($ch);
-            $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    private function execRequest() {
+        $this->rateLimitHeader = [];
 
-            if (in_array($httpCode, [200, 304])) {
-                return new HttpResponse($httpCode, $result, $this->etag);
-            }
+        $result = curl_exec($this->curlHandle);
 
-            if ($httpCode > 0) {
-                throw new HttpException(
-                    sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url),
-                    $httpCode
-                );
-            }
+        $httpCode = (int)curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
 
+        if ($httpCode >= 400 || in_array($httpCode, [200, 304], true)) {
+            return new HttpResponse($httpCode, $result, $this->etag, $this->parseRateLimitHeaders());
+        }
+
+        if ($httpCode > 0) {
             throw new HttpException(
-                curl_error($ch) . ' (while requesting ' . $this->url . ')',
-                curl_errno($ch)
-            );
-
-        } catch (CurlConfigException $e) {
-            throw new HttpException(
-                '[CurlException] ' . $e->getMessage() . ' (while requesting ' . $this->url . ')',
-                $e->getCode(),
-                $e
-            );
-        } catch (HttpResponseException $e) {
-            throw new HttpException(
-                '[ResponseException] ' . $e->getMessage() . ' (while requesting ' . $this->url . ')',
-                $e->getCode(),
-                $e
+                sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url),
+                $httpCode
             );
         }
+
+        throw new HttpException(
+            curl_error($this->curlHandle) . ' (while requesting ' . $this->url . ')',
+            curl_errno($this->curlHandle)
+        );
+
+    }
+
+    private function parseRateLimitHeaders() {
+        $required = ['Limit', 'Remaining', 'Reset'];
+        $exisiting = array_keys($this->rateLimitHeaders);
+        if (count(array_intersect($required, $exisiting)) < 3) {
+            return null;
+        }
+
+        return new RateLimit(
+            (int) $this->rateLimitHeaders['Limit'],
+            (int) $this->rateLimitHeaders['Remaining'],
+            new \DateTimeImmutable('@' . $this->rateLimitHeaders['Reset'])
+        );
     }
 
 }

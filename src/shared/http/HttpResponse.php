@@ -6,12 +6,12 @@ class HttpResponse {
     /**
      * @var string
      */
-    private $responseBody = '';
+    private $responseBody;
 
     /**
      * @var int
      */
-    private $httpCode = 0;
+    private $httpCode;
 
     /**
      * @var ETag|null
@@ -19,14 +19,28 @@ class HttpResponse {
     private $etag;
 
     /**
+     * @var RateLimit
+     */
+    private $rateLimit;
+
+    /**
      * @param integer   $httpCode
      * @param string    $responseBody
      * @param ETag|null $etag
      */
-    public function __construct($httpCode, $responseBody, ETag $etag = null) {
+    public function __construct($httpCode, $responseBody, ETag $etag = null, RateLimit $rateLimit = null) {
         $this->responseBody = $responseBody;
         $this->httpCode = $httpCode;
         $this->etag = $etag;
+        $this->rateLimit = $rateLimit;
+    }
+
+    public function isSuccess() {
+        return $this->httpCode < 400;
+    }
+
+    public function isNotFound() {
+        return $this->httpCode === 404;
     }
 
     /**
@@ -61,4 +75,22 @@ class HttpResponse {
 
         return $this->etag;
     }
+
+    /**
+     * @return bool
+     */
+    private function hasRateLimit() {
+        return $this->rateLimit !== null;
+    }
+
+    /**
+     * @return RateLimit
+     */
+    public function getRateLimit() {
+        if (!$this->hasRateLimit()) {
+            throw new HttpResponseException('No RateLimit present in response');
+        }
+        return $this->rateLimit;
+    }
+
 }

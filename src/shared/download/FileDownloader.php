@@ -29,33 +29,38 @@ class FileDownloader {
      *
      * @return File
      * @throws DownloadFailedException
-     * @throws \HttpException
      */
     public function download(Url $url) {
+        $cachedETag = $this->cache->hasEntry($url) ? $this->cache->getEtag($url) : null;
 
         try {
-            $cachedETag = $this->cache->hasEntry($url) ? $this->cache->getEtag($url) : null;
-
             $response = $this->httpClient->get($url, $cachedETag);
-
-            if ($response->getHttpCode() === 304) {
-                return new File($url->getFilename(), $this->cache->getContent($url));
-            }
-
-            if ($response->hasETag()) {
-                $this->cache->storeEntry($url, $response->getETag(), $response->getBody());
-            }
-
-            return new File($url->getFilename(), $response->getBody());
         } catch (HttpException $e) {
             throw new DownloadFailedException(
                 sprintf(
-                    'Download failed (Error code %s) %s',
-                    $e->getCode(),
-                    $e->getMessage()
+                    'Unexpected HTTP error: %s (Code: %d)',
+                    $e->getMessage(),
+                    $e->getCode()
                 )
             );
         }
+
+        if (!$response->isSuccess()) {
+            throw new DownloadFailedException(
+                sprintf('Failed to download load %s: HTTP Code %d', $url, $response->getHttpCode()),
+                $response->getHttpCode()
+            );
+        }
+
+        if ($response->getHttpCode() === 304) {
+            return new File($url->getFilename(), $this->cache->getContent($url));
+        }
+
+        if ($response->hasETag()) {
+            $this->cache->storeEntry($url, $response->getETag(), $response->getBody());
+        }
+
+        return new File($url->getFilename(), $response->getBody());
     }
 
 }

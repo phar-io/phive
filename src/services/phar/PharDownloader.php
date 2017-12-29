@@ -81,11 +81,17 @@ class PharDownloader {
     private function downloadFile(Url $url) {
         try {
             $response = $this->httpClient->get($url);
+            if (!$response->isSuccess()) {
+                throw new DownloadFailedException(
+                    sprintf('Failed to download load %s: HTTP Code %d', $url, $response->getHttpCode()),
+                    $response->getHttpCode()
+                );
+            }
 
             return new File($url->getFilename(), $response->getBody());
         } catch (HttpException $e) {
             throw new DownloadFailedException(
-                sprintf('Could not download from %s: %s', $url, $e->getMessage()),
+                sprintf('Unexpected HTTP error when requesting %s: %s', $url, $e->getMessage()),
                 $e->getCode(),
                 $e
             );

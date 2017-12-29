@@ -331,27 +331,9 @@ class Factory {
      * @return HttpClient
      */
     private function getCurl() {
-        if (null === $this->curlConfig) {
-            $environment = $this->getEnvironment();
-            $this->curlConfig = new CurlConfig(
-                sprintf('Phive %s on %s',
-                    $this->getPhiveVersion()->getVersion(),
-                    $environment->getRuntimeString()
-                )
-            );
-            $this->curlConfig->addLocalSslCertificate(
-                new LocalSslCertificate(
-                    'hkps.pool.sks-keyservers.net',
-                    __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
-                )
-            );
-            if ($environment->hasProxy()) {
-                $this->curlConfig->setProxy($environment->getProxy());
-            }
-        }
-
         return new RetryingHttpClient(
-            new Curl($this->curlConfig, $this->getHttpProgressRenderer()),
+            $this->getOutput(),
+            new Curl($this->getCurlConfig(), $this->getHttpProgressRenderer()),
             5
         );
     }
@@ -587,5 +569,29 @@ class Factory {
             $this->getOutput(),
             $this->getConsoleInput()
         );
+    }
+
+    private function getCurlConfig() {
+        if ($this->curlConfig !== null) {
+            return $this->curlConfig;
+        }
+        $environment = $this->getEnvironment();
+        $this->curlConfig = new CurlConfig(
+            sprintf('Phive %s on %s',
+                $this->getPhiveVersion()->getVersion(),
+                $environment->getRuntimeString()
+            )
+        );
+        $this->curlConfig->addLocalSslCertificate(
+            new LocalSslCertificate(
+                'hkps.pool.sks-keyservers.net',
+                __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
+            )
+        );
+        if ($environment->hasProxy()) {
+            $this->curlConfig->setProxy($environment->getProxy());
+        }
+
+        return $this->curlConfig;
     }
 }

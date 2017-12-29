@@ -32,9 +32,15 @@ class RetryingHttpClient implements HttpClient {
         67 => 'CURLE_LOGIN_DENIED'
     ];
 
-    public function __construct(HttpClient $client, $maxTries) {
+    /**
+     * @var Cli\Output
+     */
+    private $output;
+
+    public function __construct(Cli\Output $output, HttpClient $client, $maxTries) {
         $this->maxTries = $maxTries;
         $this->client = $client;
+        $this->output = $output;
     }
 
     public function get(Url $url, ETag $etag = null) {
@@ -48,6 +54,10 @@ class RetryingHttpClient implements HttpClient {
             return $this->client->get($url, $etag);
         } catch (HttpException $e) {
             if (isset($this->retryCodes[$e->getCode()]) && $this->triesPerformed < $this->maxTries) {
+                $this->output->writeInfo(
+                    sprintf('HTTP Request failed (%s) - retrying in 2 seconds', $e->getCode())
+                );
+                sleep(2);
                 return $this->doTry($url, $etag);
             }
             throw $e;

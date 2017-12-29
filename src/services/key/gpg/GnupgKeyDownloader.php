@@ -52,6 +52,12 @@ class GnupgKeyDownloader implements KeyDownloader {
             try {
                 $keyInfo = $this->httpClient->get((new Url($keyServer . self::PATH))->withParams($infoParams));
                 $publicKey = $this->httpClient->get((new Url($keyServer . self::PATH))->withParams($publicParams));
+                if ($keyInfo->isNotFound() || $publicKey->isNotFound()) {
+                    $this->output->writeWarning(
+                        sprintf('Key not found on keyserver %s', $keyServer)
+                    );
+                    continue;
+                }
             } catch (HttpException $e) {
                 $this->output->writeWarning(
                     sprintf('Failed with error code %s: %s', $e->getCode(), $e->getMessage())

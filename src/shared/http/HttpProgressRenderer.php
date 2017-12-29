@@ -9,17 +9,29 @@ class HttpProgressRenderer implements HttpProgressHandler {
     private $output;
 
     /**
+     * @var Url
+     */
+    private $url;
+
+    /**
+     * @var bool
+     */
+    private $first;
+
+    /**
      * @param Cli\Output $output
      */
     public function __construct(Cli\Output $output) {
         $this->output = $output;
+        $this->first = true;
     }
 
     /**
      * @param Url $url
      */
     public function start(Url $url) {
-        $this->output->writeInfo(sprintf('Downloading %s', $url));
+        $this->url = $url;
+        $this->first = true;
     }
 
     public function finished() {
@@ -34,6 +46,11 @@ class HttpProgressRenderer implements HttpProgressHandler {
     public function handleUpdate(HttpProgressUpdate $update) {
         if ($update->getExpectedDownloadSize() === 0) {
             return true;
+        }
+
+        if ($this->first) {
+            $this->output->writeInfo(sprintf('Downloading %s', $this->url));
+            $this->first = false;
         }
 
         $template = ' ↳ |%s| %s / %s - %3d%%';

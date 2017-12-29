@@ -24,6 +24,11 @@ class CurlConfig {
     private $localSslCertificates = [];
 
     /**
+     * @var array
+     */
+    private $authenticationTokens = [];
+
+    /**
      * @param string $userAgent
      */
     public function __construct($userAgent) {
@@ -82,7 +87,7 @@ class CurlConfig {
             CURLOPT_CONNECTTIMEOUT  => 60,
             CURLOPT_SSL_VERIFYHOST  => 2,
             CURLOPT_SSL_VERIFYPEER  => true,
-            CURLOPT_FAILONERROR     => true,
+            CURLOPT_FAILONERROR     => false,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_FOLLOWLOCATION  => true,
             CURLOPT_USERAGENT       => $this->userAgent,
@@ -107,6 +112,44 @@ class CurlConfig {
         }
 
         return $options;
+    }
+
+    /**
+     * @param string $hostname
+     * @param string $token
+     *
+     * @throws CurlConfigException
+     */
+    public function addAuthenticationToken($hostname, $token) {
+        if ($this->hasAuthenticationToken($hostname)) {
+            throw new CurlConfigException(sprintf('Authentication token for hostname %s already set', $hostname));
+        }
+
+        $this->authenticationTokens[$hostname] = $token;
+    }
+
+    /**
+     * @param string $hostname
+     *
+     * @return bool
+     */
+    public function hasAuthenticationToken($hostname) {
+        return array_key_exists($hostname, $this->authenticationTokens);
+    }
+
+    /**
+     * @param string $hostname
+     *
+     * @return string
+     *
+     * @throws CurlConfigException
+     */
+    public function getAuthenticationToken($hostname) {
+        if (!$this->hasAuthenticationToken($hostname)) {
+            throw new CurlConfigException(sprintf('No authentication for hostname %s found', $hostname));
+        }
+
+        return $this->authenticationTokens[$hostname];
     }
 
 }
