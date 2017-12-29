@@ -69,6 +69,7 @@ spl_autoload_register(
                 'phario\\phive\\gitawarephiveversion' => '/shared/version/GitAwarePhiveVersion.php',
                 'phario\\phive\\gitexception' => '/shared/exceptions/GitException.php',
                 'phario\\phive\\githubaliasresolver' => '/services/resolver/GithubAliasResolver.php',
+                'phario\\phive\\githubaliasresolverexception' => '/GithubAliasResolverException.php',
                 'phario\\phive\\githubrepository' => '/shared/repository/GithubRepository.php',
                 'phario\\phive\\githubversion' => '/shared/version/GitHubVersion.php',
                 'phario\\phive\\gnupgkeydownloader' => '/services/key/gpg/GnupgKeyDownloader.php',

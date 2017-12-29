@@ -322,19 +322,29 @@ class Factory {
      */
     public function getFileDownloader() {
         return new FileDownloader(
-            $this->getCurl(),
+            $this->getRetryingHttpClient(),
             $this->getFileStorageCacheBackend()
         );
     }
 
     /**
-     * @return HttpClient
+     * @return RetryingHttpClient
      */
-    private function getCurl() {
+    private function getRetryingHttpClient() {
         return new RetryingHttpClient(
             $this->getOutput(),
-            new Curl($this->getCurlConfig(), $this->getHttpProgressRenderer()),
+            $this->getCurl(),
             5
+        );
+    }
+
+    /**
+     * @return Curl
+     */
+    private function getCurl() {
+        return new Curl(
+            $this->getCurlConfig(),
+            $this->getHttpProgressRenderer()
         );
     }
 
@@ -378,7 +388,7 @@ class Factory {
      */
     private function getPharDownloader() {
         return new PharDownloader(
-            $this->getCurl(),
+            $this->getRetryingHttpClient(),
             $this->getGnupgSignatureVerifier(),
             $this->getChecksumService(),
             $this->getPharRegistry()
@@ -420,7 +430,7 @@ class Factory {
      */
     private function getPgpKeyDownloader() {
         return new GnupgKeyDownloader(
-            $this->getCurl(),
+            $this->getRetryingHttpClient(),
             include __DIR__ . '/../conf/pgp-keyservers.php',
             $this->getOutput()
         );
@@ -498,7 +508,11 @@ class Factory {
      * @return GithubAliasResolver
      */
     public function getGithubAliasResolver() {
-        return new GithubAliasResolver($this->getFileDownloader());
+        return new GithubAliasResolver(
+            $this->getCurl(),
+            $this->getFileDownloader(),
+            $this->getOutput()
+        );
     }
 
     /**
