@@ -587,30 +587,8 @@ class Factory {
     }
 
     private function getCurlConfig() {
-        if ($this->curlConfig !== null) {
-            return $this->curlConfig;
-        }
-        $environment = $this->getEnvironment();
-        $this->curlConfig = new CurlConfig(
-            sprintf('Phive %s on %s',
-                $this->getPhiveVersion()->getVersion(),
-                $environment->getRuntimeString()
-            )
-        );
-        $this->curlConfig->addLocalSslCertificate(
-            new LocalSslCertificate(
-                'hkps.pool.sks-keyservers.net',
-                __DIR__ . '/../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
-            )
-        );
-        if ($environment->hasProxy()) {
-            $this->curlConfig->setProxy($environment->getProxy());
-        }
-        if ($environment->hasGitHubAuthToken()) {
-            $this->curlConfig->addAuthenticationToken(
-                'github.com',
-                $environment->getGitHubAuthToken()
-            );
+        if ($this->curlConfig === null) {
+            $this->curlConfig = (new CurlConfigBuilder($this->getEnvironment(), $this->getPhiveVersion()))->build();
         }
 
         return $this->curlConfig;
