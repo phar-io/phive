@@ -333,18 +333,19 @@ class Factory {
     private function getRetryingHttpClient() {
         return new RetryingHttpClient(
             $this->getOutput(),
-            $this->getCurl(),
+            $this->getHttpClient(),
             5
         );
     }
 
     /**
-     * @return Curl
+     * @return CurlHttpClient
      */
-    private function getCurl() {
-        return new Curl(
+    private function getHttpClient() {
+        return new CurlHttpClient(
             $this->getCurlConfig(),
-            $this->getHttpProgressRenderer()
+            $this->getHttpProgressRenderer(),
+            new Curl()
         );
     }
 
@@ -509,7 +510,7 @@ class Factory {
      */
     public function getGithubAliasResolver() {
         return new GithubAliasResolver(
-            $this->getCurl(),
+            $this->getHttpClient(),
             $this->getFileDownloader(),
             $this->getOutput()
         );

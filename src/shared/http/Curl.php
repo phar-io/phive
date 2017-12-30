@@ -4,185 +4,104 @@ namespace PharIo\Phive;
 /**
  * @codeCoverageIgnore
  */
-class Curl implements HttpClient {
+class Curl {
 
-    /** @var CurlConfig */
-    private $config;
-
-    /** @var HttpProgressHandler */
-    private $progressHandler;
-
-    /** @var Url */
-    private $url;
-
-    /** @var Etag */
-    private $etag;
-
-    /** @var array */
-    private $rateLimitHeaders = [];
-
-    /** @var resource */
+    /**
+     * @var resource
+     */
     private $curlHandle;
 
     /**
-     * @param CurlConfig          $curlConfig
-     * @param HttpProgressHandler $progressHandler
+     * @param string|null $url
      */
-    public function __construct(CurlConfig $curlConfig, HttpProgressHandler $progressHandler) {
-        $this->config = $curlConfig;
-        $this->progressHandler = $progressHandler;
+    public function init($url = null) {
+        $this->curlHandle = curl_init($url);
     }
 
-    /**
-     * @param Url       $url
-     * @param ETag|null $etag
-     *
-     * @return HttpResponse
-     *
-     * @throws HttpException
-     */
-    public function head(Url $url, ETag $etag = null) {
-        $this->url = $url;
-        $this->etag = $etag;
+    public function addHttpHeaders(array $headers) {
+        curl_setopt($this->curlHandle, CURLOPT_HTTPHEADER, $headers);
+    }
 
-        $this->setupCurlInstance();
-        curl_setopt($this->curlHandle, CURLOPT_NOBODY, true);
+    public function disableProgressMeter() {
         curl_setopt($this->curlHandle, CURLOPT_NOPROGRESS, true);
+    }
 
-        return $this->execRequest();
+    public function doNotReturnBody() {
+        curl_setopt($this->curlHandle, CURLOPT_NOBODY, true);
     }
 
     /**
-     * @param Url       $url
-     * @param ETag|null $etag
-     *
-     * @return HttpResponse
-     *
-     * @throws HttpException
+     * @param callable $progressFunction
      */
-    public function get(Url $url, ETag $etag = null) {
-        $this->url = $url;
-        $this->etag = $etag;
+    public function enableProgressMeter($progressFunction) {
+        curl_setopt($this->curlHandle, CURLOPT_NOPROGRESS, false);
+        curl_setopt($this->curlHandle, CURLOPT_PROGRESSFUNCTION, $progressFunction);
+    }
 
-        $this->progressHandler->start($url);
-        $this->setupCurlInstance();
-        $result = $this->execRequest();
-        $this->progressHandler->finished();
+    /**
+     * @return int
+     */
+    public function getHttpCode() {
+        return (int)curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
+    }
 
-        return $result;
+    public function setCertificateFile($filename) {
+        curl_setopt($this->curlHandle, CURLOPT_CAINFO, $filename);
+    }
+
+    /**
+     * @param callable $headerFunction
+     */
+    public function setHeaderFunction($headerFunction) {
+        curl_setopt($this->curlHandle, CURLOPT_HEADERFUNCTION, $headerFunction);
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptArray(array $options) {
+        curl_setopt_array($this->curlHandle, $options);
     }
 
     /**
      * @param resource $ch
-     * @param int      $expectedDown
-     * @param int      $received
-     * @param int      $expectedUp
-     * @param int      $sent
+     * @param int $option
+     * @param mixed|callable $value
      *
-     * @return int
+     * @return bool
      */
-    private function handleProgressInfo($ch, $expectedDown, $received, $expectedUp, $sent) {
-        $httpCode = (int)curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
-        if ($httpCode >= 400) {
-            return 0;
-        }
+    public function setOpt($ch, $option, $value) {
+        return curl_setopt($ch, $option, $value);
+    }
 
-        return $this->progressHandler->handleUpdate(
-            new HttpProgressUpdate($this->url, $expectedDown, $received, $expectedUp, $sent)
-        ) ? 0 : 1;
+    /**
+     * @return mixed
+     */
+    public function exec() {
+        return curl_exec($this->curlHandle);
     }
 
     /**
      * @param resource $ch
-     * @param string   $line
+     * @param int|null $opt
      *
-     * @return int
+     * @return mixed
      */
-    private function handleHeaderInput($ch, $line) {
-        $parts = explode(':', trim($line));
-
-        if (strtolower($parts[0]) === 'etag') {
-            $this->etag = new ETag(trim($parts[1]));
-        }
-
-        if (strpos($parts[0], 'X-RateLimit-') !== false) {
-            $this->rateLimitHeaders[substr($parts[0],12)] = trim($parts[1]);
-        }
-
-        return mb_strlen($line);
-    }
-
-    private function setupCurlInstance() {
-        $ch = curl_init($this->url);
-
-        curl_setopt_array($ch, $this->config->asCurlOptArray());
-        curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'handleHeaderInput']);
-        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'handleProgressInfo']);
-
-        $headers = [];
-        if ($this->etag !== null) {
-            $headers[] = 'If-None-Match: ' . $this->etag->asString();
-        }
-
-        $hostname = $this->url->getHostname();
-        if ($this->config->hasLocalSslCertificate($hostname)) {
-            curl_setopt($ch, CURLOPT_CAINFO, $this->config->getLocalSslCertificate($hostname)->getCertificateFile());
-        }
-
-        if ($this->config->hasAuthenticationToken($hostname)) {
-            $headers[] = sprintf('Authorization: token %s', $this->config->getAuthenticationToken($hostname));
-        }
-
-        if (count($headers) > 0) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        }
-
-        $this->curlHandle = $ch;
+    public function getInfo($ch, $opt = null) {
+        return curl_getinfo($ch, $opt);
     }
 
     /**
-     * @return HttpResponse
-     *
-     * @throws HttpException
+     * @return string
      */
-    private function execRequest() {
-        $this->rateLimitHeaders = [];
-
-        $result = curl_exec($this->curlHandle);
-
-        $httpCode = (int)curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
-
-        if ($httpCode >= 400 || in_array($httpCode, [200, 304], true)) {
-            return new HttpResponse($httpCode, $result, $this->etag, $this->parseRateLimitHeaders());
-        }
-
-        if ($httpCode > 0) {
-            throw new HttpException(
-                sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url),
-                $httpCode
-            );
-        }
-
-        throw new HttpException(
-            curl_error($this->curlHandle) . ' (while requesting ' . $this->url . ')',
-            curl_errno($this->curlHandle)
-        );
-
+    public function getLastErrorMessage() {
+        return curl_error($this->curlHandle);
     }
 
-    private function parseRateLimitHeaders() {
-        $required = ['Limit', 'Remaining', 'Reset'];
-        $exisiting = array_keys($this->rateLimitHeaders);
-        if (count(array_intersect($required, $exisiting)) < 3) {
-            return null;
-        }
-
-        return new RateLimit(
-            (int) $this->rateLimitHeaders['Limit'],
-            (int) $this->rateLimitHeaders['Remaining'],
-            new \DateTimeImmutable('@' . $this->rateLimitHeaders['Reset'])
-        );
+    /**
+     * @return int
+     */
+    public function getLastErrorNumber() {
+        return curl_errno($this->curlHandle);
     }
-
 }

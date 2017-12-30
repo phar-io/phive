@@ -94,10 +94,10 @@ class FileDownloaderTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Curl
+     * @return \PHPUnit_Framework_MockObject_MockObject|CurlHttpClient
      */
     private function getCurlMock() {
-        return $this->createMock(Curl::class);
+        return $this->createMock(CurlHttpClient::class);
     }
 
     /**

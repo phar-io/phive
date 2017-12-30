@@ -9,7 +9,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 class GnupgKeyDownloaderTest extends TestCase {
 
     /**
-     * @var Curl|ObjectProphecy
+     * @var CurlHttpClient|ObjectProphecy
      */
     private $curl;
 
@@ -19,7 +19,7 @@ class GnupgKeyDownloaderTest extends TestCase {
     private $output;
 
     public function setUp() {
-        $this->curl = $this->prophesize(Curl::class);
+        $this->curl = $this->prophesize(CurlHttpClient::class);
         $this->output = $this->prophesize(Cli\Output::class);
     }
 

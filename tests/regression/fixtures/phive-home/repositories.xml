@@ -31,5 +31,14 @@
     <phar alias="composer-require-checker" composer="maglnet/composer-require-checker">
         <repository type="github" url="https://api.github.com/repos/maglnet/ComposerRequireChecker/releases" />
     </phar>
+    <phar alias="phpstan" composer="phpstan/phpstan">
+        <repository type="github" url="https://api.github.com/repos/phpstan/phpstan/releases" />
+    </phar>
+    <phar alias="phpcs" composer="squizlabs/php_codesniffer">
+        <repository url="https://squizlabs.github.io/PHP_CodeSniffer/phars/phive.xml" />
+    </phar>
+    <phar alias="phpcbf" composer="squizlabs/php_codesniffer">
+        <repository url="https://squizlabs.github.io/PHP_CodeSniffer/phars/phive.xml" />
+    </phar>
 
 </repositories>
