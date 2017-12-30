@@ -51,9 +51,9 @@ PHIVE makes installation easy by downloading the phar archive from the given loc
 the certificate supplied by the server. Once downloaded, the archive's SHA1/SHA256/SHA512 hash is verified and so its
 OpenPGP/GnuPG or OpenSSL signature.
 
-Instead of redownloading the same phar multiple times, the archive is kept at a shared location (by default in ~/.phive)
+Instead of redownloading the same phar multiple times, the archive is kept at a shared location (by default in `~/.phive`)
 and only a symbolic link is created for the project. You can of course also explicitly request a copy of the phar to
-be made in favor of symbolic links (use -copy).
+be made in favor of symbolic links (use `--copy`).
 
 ## Contributing
 
