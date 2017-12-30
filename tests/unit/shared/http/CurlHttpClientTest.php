@@ -172,6 +172,37 @@ class CurlHttpClientTest extends TestCase {
         $this->assertEquals($expectedRateLimit, $actualResponse->getRateLimit());
     }
 
+    public function testAddsRequestHeaderIfEtagIsProvided() {
+        $this->curl->method('getHttpCode')
+            ->willReturn(200);
+
+        $etag = new ETag('foo');
+
+        $this->curl->expects($this->once())
+            ->method('addHttpHeaders')
+            ->with(['If-None-Match: foo']);
+
+        $this->curlHttpClient->get(new Url('https://example.com'), $etag);
+    }
+
+    public function testAddsEtagToResponseIfHeaderIsPresent() {
+        $this->curl->method('getHttpCode')
+            ->willReturn(200);
+
+        $this->curl->method('exec')
+            ->willReturnCallback(function() {
+                // simulate header function call, which is normally done by Curl
+                $this->curlHttpClient->handleHeaderInput(null, 'etag: foo');
+            });
+
+        $expectedETag = new ETag('foo');
+
+        $actualResponse = $this->curlHttpClient->get(new Url('https://example.com'));
+
+        $this->assertTrue($actualResponse->hasETag());
+        $this->assertEquals($expectedETag, $actualResponse->getETag());
+    }
+
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|CurlConfig
      */
