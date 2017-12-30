@@ -174,6 +174,7 @@ class CurlHttpClient implements HttpClient {
     private function parseRateLimitHeaders() {
         $required = ['Limit', 'Remaining', 'Reset'];
         $exisiting = array_keys($this->rateLimitHeaders);
+
         if (count(array_intersect($required, $exisiting)) < 3) {
             return null;
         }

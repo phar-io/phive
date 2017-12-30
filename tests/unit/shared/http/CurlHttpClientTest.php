@@ -152,6 +152,26 @@ class CurlHttpClientTest extends TestCase {
         $this->assertSame(0, $this->curlHttpClient->handleProgressInfo(null, 1, 100, 2, 0));
     }
 
+    public function testAddsExpectedRateLimitToResponseIfHeadersArePresent() {
+        $this->curl->method('getHttpCode')
+            ->willReturn(200);
+
+        $expectedRateLimit = new RateLimit(25, 10, new \DateTimeImmutable('@1514645901'));
+
+        $this->curl->method('exec')
+            ->willReturnCallback(function() {
+                // simulate header function call, which is normally done by Curl
+                $this->curlHttpClient->handleHeaderInput(null, 'X-RateLimit-Limit: 25');
+                $this->curlHttpClient->handleHeaderInput(null, 'X-RateLimit-Remaining: 10');
+                $this->curlHttpClient->handleHeaderInput(null, 'X-RateLimit-Reset: 1514645901');
+            });
+
+        $actualResponse = $this->curlHttpClient->get(new Url('https://example.com'));
+
+        $this->assertTrue($actualResponse->hasRateLimit());
+        $this->assertEquals($expectedRateLimit, $actualResponse->getRateLimit());
+    }
+
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|CurlConfig
      */
