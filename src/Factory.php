@@ -606,6 +606,12 @@ class Factory {
         if ($environment->hasProxy()) {
             $this->curlConfig->setProxy($environment->getProxy());
         }
+        if ($environment->hasGitHubAuthToken()) {
+            $this->curlConfig->addAuthenticationToken(
+                'github.com',
+                $environment->getGitHubAuthToken()
+            );
+        }
 
         return $this->curlConfig;
     }

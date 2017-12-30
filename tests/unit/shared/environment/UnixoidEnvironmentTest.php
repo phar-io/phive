@@ -100,6 +100,21 @@ class UnixoidEnvironmentTest extends TestCase {
         ];
     }
 
+    public function testGetGitHubAuthToken() {
+        $environment = new UnixoidEnvironment([], $this->getExecutorMock());
+        $this->assertFalse($environment->hasGitHubAuthToken());
+
+        $environment = new UnixoidEnvironment(['GITHUB_AUTH_TOKEN' => 'foo'], $this->getExecutorMock());
+        $this->assertTrue($environment->hasGitHubAuthToken());
+        $this->assertSame('foo', $environment->getGitHubAuthToken());
+    }
+
+    public function testGetGitHubAuthTokenThrowsExceptionIfNotPresentInEnvironment() {
+        $environment = new UnixoidEnvironment([], $this->getExecutorMock());
+        $this->expectException(\BadMethodCallException::class);
+        $environment->getGitHubAuthToken();
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Executor
      */

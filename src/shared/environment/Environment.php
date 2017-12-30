@@ -78,6 +78,20 @@ abstract class Environment {
         return array_key_exists('https_proxy', $this->server);
     }
 
+    public function hasGitHubAuthToken() {
+        return array_key_exists('GITHUB_AUTH_TOKEN', $this->server);
+    }
+
+    /**
+     * @return string
+     */
+    public function getGitHubAuthToken() {
+        if (!$this->hasGitHubAuthToken()) {
+            throw new \BadMethodCallException('GITHUB_AUTH_TOKEN not set in environment');
+        }
+        return $this->server['GITHUB_AUTH_TOKEN'];
+    }
+
     public function getPhiveCommandPath() {
         return $this->server['PHP_SELF'];
     }
