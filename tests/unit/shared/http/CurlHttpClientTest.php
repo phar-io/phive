@@ -203,6 +203,25 @@ class CurlHttpClientTest extends TestCase {
         $this->assertEquals($expectedETag, $actualResponse->getETag());
     }
 
+    public function testAddsAuthorizationHeaderIfTokenIsProvided() {
+        $this->curl->method('getHttpCode')
+            ->willReturn(200);
+
+        $this->curlConfig->method('hasAuthenticationToken')
+            ->with('example.com')
+            ->willReturn(true);
+
+        $this->curlConfig->method('getAuthenticationToken')
+            ->with('example.com')
+            ->willReturn('foobar');
+
+        $this->curl->expects($this->once())
+            ->method('addHttpHeaders')
+            ->with(['Authorization: token foobar']);
+
+        $this->curlHttpClient->get(new Url('https://example.com'));
+    }
+
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|CurlConfig
      */
