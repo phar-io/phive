@@ -58,8 +58,8 @@ class CurlConfigBuilderTest extends TestCase {
             ->willReturn('foo');
 
         $config = $this->builder->build();
-        $this->assertTrue($config->hasAuthenticationToken('github.com'));
-        $this->assertSame('foo', $config->getAuthenticationToken('github.com'));
+        $this->assertTrue($config->hasAuthenticationToken('api.github.com'));
+        $this->assertSame('foo', $config->getAuthenticationToken('api.github.com'));
     }
 
     /**
