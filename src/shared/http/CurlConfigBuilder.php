@@ -40,7 +40,7 @@ class CurlConfigBuilder {
         }
         if ($this->environment->hasGitHubAuthToken()) {
             $curlConfig->addAuthenticationToken(
-                'github.com',
+                'api.github.com',
                 $this->environment->getGitHubAuthToken()
             );
         }
