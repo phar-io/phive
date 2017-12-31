@@ -2,6 +2,13 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.9.0] - 2017-12-31
+
+### Added
+
+* [#127](https://github.com/phar-io/phive/issues/127): Notify user when GitHub's API rate limit is exceeded and use 
+a GitHub auth token provided via the `GITHUB_AUTH_TOKEN` environment variable to extend the limit to 5000 requests/hour
+
 ## [0.8.2] - 2017-10-10
 
 ### Fixed
@@ -197,7 +204,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.8.2...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.9.0...HEAD
+[0.9.0]: https://github.com/phar-io/phive/compare/0.8.2...0.9.0
 [0.8.2]: https://github.com/phar-io/phive/compare/0.8.1...0.8.2
 [0.8.1]: https://github.com/phar-io/phive/compare/0.8.0...0.8.1
 [0.8.0]: https://github.com/phar-io/phive/compare/0.7.2...0.8.0
