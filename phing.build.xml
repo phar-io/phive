@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Phive" default="build" basedir=".">
+
+    <!--
+        Phing build file
+
+        build.xml file is an ANT build file, so you need to provide the build
+        file name.
+
+        phing -f phing.build.xml
+    -->
+
+
+    <!-- Load dist.build.properties and build.properties as configuration -->
+    <property file="dist.build.properties" prefix="configuration" override="true"/>
+    <property file="build.properties" prefix="configuration" override="true"/>
+
+    <property name="project.name" value="${phing.project.name}"/>
+    <property name="gpg.user" value="${configuration.gpg.user}"/>
+    <property name="gpg.keys.trusted" value="${configuration.gpg.keys.trusted}"/>
+
+    <property name="directory.project" value="${project.basedir}"/>
+    <property name="directory.build" value="${directory.project}/build"/>
+    <property name="directory.src" value="${directory.project}/src"/>
+    <property name="directory.tests" value="${directory.project}/tests"/>
+    <property name="directory.tools" value="${directory.project}/tools"/>
+    
+
+    <target name="setup" depends="clean,composer,install-tools,generate-autoloader"/>
+    <target name="build" depends="setup,lint,test"/>
+
+    <target name="clean" unless="clean.done" description="Clean up and create artifact directories">
+        <delete dir="${directory.build}/docs"/>
+        <delete dir="${directory.build}/coverage"/>
+        <delete dir="${directory.build}/logs"/>
+        <delete dir="${directory.build}/pdepend"/>
+        <delete dir="${directory.build}/phpab"/>
+
+        <mkdir dir="${directory.build}/docs"/>
+        <mkdir dir="${directory.build}/coverage"/>
+        <mkdir dir="${directory.build}/logs"/>
+        <mkdir dir="${directory.build}/pdepend"/>
+        <mkdir dir="${directory.build}/phpab"/>
+
+        <property name="clean.done" value="true"/>
+    </target>
+
+    <target name="lint">
+        <apply executable="php" failonerror="true">
+            <arg value="-l" />
+
+            <fileset dir="${directory.src}">
+                <include name="**/*.php" />
+            </fileset>
+
+            <fileset dir="${directory.tests}/unit">
+                <include name="**/*.php" />
+            </fileset>
+        </apply>
+    </target>
+
+    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build" hidden="yes">
+        <property name="prepare.done" value="true"/>
+    </target>
+
+    <target name="-tools-installed" hidden="yes">
+        <condition property="tools-installed">
+            <and>
+                <or>
+                    <available file="${directory.tools}/phpunit" type="file"/>
+                    <available file="${directory.tools}/phpunit.bat" type="file"/>
+                </or>
+                <or>
+                    <available file="${directory.tools}/phpab" type="file"/>
+                    <available file="${directory.tools}/phpab.bat" type="file"/>
+                </or>
+            </and>
+        </condition>
+    </target>
+
+    <target name="install-tools" unless="tools-installed" depends="-tools-installed" description="Install tools with Phive">
+        <exec executable="phive">
+            <arg value="install"/>
+            <arg value="--trust-gpg-keys" />
+            <arg value="${gpg.keys.trusted}"/>
+            <arg value="phpab" />
+            <arg value="phpunit@^5.7" />
+        </exec>
+    </target>
+
+    <target name="generate-autoloader" depends="install-tools" description="Generate autoloader using PHPAB">
+        <exec executable="${directory.tools}/phpab">
+            <arg value="--output"/>
+            <arg path="${directory.src}/autoload.php"/>
+            <arg path="${directory.src}"/>
+        </exec>
+    </target>
+
+    <target name="test" depends="generate-autoloader" description="Run tests">
+        <exec executable="${directory.tools}/phpunit" passthru="true"/>
+    </target>
+
+    <target name="phar" description="Create PHAR archive of Phive and its dependencies" depends="composer-no-dev, get-version-number-from-git">
+
+        <delete>
+            <fileset dir="${directory.build}/phar">
+                <include name="**/*.phar"/>
+            </fileset>
+        </delete>
+
+        <property name="file.target" value="${directory.build}/phar/phive${version.suffix}.phar"/>
+
+        <exec executable="${directory.tools}/phpab" returnProperty="phpab.return" outputProperty="phpab.output">
+            <arg value="--var"/>
+            <arg value="VERSION=${version}"/>
+            <arg value="--all"/>
+            <arg value="--phar"/>
+            <arg value="--alias" />
+            <arg value="phive.phar" />
+            <arg value="--gzip"/>
+            <arg value="--output"/>
+            <arg path="${file.target}"/>
+            <arg value="--template"/>
+            <arg path="${directory.build}/phar/bootstrap.php.in"/>
+            <arg value="--basedir" />
+            <arg path="${directory.project}" />
+            <arg path="${directory.project}/composer.json" />
+            <arg path="${directory.project}/conf" />
+        </exec>
+        <if>
+            <equals arg1="${phpab.return}" arg2="0"/>
+            <then>
+                <echo message="Created ${file.target}"/>
+            </then>
+            <else>
+                <echo message="${phpab.output}"/>
+                <fail message="Could not generate phar."/>
+            </else>
+        </if>
+        <chmod file="${file.target}" mode="755"/>
+    </target>
+
+    <target name="release" description="Make a release based on latest tag" depends="phar">
+        <if>
+            <equals arg1="${gpg.user}" arg2=""/>
+            <then>
+                <echo message="Missing GPG user to create signature."/>
+                <fail message="Please set the gpg.user in build.properties."/>
+            </then>
+        </if>
+        <echo message="GPG user - ${gpg.user}"/>
+        <exec executable="gpg">
+            <arg value="--local-user" />
+            <arg value="${gpg.user}" />
+            <arg value="--detach-sign" />
+            <arg value="--output" />
+            <arg path="${directory.build}/phar/phive-${version}.phar.asc" />
+            <arg path="${directory.build}/phar/phive-${version}.phar" />
+        </exec>
+    </target>
+
+    <target name="composer" description="Install composer dependencies (including dev)">
+        <exec executable="composer">
+            <arg value="install"/>
+        </exec>
+    </target>
+
+    <target name="composer-no-dev" description="Install composer dependencies (without dev)" hidden="yes">
+        <exec executable="composer">
+            <arg value="install"/>
+            <arg value="--no-dev"/>
+        </exec>
+    </target>
+
+    <target name="get-version-number-from-git" hidden="yes">
+        <!-- Fetch latest tag on current branch -->
+        <exec executable="git" returnProperty="git.return" outputProperty="git.output" dir="${directory.project}">
+            <arg line="describe --tags --abbrev=0" />
+        </exec>
+        <if>
+            <equals arg1="${git.return}" arg2="0" />
+            <then>
+                <property name="version" value="${git.output}"/>
+                <property name="version.suffix" value="-${git.output}"/>
+                <echo message="Version: ${git.output}"/>
+            </then>
+            <else>
+                <property name="version" value="dev"/>
+                <property name="version.suffix" value=""/>
+                <echo message="No version tagged yet."/>
+            </else>
+        </if>
+    </target>
+</project>
