@@ -16,6 +16,7 @@ class HostEntry {
      * @param string $ipAddress
      */
     public function __construct($hostname, $ipAddress) {
+        $this->ensureValidIpAddress($ipAddress);
         $this->hostname = $hostname;
         $this->ipAddress = $ipAddress;
     }
@@ -32,6 +33,14 @@ class HostEntry {
      */
     public function getIpAddress() {
         return $this->ipAddress;
+    }
+
+    private function ensureValidIpAddress($ipAddress) {
+        if (!filter_var($ipAddress, FILTER_VALIDATE_IP)) {
+            throw new \InvalidArgumentException(
+                sprintf('IP "%s" is not a valid IP Address', $ipAddress)
+            );
+        }
     }
 
 }
