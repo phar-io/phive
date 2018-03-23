@@ -44,6 +44,10 @@ class CommandLocatorTest extends TestCase {
             'reset'                  => ['reset', 'getResetCommand'],
             'update'                 => ['update', 'getUpdateCommand'],
             'update-repository-list' => ['update-repository-list', 'getUpdateRepositoryListCommand'],
+            'composer'               => ['composer', 'getComposerCommand'],
+            'status'                 => ['status', 'getStatusCommand'],
+            'selfupdate'             => ['selfupdate', 'getSelfupdateCommand'],
+            'self-update'            => ['self-update', 'getSelfupdateCommand'],
         ];
     }
 
