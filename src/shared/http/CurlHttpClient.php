@@ -21,19 +21,26 @@ class CurlHttpClient implements HttpClient {
     /** @var Curl */
     private $curl;
 
+    /** @var HostEntry[]  */
+    private $hostEntries = [];
+
     /**
      * @param CurlConfig $curlConfig
      * @param HttpProgressHandler $progressHandler
      * @param Curl $curlFunctions
      */
     public function __construct(
-        CurlConfig $curlConfig, 
+        CurlConfig $curlConfig,
         HttpProgressHandler $progressHandler,
         Curl $curlFunctions
     ) {
         $this->config = $curlConfig;
         $this->progressHandler = $progressHandler;
         $this->curl = $curlFunctions;
+    }
+
+    public function setHostEntry(HostEntry $entry) {
+        $this->hostEntries[$entry->getHostname()] = $entry->getIpAddress();
     }
 
     /**
@@ -121,6 +128,10 @@ class CurlHttpClient implements HttpClient {
         $this->curl->setOptArray($this->config->asCurlOptArray());
         $this->curl->enableProgressMeter([$this, 'handleProgressInfo']);
         $this->curl->setHeaderFunction([$this, 'handleHeaderInput']);
+
+        foreach($this->hostEntries as $host => $ip) {
+            $this->curl->setResolve(sprintf('%s:433:%s', $host, $ip));
+        }
 
         $headers = [];
         if ($this->etag !== null) {
