@@ -18,6 +18,13 @@ class Curl {
         $this->curlHandle = curl_init($url);
     }
 
+    /**
+     * @param string $resolveString
+     */
+    public function setResolve($resolveString) {
+        curl_setopt($this->curlHandle, CURLOPT_RESOLVE, $resolveString);
+    }
+
     public function addHttpHeaders(array $headers) {
         curl_setopt($this->curlHandle, CURLOPT_HTTPHEADER, $headers);
     }
@@ -104,4 +111,5 @@ class Curl {
     public function getLastErrorNumber() {
         return curl_errno($this->curlHandle);
     }
+
 }

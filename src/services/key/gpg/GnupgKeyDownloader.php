@@ -46,30 +46,49 @@ class GnupgKeyDownloader implements KeyDownloader {
         $infoParams = array_merge($publicParams, [
             'op' => 'index'
         ]);
-        foreach ($this->keyServers as $keyServer) {
-            $this->output->writeInfo(sprintf('Trying %s', $keyServer));
+        foreach ($this->keyServers as $keyServerName) {
 
-            try {
-                $keyInfo = $this->httpClient->get((new Url($keyServer . self::PATH))->withParams($infoParams));
-                $publicKey = $this->httpClient->get((new Url($keyServer . self::PATH))->withParams($publicParams));
-                if ($keyInfo->isNotFound() || $publicKey->isNotFound()) {
+            $ipList = $this->resolveHostname($keyServerName);
+            foreach($ipList as $ipAddress) {
+                $this->output->writeInfo(sprintf('Trying %s (%s)', $keyServerName, $ipAddress));
+                try {
+                    $keyInfo = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($infoParams));
+                    $publicKey = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($publicParams));
+                    if ($keyInfo->isNotFound() || $publicKey->isNotFound()) {
+                        $this->output->writeWarning(
+                            sprintf('Key not found on keyserver %s', $keyServerName)
+                        );
+                        continue;
+                    }
+                } catch (HttpException $e) {
                     $this->output->writeWarning(
-                        sprintf('Key not found on keyserver %s', $keyServer)
+                        sprintf('Failed with error code %s: %s', $e->getCode(), $e->getMessage())
                     );
                     continue;
                 }
-            } catch (HttpException $e) {
-                $this->output->writeWarning(
-                    sprintf('Failed with error code %s: %s', $e->getCode(), $e->getMessage())
-                );
-                continue;
+
+                $this->output->writeInfo('Successfully downloaded key');
+
+                return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
             }
-
-            $this->output->writeInfo('Successfully downloaded key');
-
-            return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
         }
         throw new DownloadFailedException(sprintf('PublicKey %s not found on key servers', $keyId));
+    }
+
+    private function resolveHostname($hostname) {
+        $ipList = [];
+
+        $results = dns_get_record($hostname, DNS_A);
+        foreach($results as $result) {
+            $ipList[] = $result['ip'];
+        }
+
+        $results = dns_get_record($hostname, DNS_AAAA);
+        foreach($results as $result) {
+            $ipList[] = $result['ipv6'];
+        }
+
+        return $ipList;
     }
 
 }
