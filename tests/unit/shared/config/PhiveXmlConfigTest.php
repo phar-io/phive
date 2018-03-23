@@ -32,7 +32,7 @@ class PhiveXmlConfigTest extends TestCase {
             ->with('//phive:phar')
             ->willReturn([$node]);
 
-        $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'), new ExactVersionConstraint('5.3.0'));
+        $alias = new PharAlias('phpunit');
 
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
@@ -51,7 +51,7 @@ class PhiveXmlConfigTest extends TestCase {
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
 
-        $config->addPhar($installedPhar);
+        $config->addPhar($installedPhar, $phar);
     }
 
     public function testFindsPharNodesWithoutMatchingCase()
@@ -78,7 +78,7 @@ class PhiveXmlConfigTest extends TestCase {
             ->willReturn($node);
         $configFile->expects($this->once())->method('addElement')->with($node);
 
-        $alias = new PharAlias('phpunit', new ExactVersionConstraint('5.3.0'), new ExactVersionConstraint('5.3.0'));
+        $alias = new PharAlias('phpunit');
 
 
         $installedPhar = $this->getInstalledPharMock();
@@ -98,7 +98,7 @@ class PhiveXmlConfigTest extends TestCase {
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
 
-        $config->addPhar($installedPhar);
+        $config->addPhar($installedPhar, $phar);
     }
 
     public function testGetPharsReturnsExpectedPhars() {
@@ -152,7 +152,7 @@ class PhiveXmlConfigTest extends TestCase {
 
         $config = new PhiveXmlConfig($configFile, $parserMock);
         $expected = [
-            new ConfiguredPhar('https://example.com/phpunit-5.3.0.phar', new AnyVersionConstraint()),
+            new ConfiguredPhar('https://example.com/phpunit-5.3.0.phar', new AnyVersionConstraint(), null, null, new PharUrl('https://example.com/phpunit-5.3.0.phar')),
             new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12'), new Filename(__DIR__ . '/fixtures/tools/phpunit')),
             new ConfiguredPhar('phpunit', new AnyVersionConstraint()),
         ];

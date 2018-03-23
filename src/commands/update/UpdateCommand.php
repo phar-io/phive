@@ -47,9 +47,8 @@ class UpdateCommand implements Cli\Command {
 
             $this->installService->execute(
                 $release,
-                $requestedPhar->getVersionConstraint(),
-                $this->phiveXml->getPharLocation($release->getName()),
-                $requestedPhar->makeCopy()
+                $requestedPhar,
+                $this->phiveXml->getPharLocation($release->getName())
             );
         }
     }

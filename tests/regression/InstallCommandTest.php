@@ -5,7 +5,9 @@ use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Runner;
 use PharIo\Phive\ConfiguredPhar;
 use PharIo\Phive\InstalledPhar;
+use PharIo\Phive\PharAlias;
 use PharIo\Phive\PharUrl;
+use PharIo\Phive\RequestedPhar;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
@@ -75,6 +77,11 @@ class InstallCommandTest extends RegressionTestCase {
                 new AnyVersionConstraint(),
                 new Filename('./foo/tests'),
                 false
+            ),
+            new RequestedPhar(
+                new PharAlias('phpunit'),
+                new AnyVersionConstraint(),
+                new AnyVersionConstraint()
             )
         );
 

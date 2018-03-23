@@ -29,8 +29,11 @@ class PhiveXmlConfig {
 
     /**
      * @param InstalledPhar $installedPhar
+     * @param RequestedPhar $requestedPhar
+     *
+     * @throws \Exception
      */
-    public function addPhar(InstalledPhar $installedPhar) {
+    public function addPhar(InstalledPhar $installedPhar, RequestedPhar $requestedPhar) {
         $name = $installedPhar->getName();
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
@@ -41,6 +44,10 @@ class PhiveXmlConfig {
         }
 
         $xmlFileDirectory = $this->configFile->getDirectory();
+
+        if ($requestedPhar->hasUrl()) {
+            $pharNode->setAttribute('url', $requestedPhar->getUrl()->asString());
+        }
 
         $pharNode->setAttribute('version', $installedPhar->getVersionConstraint()->asString());
         $pharNode->setAttribute('installed', $installedPhar->getInstalledVersion()->getVersionString());
@@ -205,6 +212,7 @@ class PhiveXmlConfig {
     }
 
     private function nodeToConfiguredPhar(\DOMElement $pharNode) {
+        $url = null;
         if ($pharNode->hasAttribute('url')) {
             $url = new PharUrl($pharNode->getAttribute('url'));
             $pharName = (string)$url;
@@ -231,7 +239,7 @@ class PhiveXmlConfig {
             $this->versionConstraintParser->parse($versionConstraint),
             $pharVersion,
             $location,
-            null,
+            $url,
             $isCopy
         );
     }

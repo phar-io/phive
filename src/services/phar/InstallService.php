@@ -58,12 +58,13 @@ class InstallService {
     }
 
     /**
-     * @param Release           $release
-     * @param VersionConstraint $versionConstraint
-     * @param Filename          $destination
-     * @param bool              $makeCopy
+     * @param Release $release
+     * @param RequestedPhar $requestedPhar
+     * @param Filename $destination
      */
-    public function execute(Release $release, VersionConstraint $versionConstraint, Filename $destination, $makeCopy) {
+    public function execute(Release $release, RequestedPhar $requestedPhar, Filename $destination) {
+        $versionConstraint = $requestedPhar->getVersionConstraint();
+        $makeCopy = $requestedPhar->makeCopy();
         $phar = $this->pharService->getPharFromRelease($release);
         if (!$this->compatibilityService->canRun($phar)) {
             return;
@@ -86,7 +87,8 @@ class InstallService {
                 $this->getInstalledVersionConstraint($versionConstraint, $release->getVersion()),
                 $destination,
                 $makeCopy
-            )
+            ),
+            $requestedPhar
         );
     }
 
