@@ -25,7 +25,9 @@ class CommandLocator implements Cli\CommandLocator {
      */
     public function getCommand($command) {
         switch ($command) {
-            case '':
+            case '': {
+                return $this->factory->getDefaultCommand();
+            }
             case 'help': {
                 return $this->factory->getHelpCommand();
             }

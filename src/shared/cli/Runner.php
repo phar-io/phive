@@ -195,7 +195,7 @@ class Runner {
                 return $options->getArgument(0);
             }
 
-            return 'help';
+            return '';
         } catch (RequestException $e) {
             throw new RunnerException(
                 $e->getMessage(),

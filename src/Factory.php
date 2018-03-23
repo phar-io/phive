@@ -215,6 +215,17 @@ class Factory {
     }
 
     /**
+     * @return DefaultCommand
+     */
+    public function getDefaultCommand() {
+        return new DefaultCommand(
+            $this->getVersionCommand(),
+            $this->getHelpCommand(),
+            new DefaultCommandConfig($this->request->getOptions())
+        );
+    }
+
+    /**
      * @return TargetDirectoryLocator
      */
     private function getTargetDirectoryLocator() {

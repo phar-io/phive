@@ -7,6 +7,8 @@ class PhiveContext extends GeneralContext {
 
     protected function getKnownOptions() {
         return [
+            'version' => false,
+            'help' => false,
             'home' => false,
             'no-progress' => false
         ];

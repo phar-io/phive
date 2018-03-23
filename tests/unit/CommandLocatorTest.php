@@ -33,6 +33,7 @@ class CommandLocatorTest extends TestCase {
 
     public function commandProvider() {
         return [
+            ''                       => ['', 'getDefaultCommand'],
             'help'                   => ['help', 'getHelpCommand'],
             'version'                => ['version', 'getVersionCommand'],
             'skel'                   => ['skel', 'getSkelCommand'],
