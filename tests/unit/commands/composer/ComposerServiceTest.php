@@ -5,7 +5,6 @@ use PharIo\FileSystem\Filename;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @covers \PharIo\Phive\ComposerService
@@ -15,39 +14,43 @@ class ComposerServiceTest extends TestCase {
     public function testFindCandidatesReturnsExpectedPhars() {
         $filename = new Filename(__DIR__ . '/fixtures/composer.json');
 
-        $sourcesList = $this->getSourcesListProphecy();
-        $sourcesList->getAliasForComposerAlias(new ComposerAlias('phpunit/phpunit'))
-            ->willReturn('phpunit');
-
-        $sourcesList->getAliasForComposerAlias(new ComposerAlias('foo/bar'))
-            ->willThrow(new SourcesListException());
-
-        $sourcesList->getAliasForComposerAlias(new ComposerAlias('theseer/autoload'))
-            ->willReturn('phpab');
+        $sourcesList = $this->getSourcesListMock();
+        $sourcesList->method('getAliasForComposerAlias')
+            ->willReturnCallback(
+                function(ComposerAlias $composerAlias) {
+                    switch ($composerAlias) {
+                        case new ComposerAlias('theseer/autoload'):
+                            return 'phpab';
+                        case new ComposerAlias('foo/bar'):
+                            throw new SourcesListException();
+                        case new ComposerAlias('phpunit/phpunit'):
+                            return 'phpunit';
+                    }
+                }
+            );
 
         $expectedList = [
             new RequestedPhar(new PharAlias('phpab'), new ExactVersionConstraint('1.20.1'), new ExactVersionConstraint('1.20.1')),
             new RequestedPhar(new PharAlias('phpunit'), new AnyVersionConstraint(), new AnyVersionConstraint()),
         ];
 
-        $service = new ComposerService($sourcesList->reveal());
+        $service = new ComposerService($sourcesList);
         $this->assertEquals($expectedList, $service->findCandidates($filename));
     }
 
     public function testThrowsExceptionIfComposerFileDoesNotExist() {
         $filename = new Filename(__DIR__ . '/fixtures/foo.json');
 
-        $service = new ComposerService($this->getSourcesListProphecy()->reveal());
+        $service = new ComposerService($this->getSourcesListMock());
 
         $this->expectException(\InvalidArgumentException::class);
         $service->findCandidates($filename);
     }
 
     /**
-     * @return ObjectProphecy|SourcesList
+     * @return \PHPUnit_Framework_MockObject_MockObject|SourcesList
      */
-    private function getSourcesListProphecy() {
-        return $this->prophesize(SourcesList::class);
+    private function getSourcesListMock() {
+        return $this->createMock(SourcesList::class);
     }
-
 }
