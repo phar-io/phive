@@ -40,5 +40,13 @@
     <phar alias="phpcbf" composer="squizlabs/php_codesniffer">
         <repository url="https://squizlabs.github.io/PHP_CodeSniffer/phars/phive.xml" />
     </phar>
-
+    <phar alias="n98-magerun" composer="n98/magerun">
+        <repository url="https://files.magerun.net/phive.xml" />
+    </phar>
+    <phar alias="n98-magerun2" composer="n98/magerun2">
+        <repository url="https://files.magerun.net/phive.xml" />
+    </phar>
+    <phar alias="pipelines" composer="ktomk/pipelines">
+        <repository type="github" url="https://api.github.com/repos/ktomk/pipelines/releases" />
+    </phar>
 </repositories>

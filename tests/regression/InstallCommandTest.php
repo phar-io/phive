@@ -5,6 +5,7 @@ use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Runner;
 use PharIo\Phive\ConfiguredPhar;
 use PharIo\Phive\InstalledPhar;
+use PharIo\Phive\PharUrl;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
@@ -81,6 +82,20 @@ class InstallCommandTest extends RegressionTestCase {
 
         $this->assertFileNotExists($this->getWorkingDirectory()->child('tools')->file('phpunit')->asString());
         $this->assertFileExists($this->getWorkingDirectory()->child('foo')->file('tests')->asString());
+    }
+
+    public function testAddsSourceUrlToPhiveXml()
+    {
+        $this->runPhiveCommand('install', ['https://phar.phpunit.de/test-mapper-1.0.0.phar']);
+
+        $config = $this->getPhiveXmlConfig();
+
+        $this->assertTrue($config->hasConfiguredPhar('test-mapper', new Version('1.0.0')));
+
+        $phar = $config->getConfiguredPhar('test-mapper', new Version('1.0.0'));
+
+        $this->assertTrue($phar->hasUrl());
+        $this->assertEquals(new PharUrl('https://phar.phpunit.de/test-mapper-1.0.0.phar'), $phar->getUrl());
     }
 
 }
