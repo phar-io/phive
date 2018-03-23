@@ -6,7 +6,7 @@ use PharIo\Phive\Cli\Options;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PharIo\Phive\DefaultCommand
+ * @covers \PharIo\Phive\DefaultCommandConfig
  */
 class DefaultCommandConfigTest extends TestCase {
 
