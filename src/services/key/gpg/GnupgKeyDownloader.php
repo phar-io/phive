@@ -11,7 +11,7 @@ class GnupgKeyDownloader implements KeyDownloader {
     private $httpClient;
 
     /**
-     * @var Url[]
+     * @var string[]
      */
     private $keyServers = [];
 
