@@ -22,7 +22,7 @@ class GnupgKeyDownloader implements KeyDownloader {
 
     /**
      * @param HttpClient $httpClient
-     * @param Url[]      $keyServers
+     * @param string[]   $keyServers
      * @param Cli\Output $output
      */
     public function __construct(HttpClient $httpClient, array $keyServers, Cli\Output $output) {
