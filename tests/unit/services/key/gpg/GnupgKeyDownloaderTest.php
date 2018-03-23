@@ -38,7 +38,7 @@ class GnupgKeyDownloaderTest extends TestCase {
         )->shouldBeCalled()->willReturn($response->reveal());
 
         $downloader = new GnupgKeyDownloader(
-            $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
+            $this->curl->reveal(), ['example.com'], $this->output->reveal()
         );
         $downloader->download('12345678');
     }
@@ -54,7 +54,7 @@ class GnupgKeyDownloaderTest extends TestCase {
             ->willReturn($response->reveal());
 
         $downloader = new GnupgKeyDownloader(
-            $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
+            $this->curl->reveal(), ['example.com'], $this->output->reveal()
         );
 
         $key = new PublicKey('12345678', 'Some Key Info', 'Some Public Key Data');
@@ -69,7 +69,7 @@ class GnupgKeyDownloaderTest extends TestCase {
         */
         $this->curl->get(Argument::any())->willThrow(HttpException::class);
         $downloader = new GnupgKeyDownloader(
-            $this->curl->reveal(), [new Url('https://example.com')], $this->output->reveal()
+            $this->curl->reveal(), ['example.com'], $this->output->reveal()
         );
 
         $this->expectException(DownloadFailedException::class);
