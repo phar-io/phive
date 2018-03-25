@@ -2,6 +2,17 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.10.0] - 2018-03-25
+
+### Changed
+
+* [#125](https://github.com/phar-io/phive/issues/125): The reliability of GPG key lookup requests has been improved by respecting the list of IPs returned by a DNS lookup for `hkps.pool.sks-keyservers.net`   
+
+### Fixed
+
+* [#132](https://github.com/phar-io/phive/issues/132): Executing `phive --version` and `phive --help` now works as expected
+* [#76](https://github.com/phar-io/phive/issues/76): The source URL of a PHAR is now stored in `phive.xml` 
+
 ## [0.9.0] - 2017-12-31
 
 ### Added
@@ -204,7 +215,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.9.0...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.10.0...HEAD
+[0.10.0]: https://github.com/phar-io/phive/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/phar-io/phive/compare/0.8.2...0.9.0
 [0.8.2]: https://github.com/phar-io/phive/compare/0.8.1...0.8.2
 [0.8.1]: https://github.com/phar-io/phive/compare/0.8.0...0.8.1
