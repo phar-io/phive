@@ -197,6 +197,7 @@ class Factory {
     public function getStatusCommand() {
         return new StatusCommand(
             $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            $this->getPharRegistry(),
             $this->getOutput()
         );
     }
