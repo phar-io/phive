@@ -31,7 +31,7 @@ class PharActivatorLocatorTest extends TestCase {
 
     public function returnsExpectedActivatorDataProvider() {
         return [
-            [$this->getWindowsEnvironmentMock(), 'getBatPharActivator'],
+            [$this->getWindowsEnvironmentMock(), 'getWindowsPharActivator'],
             [$this->getEnvironmentMock(), 'getSymlinkPharActivator']
         ];
     }

@@ -22,7 +22,7 @@ class PharActivatorLocator {
      */
     public function getPharActivator(Environment $environment) {
         if ($environment instanceof WindowsEnvironment) {
-            return $this->factory->getBatPharActivator();
+            return $this->factory->getWindowsPharActivator();
         }
 
         return $this->factory->getSymlinkPharActivator();

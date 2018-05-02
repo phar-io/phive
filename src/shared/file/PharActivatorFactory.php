@@ -17,4 +17,12 @@ class PharActivatorFactory {
         return new SymlinkPharActivator();
     }
 
+
+    /**
+     * @return WindowsPharActivator
+     */
+    public function getWindowsPharActivator() {
+        return new WindowsPharActivator(file_get_contents(__DIR__ . '/../../../conf/pharBat.template'));
+    }
+
 }
