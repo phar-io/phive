@@ -49,11 +49,12 @@ class CompatibilityService {
 
                 case $requirement instanceof PhpVersionRequirement: {
                     $php = $requirement->getVersionConstraint();
-                    if (!$php->complies(new Version(PHP_VERSION))) {
+                    $phpversion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
+                    if (!$php->complies(new Version($phpversion))) {
                         $issues[] = sprintf(
                             'PHP Version %s required, but %s in use',
                             $php,
-                            PHP_VERSION
+                            $phpversion
                         );
                     }
                     continue 2;
