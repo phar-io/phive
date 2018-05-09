@@ -131,7 +131,7 @@ abstract class Environment {
             return HHVM_VERSION;
         }
 
-        return PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
+        return PHP_VERSION;
     }
 
     /**
