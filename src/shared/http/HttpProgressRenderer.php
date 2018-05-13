@@ -18,6 +18,9 @@ class HttpProgressRenderer implements HttpProgressHandler {
      */
     private $first;
 
+    /** @var string */
+    private $prevProgress = '';
+
     /**
      * @param Cli\Output $output
      */
@@ -53,12 +56,19 @@ class HttpProgressRenderer implements HttpProgressHandler {
             $this->first = false;
         }
 
+        $progressString = $update->getDownloadPercent();
+        if ($progressString === $this->prevProgress) {
+            return true;
+        }
+        $this->prevProgress = $progressString;
+
+
         $template = ' ╰|%s| %s / %s - %3d%%';
 
         $this->output->writeProgress(
             sprintf(
                 $template,
-                $this->getProgressBar($update->getDownloadPercent()),
+                $this->getProgressBar($progressString),
                 $this->formatSize(
                     $update->getExpectedDownloadSize(),
                     $update->getBytesReceived()
