@@ -81,33 +81,30 @@ class GnupgKeyDownloader implements KeyDownloader {
      * @return array
      */
     private function resolveHostname($hostname) {
-        $ipList = [];
-
-        try {
-            $results = dns_get_record($hostname, DNS_A);
-            foreach($results as $result) {
-                $ipList[] = $result['ip'];
-            }
-        } catch (\Exception $e) {
-        }
-
-        try {
-            $results = dns_get_record($hostname, DNS_AAAA);
-            foreach($results as $result) {
-                $ipList[] = $result['ipv6'];
-            }
-        } catch (\Exception $e) {
-        }
-
-
-        if (count($ipList)) {
-            return $ipList;
-        }
-
-        throw new GnupgKeyDownloaderException(
-            sprintf('DNS Problem: Did not find any IP for hostname "%s"', $hostname)
+        $ipList = array_merge(
+            $this->queryDNS($hostname, DNS_A),
+            $this->queryDNS($hostname, DNS_AAAA)
         );
 
+        if (!count($ipList)) {
+            throw new GnupgKeyDownloaderException(
+                sprintf('DNS Problem: Did not find any IP for hostname "%s"', $hostname)
+            );
+        }
+
+        return $ipList;
+    }
+
+    private function queryDNS($hostname, $type) {
+        $ipList = [];
+        try {
+            $results = dns_get_record($hostname, $type);
+            foreach($results as $result) {
+                $ipList[] = $result[ $type === DNS_A ? 'ip' : 'ipv6' ];
+            }
+        } catch (\Exception $e) {
+        }
+        return $ipList;
     }
 
 }
