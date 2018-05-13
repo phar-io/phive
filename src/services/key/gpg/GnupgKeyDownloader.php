@@ -75,20 +75,39 @@ class GnupgKeyDownloader implements KeyDownloader {
         throw new DownloadFailedException(sprintf('PublicKey %s not found on key servers', $keyId));
     }
 
+    /**
+     * @param $hostname
+     *
+     * @return array
+     */
     private function resolveHostname($hostname) {
         $ipList = [];
 
-        $results = dns_get_record($hostname, DNS_A);
-        foreach($results as $result) {
-            $ipList[] = $result['ip'];
+        try {
+            $results = dns_get_record($hostname, DNS_A);
+            foreach($results as $result) {
+                $ipList[] = $result['ip'];
+            }
+        } catch (\Exception $e) {
         }
 
-        $results = dns_get_record($hostname, DNS_AAAA);
-        foreach($results as $result) {
-            $ipList[] = $result['ipv6'];
+        try {
+            $results = dns_get_record($hostname, DNS_AAAA);
+            foreach($results as $result) {
+                $ipList[] = $result['ipv6'];
+            }
+        } catch (\Exception $e) {
         }
 
-        return $ipList;
+
+        if (count($ipList)) {
+            return $ipList;
+        }
+
+        throw new GnupgKeyDownloaderException(
+            sprintf('DNS Problem: Did not find any IP for hostname "%s"', $hostname)
+        );
+
     }
 
 }
