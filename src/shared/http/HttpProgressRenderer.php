@@ -53,7 +53,7 @@ class HttpProgressRenderer implements HttpProgressHandler {
             $this->first = false;
         }
 
-        $template = ' ↳ |%s| %s / %s - %3d%%';
+        $template = ' ╰|%s| %s / %s - %3d%%';
 
         $this->output->writeProgress(
             sprintf(
