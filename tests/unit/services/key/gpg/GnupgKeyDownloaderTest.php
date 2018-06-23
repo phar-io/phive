@@ -24,9 +24,12 @@ class GnupgKeyDownloaderTest extends TestCase {
     }
 
     public function testInvokesCurlWithExpectedParams() {
+        $keyinfo  = 'uid:Sebastian Bergmann <sebastian@php.net>:1405755775::' . "\n";
+        $keyinfo .= 'pub:D8406D0D82947747293778314AA394086372C20A:1:4096:1405754086::';
+
         $response = $this->prophesize(HttpResponse::class);
         $response->getHttpCode()->willReturn(200);
-        $response->getBody()->willReturn('Some PublicKey');
+        $response->getBody()->willReturn($keyinfo);
         $response->isNotFound()->willReturn(false);
 
         $this->curl->get(
@@ -44,10 +47,13 @@ class GnupgKeyDownloaderTest extends TestCase {
     }
 
     public function testReturnsExpectedKey() {
+        $keyinfo  = 'uid:Sebastian Bergmann <sebastian@php.net>:1405755775::' . "\n";
+        $keyinfo .= 'pub:D8406D0D82947747293778314AA394086372C20A:1:4096:1405754086::';
+
         $response = $this->prophesize(HttpResponse::class);
         $response->getHttpCode()->willReturn(200);
-        $response->getBody()->willReturn('Some Key Info');
-        $response->getBody()->willReturn('Some Public Key Data');
+        $response->getBody()->willReturn($keyinfo);
+        //$response->getBody()->willReturn('Some Public Key Data');
         $response->isNotFound()->willReturn(false);
 
         $this->curl->get(Argument::any())
@@ -57,8 +63,7 @@ class GnupgKeyDownloaderTest extends TestCase {
             $this->curl->reveal(), ['example.com'], $this->output->reveal()
         );
 
-        $key = new PublicKey('12345678', 'Some Key Info', 'Some Public Key Data');
-        $this->assertEquals($key, $downloader->download('12345678'));
+        $this->assertInstanceOf(PublicKey::class, $downloader->download('12345678'));
     }
 
     public function testThrowsExceptionIfKeyWasNotFound() {
