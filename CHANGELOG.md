@@ -13,6 +13,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ## Fixed
 * [#130](https://github.com/phar-io/phive/issues/130): Call to a member function format() on null
+* [#137](https://github.com/phar-io/phive/issues/137): Removing globally installed PHARs fails
 * [#142](https://github.com/phar-io/phive/issues/136): Error when installing phing
 * [#144](https://github.com/phar-io/phive/issues/144): Broken progress output on Windows
 * [#145](https://github.com/phar-io/phive/issues/145): Version constraint ^3.0.0-alpha1 is not supported
