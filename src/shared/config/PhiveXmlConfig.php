@@ -6,7 +6,7 @@ use PharIo\FileSystem\Filename;
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraintParser;
 
-class PhiveXmlConfig {
+abstract class PhiveXmlConfig {
 
     /**
      * @var XmlFile
@@ -43,15 +43,13 @@ class PhiveXmlConfig {
             $this->configFile->addElement($pharNode);
         }
 
-        $xmlFileDirectory = $this->configFile->getDirectory();
-
         if ($requestedPhar->hasUrl()) {
             $pharNode->setAttribute('url', $requestedPhar->getUrl()->asString());
         }
 
         $pharNode->setAttribute('version', $installedPhar->getVersionConstraint()->asString());
         $pharNode->setAttribute('installed', $installedPhar->getInstalledVersion()->getVersionString());
-        $pharNode->setAttribute('location', $installedPhar->getLocation()->getRelativePathTo($xmlFileDirectory));
+        $pharNode->setAttribute('location', $this->getLocation($installedPhar));
 
         if ($installedPhar->isCopy()) {
             $pharNode->setAttribute('copy', 'true');
@@ -279,6 +277,20 @@ class PhiveXmlConfig {
         }
         $xmlFileDirectory = $this->configFile->getDirectory();
         $node->nodeValue = $directory->getRelativePathTo($xmlFileDirectory);
+    }
+
+    /**
+     * @param InstalledPhar $installedPhar
+     *
+     * @return Filename
+     */
+    abstract protected function getLocation(InstalledPhar $installedPhar);
+
+    /**
+     * @return Directory
+     */
+    protected function getOwnDirectory() {
+        return $this->configFile->getDirectory();
     }
 
     /**

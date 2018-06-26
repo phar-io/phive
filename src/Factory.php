@@ -483,7 +483,17 @@ class Factory {
      * @return PhiveXmlConfig
      */
     private function getPhiveXmlConfig($global) {
-        return new PhiveXmlConfig(
+        if ($global) {
+            return new GlobalPhiveXmlConfig(
+                new XmlFile(
+                    $this->getPhiveXmlConfigFileLocator()->getFile($global),
+                    'https://phar.io/phive',
+                    'phive'
+                ),
+                new VersionConstraintParser()
+            );
+        }
+        return new LocalPhiveXmlConfig(
             new XmlFile(
                 $this->getPhiveXmlConfigFileLocator()->getFile($global),
                 'https://phar.io/phive',

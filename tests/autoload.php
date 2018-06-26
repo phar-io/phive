@@ -46,7 +46,7 @@ spl_autoload_register(
                 'phario\\phive\\pharregistrytest' => '/unit/shared/PharRegistryTest.php',
                 'phario\\phive\\pharservicetest' => '/unit/services/phar/PharServiceTest.php',
                 'phario\\phive\\phartest' => '/unit/shared/phar/PharTest.php',
-                'phario\\phive\\phivexmlconfigtest' => '/unit/shared/config/PhiveXmlConfigTest.php',
+                'phario\\phive\\LocalPhiveXmlConfigTest' => '/unit/shared/config/PhiveXmlConfigTest.php',
                 'phario\\phive\\purgecommandtest' => '/unit/commands/purge/PurgeCommandTest.php',
                 'phario\\phive\\regressiontestbootstrap' => '/regression/RegressionTestBootstrap.php',
                 'phario\\phive\\regressiontests\\installcommandtest' => '/regression/InstallCommandTest.php',

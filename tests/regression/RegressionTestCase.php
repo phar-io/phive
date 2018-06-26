@@ -4,9 +4,9 @@ namespace PharIo\Phive\RegressionTests;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
+use PharIo\Phive\LocalPhiveXmlConfig;
 use PharIo\Phive\Phar;
 use PharIo\Phive\PharRegistry;
-use PharIo\Phive\PhiveXmlConfig;
 use PharIo\Phive\XmlFile;
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraintParser;
@@ -130,10 +130,10 @@ class RegressionTestCase extends TestCase {
     }
 
     /**
-     * @return PhiveXmlConfig
+     * @return LocalPhiveXmlConfig
      */
     protected function getPhiveXmlConfig() {
-        return new PhiveXmlConfig(
+        return new LocalPhiveXmlConfig(
             new XmlFile(
                 $this->getWorkingDirectory()->file('phive.xml'),
                 'https://phar.io/phive',

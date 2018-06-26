@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <repositories xmlns="https://phar.io/repository-list">
-
     <phar alias="phpab" composer="theseer/autoload">
         <repository type="github" url="https://api.github.com/repos/theseer/autoload/releases" />
     </phar>
@@ -48,5 +47,29 @@
     </phar>
     <phar alias="pipelines" composer="ktomk/pipelines">
         <repository type="github" url="https://api.github.com/repos/ktomk/pipelines/releases" />
+    </phar>
+    <phar alias="phing" composer="phing/phing">
+        <repository type="github" url="https://api.github.com/repos/phingofficial/phing/releases" />
+    </phar>
+    <phar alias="psalm" composer="vimeo/psalm">
+        <repository type="github" url="https://api.github.com/repos/vimeo/psalm/releases" />
+    </phar>
+    <phar alias="clapi" composer="ngabor84/clapi">
+        <repository type="github" url="https://api.github.com/repos/ngabor84/clapi/releases" />
+    </phar>
+    <phar alias="sshman" composer="mwender/sshman">
+        <repository type="github" url="https://api.github.com/repos/mwender/sshman/releases" />
+    </phar>
+    <phar alias="php-coveralls" composer="php-coveralls/php-coveralls">
+        <repository type="github" url="https://api.github.com/repos/php-coveralls/php-coveralls/releases" />
+    </phar>
+    <phar alias="php-cs-fixer" composer="friendsofphp/php-cs-fixer">
+        <repository type="github" url="https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/releases" />
+    </phar>
+    <phar alias="phan" composer="phan/phan">
+        <repository type="github" url="https://api.github.com/repos/phan/phan/releases" />
+    </phar>
+    <phar alias="ecc" composer="ngabor84/ecc">
+        <repository type="github" url="https://api.github.com/repos/ngabor84/ecc/releases" />
     </phar>
 </repositories>

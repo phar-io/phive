@@ -11,8 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\PhiveXmlConfig
+ * @covers \PharIo\Phive\LocalPhiveXmlConfig
  */
-class PhiveXmlConfigTest extends TestCase {
+class LocalPhiveXmlConfigTest extends TestCase {
 
     public function testAddPharUpdatesExistingNode() {
         $node = $this->getDomElementMock();
@@ -46,7 +47,7 @@ class PhiveXmlConfigTest extends TestCase {
         $targetDirectory = $this->getDirectoryMock();
         $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock());
 
-        $config = new PhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
+        $config = new LocalPhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
 
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
@@ -57,7 +58,7 @@ class PhiveXmlConfigTest extends TestCase {
     public function testFindsPharNodesWithoutMatchingCase()
     {
         $xmlFile = new XmlFile(new Filename(__DIR__ . '/fixtures/phive.xml'), 'https://phar.io/phive', 'phive');
-        $config = new PhiveXmlConfig($xmlFile, new VersionConstraintParser());
+        $config = new LocalPhiveXmlConfig($xmlFile, new VersionConstraintParser());
         $this->assertTrue($config->hasPhar('theseer/AUTOLOAD'));
     }
 
@@ -93,7 +94,7 @@ class PhiveXmlConfigTest extends TestCase {
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
 
-        $config = new PhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
+        $config = new LocalPhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
 
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
@@ -150,7 +151,7 @@ class PhiveXmlConfigTest extends TestCase {
         $configFile->method('query')->with('//phive:phar')
             ->willReturn([$node1, $node2, $node3]);
 
-        $config = new PhiveXmlConfig($configFile, $parserMock);
+        $config = new LocalPhiveXmlConfig($configFile, $parserMock);
         $expected = [
             new ConfiguredPhar('https://example.com/phpunit-5.3.0.phar', new AnyVersionConstraint(), null, null, new PharUrl('https://example.com/phpunit-5.3.0.phar')),
             new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12'), new Filename(__DIR__ . '/fixtures/tools/phpunit')),
