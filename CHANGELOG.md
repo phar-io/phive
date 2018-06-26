@@ -2,6 +2,21 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.11.0] - 2018-06-26
+
+### Changed
+* Upgrade phar-io/version to 2.0.0
+* Changed DNS resolving to make downloading of keys more reliable
+* Do not run DNS query for AAAA records on IPv4 only hosts (Windows)
+* [#138](https://github.com/phar-io/phive/pull/138): Show key Ids for installed phars
+* [#141](https://github.com/phar-io/phive/pull/141): Improved BatPharActivator
+
+## Fixed
+* [#130](https://github.com/phar-io/phive/issues/130): Call to a member function format() on null
+* [#142](https://github.com/phar-io/phive/issues/136): Error when installing phing
+* [#144](https://github.com/phar-io/phive/issues/144): Broken progress output on Windows
+* [#147](https://github.com/phar-io/phive/issues/147): Exception while installing PHPUnit
+
 ## [0.10.0] - 2018-03-25
 
 ### Changed
@@ -215,7 +230,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.10.0...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.11.0...HEAD
+[0.11.0]: https://github.com/phar-io/phive/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/phar-io/phive/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/phar-io/phive/compare/0.8.2...0.9.0
 [0.8.2]: https://github.com/phar-io/phive/compare/0.8.1...0.8.2
