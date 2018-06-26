@@ -69,7 +69,11 @@ class GnupgKeyDownloader implements KeyDownloader {
 
                 $this->output->writeInfo('Successfully downloaded key');
 
-                return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
+                try {
+                    return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
+                } catch (PublicKeyException $e) {
+                    throw new DownloadFailedException($e->getMessage(), $e->getCode(), $e);
+                }
             }
         }
         throw new DownloadFailedException(sprintf('PublicKey %s not found on key servers', $keyId));

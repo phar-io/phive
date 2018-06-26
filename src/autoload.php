@@ -135,6 +135,7 @@ spl_autoload_register(
                 'phario\\phive\\phivexmlconfig' => '/shared/config/PhiveXmlConfig.php',
                 'phario\\phive\\phivexmlconfigfilelocator' => '/shared/config/PhiveXmlConfigFileLocator.php',
                 'phario\\phive\\publickey' => '/services/key/PublicKey.php',
+                'phario\\phive\\publickeyexception' => '/shared/exceptions/PublicKeyException.php',
                 'phario\\phive\\purgecommand' => '/commands/purge/PurgeCommand.php',
                 'phario\\phive\\purgecontext' => '/commands/purge/PurgeContext.php',
                 'phario\\phive\\ratelimit' => '/shared/http/RateLimit.php',

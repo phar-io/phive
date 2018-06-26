@@ -39,6 +39,8 @@ class PublicKey {
      * @param string $id
      * @param string $public
      * @param string $info
+     *
+     * @throws PublicKeyException
      */
     public function __construct($id, $info, $public) {
         $this->id = $id;
@@ -84,6 +86,9 @@ class PublicKey {
         return str_replace(' ', '', $this->fingerprint);
     }
 
+    /**
+     * @throws PublicKeyException
+     */
     private function parseInfo($info) {
         foreach (explode("\n", $info) as $line) {
             $parts = explode(':', $line);
@@ -106,6 +111,12 @@ class PublicKey {
                     break;
                 }
             }
+        }
+
+        if (empty($this->uids) || $this->fingerprint === NULL || $this->bits === NULL || $this->created === NULL) {
+            throw new PublicKeyException(
+                sprintf('Failed to parse provided key info: %s', $info)
+            );
         }
     }
 
