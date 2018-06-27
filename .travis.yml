@@ -4,40 +4,48 @@ os:
 language: php
 
 before_install:
-  - composer self-update
-  - wget https://phar.io/releases/phive.phar
-  - wget https://phar.io/releases/phive.phar.asc
-  - gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79
-  - gpg --verify phive.phar.asc phive.phar
-  - chmod +x phive.phar
-  - sudo mv phive.phar /usr/bin/phive
+- composer self-update
+- wget https://phar.io/releases/phive.phar
+- wget https://phar.io/releases/phive.phar.asc
+- gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9B2D5D79
+- gpg --verify phive.phar.asc phive.phar
+- chmod +x phive.phar
+- sudo mv phive.phar /usr/bin/phive
 
 cache:
   directories:
-  - $HOME/.phive
-  - $HOME/.cache/composer
-  - $HOME/.gnupg
+  - "$HOME/.phive"
+  - "$HOME/.cache/composer"
+  - "$HOME/.gnupg"
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source
-  - phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C phpab phpunit@^5.7
+- travis_retry composer install --no-interaction --prefer-source
+- phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C phpab phpunit@^5.7
 
-script: ./tools/phpunit
+script: "./tools/phpunit"
 
 php:
-  - 5.6.36
-  - 7.0.30
-  - 7.1.18
-  - 7.2.7
-  - 7.0snapshot
-  - 7.1snapshot
-  - 7.2snapshot
-  - master
+- 5.6.36
+- 7.0.30
+- 7.1.18
+- 7.2.7
+- 7.0snapshot
+- 7.1snapshot
+- 7.2snapshot
+- master
 
 matrix:
   allow_failures:
-    - php: master
+  - php:
+    - master
+    - 7.0snapshot
+    - 7.1snapshot
+    - 7.2snapshot
   fast_finish: true
 
 notifications:
   email: false
+
+env:
+  global:
+    secure: v4ay9b86o/wwBaW+7k7HdB8M7drF274LEkh2SYmKz/vLauc5gbKsEeaoDTek9xAOfa3V/3FDBYecty/qfhjDeo1gIVmvoE4DEf2XjszwyWUqRJTucqT+C8cKxSkbc0b3C/Xw8KF1oaaJ/HMHr/iVk9Q1TOyjdijnoG/PF1CZeSA=
