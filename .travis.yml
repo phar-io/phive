@@ -36,11 +36,10 @@ php:
 
 matrix:
   allow_failures:
-  - php:
-    - master
-    - 7.0snapshot
-    - 7.1snapshot
-    - 7.2snapshot
+  - php: master
+  - php: 7.0snapshot
+  - php: 7.1snapshot
+  - php: 7.2snapshot
   fast_finish: true
 
 notifications:
