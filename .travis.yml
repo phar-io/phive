@@ -6,7 +6,8 @@ language: php
 before_install:
 - composer self-update
 - if [ ! -d $HOME/.phive ]; then mkdir $HOME/.phive ; fi
-- if [ ! -f $HOME/.phive/phive.phar ]; then ant getphive ; mv phive.phar $HOME/.phive ; sudo cp $HOME/.phive/phive.phar /usr/bin/phive ; fi
+- if [ ! -f $HOME/.phive/phive.phar ]; then ant getphive ; mv phive.phar $HOME/.phive ; fi
+- sudo cp $HOME/.phive/phive.phar /usr/bin/phive
 
 cache:
   directories:
