@@ -11,7 +11,9 @@ before_install:
 cache:
   directories:
   - "$HOME/.phive"
+  - "$HOME/.phive/phars"
   - "$HOME/.cache/composer"
+  - "$HOME/.composer/cache"
   - "$HOME/.gnupg"
 
 install:
