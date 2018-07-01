@@ -11,11 +11,12 @@ class UrlTest extends TestCase {
 
     /**
      * @dataProvider invalidUriProvider
-     * @expectedException \InvalidArgumentException
      *
      * @param string $invalidUri
      */
     public function testThrowsExceptionIfProtocolIsNotHttps($invalidUri) {
+        $this->expectException(\InvalidArgumentException::class);
+
         new Url($invalidUri);
     }
 

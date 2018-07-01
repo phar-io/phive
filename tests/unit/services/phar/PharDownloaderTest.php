@@ -72,9 +72,6 @@ class PharDownloaderTest extends TestCase {
         $this->assertEquals($expected, $downloader->download($release));
     }
 
-    /**
-     * @expectedException \PharIo\Phive\VerificationFailedException
-     */
     public function testThrowsExceptionIfSignatureVerificationFails() {
         $sigUrl = new Url('https://example.com/foo.phar.asc');
         $url = new PharUrl('https://example.com/foo.phar');
@@ -102,12 +99,12 @@ class PharDownloaderTest extends TestCase {
             $this->checksumService->reveal(),
             $this->getPharRegistryMock()
         );
+
+        $this->expectException(\PharIo\Phive\VerificationFailedException::class);
+
         $downloader->download($release);
     }
 
-    /**
-     * @expectedException \PharIo\Phive\VerificationFailedException
-     */
     public function testThrowsExceptionIfChecksumVerificationFails() {
         $sigUrl = new Url('https://example.com/foo.phar.asc');
         $url = new PharUrl('https://example.com/foo.phar');
@@ -133,6 +130,9 @@ class PharDownloaderTest extends TestCase {
             $this->checksumService->reveal(),
             $this->getPharRegistryMock()
         );
+
+        $this->expectException(\PharIo\Phive\VerificationFailedException::class);
+
         $downloader->download($release);
     }
 

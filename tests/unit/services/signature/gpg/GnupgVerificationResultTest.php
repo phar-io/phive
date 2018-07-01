@@ -55,11 +55,12 @@ class GnupgVerificationResultTest extends TestCase {
 
     /**
      * @dataProvider incompleteVerificationDataProvider
-     * @expectedException \InvalidArgumentException
      *
      * @param array $verificationData
      */
     public function testThrowsExceptionIfVerificationDataIsIncomplete(array $verificationData) {
+        $this->expectException(\InvalidArgumentException::class);
+
         new GnupgVerificationResult($verificationData);
     }
 

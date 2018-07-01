@@ -51,13 +51,12 @@ class CommandLocatorTest extends TestCase {
         ];
     }
 
-    /**
-     * @expectedException \PharIo\Phive\Cli\CommandLocatorException
-     * @expectedExceptionCode \PharIo\Phive\Cli\CommandLocatorException::UnknownCommand
-     */
     public function testRequestingAnUnknownCommandThrowsException() {
         $factory = $this->prophesize(Factory::class);
         $locator = new CommandLocator($factory->reveal());
+
+        $this->expectException(\PharIo\Phive\Cli\CommandLocatorException::class);
+        $this->expectExceptionCode(\PharIo\Phive\Cli\CommandLocatorException::UnknownCommand);
 
         $locator->getCommand('unknown');
     }
