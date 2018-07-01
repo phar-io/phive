@@ -19,12 +19,12 @@ class ChecksumServiceTest extends TestCase {
         ];
     }
 
-    /**
-     * @expectedException \PharIo\Phive\InvalidHashException
-     */
     public function testThrowsExceptionIfExpectedHashClassIsNotSupported() {
         $file = new File(new Filename('foo'), 'bar');
         $service = new ChecksumService();
+
+        $this->expectException(\PharIo\Phive\InvalidHashException::class);
+
         $service->verify(new UnsupportedHashStub(), $file);
     }
 

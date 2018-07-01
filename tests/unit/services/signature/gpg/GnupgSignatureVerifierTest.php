@@ -24,12 +24,12 @@ class GnupgSignatureVerifierTest extends TestCase {
         $this->keyservice = $this->prophesize(KeyService::class);
     }
 
-    /**
-     * @expectedException \PharIo\Phive\VerificationFailedException
-     */
     public function testThrowsVerificationFailedExceptionIfGnuPgThrowsException() {
         $this->gnupg->verify('foo', 'bar')->willThrow(new \Exception());
         $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
+
+        $this->expectException(\PharIo\Phive\VerificationFailedException::class);
+
         $verifier->verify('foo', 'bar', []);
     }
 

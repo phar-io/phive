@@ -44,27 +44,20 @@ class UnixoidEnvironmentTest extends TestCase {
         ];
     }
 
-    /**
-     *
-     */
     public function testGetHomeDirectory() {
         $env = new UnixoidEnvironment(['HOME' => __DIR__], $this->getExecutorMock());
         $this->assertSame(__DIR__, (string)$env->getHomeDirectory());
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testGetProxyThrowsExceptionIfProxyIsNotSet() {
         $env = new UnixoidEnvironment([], $this->getExecutorMock());
+        $this->expectException(\BadMethodCallException::class);
         $env->getProxy();
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testGetHomeDirectoryThrowsExceptionIfHomeIsNotSet() {
         $env = new UnixoidEnvironment([], $this->getExecutorMock());
+        $this->expectException(\BadMethodCallException::class);
         $env->getHomeDirectory();
     }
 

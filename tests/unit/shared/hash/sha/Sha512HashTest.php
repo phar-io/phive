@@ -29,11 +29,11 @@ class Sha512HashTest extends TestCase {
     /**
      * @dataProvider invalidHashProvider
      *
-     * @expectedException \PharIo\Phive\InvalidHashException
-     *
      * @param mixed $hashValue
      */
     public function testThrowsExceptionIfValueIsNotAValidSha512Hash($hashValue) {
+        $this->expectException(\PharIo\Phive\InvalidHashException::class);
+
         new Sha512Hash($hashValue);
     }
 
