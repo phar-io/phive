@@ -49,6 +49,3 @@ class SourcesListTest extends TestCase {
     }
 
 }
-
-
-

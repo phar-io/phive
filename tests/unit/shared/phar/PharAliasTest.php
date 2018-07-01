@@ -22,6 +22,3 @@ class PharAliasTest extends TestCase {
     }
 
 }
-
-
-

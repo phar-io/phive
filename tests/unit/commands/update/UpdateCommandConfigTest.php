@@ -127,5 +127,3 @@ class UpdateCommandConfigTest extends TestCase {
     }
 
 }
-
-

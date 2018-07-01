@@ -61,7 +61,3 @@ class PharTest extends TestCase {
     }
 
 }
-
-
-
-

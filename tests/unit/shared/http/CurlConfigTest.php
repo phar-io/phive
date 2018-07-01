@@ -72,5 +72,3 @@ class CurlConfigTest extends TestCase {
     }
 
 }
-
-

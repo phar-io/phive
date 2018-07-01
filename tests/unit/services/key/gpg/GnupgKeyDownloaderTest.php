@@ -82,6 +82,3 @@ class GnupgKeyDownloaderTest extends TestCase {
     }
 
 }
-
-
-
