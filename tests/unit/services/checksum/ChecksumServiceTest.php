@@ -75,6 +75,3 @@ class ChecksumServiceTest extends TestCase {
     }
 
 }
-
-
-

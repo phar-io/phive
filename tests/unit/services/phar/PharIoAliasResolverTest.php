@@ -55,6 +55,3 @@ class PharIoAliasResolverTest extends TestCase {
     }
 
 }
-
-
-

@@ -107,4 +107,3 @@ class KeyServiceTest extends TestCase {
         return $this->createMock(PublicKey::class);
     }
 }
-

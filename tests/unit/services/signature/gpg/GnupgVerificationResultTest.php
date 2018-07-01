@@ -71,6 +71,3 @@ class GnupgVerificationResultTest extends TestCase {
         ];
     }
 }
-
-
-

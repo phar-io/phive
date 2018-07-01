@@ -71,4 +71,3 @@ class OptionsTest extends TestCase {
     }
 
 }
-

@@ -173,5 +173,3 @@ class InstallCommandConfigTest extends TestCase {
     }
 
 }
-
-

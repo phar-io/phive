@@ -13,7 +13,3 @@ class InstallCommandTest extends TestCase {
     }
 
 }
-
-
-
-

@@ -37,7 +37,7 @@ class SymlinkPharActivatorTest extends TestCase {
         $activator = new SymlinkPharActivator();
         $actual = $activator->activate($targetPhar, $symlinkFilename);
 
-        $this->assertEquals($symlinkFilename ,$actual);
+        $this->assertEquals($symlinkFilename, $actual);
     }
 
     private function deleteTestSymlink() {

@@ -62,7 +62,3 @@ class Sha256HashTest extends TestCase {
         $this->assertEquals($expected, $actual);
     }
 }
-
-
-
-

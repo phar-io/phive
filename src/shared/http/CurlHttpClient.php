@@ -116,7 +116,7 @@ class CurlHttpClient implements HttpClient {
         }
 
         if (strpos($parts[0], 'X-RateLimit-') !== false) {
-            $this->rateLimitHeaders[substr($parts[0],12)] = trim($parts[1]);
+            $this->rateLimitHeaders[substr($parts[0], 12)] = trim($parts[1]);
         }
 
         return mb_strlen($line);

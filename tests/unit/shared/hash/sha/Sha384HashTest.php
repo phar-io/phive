@@ -63,7 +63,3 @@ class Sha384HashTest extends TestCase {
         $this->assertEquals($expected, $actual);
     }
 }
-
-
-
-

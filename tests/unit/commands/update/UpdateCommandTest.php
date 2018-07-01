@@ -3,7 +3,6 @@ namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
 
-
 /**
  * @covers \PharIo\Phive\UpdateCommand
  */
@@ -14,7 +13,3 @@ class UpdateCommandTest extends TestCase {
     }
 
 }
-
-
-
-

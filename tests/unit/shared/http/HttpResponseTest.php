@@ -61,6 +61,3 @@ class HttpResponseTest extends TestCase {
     }
 
 }
-
-
-

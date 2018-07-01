@@ -63,5 +63,3 @@ class CommandLocatorTest extends TestCase {
     }
 
 }
-
-

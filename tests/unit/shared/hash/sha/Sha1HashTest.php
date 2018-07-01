@@ -62,6 +62,3 @@ class Sha1HashTest extends TestCase {
         $this->assertEquals($expected, $actual);
     }
 }
-
-
-
