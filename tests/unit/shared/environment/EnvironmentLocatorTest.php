@@ -23,7 +23,7 @@ class EnvironmentLocatorTest extends TestCase {
             ['WINNT', WindowsEnvironment::class],
             ['WIN32', WindowsEnvironment::class],
             ['Windows', WindowsEnvironment::class],
-            ['Darwin', MacOsEnvironment::class],
+            ['Darwin', UnixoidEnvironment::class],
             ['FreeBSD', UnixoidEnvironment::class],
             ['Linux', UnixoidEnvironment::class],
             ['SunOS', UnixoidEnvironment::class],

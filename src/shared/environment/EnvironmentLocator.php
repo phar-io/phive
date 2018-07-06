@@ -9,10 +9,7 @@ class EnvironmentLocator {
      * @return Environment
      */
     public function getEnvironment($operatingSystem) {
-        if (strtolower($operatingSystem) === 'darwin') {
-            return MacOsEnvironment::fromSuperGlobals();
-        }
-        if (strtoupper(substr($operatingSystem, 0, 3)) === 'WIN') {
+       if (strtoupper(substr($operatingSystem, 0, 3)) === 'WIN') {
             return WindowsEnvironment::fromSuperGlobals();
         }
 

@@ -1,6 +1,7 @@
 <?php
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -8,6 +9,11 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\Environment
  */
 class UnixoidEnvironmentTest extends TestCase {
+
+    public function testReturnsExpectedGlobalBinDir() {
+        $env = new UnixoidEnvironment([], $this->getExecutorMock());
+        $this->assertEquals(new Directory('/usr/local/bin'), $env->getGlobalBinDir());
+    }
 
     /**
      * @dataProvider hasProxyProvider

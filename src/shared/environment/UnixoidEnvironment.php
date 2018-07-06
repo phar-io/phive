@@ -96,6 +96,6 @@ class UnixoidEnvironment extends Environment {
      * @return Directory
      */
     public function getGlobalBinDir() {
-        return new Directory('/usr/bin');
+        return new Directory('/usr/local/bin');
     }
 }
