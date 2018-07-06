@@ -19,11 +19,4 @@ interface HttpClient {
      */
     public function head(Url $url, ETag $etag = null);
 
-    /**
-     * @param HostEntry $entry
-     *
-     * @return void
-     */
-    public function setHostEntry(HostEntry $entry);
-
 }
