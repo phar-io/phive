@@ -7,7 +7,9 @@ before_install:
 - composer self-update
 - if [ ! -d $HOME/.phive ]; then mkdir $HOME/.phive ; fi
 - if [ ! -f $HOME/.phive/phive.phar ]; then ant getphive ; mv phive.phar $HOME/.phive ; fi
-- sudo cp $HOME/.phive/phive.phar /usr/bin/phive
+# Travis doesn't support TLSv1.2 on PHP < 7.1.18 - for whatever reasons - so let's download manually
+- if [ ! -f $HOME/.phive/phpunit.phar ]; then curl -o $HOME/.phive/phpunit.phar https://phar.phpunit.de/phpunit-5.7.27.phar ; chmod +x tools/phpunit ; fi
+- sudo cp $HOME/.phive/phive.phar /usr/local/bin/phive
 
 cache:
   directories:
@@ -20,9 +22,7 @@ cache:
 install:
 - travis_retry composer install --no-interaction --prefer-source
 - phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C phpab
-# Travis doesn't support TLSv1.2 on PHP < 7.1.18 - for whatever reasons - so let's download manually
-- curl -o tools/phpunit https://phar.phpunit.de/phpunit-5.7.27.phar
-- chmod +x tools/phpunit
+- cp $HOME/.phive/phpunit.phar ./tools/phpunit
 
 script: "./tools/phpunit"
 
