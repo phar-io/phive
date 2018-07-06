@@ -50,10 +50,7 @@ abstract class PhiveXmlConfig {
         $pharNode->setAttribute('version', $installedPhar->getVersionConstraint()->asString());
         $pharNode->setAttribute('installed', $installedPhar->getInstalledVersion()->getVersionString());
         $pharNode->setAttribute('location', $this->getLocation($installedPhar));
-
-        if ($installedPhar->isCopy()) {
-            $pharNode->setAttribute('copy', 'true');
-        }
+        $pharNode->setAttribute('copy', $installedPhar->isCopy() ? 'true' : 'false');
 
         $this->configFile->save();
     }
