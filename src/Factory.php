@@ -478,7 +478,7 @@ class Factory {
      * @return PharInstaller
      */
     private function getPharInstaller() {
-        return new PharInstaller($this->getOutput(), $this->getPharActivator());
+        return $this->getPharInstallerLocator()->getPharInstaller($this->environment);
     }
 
     /**
@@ -543,17 +543,10 @@ class Factory {
     }
 
     /**
-     * @return PharActivator
+     * @return PharInstallerLocator
      */
-    private function getPharActivator() {
-        return $this->getPharActivatorLocator()->getPharActivator($this->getEnvironment());
-    }
-
-    /**
-     * @return PharActivatorLocator
-     */
-    private function getPharActivatorLocator() {
-        return new PharActivatorLocator(new PharActivatorFactory());
+    private function getPharInstallerLocator() {
+        return new PharInstallerLocator(new PharInstallerFactory($this));
     }
 
     /**

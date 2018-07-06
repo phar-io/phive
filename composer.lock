@@ -59,12 +59,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/filesystem.git",
-                "reference": "0dc8a1937923cbe076a0de60dddf420cf20433a6"
+                "reference": "0fd421a8d64c14c15d77e9de1ed9dc1bb07c03a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/0dc8a1937923cbe076a0de60dddf420cf20433a6",
-                "reference": "0dc8a1937923cbe076a0de60dddf420cf20433a6",
+                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/0fd421a8d64c14c15d77e9de1ed9dc1bb07c03a6",
+                "reference": "0fd421a8d64c14c15d77e9de1ed9dc1bb07c03a6",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2017-06-01T14:45:39+00:00"
+            "time": "2018-07-06T14:42:11+00:00"
         },
         {
             "name": "phar-io/gnupg",
@@ -253,16 +253,16 @@
     "packages-dev": [
         {
             "name": "mikey179/vfsStream",
-            "version": "v1.6.4",
+            "version": "v1.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/vfsStream.git",
-                "reference": "0247f57b2245e8ad2e689d7cee754b45fbabd592"
+                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/0247f57b2245e8ad2e689d7cee754b45fbabd592",
-                "reference": "0247f57b2245e8ad2e689d7cee754b45fbabd592",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
                 "shasum": ""
             },
             "require": {
@@ -295,7 +295,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2016-07-18T14:02:57+00:00"
+            "time": "2017-08-01T08:02:14+00:00"
         }
     ],
     "aliases": [],

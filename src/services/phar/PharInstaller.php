@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
 
-class PharInstaller {
+abstract class PharInstaller {
 
     /**
      * @var Cli\Output
@@ -12,17 +12,10 @@ class PharInstaller {
     private $output;
 
     /**
-     * @var PharActivator
-     */
-    private $pharActivator;
-
-    /**
      * @param Cli\Output $output
-     * @param PharActivator $pharActivator
      */
-    public function __construct(Cli\Output $output, PharActivator $pharActivator) {
+    public function __construct(Cli\Output $output) {
         $this->output = $output;
-        $this->pharActivator = $pharActivator;
     }
 
     /**
@@ -31,44 +24,54 @@ class PharInstaller {
      * @param bool     $copy
      */
     public function install(File $phar, Filename $destination, $copy) {
+        $this->ensureDestinationIsWritable($destination);
+
         if ($destination->exists()) {
             unlink($destination->asString());
         }
 
         if ($copy) {
-            $this->copy($phar, $destination);
-
+            $this->copy($phar->getFilename(), $destination);
             return;
         }
-        $this->link($phar, $destination);
+        $this->link($phar->getFilename(), $destination);
     }
 
     /**
-     * @param File     $phar
+     * @return Cli\Output
+     */
+    protected function getOutput() {
+        return $this->output;
+    }
+
+    /**
+     * @param Filename $phar
      * @param Filename $destination
      */
-    private function copy(File $phar, Filename $destination) {
-        $this->output->writeInfo(sprintf('Copying %s to %s', basename($phar->getFilename()), $destination->asString()));
-        copy($phar->getFilename(), $destination->asString());
+    protected function copy(Filename $phar, Filename $destination) {
+        $this->getOutput()->writeInfo(
+            sprintf('Copying %s to %s', basename($phar->asString()), $destination->asString())
+        );
+        copy($phar->asString(), $destination->asString());
         chmod($destination, 0755);
     }
 
     /**
-     * @param File     $phar
+     * @param Filename $phar
      * @param Filename $destination
      *
      * @throws LinkCreationFailedException
      */
-    private function link(File $phar, Filename $destination) {
-        try {
-            $linkFilename = $this->pharActivator->activate($phar->getFilename(), $destination);
-            $this->output->writeInfo(sprintf('Linking %s to %s', $phar->getFilename(), $linkFilename->asString()));
-        } catch (FileNotWritableException $exception) {
-            $message = sprintf(
-                'Could not create symlink %s because the destination is not writable.',
-                $destination->asString()
-            );
-            throw new LinkCreationFailedException($message);
+    abstract protected function link(Filename $phar, Filename $destination);
+
+    /**
+     * @param Filename $destination
+     *
+     * @throws FileNotWritableException
+     */
+    private function ensureDestinationIsWritable(Filename $destination) {
+        if (!$destination->getDirectory()->isWritable()) {
+            throw new FileNotWritableException(sprintf('File %s is not writable.', $destination->asString()));
         }
     }
 
