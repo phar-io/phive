@@ -49,27 +49,20 @@ class PharDownloader {
      * @return Phar
      * @throws DownloadFailedException
      * @throws InvalidHashException
-     * @throws VerificationFailedException
      */
     public function download(SupportedRelease $release) {
         $pharFile = $this->downloadFile($release->getUrl());
-        $signatureFile = $this->downloadFile($release->getSignatureUrl());
 
-        $signatureVerificationResult = $this->verifySignature(
-            $pharFile,
-            $signatureFile,
-            $this->pharRegistry->getKnownSignatureFingerprints($release->getName())
-        );
-        if (!$signatureVerificationResult->wasVerificationSuccessful()) {
-            throw new VerificationFailedException('Signature could not be verified');
-        }
-        if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $pharFile)) {
-            throw new VerificationFailedException(
-                sprintf('Wrong checksum! Expected %s', $release->getExpectedHash()->asString())
+        $fingerprint = null;
+        if ($release->hasSignatureUrl()) {
+            $fingerprint = $this->verifySignature(
+                $release,
+                $pharFile,
+                $this->pharRegistry->getKnownSignatureFingerprints($release->getName())
             );
         }
 
-        return new Phar($release->getName(), $release->getVersion(), $pharFile, $signatureVerificationResult->getFingerprint());
+        return new Phar($release->getName(), $release->getVersion(), $pharFile, $fingerprint);
     }
 
     /**
@@ -99,14 +92,32 @@ class PharDownloader {
     }
 
     /**
-     * @param File  $phar
-     * @param File  $signature
-     * @param array $knownFingerprints
+     * @param SupportedRelease $release
+     * @param File             $phar
+     * @param array            $knownFingerprints
      *
-     * @return VerificationResult
+     * @return string
+     *
+     * @throws VerificationFailedException
      */
-    private function verifySignature(File $phar, File $signature, array $knownFingerprints) {
-        return $this->signatureVerifier->verify($phar->getContent(), $signature->getContent(), $knownFingerprints);
+    private function verifySignature(SupportedRelease $release, File $phar, array $knownFingerprints) {
+        if (!$release->hasSignatureUrl()) {
+            return '{NONE}';
+        }
+
+        $signatureFile = $this->downloadFile($release->getSignatureUrl());
+        $signatureVerificationResult = $this->signatureVerifier->verify($phar->getContent(), $signatureFile->getContent(), $knownFingerprints);
+
+        if (!$signatureVerificationResult->wasVerificationSuccessful()) {
+            throw new VerificationFailedException('Signature could not be verified');
+        }
+        if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $pharFile)) {
+            throw new VerificationFailedException(
+                sprintf('Wrong checksum! Expected %s', $release->getExpectedHash()->asString())
+            );
+        }
+
+        return $signatureVerificationResult->getFingerprint();
     }
 
 }

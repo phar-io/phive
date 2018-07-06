@@ -70,7 +70,7 @@ class UpdateCommand implements Cli\Command {
         $repository = $this->pharResolver->resolve($requestedPhar);
         $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
 
-        return $this->selector->select($releases, $requestedPhar->getVersionConstraint());
+        return $this->selector->select($releases, $requestedPhar->getVersionConstraint(), $this->config->forceAcceptUnsignedPhars());
     }
 
 }

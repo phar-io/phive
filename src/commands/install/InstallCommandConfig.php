@@ -158,6 +158,13 @@ class InstallCommandConfig {
     }
 
     /**
+     * @return bool
+     */
+    public function forceAcceptUnsignedPhars() {
+        return $this->cliOptions->hasOption('force-accept-unsigned');
+    }
+
+    /**
      * @param ConfiguredPhar $configuredPhar
      *
      * @return PharAlias|PharUrl

@@ -19,12 +19,15 @@ class ReleaseSelector {
     }
 
     /**
+     * @param ReleaseCollection $releases
      * @param VersionConstraint $versionConstraint
+     *
+     * @param boolean           $acceptUnsigned
      *
      * @return SupportedRelease
      * @throws ReleaseException
      */
-    public function select(ReleaseCollection $releases, VersionConstraint $versionConstraint) {
+    public function select(ReleaseCollection $releases, VersionConstraint $versionConstraint, $acceptUnsigned) {
         /** @var null|Release $latest */
         $latest = null;
         foreach ($releases as $release) {
@@ -41,6 +44,18 @@ class ReleaseSelector {
                             $release->getName(),
                             $release->getVersion()->getVersionString(),
                             $release->getReason()
+                        )
+                    );
+                    continue;
+                }
+                /** @var SupportedRelease $release */
+                if (!$acceptUnsigned && !$release->hasSignatureUrl()) {
+                    $this->output->writeWarning(
+                        sprintf(
+                            '%s %s: %s',
+                            $release->getName(),
+                            $release->getVersion()->getVersionString(),
+                            'No GPG Signature'
                         )
                     );
                     continue;

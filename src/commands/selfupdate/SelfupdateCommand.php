@@ -76,7 +76,7 @@ class SelfupdateCommand implements Cli\Command {
 
         $repository = $this->gitHubAliasResolver->resolve($requestedPhar);
         $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
-        $release = $this->selector->select($releases, $requestedPhar->getVersionConstraint());
+        $release = $this->selector->select($releases, $requestedPhar->getVersionConstraint(), false);
 
         if (!$release->getVersion()->isGreaterThan(new Version($this->currentPhiveVersion->getVersion()))) {
             $this->output->writeInfo('You already have the newest version of PHIVE.');

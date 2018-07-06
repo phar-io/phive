@@ -55,22 +55,17 @@ class GithubRepository implements SourceRepository {
                 continue;
             }
 
-            // we do have a phar but no signature - can't use either
+            // we do have a phar but no signature, could potentially be used
             if (!$signatureUrl instanceof Url) {
                 $releases->add(
-                    new UnsupportedRelease($name, $version, 'No GPG signature')
+                    new SupportedRelease($name, $version, $pharUrl)
                 );
                 continue;
             }
 
             $releases->add(
                 // Github doesn't publish any hashes for the files :-(
-                new SupportedRelease(
-                    $name,
-                    $version,
-                    $pharUrl,
-                    $signatureUrl
-                )
+                new SupportedRelease($name, $version, $pharUrl, $signatureUrl)
             );
         }
 

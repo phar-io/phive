@@ -59,6 +59,14 @@ class UpdateCommandConfig {
     }
 
     /**
+     * @return bool
+     */
+    public function forceAcceptUnsignedPhars() {
+        return $this->cliOptions->hasOption('force-accept-unsigned');
+    }
+
+
+    /**
      * @param array $filter
      *
      * @return RequestedPhar[]

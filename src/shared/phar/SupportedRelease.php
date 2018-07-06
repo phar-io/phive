@@ -37,7 +37,7 @@ class SupportedRelease implements Release {
      * @param Url     $signatureUrl
      * @param Hash    $expectedHash
      */
-    public function __construct($name, Version $version, PharUrl $url, Url $signatureUrl, Hash $expectedHash = null) {
+    public function __construct($name, Version $version, PharUrl $url, Url $signatureUrl = null, Hash $expectedHash = null) {
         $this->name = $name;
         $this->version = $version;
         $this->url = $url;
@@ -70,6 +70,10 @@ class SupportedRelease implements Release {
         return $this->url;
     }
 
+    public function hasSignatureUrl() {
+        return $this->signatureUrl !== null;
+    }
+
     /**
      * @return Url
      */
@@ -81,7 +85,7 @@ class SupportedRelease implements Release {
      * @return bool
      */
     public function hasExpectedHash() {
-        return null !== $this->expectedHash;
+        return $this->expectedHash !== null;
     }
 
     /**

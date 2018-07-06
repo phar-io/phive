@@ -14,7 +14,8 @@ class InstallContext extends GeneralContext {
             'copy'           => 'c',
             'global'         => 'g',
             'temporary'      => false,
-            'trust-gpg-keys' => false
+            'trust-gpg-keys' => false,
+            'force-accept-unsigned' => false
         ];
     }
 

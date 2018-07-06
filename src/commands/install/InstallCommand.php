@@ -72,7 +72,7 @@ class InstallCommand implements Cli\Command {
         $repository = $this->pharResolver->resolve($requestedPhar);
         $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
 
-        return $this->selector->select($releases, $requestedPhar->getLockedVersion());
+        return $this->selector->select($releases, $requestedPhar->getLockedVersion(), $this->config->forceAcceptUnsignedPhars());
     }
 
     /**
