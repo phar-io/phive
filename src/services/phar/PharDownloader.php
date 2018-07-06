@@ -111,7 +111,7 @@ class PharDownloader {
         if (!$signatureVerificationResult->wasVerificationSuccessful()) {
             throw new VerificationFailedException('Signature could not be verified');
         }
-        if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $pharFile)) {
+        if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $phar)) {
             throw new VerificationFailedException(
                 sprintf('Wrong checksum! Expected %s', $release->getExpectedHash()->asString())
             );
