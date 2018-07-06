@@ -35,7 +35,14 @@ class ReleaseSelector {
             if ($latest === null || $release->getVersion()->isGreaterThan($latest->getVersion())) {
                 if (!$release->isSupported()) {
                     /** @var UnsupportedRelease $release */
-                    $this->output->writeWarning( $release->getVersion()->getVersionString() .':' .$release->getReason());
+                    $this->output->writeWarning(
+                        sprintf(
+                            '%s %s: %s',
+                            $release->getName(),
+                            $release->getVersion()->getVersionString(),
+                            $release->getReason()
+                        )
+                    );
                     continue;
                 }
                 $latest = $release;
