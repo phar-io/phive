@@ -34,6 +34,11 @@ class SelfupdateCommand implements Cli\Command {
     private $output;
 
     /**
+     * @var ReleaseSelector
+     */
+    private $selector;
+
+    /**
      * SelfupdateCommand constructor.
      *
      * @param PharDownloader      $pharDownloader
@@ -41,17 +46,23 @@ class SelfupdateCommand implements Cli\Command {
      * @param Environment         $environment
      * @param PhiveVersion        $currentPhiveVersion
      * @param Cli\Output          $output
+     * @param ReleaseSelector     $selector
      *
-     * @internal param PharInstaller $pharInstaller
      */
     public function __construct(
-        PharDownloader $pharDownloader, GithubAliasResolver $gitHubAliasResolver, Environment $environment, PhiveVersion $currentPhiveVersion, Cli\Output $output
+        PharDownloader $pharDownloader,
+        GithubAliasResolver $gitHubAliasResolver,
+        Environment $environment,
+        PhiveVersion $currentPhiveVersion,
+        Cli\Output $output,
+        ReleaseSelector $selector
     ) {
         $this->pharDownloader = $pharDownloader;
         $this->gitHubAliasResolver = $gitHubAliasResolver;
         $this->environment = $environment;
         $this->currentPhiveVersion = $currentPhiveVersion;
         $this->output = $output;
+        $this->selector = $selector;
     }
 
     public function execute() {
@@ -65,7 +76,7 @@ class SelfupdateCommand implements Cli\Command {
 
         $repository = $this->gitHubAliasResolver->resolve($requestedPhar);
         $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
-        $release = $releases->getLatest($requestedPhar->getVersionConstraint());
+        $release = $this->selector->select($releases, $requestedPhar->getVersionConstraint());
 
         if (!$release->getVersion()->isGreaterThan(new Version($this->currentPhiveVersion->getVersion()))) {
             $this->output->writeInfo('You already have the newest version of PHIVE.');

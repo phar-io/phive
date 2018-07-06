@@ -146,7 +146,8 @@ class Factory {
             $config,
             $this->getInstallService(),
             $this->getRequestedPharResolverBuilder()->build($resolvingStrategy),
-            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global'))
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            $this->getReleaseSelector()
         );
     }
 
@@ -213,7 +214,8 @@ class Factory {
             $this->getGithubAliasResolver(),
             $this->getEnvironment(),
             $this->getPhiveVersion(),
-            $this->getOutput()
+            $this->getOutput(),
+            $this->getReleaseSelector()
         );
     }
 
