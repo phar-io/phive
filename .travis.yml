@@ -20,6 +20,7 @@ cache:
 install:
 - travis_retry composer install --no-interaction --prefer-source
 - phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C phpab
+# Travis doesn't support TLSv1.2 on PHP < 7.1.18 - for whatever reasons - so let's download manually
 - curl -o tools/phpunit https://phar.phpunit.de/phpunit-5.7.27.phar
 - chmod +x tools/phpunit
 
