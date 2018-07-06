@@ -16,17 +16,16 @@ class GithubRepositoryTest extends TestCase {
         $requestedPhar->method('getAlias')->willReturn($pharAlias);
 
         $entry1 = $this->getGithubEntry('5.3.0', 'https://example.com/foo-5.3.0.phar');
-        $entry2 = $this->getGithubEntry('foo-5.3.0', 'https://example.com/foo-5.3.0.phar');
-        $entry3 = $this->getGithubEntry('5.2.11', 'https://example.com/broken');
-        $entry4 = $this->getGithubEntry('5.2.12', 'https://example.com/foo-5.2.12.phar');
+        $entry2 = $this->getGithubEntry('5.2.11', 'https://example.com/broken');
+        $entry3 = $this->getGithubEntry('5.2.12', 'https://example.com/foo-5.2.12.phar');
 
         $jsonData = $this->getJsonDataMock();
         $jsonData->method('getParsed')
-            ->willReturn([$entry1, $entry2, $entry3, $entry4]);
+            ->willReturn([$entry1, $entry2, $entry3]);
 
         $expectedReleases = new ReleaseCollection();
         $expectedReleases->add(
-            new Release(
+            new SupportedRelease(
                 'foo',
                 new GitHubVersion('5.3.0'),
                 new PharUrl('https://example.com/foo-5.3.0.phar'),
@@ -34,7 +33,14 @@ class GithubRepositoryTest extends TestCase {
             )
         );
         $expectedReleases->add(
-            new Release(
+            new UnSupportedRelease(
+                'foo',
+                new GitHubVersion('5.2.11'),
+                'No downloadable PHAR'
+            )
+        );
+        $expectedReleases->add(
+            new SupportedRelease(
                 'foo',
                 new GitHubVersion('5.2.12'),
                 new PharUrl('https://example.com/foo-5.2.12.phar'),

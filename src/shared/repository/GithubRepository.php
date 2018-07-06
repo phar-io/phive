@@ -24,11 +24,14 @@ class GithubRepository implements SourceRepository {
      */
     public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar) {
         $releases = new ReleaseCollection();
+        $name = $requestedPhar->getAlias()->asString();
 
         foreach ($this->jsonData->getParsed() as $entry) {
             try {
                 $version = new GitHubVersion($entry->tag_name);
             } catch (InvalidVersionException $exception) {
+                // we silently ignore invalid version identifiers for now as they are
+                // likely to be an arbitrary tag that erroneously got promoted to release
                 continue;
             }
             $pharUrl = null;
@@ -44,20 +47,26 @@ class GithubRepository implements SourceRepository {
                 }
             }
 
-            // we do seem to have a version but no phar asset?
+            // we do seem to have a version but no phar asset - can't use?
             if (!$pharUrl instanceof Url) {
+                $releases->add(
+                    new UnsupportedRelease($name, $version, 'No downloadable PHAR')
+                );
                 continue;
             }
 
             // we do have a phar but no signature - can't use either
             if (!$signatureUrl instanceof Url) {
+                $releases->add(
+                    new UnsupportedRelease($name, $version, 'No GPG signature')
+                );
                 continue;
             }
 
             $releases->add(
                 // Github doesn't publish any hashes for the files :-(
-                new Release(
-                    $requestedPhar->getAlias()->asString(),
+                new SupportedRelease(
+                    $name,
                     $version,
                     $pharUrl,
                     $signatureUrl

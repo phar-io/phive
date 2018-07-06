@@ -125,7 +125,8 @@ class Factory {
                 $this->getTargetDirectoryLocator()
             ),
             $this->getInstallService(),
-            $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy())
+            $this->getRequestedPharResolverBuilder()->build($this->getLocalFirstResolvingStrategy()),
+            $this->getReleaseSelector()
         );
     }
 
@@ -187,7 +188,8 @@ class Factory {
             $this->getConsoleInput(),
             $this->getRequestedPharResolverBuilder()->build(
                 $this->getLocalFirstResolvingStrategy()
-            )
+            ),
+            $this->getReleaseSelector()
         );
     }
 
@@ -614,5 +616,9 @@ class Factory {
         }
 
         return $this->curlConfig;
+    }
+
+    private function getReleaseSelector() {
+        return new ReleaseSelector($this->getOutput());
     }
 }

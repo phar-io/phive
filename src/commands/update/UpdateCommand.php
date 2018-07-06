@@ -56,7 +56,7 @@ class UpdateCommand implements Cli\Command {
     /**
      * @param RequestedPhar $requestedPhar
      *
-     * @return Release
+     * @return SupportedRelease
      */
     private function resolveToRelease(RequestedPhar $requestedPhar) {
         $repository = $this->pharResolver->resolve($requestedPhar);

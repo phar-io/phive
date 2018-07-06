@@ -29,9 +29,10 @@ class ComposerCommand extends InstallCommand {
         ComposerService $composerService,
         InstallService $installService,
         Cli\Input $input,
-        RequestedPharResolverService $pharResolver
+        RequestedPharResolverService $pharResolver,
+        ReleaseSelector $selector
     ) {
-        parent::__construct($config, $installService, $pharResolver);
+        parent::__construct($config, $installService, $pharResolver, $selector);
         $this->composerService = $composerService;
         $this->input = $input;
     }

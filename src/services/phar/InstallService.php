@@ -58,11 +58,11 @@ class InstallService {
     }
 
     /**
-     * @param Release $release
-     * @param RequestedPhar $requestedPhar
-     * @param Filename $destination
+     * @param SupportedRelease $release
+     * @param RequestedPhar    $requestedPhar
+     * @param Filename         $destination
      */
-    public function execute(Release $release, RequestedPhar $requestedPhar, Filename $destination) {
+    public function execute(SupportedRelease $release, RequestedPhar $requestedPhar, Filename $destination) {
         $versionConstraint = $requestedPhar->getVersionConstraint();
         $makeCopy = $requestedPhar->makeCopy();
         $phar = $this->pharService->getPharFromRelease($release);

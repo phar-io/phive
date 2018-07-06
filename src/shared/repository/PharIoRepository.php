@@ -30,7 +30,7 @@ class PharIoRepository implements SourceRepository {
         foreach ($this->xmlFile->query($query) as $releaseNode) {
             /** @var \DOMElement $releaseNode */
             $releases->add(
-                new Release(
+                new SupportedRelease(
                     $requestedPhar->getAlias()->asString(),
                     new Version($releaseNode->getAttribute('version')),
                     new PharUrl($releaseNode->getAttribute('url')),

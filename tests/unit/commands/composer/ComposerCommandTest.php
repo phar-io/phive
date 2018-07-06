@@ -42,6 +42,9 @@ class ComposerCommandTest extends TestCase {
      */
     private $command;
 
+    /** @var ReleaseSelector|\PHPUnit_Framework_MockObject_MockObject */
+    private $releaseSelector;
+
     protected function setUp() {
 
         $this->commandConfig = $this->getComposerCommandConfigMock();
@@ -49,13 +52,15 @@ class ComposerCommandTest extends TestCase {
         $this->installService = $this->getInstallServiceMock();
         $this->input = $this->getInputMock();
         $this->pharResolverService = $this->getRequestedPharResolverServiceMock();
+        $this->releaseSelector = $this->getReleaseSelectorMock();
 
         $this->command = new ComposerCommand(
             $this->commandConfig,
             $this->composerService,
             $this->installService,
             $this->input,
-            $this->pharResolverService
+            $this->pharResolverService,
+            $this->releaseSelector
         );
     }
 
@@ -94,7 +99,7 @@ class ComposerCommandTest extends TestCase {
         $release->method('getUrl')->willReturn(new PharUrl('https://example.com/foo.phar'));
 
         $releases = $this->getReleaseCollectionMock();
-        $releases->method('getLatest')->willReturn($release);
+        //$releases->method('getLatest')->willReturn($release);
 
         $repository = $this->getSourceRepositoryMock();
         $repository->method('getReleasesByRequestedPhar')
@@ -105,6 +110,9 @@ class ComposerCommandTest extends TestCase {
             ->with($requestedPhar)
             ->willReturn($repository);
 
+        $this->releaseSelector->method('select')
+            ->willReturn($release);
+
         $this->installService->expects($this->once())->method('execute')
             ->with($release);
 
@@ -112,11 +120,11 @@ class ComposerCommandTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Release
+     * @return \PHPUnit_Framework_MockObject_MockObject|SupportedRelease
      */
     private function getReleaseMock()
     {
-        return $this->createMock(Release::class);
+        return $this->createMock(SupportedRelease::class);
     }
 
     /**
@@ -185,6 +193,10 @@ class ComposerCommandTest extends TestCase {
      */
     private function getInstallServiceMock() {
         return $this->createMock(InstallService::class);
+    }
+
+    private function getReleaseSelectorMock() {
+        return $this->createMock(ReleaseSelector::class);
     }
 
 }

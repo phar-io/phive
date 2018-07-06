@@ -44,14 +44,14 @@ class PharDownloader {
     }
 
     /**
-     * @param Release $release
+     * @param SupportedRelease $release
      *
      * @return Phar
      * @throws DownloadFailedException
      * @throws InvalidHashException
      * @throws VerificationFailedException
      */
-    public function download(Release $release) {
+    public function download(SupportedRelease $release) {
         $pharFile = $this->downloadFile($release->getUrl());
         $signatureFile = $this->downloadFile($release->getSignatureUrl());
 

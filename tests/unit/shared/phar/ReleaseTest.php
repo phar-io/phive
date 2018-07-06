@@ -5,41 +5,41 @@ use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PharIo\Phive\Release
+ * @covers \PharIo\Phive\SupportedRelease
  */
 class ReleaseTest extends TestCase {
 
     public function testGetVersion() {
         $version = $this->getVersionMock();
-        $release = new Release('foo', $version, $this->getUrlMock(), $this->getSignatureUrlMock());
+        $release = new SupportedRelease('foo', $version, $this->getUrlMock(), $this->getSignatureUrlMock());
 
         $this->assertSame($version, $release->getVersion());
     }
 
     public function testGetUrl() {
         $url = $this->getUrlMock();
-        $release = new Release('foo', $this->getVersionMock(), $url, $this->getSignatureUrlMock());
+        $release = new SupportedRelease('foo', $this->getVersionMock(), $url, $this->getSignatureUrlMock());
 
         $this->assertSame($url, $release->getUrl());
     }
 
     public function testGetName() {
-        $release = new Release('bar', $this->getVersionMock(), $this->getUrlMock(), $this->getSignatureUrlMock());
+        $release = new SupportedRelease('bar', $this->getVersionMock(), $this->getUrlMock(), $this->getSignatureUrlMock());
         $this->assertSame('bar', $release->getName());
     }
 
     public function testGetExpectedHash() {
         $hash = $this->getHashMock();
-        $release = new Release('foo', $this->getVersionMock(), $this->getUrlMock(), $this->getSignatureUrlMock(), $hash);
+        $release = new SupportedRelease('foo', $this->getVersionMock(), $this->getUrlMock(), $this->getSignatureUrlMock(), $hash);
 
         $this->assertSame($hash, $release->getExpectedHash());
     }
 
     public function testHasExpectedHash() {
-        $release = new Release('foo', $this->getVersionMock(), $this->getUrlMock(), $this->getSignatureUrlMock());
+        $release = new SupportedRelease('foo', $this->getVersionMock(), $this->getUrlMock(), $this->getSignatureUrlMock());
         $this->assertFalse($release->hasExpectedHash());
 
-        $release = new Release('foo', $this->getVersionMock(), $this->getUrlMock(), $this->getSignatureUrlMock(), $this->getHashMock());
+        $release = new SupportedRelease('foo', $this->getVersionMock(), $this->getUrlMock(), $this->getSignatureUrlMock(), $this->getHashMock());
         $this->assertTrue($release->hasExpectedHash());
     }
 

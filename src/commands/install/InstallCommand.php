@@ -23,6 +23,11 @@ class InstallCommand implements Cli\Command {
     private $pharResolver;
 
     /**
+     * @var ReleaseSelector
+     */
+    private $selector;
+
+    /**
      * @param InstallCommandConfig         $config
      * @param InstallService               $installService
      * @param RequestedPharResolverService $pharResolver
@@ -30,11 +35,13 @@ class InstallCommand implements Cli\Command {
     public function __construct(
         InstallCommandConfig $config,
         InstallService $installService,
-        RequestedPharResolverService $pharResolver
+        RequestedPharResolverService $pharResolver,
+        ReleaseSelector $selector
     ) {
         $this->config = $config;
         $this->installService = $installService;
         $this->pharResolver = $pharResolver;
+        $this->selector = $selector;
     }
 
     public function execute() {
@@ -50,7 +57,6 @@ class InstallCommand implements Cli\Command {
      * @param Directory     $targetDirectory
      */
     protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory) {
-
         $release = $this->resolveToRelease($requestedPhar);
         $destination = $this->getDestination($release->getUrl()->getPharName(), $requestedPhar, $targetDirectory);
 
@@ -60,13 +66,13 @@ class InstallCommand implements Cli\Command {
     /**
      * @param RequestedPhar $requestedPhar
      *
-     * @return Release
+     * @return SupportedRelease
      */
     private function resolveToRelease(RequestedPhar $requestedPhar) {
         $repository = $this->pharResolver->resolve($requestedPhar);
         $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
 
-        return $releases->getLatest($requestedPhar->getLockedVersion());
+        return $this->selector->select($releases, $requestedPhar->getLockedVersion());
     }
 
     /**

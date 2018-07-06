@@ -3,88 +3,21 @@ namespace PharIo\Phive;
 
 use PharIo\Version\Version;
 
-class Release {
+interface Release {
 
     /**
-     * @var Version
+     * @return boolean
      */
-    private $version;
-
-    /**
-     * @var PharUrl
-     */
-    private $url;
-
-    /**
-     * @var Hash
-     */
-    private $expectedHash;
-
-    /**
-     * @var string
-     */
-    private $name = '';
-
-    /**
-     * @var Url
-     */
-    private $signatureUrl;
-
-    /**
-     * @param string  $name
-     * @param Version $version
-     * @param PharUrl $url
-     * @param Url     $signatureUrl
-     * @param Hash    $expectedHash
-     */
-    public function __construct($name, Version $version, PharUrl $url, Url $signatureUrl, Hash $expectedHash = null) {
-        $this->name = $name;
-        $this->version = $version;
-        $this->url = $url;
-        $this->signatureUrl = $signatureUrl;
-        $this->expectedHash = $expectedHash;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->name;
-    }
+    public function isSupported();
 
     /**
      * @return Version
      */
-    public function getVersion() {
-        return $this->version;
-    }
+    public function getVersion();
 
     /**
-     * @return PharUrl
+     * @return string
      */
-    public function getUrl() {
-        return $this->url;
-    }
-
-    /**
-     * @return Url
-     */
-    public function getSignatureUrl() {
-        return $this->signatureUrl;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasExpectedHash() {
-        return null !== $this->expectedHash;
-    }
-
-    /**
-     * @return Hash
-     */
-    public function getExpectedHash() {
-        return $this->expectedHash;
-    }
+    public function getName();
 
 }

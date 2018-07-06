@@ -78,11 +78,11 @@ class PharServiceTest extends TestCase {
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|Release
+     * @return PHPUnit_Framework_MockObject_MockObject|SupportedRelease
      */
     private function getReleaseMock()
     {
-        return $this->createMock(Release::class);
+        return $this->createMock(SupportedRelease::class);
     }
 
     /**

@@ -23,11 +23,11 @@ class PharService {
     }
 
     /**
-     * @param Release $release
+     * @param SupportedRelease $release
      *
      * @return Phar
      */
-    public function getPharFromRelease(Release $release) {
+    public function getPharFromRelease(SupportedRelease $release) {
 
         if ($this->registry->hasPhar($release->getName(), $release->getVersion())) {
 

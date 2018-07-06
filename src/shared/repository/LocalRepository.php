@@ -30,7 +30,7 @@ class LocalRepository implements SourceRepository {
                 continue;
             }
             $releases->add(
-                new Release(
+                new SupportedRelease(
                     $phar->getName(),
                     $phar->getVersion(),
                     new PharUrl('https://example.com/' . $this->getPharName($phar->getFile()->getFilename())),

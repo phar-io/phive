@@ -36,7 +36,7 @@ class PharIoRepositoryTest extends TestCase {
 
         $expectedReleases = new ReleaseCollection();
         $expectedReleases->add(
-            new Release(
+            new SupportedRelease(
                 'foo',
                 new Version('5.3.0'),
                 new PharUrl('https://example.com/foo-5.3.0.phar'),
@@ -45,7 +45,7 @@ class PharIoRepositoryTest extends TestCase {
             )
         );
         $expectedReleases->add(
-            new Release(
+            new SupportedRelease(
                 'foo',
                 new Version('5.2.12'),
                 new PharUrl('https://example.com/foo-5.2.12.phar'),

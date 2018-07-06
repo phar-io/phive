@@ -11,7 +11,7 @@ class UrlRepository implements SourceRepository {
     public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar) {
         $releases = new ReleaseCollection();
         $releases->add(
-            new Release(
+            new SupportedRelease(
                 $requestedPhar->getUrl()->getPharName(),
                 $requestedPhar->getUrl()->getPharVersion(),
                 $requestedPhar->getUrl(),
