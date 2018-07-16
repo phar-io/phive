@@ -59,12 +59,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/filesystem.git",
-                "reference": "0fd421a8d64c14c15d77e9de1ed9dc1bb07c03a6"
+                "reference": "23c8537632c0127e8599d4660ed793874480dce7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/0fd421a8d64c14c15d77e9de1ed9dc1bb07c03a6",
-                "reference": "0fd421a8d64c14c15d77e9de1ed9dc1bb07c03a6",
+                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/23c8537632c0127e8599d4660ed793874480dce7",
+                "reference": "23c8537632c0127e8599d4660ed793874480dce7",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2018-07-06T14:42:11+00:00"
+            "time": "2018-07-06T15:18:09+00:00"
         },
         {
             "name": "phar-io/gnupg",
