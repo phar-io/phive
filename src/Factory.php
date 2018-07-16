@@ -357,7 +357,7 @@ class Factory {
     /**
      * @return CurlHttpClient
      */
-    private function getHttpClient() {
+    public function getHttpClient() {
         return new CurlHttpClient(
             $this->getCurlConfig(),
             $this->getHttpProgressRenderer(),

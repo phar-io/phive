@@ -28,6 +28,7 @@ class GnupgKeyDownloaderTest extends TestCase {
         $keyinfo .= 'pub:D8406D0D82947747293778314AA394086372C20A:1:4096:1405754086::';
 
         $response = $this->prophesize(HttpResponse::class);
+        $response->isSuccess()->willReturn(true);
         $response->getHttpCode()->willReturn(200);
         $response->getBody()->willReturn($keyinfo);
         $response->isNotFound()->willReturn(false);
@@ -51,6 +52,7 @@ class GnupgKeyDownloaderTest extends TestCase {
         $keyinfo .= 'pub:D8406D0D82947747293778314AA394086372C20A:1:4096:1405754086::';
 
         $response = $this->prophesize(HttpResponse::class);
+        $response->isSuccess()->wilLReturn(true);
         $response->getHttpCode()->willReturn(200);
         $response->getBody()->willReturn($keyinfo);
         //$response->getBody()->willReturn('Some Public Key Data');

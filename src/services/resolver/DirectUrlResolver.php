@@ -3,6 +3,18 @@ namespace PharIo\Phive;
 
 class DirectUrlResolver extends AbstractRequestedPharResolver {
 
+    /** @var HttpClient */
+    private $httpClient;
+
+    /**
+     * DirectUrlResolver constructor.
+     *
+     * @param HttpClient $httpClient
+     */
+    public function __construct(HttpClient $httpClient) {
+        $this->httpClient = $httpClient;
+    }
+
     /**
      * @param RequestedPhar $requestedPhar
      *
@@ -13,6 +25,19 @@ class DirectUrlResolver extends AbstractRequestedPharResolver {
             return $this->tryNext($requestedPhar);
         }
 
-        return new UrlRepository();
+        $url = $requestedPhar->getUrl();
+        $result = $this->httpClient->head($url);
+        if ($result->isNotFound()) {
+            return new UrlRepository();
+        }
+
+        $sigUrl = new Url($url->asString() . '.asc');
+        $sigResult = $this->httpClient->head($sigUrl);
+
+        if ($sigResult->isNotFound()) {
+            return new UrlRepository($url);
+        }
+
+        return new UrlRepository($url, $sigUrl);
     }
 }

@@ -31,7 +31,7 @@ class RequestedPharResolverFactory {
      * @return DirectUrlResolver
      */
     public function getUrlResolver() {
-        return new DirectUrlResolver();
+        return new DirectUrlResolver($this->factory->getHttpClient());
     }
 
     /**

@@ -108,4 +108,13 @@ class Url {
     public static function isHttpsUrl($string) {
         return stripos($string, 'https://') === 0;
     }
+
+    /**
+     * @param Url $url
+     *
+     * @return bool
+     */
+    public function equals(Url $url) {
+        return $this->uri === $url->uri;
+    }
 }
