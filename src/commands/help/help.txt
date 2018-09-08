@@ -25,7 +25,7 @@ install [--target bin/] <alias|url> [<alias|url> ...]
     -c, --copy            Copy PHAR file instead of using symlink
     -g, --global          Install a copy of the PHAR globally (likely to require root privileges)
         --temporary       Do not add entries in phive.xml for installed PHARs
-        --trust-gpg-keys  Silently import these keys when required (multiple keys can be seperated by comma)
+        --trust-gpg-keys  Silently import these keys when required (multiple keys can be separated by comma)
 
 composer
     Parse composer.json file for known aliases and suggest installation
