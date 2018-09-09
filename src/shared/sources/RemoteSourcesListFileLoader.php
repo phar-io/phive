@@ -72,7 +72,7 @@ class RemoteSourcesListFileLoader implements SourcesListFileLoader {
      * @throws DownloadFailedException
      */
     public function downloadFromSource() {
-        $this->output->writeInfo('Fetching respository list');
+        $this->output->writeInfo('Fetching repository list');
         $file = $this->fileDownloader->download($this->sourceUrl);
         $file->saveAs($this->filename);
     }

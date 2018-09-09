@@ -31,7 +31,7 @@
 - remove 
 
 - sync
-    - compare current state with phive.xml defintion and latest versions
+    - compare current state with phive.xml definition and latest versions
         - act accordingly
 
 - update 
