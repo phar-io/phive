@@ -1,3 +1,4 @@
+
 Usage: %phive [global-options] <command> [arguments]
 
 Global options:
@@ -18,14 +19,16 @@ list
 install [--target bin/] <alias|url> [<alias|url> ...]
     Perform installation of a phar distributed application or library
 
-    alias/url             Installation via github profile/project, phar.io alias or explicit download form given URL
+    alias/url             Installation via github profile/project, phar.io alias
+                          or explicit download form given URL
 
     -t, --target          Set custom target directory for the PHAR
 
-    -c, --copy            Copy PHAR file instead of using symlink
-    -g, --global          Install a copy of the PHAR globally (likely to require root privileges)
-        --temporary       Do not add entries in phive.xml for installed PHARs
-        --trust-gpg-keys  Silently import these keys when required (multiple keys can be separated by comma)
+    -c, --copy                   Copy PHAR file instead of using symlink
+    -g, --global                 Install a copy of the PHAR globally (likely requires root privileges)
+        --temporary              Do not add entries in phive.xml for installed PHARs
+        --trust-gpg-keys         Silently import these keys when required (separated by comma)
+        --force-accept-unsigned  Force installation of unsigned phars
 
 composer
     Parse composer.json file for known aliases and suggest installation
@@ -53,7 +56,8 @@ status
 update [--prefer-offline] [<alias1> <alias2> ...]
     Update PHARs configured in the project's phive.xml to the newest applicable version.
 
-    --prefer-offline    Try to use local PHARs first, only connect to remote repositories if no local PHAR satisfies the given version constraint.
+    --prefer-offline    Try to use local PHARs first, only connect to remote repositories
+                        if no local PHAR satisfies the given version constraint.
 
     alias               If one or more aliases are provided, only those will be updated
 
