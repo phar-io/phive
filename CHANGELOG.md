@@ -2,6 +2,23 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.12.0] - 2018-09-11
+
+### Added
+
+* [#134](https://github.com/phar-io/phive/issues/134): Allow insecure installation of PHARs
+
+### Changed
+
+* [#117](https://github.com/phar-io/phive/issues/117): Improved error message when encountering an unsigned 
+GitHub release 
+* [#130](https://github.com/phar-io/phive/issues/130): Globally installed PHARs will now be placed in `/usr/local/bin/` 
+under Linux
+
+### Fixed
+
+* [#140](https://github.com/phar-io/phive/issues/140): `--copy` does not work on Windows
+
 ## [0.11.0] - 2018-06-26
 
 ### Changed
@@ -11,7 +28,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 * [#138](https://github.com/phar-io/phive/pull/138): Show key Ids for installed phars
 * [#141](https://github.com/phar-io/phive/pull/141): Improved BatPharActivator
 
-## Fixed
+### Fixed
 * [#130](https://github.com/phar-io/phive/issues/130): Call to a member function format() on null
 * [#137](https://github.com/phar-io/phive/issues/137): Removing globally installed PHARs fails
 * [#142](https://github.com/phar-io/phive/issues/136): Error when installing phing
@@ -232,7 +249,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.11.0...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.12.0...HEAD
+[0.12.0]: https://github.com/phar-io/phive/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/phar-io/phive/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/phar-io/phive/compare/0.9.0...0.10.0
 [0.9.0]: https://github.com/phar-io/phive/compare/0.8.2...0.9.0
