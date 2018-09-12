@@ -19,4 +19,21 @@ class ColoredConsoleOutput extends ConsoleOutput {
         parent::writeWarning($warningMessage);
     }
 
+    public function writeMarkdown($markdown) {
+
+        /** @noinspection CallableParameterUseCaseInTypeContextInspection */
+        // bold => yellow
+        $markdown = preg_replace_callback('/(\*\*|__)(.*?)\1/', function($matches) {
+            return "\033[33m" . $matches[2] . "\033[0m"; // 0m
+        }, $markdown);
+
+        /** @noinspection CallableParameterUseCaseInTypeContextInspection */
+        // italic => green
+        $markdown = preg_replace_callback('/(\*|_)(.*?)\1/', function($matches) {
+            return "\033[32m" . $matches[2] . "\033[0m";
+        }, $markdown);
+
+        $this->writeText($markdown);
+    }
+
 }
