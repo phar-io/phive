@@ -12,7 +12,7 @@ class HelpCommandTest extends TestCase {
     public function testWritesExpectedTextToOutput() {
         $output = $this->getOutputMock();
         $output->expects($this->once())
-            ->method('writeText')
+            ->method('writeMarkdown')
             ->with($this->stringContains('help'));
 
         $command = new HelpCommand(
