@@ -28,4 +28,9 @@ interface Output {
      */
     public function writeProgress($progressMessage);
 
+    /**
+     * @param string $markdown
+     */
+    public function writeMarkdown($markdown);
+
 }

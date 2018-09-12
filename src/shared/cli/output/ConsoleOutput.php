@@ -79,4 +79,21 @@ class ConsoleOutput implements Output {
         }
     }
 
+    public function writeMarkdown($markdown) {
+        /** @noinspection CallableParameterUseCaseInTypeContextInspection */
+        // bold => yellow
+        $markdown = preg_replace_callback('/(\*\*|__)(.*?)\1/', function($matches) {
+            return $matches[2];
+        }, $markdown);
+
+        /** @noinspection CallableParameterUseCaseInTypeContextInspection */
+        // italic => green
+        $markdown = preg_replace_callback('/(\*|_)(.*?)\1/', function($matches) {
+            return $matches[2];
+        }, $markdown);
+
+        $this->writeText($markdown);
+
+    }
+
 }

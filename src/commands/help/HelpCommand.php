@@ -25,9 +25,12 @@ class HelpCommand implements Cli\Command {
     }
 
     public function execute() {
-        $this->output->writeText(
-            str_replace('%phive', $this->environment->getPhiveCommandPath(), file_get_contents(__DIR__ . '/help.txt'))
-            . "\n\n"
+        $this->output->writeMarkdown(
+            str_replace(
+                '%phive',
+                $this->environment->getPhiveCommandPath(),
+                file_get_contents(__DIR__ . '/help.md')
+            ) . "\n\n"
         );
     }
 
