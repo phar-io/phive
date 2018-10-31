@@ -20,6 +20,7 @@
   "require" : {
     "php" : ">=5.6.0",
     "ext-dom" : "*",
+    "ext-curl" : "*",
     "phar-io/version": "^2.0",
     "phar-io/filesystem": "1.0.x-dev",
     "phar-io/gnupg": "^1.0",

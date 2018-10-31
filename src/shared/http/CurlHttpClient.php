@@ -164,6 +164,15 @@ class CurlHttpClient implements HttpClient {
             );
         }
 
+        if ($this->curl->getLastErrorNumber() === 60) { /* SSL certificate problem */
+            throw new HttpException(
+                $this->curl->getLastErrorMessage() . ' (while requesting ' . $this->url . ')' . "\n\n" .
+                'This likely means your curl installation is incomplete and can not verify certificates.' . "\n" .
+                'Please install a cacert.pem (for instance from https://curl.haxx.se/docs/caextract.html) and try again.',
+                $this->curl->getLastErrorNumber()
+            );
+        }
+
         throw new HttpException(
             $this->curl->getLastErrorMessage() . ' (while requesting ' . $this->url . ')',
             $this->curl->getLastErrorNumber()
