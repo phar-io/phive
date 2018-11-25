@@ -6,6 +6,7 @@ use PharIo\Manifest\PhpVersionRequirement;
 use PharIo\Phive\Cli\Input;
 use PharIo\Phive\Cli\Output;
 use PharIo\Version\Version;
+use PharIo\Version\InvalidVersionException;
 
 class CompatibilityService {
 
