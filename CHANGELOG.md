@@ -2,6 +2,18 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.12.1] - 2018-12-05
+
+### Fixed
+
+* [#143](https://github.com/phar-io/phive/issues/143): Improved error message when local Curl installation cannot verify SSL certificates 
+* [#173](https://github.com/phar-io/phive/issues/173): SemVer error when installing Phing
+
+### Changed
+
+* Added minimalistic Markdown support for improved console output
+* Updated help text
+
 ## [0.12.0] - 2018-09-11
 
 ### Added
@@ -249,7 +261,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.12.0...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.12.1...HEAD
+[0.12.1]: https://github.com/phar-io/phive/compare/0.12.0...0.12.1
 [0.12.0]: https://github.com/phar-io/phive/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/phar-io/phive/compare/0.10.0...0.11.0
 [0.10.0]: https://github.com/phar-io/phive/compare/0.9.0...0.10.0
