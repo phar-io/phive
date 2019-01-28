@@ -30,7 +30,6 @@ php:
 - 7.1snapshot
 - 7.2snapshot
 - 7.3snapshot
-- 7.4snapshot
 - master
 
 matrix:
@@ -39,7 +38,6 @@ matrix:
   - php: 7.1snapshot
   - php: 7.2snapshot
   - php: 7.3snapshot
-  - php: 7.4snapshot
   fast_finish: true
 
 notifications:
