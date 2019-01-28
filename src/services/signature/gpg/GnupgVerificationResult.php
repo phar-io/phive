@@ -16,11 +16,16 @@ class GnupgVerificationResult implements VerificationResult {
     }
 
     public function isKnownKey(): bool {
+        /** @noinspection SuspiciousBinaryOperationInspection */
         return ($this->verificationData['summary'] & 128) !== 128;
     }
 
     public function wasVerificationSuccessful(): bool {
         return ($this->verificationData['summary'] == 0);
+    }
+
+    public function getStatusMessage(): string {
+        return \implode("\n", $this->verificationData['status']);
     }
 
     private function validate(array $keyinfo): void {

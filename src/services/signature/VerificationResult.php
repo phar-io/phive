@@ -7,4 +7,6 @@ interface VerificationResult {
     public function isKnownKey(): bool;
 
     public function wasVerificationSuccessful(): bool;
+
+    public function getStatusMessage(): string;
 }

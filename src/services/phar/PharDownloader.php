@@ -84,7 +84,11 @@ class PharDownloader {
         $signatureVerificationResult = $this->signatureVerifier->verify($phar->getContent(), $signatureFile->getContent(), $knownFingerprints);
 
         if (!$signatureVerificationResult->wasVerificationSuccessful()) {
-            throw new VerificationFailedException('Signature could not be verified');
+            throw new VerificationFailedException(
+                sprintf(
+                    "Signature could not be verified\n%s",
+                    $signatureVerificationResult->getStatusMessage())
+            );
         }
 
         if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $phar)) {
