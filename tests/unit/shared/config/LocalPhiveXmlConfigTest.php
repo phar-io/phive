@@ -51,12 +51,14 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
 
+        $filename = $this->getFilenameMock();
+        $filename->method('getRelativePathTo')->willReturn($filename);
+
         $installedPhar = $this->getInstalledPharMock();
         $installedPhar->method('getVersionConstraint')->willReturn(new ExactVersionConstraint('5.3.0'));
         $installedPhar->method('getInstalledVersion')->willReturn(new Version('5.3.0'));
         $installedPhar->method('getName')->willReturn('phpunit');
-
-        $targetDirectory = $this->getDirectoryMock();
+        $installedPhar->method('getLocation')->willReturn($filename);
 
         $config = new LocalPhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
 
@@ -93,8 +95,8 @@ class LocalPhiveXmlConfigTest extends TestCase {
 
         $alias = new PharAlias('phpunit');
 
-        $filename = $this->createMock(Filename::class);
-        $filename->method('asString')->willReturn('some/path');
+        $filename = $this->getFilenameMock();
+        $filename->method('getRelativePathTo')->willReturn($filename);
 
         $installedPhar = $this->getInstalledPharMock();
         $installedPhar->method('getVersionConstraint')->willReturn(new ExactVersionConstraint('5.3.0'));
