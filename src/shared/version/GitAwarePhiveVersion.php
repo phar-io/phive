@@ -1,33 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
 
 class GitAwarePhiveVersion extends PhiveVersion {
+    public const UNKNOWN_VERSION = 'unknown';
 
-    const UNKNOWN_VERSION = 'unknown';
-
-    /**
-     * @var Git
-     */
+    /** @var Git */
     private $git;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $version;
 
-    /**
-     * @param Git $git
-     */
     public function __construct(Git $git) {
         $this->git = $git;
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion() {
+    public function getVersion(): string {
         if ($this->version !== null) {
             return $this->version;
         }
@@ -48,5 +37,4 @@ class GitAwarePhiveVersion extends PhiveVersion {
 
         return $this->version;
     }
-
 }

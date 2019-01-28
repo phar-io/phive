@@ -1,11 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface ResolvingStrategy {
-
-    /**
-     * @param RequestedPharResolverService $pharResolverService
-     */
     public function execute(RequestedPharResolverService $pharResolverService);
-
 }

@@ -1,13 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface KeyImporter {
-
-    /**
-     * @param string $key
-     *
-     * @return KeyImportResult
-     */
-    public function importKey($key);
-
+    public function importKey(string $key): KeyImportResult;
 }

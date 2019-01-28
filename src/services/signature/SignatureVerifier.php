@@ -1,15 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface SignatureVerifier {
-
-    /**
-     * @param string $message
-     * @param string $signature
-     * @param array  $knownFingerprints
-     *
-     * @return VerificationResult
-     */
-    public function verify($message, $signature, array $knownFingerprints);
-
+    public function verify(string $message, string $signature, array $knownFingerprints): VerificationResult;
 }

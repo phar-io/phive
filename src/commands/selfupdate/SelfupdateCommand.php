@@ -1,54 +1,30 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
-use PharIo\Phive\Cli;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\Version;
 
 class SelfupdateCommand implements Cli\Command {
 
-    /**
-     * @var PharDownloader
-     */
+    /** @var PharDownloader */
     private $pharDownloader;
 
-    /**
-     * @var GithubAliasResolver
-     */
+    /** @var GithubAliasResolver */
     private $gitHubAliasResolver;
 
-    /**
-     * @var Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @var PhiveVersion
-     */
+    /** @var PhiveVersion */
     private $currentPhiveVersion;
 
-    /**
-     * @var Cli\Output
-     */
+    /** @var Cli\Output */
     private $output;
 
-    /**
-     * @var ReleaseSelector
-     */
+    /** @var ReleaseSelector */
     private $selector;
 
-    /**
-     * SelfupdateCommand constructor.
-     *
-     * @param PharDownloader      $pharDownloader
-     * @param GithubAliasResolver $gitHubAliasResolver
-     * @param Environment         $environment
-     * @param PhiveVersion        $currentPhiveVersion
-     * @param Cli\Output          $output
-     * @param ReleaseSelector     $selector
-     *
-     */
     public function __construct(
         PharDownloader $pharDownloader,
         GithubAliasResolver $gitHubAliasResolver,
@@ -57,15 +33,15 @@ class SelfupdateCommand implements Cli\Command {
         Cli\Output $output,
         ReleaseSelector $selector
     ) {
-        $this->pharDownloader = $pharDownloader;
+        $this->pharDownloader      = $pharDownloader;
         $this->gitHubAliasResolver = $gitHubAliasResolver;
-        $this->environment = $environment;
+        $this->environment         = $environment;
         $this->currentPhiveVersion = $currentPhiveVersion;
-        $this->output = $output;
-        $this->selector = $selector;
+        $this->output              = $output;
+        $this->selector            = $selector;
     }
 
-    public function execute() {
+    public function execute(): void {
         $requestedPhar = new RequestedPhar(
             new PharAlias('phar-io/phive'),
             new AnyVersionConstraint(),
@@ -75,8 +51,8 @@ class SelfupdateCommand implements Cli\Command {
         $destination = new Filename($this->environment->getPhiveCommandPath());
 
         $repository = $this->gitHubAliasResolver->resolve($requestedPhar);
-        $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
-        $release = $this->selector->select($releases, $requestedPhar->getVersionConstraint(), false);
+        $releases   = $repository->getReleasesByRequestedPhar($requestedPhar);
+        $release    = $this->selector->select($releases, $requestedPhar->getVersionConstraint(), false);
 
         if (!$release->getVersion()->isGreaterThan(new Version($this->currentPhiveVersion->getVersion()))) {
             $this->output->writeInfo('You already have the newest version of PHIVE.');
@@ -98,47 +74,45 @@ class SelfupdateCommand implements Cli\Command {
         }
 
         $this->output->writeInfo(
-            sprintf('PHIVE was successfully updated to version %s', $release->getVersion()->getVersionString())
+            \sprintf('PHIVE was successfully updated to version %s', $release->getVersion()->getVersionString())
         );
     }
 
     /**
-     * @param Phar     $phar
-     * @param Filename $destination
-     *
      * @throws InstallationFailedException
      */
-    private function installPhivePhar(Phar $phar, Filename $destination) {
-        $tmpFilename = tempnam(sys_get_temp_dir(), 'phive_selfupdate_');
+    private function installPhivePhar(Phar $phar, Filename $destination): void {
+        $tmpFilename = \tempnam(\sys_get_temp_dir(), 'phive_selfupdate_');
 
         if ($tmpFilename === false) {
             throw new InstallationFailedException(
-                sprintf('Could not create temporary file in %s', sys_get_temp_dir())
+                \sprintf('Could not create temporary file in %s', \sys_get_temp_dir())
             );
         }
 
         $tmpFilename = new Filename($tmpFilename);
-        if (false === file_put_contents($tmpFilename->asString(), $phar->getFile()->getContent())) {
+
+        if (false === \file_put_contents($tmpFilename->asString(), $phar->getFile()->getContent())) {
             throw new InstallationFailedException(
-                sprintf('Could not write to %s', $tmpFilename->asString())
+                \sprintf('Could not write to %s', $tmpFilename->asString())
             );
         }
 
-        if (false === copy($tmpFilename, $destination->asString())) {
+        if (false === \copy($tmpFilename, $destination->asString())) {
             throw new InstallationFailedException(
-                sprintf('Could not copy temporary file to %s', $destination->asString())
+                \sprintf('Could not copy temporary file to %s', $destination->asString())
             );
         }
 
-        if (false === chmod($destination, 0755)) {
+        if (false === \chmod($destination, 0755)) {
             throw new InstallationFailedException(
-                sprintf('Could not make %s executable, please fix manually', $destination->asString())
+                \sprintf('Could not make %s executable, please fix manually', $destination->asString())
             );
         }
 
-        if (false === unlink($tmpFilename)) {
+        if (false === \unlink($tmpFilename)) {
             throw new InstallationFailedException(
-                sprintf('Could not remove temporary file %s, please fix manually', $tmpFilename->asString())
+                \sprintf('Could not remove temporary file %s, please fix manually', $tmpFilename->asString())
             );
         }
     }

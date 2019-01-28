@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
@@ -7,50 +7,49 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\JsonData
  */
 class JsonDataTest extends TestCase {
-
-    public function testThrowsExceptionIfRawValueIsNotJson() {
+    public function testThrowsExceptionIfRawValueIsNotJson(): void {
         $this->expectException(\InvalidArgumentException::class);
         new JsonData('foo');
     }
 
-    public function testThrowsExceptionIfRawValueIsNotAJsonObjectOrArray() {
+    public function testThrowsExceptionIfRawValueIsNotAJsonObjectOrArray(): void {
         $this->expectException(\InvalidArgumentException::class);
-        new JsonData(json_encode('foo'));
+        new JsonData(\json_encode('foo'));
     }
 
-    public function testGetRawReturnsExpectedValue() {
-        $raw = json_encode(['foo' => 'bar']);
+    public function testGetRawReturnsExpectedValue(): void {
+        $raw = \json_encode(['foo' => 'bar']);
 
         $data = new JsonData($raw);
         $this->assertSame($raw, $data->getRaw());
     }
 
-    public function testGetParsedReturnsExpectedValue() {
-        $raw = json_encode(['foo' => 'bar']);
+    public function testGetParsedReturnsExpectedValue(): void {
+        $raw  = \json_encode(['foo' => 'bar']);
         $data = new JsonData($raw);
 
-        $expected = new \stdClass();
+        $expected      = new \stdClass();
         $expected->foo = 'bar';
 
         $this->assertEquals($expected, $data->getParsed());
     }
 
-    public function testHasFragmentReturnsFalse() {
-        $raw = json_encode(['foo' => 'bar']);
+    public function testHasFragmentReturnsFalse(): void {
+        $raw  = \json_encode(['foo' => 'bar']);
         $data = new JsonData($raw);
 
         $this->assertFalse($data->hasFragment('foobar'));
     }
 
-    public function testHasFragmentReturnsTrue() {
-        $raw = json_encode(['foo' => 'bar']);
+    public function testHasFragmentReturnsTrue(): void {
+        $raw  = \json_encode(['foo' => 'bar']);
         $data = new JsonData($raw);
 
         $this->assertTrue($data->hasFragment('foo'));
     }
 
-    public function testGetFragmentThrowsExceptionIfFragmentDoesNotExist() {
-        $raw = json_encode(
+    public function testGetFragmentThrowsExceptionIfFragmentDoesNotExist(): void {
+        $raw = \json_encode(
             [
                 'parent' => [
                     'child' => [
@@ -66,8 +65,8 @@ class JsonDataTest extends TestCase {
         $data->getFragment('parent.child.foobar');
     }
 
-    public function testGetFragmentReturnsExpectedValue() {
-        $raw = json_encode(
+    public function testGetFragmentReturnsExpectedValue(): void {
+        $raw = \json_encode(
             [
                 'parent' => [
                     'child' => [
@@ -81,9 +80,8 @@ class JsonDataTest extends TestCase {
 
         $this->assertSame('bar', $data->getFragment('parent.child.foo'));
 
-        $expectedObject = new \stdClass();
+        $expectedObject      = new \stdClass();
         $expectedObject->foo = 'bar';
         $this->assertEquals($expectedObject, $data->getFragment('parent.child'));
     }
-
 }

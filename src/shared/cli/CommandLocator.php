@@ -1,13 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 interface CommandLocator {
 
     /**
-     * @param string $command
-     *
      * @throws CommandLocatorException
-     * @return Command
      */
-    public function getCommand($command);
+    public function getCommand(string $command): Command;
 }

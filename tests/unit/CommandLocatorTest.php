@@ -1,15 +1,13 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
-use PharIo\Phive\Cli;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\MethodProphecy;
 
 /**
  * @covers \PharIo\Phive\CommandLocator
  */
 class CommandLocatorTest extends TestCase {
-
     /**
      * @dataProvider commandProvider
      *
@@ -18,17 +16,12 @@ class CommandLocatorTest extends TestCase {
      *
      * @throws Cli\CommandLocatorException
      */
-    public function testValidCommandsAreReturned($command, $factoryMethod) {
-        $factory = $this->prophesize(Factory::class);
+    public function testValidCommandsAreReturned($command, $factoryMethod): void {
+        /** @var Factory|MockObject $factory */
+        $factory = $this->createMock(Factory::class);
+        $factory->expects($this->once())->method($factoryMethod);
 
-        $method = new MethodProphecy($factory, $factoryMethod, []);
-        $method->willReturn($this->prophesize(Cli\Command::class)->reveal());
-
-        $factory->addMethodProphecy($method);
-        $locator = new CommandLocator($factory->reveal());
-
-        $result = $locator->getCommand($command);
-        $this->assertInstanceOf(CLI\Command::class, $result);
+        (new CommandLocator($factory))->getCommand($command);
     }
 
     public function commandProvider() {
@@ -51,7 +44,7 @@ class CommandLocatorTest extends TestCase {
         ];
     }
 
-    public function testRequestingAnUnknownCommandThrowsException() {
+    public function testRequestingAnUnknownCommandThrowsException(): void {
         $factory = $this->prophesize(Factory::class);
         $locator = new CommandLocator($factory->reveal());
 
@@ -60,5 +53,4 @@ class CommandLocatorTest extends TestCase {
 
         $locator->getCommand('unknown');
     }
-
 }

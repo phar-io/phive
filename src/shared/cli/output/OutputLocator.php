@@ -1,34 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 use PharIo\Phive\Environment;
 
 class OutputLocator {
 
-    /**
-     * @var OutputFactory
-     */
+    /** @var OutputFactory */
     private $factory;
 
-    /**
-     * @param OutputFactory $factory
-     */
     public function __construct(OutputFactory $factory) {
         $this->factory = $factory;
     }
 
-    /**
-     * @param Environment $environment
-     * @param bool $printProgressUpdates
-     *
-     * @return Output
-     */
-    public function getOutput(Environment $environment, $printProgressUpdates) {
+    public function getOutput(Environment $environment, bool $printProgressUpdates): Output {
         if ($environment->supportsColoredOutput()) {
             return $this->factory->getColoredConsoleOutput($printProgressUpdates);
         }
 
         return $this->factory->getConsoleOutput($printProgressUpdates);
     }
-
 }

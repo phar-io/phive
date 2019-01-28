@@ -1,41 +1,25 @@
-<?php
-
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class PhiveXmlConfigFileLocator {
+    public const FILENAME = 'phive.xml';
 
-    const FILENAME = 'phive.xml';
-
-    /**
-     * @var Config
-     */
+    /** @var Config */
     private $config;
 
-    /**
-     * @var Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @param Environment $environment
-     * @param Config      $config
-     */
     public function __construct(Environment $environment, Config $config) {
         $this->environment = $environment;
-        $this->config = $config;
+        $this->config      = $config;
     }
 
-    /**
-     * @param bool $global
-     *
-     * @return \PharIo\FileSystem\Filename
-     */
-    public function getFile($global) {
+    public function getFile(bool $global): \PharIo\FileSystem\Filename {
         if ($global) {
             return $this->config->getHomeDirectory()->file(self::FILENAME);
         }
 
         return $this->environment->getWorkingDirectory()->file(self::FILENAME);
     }
-
 }

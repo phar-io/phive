@@ -1,30 +1,23 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class CurlConfigBuilder {
 
-    /**
-     * @var Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @var PhiveVersion
-     */
+    /** @var PhiveVersion */
     private $phiveVersion;
 
-    /**
-     * @param Environment $environment
-     * @param PhiveVersion $phiveVersion
-     */
     public function __construct(Environment $environment, PhiveVersion $phiveVersion) {
-        $this->environment = $environment;
+        $this->environment  = $environment;
         $this->phiveVersion = $phiveVersion;
     }
 
-    public function build() {
+    public function build(): CurlConfig {
         $curlConfig = new CurlConfig(
-            sprintf('Phive %s on %s',
+            \sprintf(
+                'Phive %s on %s',
                 $this->phiveVersion->getVersion(),
                 $this->environment->getRuntimeString()
             )
@@ -35,9 +28,11 @@ class CurlConfigBuilder {
                 __DIR__ . '/../../../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
             )
         );
+
         if ($this->environment->hasProxy()) {
             $curlConfig->setProxy($this->environment->getProxy());
         }
+
         if ($this->environment->hasGitHubAuthToken()) {
             $curlConfig->addAuthenticationToken(
                 'api.github.com',
@@ -47,5 +42,4 @@ class CurlConfigBuilder {
 
         return $curlConfig;
     }
-
 }

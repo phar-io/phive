@@ -1,12 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface SourceRepository {
-
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return ReleaseCollection
-     */
-    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar);
+    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar): ReleaseCollection;
 }

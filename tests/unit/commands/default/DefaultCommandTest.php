@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
@@ -8,13 +7,11 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\DefaultCommand
  */
 class DefaultCommandTest extends TestCase {
-
-    public function testExecutesVersionCommandIfCorrespondingOptionIsPresent()
-    {
+    public function testExecutesVersionCommandIfCorrespondingOptionIsPresent(): void {
         $versionCommand = $this->getVersionCommandMock();
-        $helpCommand = $this->getHelpCommandMock();
-        $config = $this->getDefaultCommandConfigMock();
-        $command = new DefaultCommand($versionCommand, $helpCommand, $config);
+        $helpCommand    = $this->getHelpCommandMock();
+        $config         = $this->getDefaultCommandConfigMock();
+        $command        = new DefaultCommand($versionCommand, $helpCommand, $config);
 
         $config->method('hasVersionOption')->willReturn(true);
 
@@ -24,12 +21,11 @@ class DefaultCommandTest extends TestCase {
         $command->execute();
     }
 
-    public function testExecutesHelpCommandIfVersionOptionIsNotPresent()
-    {
+    public function testExecutesHelpCommandIfVersionOptionIsNotPresent(): void {
         $versionCommand = $this->getVersionCommandMock();
-        $helpCommand = $this->getHelpCommandMock();
-        $config = $this->getDefaultCommandConfigMock();
-        $command = new DefaultCommand($versionCommand, $helpCommand, $config);
+        $helpCommand    = $this->getHelpCommandMock();
+        $config         = $this->getDefaultCommandConfigMock();
+        $command        = new DefaultCommand($versionCommand, $helpCommand, $config);
 
         $config->method('hasVersionOption')->willReturn(false);
 
@@ -40,7 +36,7 @@ class DefaultCommandTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|DefaultCommandConfig
+     * @return DefaultCommandConfig|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getDefaultCommandConfigMock() {
         return $this->createMock(DefaultCommandConfig::class);
@@ -54,10 +50,9 @@ class DefaultCommandTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|HelpCommand
+     * @return HelpCommand|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getHelpCommandMock() {
         return $this->createMock(HelpCommand::class);
     }
-
 }

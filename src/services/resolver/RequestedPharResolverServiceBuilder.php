@@ -1,29 +1,18 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class RequestedPharResolverServiceBuilder {
-    /**
-     * @var Factory
-     */
+    /** @var Factory */
     private $factory;
 
-    /**
-     * @param Factory $factory
-     */
     public function __construct(Factory $factory) {
         $this->factory = $factory;
     }
 
-    /**
-     * @param ResolvingStrategy $strategy
-     *
-     * @return RequestedPharResolverService
-     */
-    public function build(ResolvingStrategy $strategy) {
+    public function build(ResolvingStrategy $strategy): RequestedPharResolverService {
         $service = $this->factory->getRequestedPharResolverService();
         $strategy->execute($service);
 
         return $service;
     }
-
 }

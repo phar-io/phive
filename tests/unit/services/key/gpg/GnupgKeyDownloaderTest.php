@@ -1,29 +1,23 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
-use PharIo\Phive\Cli;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class GnupgKeyDownloaderTest extends TestCase {
-
-    /**
-     * @var CurlHttpClient|ObjectProphecy
-     */
+    /** @var CurlHttpClient|ObjectProphecy */
     private $curl;
 
-    /**
-     * @var Cli\Output|ObjectProphecy
-     */
+    /** @var Cli\Output|ObjectProphecy */
     private $output;
 
-    public function setUp() {
-        $this->curl = $this->prophesize(CurlHttpClient::class);
+    public function setUp(): void {
+        $this->curl   = $this->prophesize(CurlHttpClient::class);
         $this->output = $this->prophesize(Cli\Output::class);
     }
 
-    public function testInvokesCurlWithExpectedParams() {
+    public function testInvokesCurlWithExpectedParams(): void {
         $keyinfo  = 'uid:Sebastian Bergmann <sebastian@php.net>:1405755775::' . "\n";
         $keyinfo .= 'pub:D8406D0D82947747293778314AA394086372C20A:1:4096:1405754086::';
 
@@ -42,12 +36,14 @@ class GnupgKeyDownloaderTest extends TestCase {
         )->shouldBeCalled()->willReturn($response->reveal());
 
         $downloader = new GnupgKeyDownloader(
-            $this->curl->reveal(), ['example.com'], $this->output->reveal()
+            $this->curl->reveal(),
+            ['example.com'],
+            $this->output->reveal()
         );
         $downloader->download('12345678');
     }
 
-    public function testReturnsExpectedKey() {
+    public function testReturnsExpectedKey(): void {
         $keyinfo  = 'uid:Sebastian Bergmann <sebastian@php.net>:1405755775::' . "\n";
         $keyinfo .= 'pub:D8406D0D82947747293778314AA394086372C20A:1:4096:1405754086::';
 
@@ -62,13 +58,15 @@ class GnupgKeyDownloaderTest extends TestCase {
             ->willReturn($response->reveal());
 
         $downloader = new GnupgKeyDownloader(
-            $this->curl->reveal(), ['example.com'], $this->output->reveal()
+            $this->curl->reveal(),
+            ['example.com'],
+            $this->output->reveal()
         );
 
         $this->assertInstanceOf(PublicKey::class, $downloader->download('12345678'));
     }
 
-    public function testThrowsExceptionIfKeyWasNotFound() {
+    public function testThrowsExceptionIfKeyWasNotFound(): void {
         /*
         $response = $this->prophesize(HttpResponse::class);
         $response->getHttpCode()->willReturn(404);
@@ -76,11 +74,12 @@ class GnupgKeyDownloaderTest extends TestCase {
         */
         $this->curl->get(Argument::any())->willThrow(HttpException::class);
         $downloader = new GnupgKeyDownloader(
-            $this->curl->reveal(), ['example.com'], $this->output->reveal()
+            $this->curl->reveal(),
+            ['example.com'],
+            $this->output->reveal()
         );
 
         $this->expectException(DownloadFailedException::class);
         $downloader->download('12345678');
     }
-
 }

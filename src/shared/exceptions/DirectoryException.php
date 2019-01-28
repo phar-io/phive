@@ -1,11 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class DirectoryException extends \Exception implements Exception {
+    public const InvalidMode = 1;
 
-    const InvalidMode = 1;
-    const CreateFailed = 2;
-    const ChmodFailed = 3;
-    const InvalidType = 4;
+    public const CreateFailed = 2;
 
+    public const ChmodFailed = 3;
+
+    public const InvalidType = 4;
 }

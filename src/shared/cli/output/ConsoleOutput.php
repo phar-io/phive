@@ -1,99 +1,73 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 class ConsoleOutput implements Output {
+    public const VERBOSE_ERROR   = 1;
+    public const VERBOSE_WARNING = 2;
+    public const VERBOSE_INFO    = 3;
 
-    const VERBOSE_ERROR = 1;
-    const VERBOSE_WARNING = 2;
-    const VERBOSE_INFO = 3;
-
-    /**
-     * @var int
-     */
+    /** @var int */
     private $verbosity = self::VERBOSE_INFO;
 
-    /**
-     * @var bool
-     */
-    private $printProgressUpdates = true;
+    /** @var bool */
+    private $printProgressUpdates;
 
-    /**
-     * @param int $verbosity
-     * @param bool $printProgressUpdates
-     */
-    public function __construct($verbosity, $printProgressUpdates) {
+    public function __construct(int $verbosity, bool $printProgressUpdates) {
         $this->setVerbosity($verbosity);
         $this->printProgressUpdates = $printProgressUpdates;
     }
 
-    /**
-     * @param int $verbosity
-     */
-    private function setVerbosity($verbosity) {
-        if (!in_array($verbosity, [self::VERBOSE_ERROR, self::VERBOSE_INFO, self::VERBOSE_WARNING])) {
-            throw new \InvalidArgumentException('Invalid value for verbosity');
-        }
-        $this->verbosity = $verbosity;
-    }
-
-    /**
-     * @param string $infoMessage
-     */
-    public function writeInfo($infoMessage) {
+    public function writeInfo(string $infoMessage): void {
         if ($this->verbosity >= self::VERBOSE_INFO) {
             $this->writeText($infoMessage . "\n");
         }
     }
 
-    /**
-     * @param string $progressMessage
-     */
-    public function writeProgress($progressMessage) {
+    public function writeProgress(string $progressMessage): void {
         if ($this->verbosity >= self::VERBOSE_INFO && $this->printProgressUpdates) {
             $this->writeText("\x0D\x1B[2K" . $progressMessage);
         }
     }
 
-    /**
-     * @param $textMessage
-     */
-    public function writeText($textMessage) {
-        fwrite(STDOUT, $textMessage);
+    public function writeText(string $textMessage): void {
+        \fwrite(\STDOUT, $textMessage);
     }
 
-    /**
-     * @param string $warningMessage
-     */
-    public function writeWarning($warningMessage) {
+    public function writeWarning(string $warningMessage): void {
         if ($this->verbosity >= self::VERBOSE_WARNING) {
             $this->writeText('[WARNING] ' . $warningMessage . "\n");
         }
     }
 
-    /**
-     * @param string $errorMessage
-     */
-    public function writeError($errorMessage) {
+    public function writeError(string $errorMessage): void {
         if ($this->verbosity >= self::VERBOSE_ERROR) {
-            fwrite(STDERR, '[ERROR]   ' . $errorMessage . "\n");
+            \fwrite(\STDERR, '[ERROR]   ' . $errorMessage . "\n");
         }
     }
 
-    public function writeMarkdown($markdown) {
+    public function writeMarkdown(string $markdown): void {
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
         // bold => yellow
-        $markdown = preg_replace_callback('/(\*\*|__)(.*?)\1/', function($matches) {
+        $markdown = \preg_replace_callback('/(\*\*|__)(.*?)\1/', function ($matches) {
             return $matches[2];
         }, $markdown);
 
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
         // italic => green
-        $markdown = preg_replace_callback('/(\*|_)(.*?)\1/', function($matches) {
+        $markdown = \preg_replace_callback('/(\*|_)(.*?)\1/', function ($matches) {
             return $matches[2];
         }, $markdown);
 
         $this->writeText($markdown);
-
     }
 
+    /**
+     * @param int $verbosity
+     */
+    private function setVerbosity($verbosity): void {
+        if (!\in_array($verbosity, [self::VERBOSE_ERROR, self::VERBOSE_INFO, self::VERBOSE_WARNING])) {
+            throw new \InvalidArgumentException('Invalid value for verbosity');
+        }
+        $this->verbosity = $verbosity;
+    }
 }

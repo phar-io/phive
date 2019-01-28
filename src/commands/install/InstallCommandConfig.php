@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
-use PharIo\Phive\Cli;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\VersionConstraint;
@@ -10,50 +9,35 @@ use PharIo\Version\VersionConstraintParser;
 
 class InstallCommandConfig {
 
-    /**
-     * @var Cli\Options
-     */
+    /** @var Cli\Options */
     private $cliOptions;
 
-    /**
-     * @var PhiveXmlConfig
-     */
+    /** @var PhiveXmlConfig */
     private $phiveXmlConfig;
 
-    /**
-     * @var Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @var TargetDirectoryLocator
-     */
+    /** @var TargetDirectoryLocator */
     private $targetDirectoryLocator;
 
-    /**
-     * @param Cli\Options            $options
-     * @param PhiveXmlConfig         $phiveXmlConfig
-     * @param Environment            $environment
-     * @param TargetDirectoryLocator $targetDirectoryLocator
-     */
     public function __construct(
         Cli\Options $options,
         PhiveXmlConfig $phiveXmlConfig,
         Environment $environment,
         TargetDirectoryLocator $targetDirectoryLocator
     ) {
-        $this->cliOptions = $options;
-        $this->phiveXmlConfig = $phiveXmlConfig;
-        $this->environment = $environment;
+        $this->cliOptions             = $options;
+        $this->phiveXmlConfig         = $phiveXmlConfig;
+        $this->environment            = $environment;
         $this->targetDirectoryLocator = $targetDirectoryLocator;
     }
 
     /**
-     * @return Directory
      * @throws \PharIo\Phive\ConfigException
      * @throws \PharIo\Phive\Cli\CommandOptionsException
      */
-    public function getTargetDirectory() {
+    public function getTargetDirectory(): Directory {
         if ($this->installGlobally()) {
             return $this->environment->getGlobalBinDir();
         }
@@ -62,13 +46,14 @@ class InstallCommandConfig {
     }
 
     /**
-     * @return RequestedPhar[]
      * @throws \PharIo\Phive\UnsupportedVersionConstraintException
      * @throws \PharIo\Phive\InstallCommandConfigException
      * @throws \PharIo\Phive\ConfiguredPharException
      * @throws Cli\CommandOptionsException
+     *
+     * @return RequestedPhar[]
      */
-    public function getRequestedPhars() {
+    public function getRequestedPhars(): array {
         if ($this->cliOptions->getArgumentCount() === 0) {
             return $this->getPharsFromPhiveXmlConfig();
         }
@@ -76,12 +61,22 @@ class InstallCommandConfig {
         return $this->getPharsFromCliArguments();
     }
 
+    public function doNotAddToPhiveXml(): bool {
+        return $this->cliOptions->hasOption('temporary') || $this->installGlobally();
+    }
+
+    public function forceAcceptUnsignedPhars(): bool {
+        return $this->cliOptions->hasOption('force-accept-unsigned');
+    }
+
     /**
-     * @return RequestedPhar[]
      * @throws \PharIo\Phive\ConfiguredPharException
+     *
+     * @return RequestedPhar[]
      */
-    private function getPharsFromPhiveXmlConfig() {
+    private function getPharsFromPhiveXmlConfig(): array {
         $phars = [];
+
         foreach ($this->phiveXmlConfig->getPhars() as $configuredPhar) {
             $location = $configuredPhar->hasLocation() ? $configuredPhar->getLocation() : null;
 
@@ -98,30 +93,35 @@ class InstallCommandConfig {
     }
 
     /**
-     * @return RequestedPhar[]
      * @throws \PharIo\Phive\InstallCommandConfigException
      * @throws Cli\CommandOptionsException
      * @throws UnsupportedVersionConstraintException
+     *
+     * @return RequestedPhar[]
      */
-    private function getPharsFromCliArguments() {
-        $phars = [];
+    private function getPharsFromCliArguments(): array {
+        $phars    = [];
         $argCount = $this->cliOptions->getArgumentCount();
+
         for ($i = 0; $i < $argCount; $i++) {
             $argument = $this->cliOptions->getArgument($i);
+
             if (Url::isUrl($argument)) {
                 if (!Url::isHttpsUrl($argument)) {
                     throw new InstallCommandConfigException(
-                        'Cannot install from non HTTPS URL', InstallCommandConfigException::UnsupportedProtocol
+                        'Cannot install from non HTTPS URL',
+                        InstallCommandConfigException::UnsupportedProtocol
                     );
                 }
-                $identifier = new PharUrl($argument);
+                $identifier        = new PharUrl($argument);
                 $versionConstraint = new ExactVersionConstraint(
                     $identifier->getPharVersion()->getVersionString()
                 );
             } else {
-                $argumentParts = preg_split('/[@:=]/', $argument, 2, PREG_SPLIT_NO_EMPTY);
-                $identifier = new PharAlias(mb_strtolower($argumentParts[0]));
-                if (count($argumentParts) === 2) {
+                $argumentParts = \preg_split('/[@:=]/', $argument, 2, \PREG_SPLIT_NO_EMPTY);
+                $identifier    = new PharAlias(\mb_strtolower($argumentParts[0]));
+
+                if (\count($argumentParts) === 2) {
                     $versionConstraint = (new VersionConstraintParser())->parse($argumentParts[1]);
                 } else {
                     $versionConstraint = new AnyVersionConstraint();
@@ -129,48 +129,29 @@ class InstallCommandConfig {
             }
 
             $phars[] = new RequestedPhar(
-                $identifier, $versionConstraint, $versionConstraint, null, $this->makeCopy()
+                $identifier,
+                $versionConstraint,
+                $versionConstraint,
+                null,
+                $this->makeCopy()
             );
         }
 
         return $phars;
     }
 
-    /**
-     * @return bool
-     */
-    private function installGlobally() {
+    private function installGlobally(): bool {
         return $this->cliOptions->hasOption('global');
     }
 
-    /**
-     * @return bool
-     */
-    private function makeCopy() {
+    private function makeCopy(): bool {
         return $this->cliOptions->hasOption('copy') || $this->installGlobally();
     }
 
     /**
-     * @return bool
-     */
-    public function doNotAddToPhiveXml() {
-        return $this->cliOptions->hasOption('temporary') || $this->installGlobally();
-    }
-
-    /**
-     * @return bool
-     */
-    public function forceAcceptUnsignedPhars() {
-        return $this->cliOptions->hasOption('force-accept-unsigned');
-    }
-
-    /**
-     * @param ConfiguredPhar $configuredPhar
-     *
-     * @return PharAlias|PharUrl
      * @throws \PharIo\Phive\ConfiguredPharException
      */
-    private function getIdentifier(ConfiguredPhar $configuredPhar) {
+    private function getIdentifier(ConfiguredPhar $configuredPhar): PharIdentifier {
         if (Url::isUrl($configuredPhar->getName())) {
             return new PharUrl($configuredPhar->getName());
         }
@@ -183,18 +164,15 @@ class InstallCommandConfig {
     }
 
     /**
-     * @param ConfiguredPhar $configuredPhar
-     *
-     * @return VersionConstraint
      * @throws \PharIo\Phive\ConfiguredPharException
      */
-    private function getVersionToInstall(ConfiguredPhar $configuredPhar) {
+    private function getVersionToInstall(ConfiguredPhar $configuredPhar): VersionConstraint {
         $versionConstraint = $configuredPhar->getVersionConstraint();
+
         if ($configuredPhar->isInstalled() && $versionConstraint->complies($configuredPhar->getInstalledVersion())) {
             return new ExactVersionConstraint($configuredPhar->getInstalledVersion()->getVersionString());
         }
 
         return $versionConstraint;
     }
-
 }

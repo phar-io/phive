@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class UrlRepository implements SourceRepository {
@@ -6,7 +6,7 @@ class UrlRepository implements SourceRepository {
     /** @var Url */
     private $url;
 
-    /** @var Url|null */
+    /** @var null|Url */
     private $sigUrl;
 
     /**
@@ -16,20 +16,17 @@ class UrlRepository implements SourceRepository {
      * @param Url $sigUrl
      */
     public function __construct(Url $url = null, Url $sigUrl = null) {
-        $this->url = $url;
+        $this->url    = $url;
         $this->sigUrl = $sigUrl;
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return ReleaseCollection
-     */
-    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar) {
+    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar): ReleaseCollection {
         $releases = new ReleaseCollection();
-        if ($this->url === Null) {
+
+        if ($this->url === null) {
             return $releases;
         }
+
         if ($requestedPhar->getUrl()->equals($this->url)) {
             $releases->add(
                 new SupportedRelease(
@@ -43,5 +40,4 @@ class UrlRepository implements SourceRepository {
 
         return $releases;
     }
-
 }

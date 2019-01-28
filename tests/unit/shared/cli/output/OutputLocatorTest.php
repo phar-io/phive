@@ -1,26 +1,23 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 use PharIo\Phive\Environment;
 use PHPUnit\Framework\TestCase;
 
 class OutputLocatorTest extends TestCase {
-
     private $factory;
 
     private $locator;
 
     private $environment;
 
-    protected function setUp() {
-        $this->factory = $this->createOutputFactoryMock();
-        $this->locator = new OutputLocator($this->factory);
+    protected function setUp(): void {
+        $this->factory     = $this->createOutputFactoryMock();
+        $this->locator     = new OutputLocator($this->factory);
         $this->environment = $this->createEnvironmentMock();
     }
 
-
-    public function testReturnsColoredConsoleOutput() {
-
+    public function testReturnsColoredConsoleOutput(): void {
         $output = $this->createOutputMock();
 
         $this->factory->expects($this->once())
@@ -34,8 +31,7 @@ class OutputLocatorTest extends TestCase {
         $this->assertSame($output, $actual);
     }
 
-    public function testReturnsConsoleOutput() {
-
+    public function testReturnsConsoleOutput(): void {
         $output = $this->createOutputMock();
 
         $this->factory->expects($this->once())
@@ -50,21 +46,21 @@ class OutputLocatorTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Output
+     * @return Output|\PHPUnit_Framework_MockObject_MockObject
      */
     private function createOutputMock() {
         return $this->createMock(Output::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
      */
     private function createEnvironmentMock() {
         return $this->createMock(Environment::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|OutputFactory
+     * @return OutputFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     private function createOutputFactoryMock() {
         return $this->createMock(OutputFactory::class);

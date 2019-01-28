@@ -1,49 +1,31 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class GnupgVerificationResult implements VerificationResult {
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $verificationData = [];
 
-    /**
-     * @param array $data
-     */
     public function __construct(array $data) {
         $this->validate($data);
         $this->verificationData = $data;
     }
 
-    /**
-     * @param array $keyinfo
-     */
-    private function validate(array $keyinfo) {
-        if (!array_key_exists('summary', $keyinfo) || !array_key_exists('fingerprint', $keyinfo)) {
-            throw new \InvalidArgumentException('Keyinfo does not contain required data');
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getFingerprint() {
+    public function getFingerprint(): string {
         return $this->verificationData['fingerprint'];
     }
 
-    /**
-     * @return bool
-     */
-    public function isKnownKey() {
+    public function isKnownKey(): bool {
         return ($this->verificationData['summary'] & 128) !== 128;
     }
 
-    /**
-     * @return bool
-     */
-    public function wasVerificationSuccessful() {
+    public function wasVerificationSuccessful(): bool {
         return ($this->verificationData['summary'] == 0);
     }
 
+    private function validate(array $keyinfo): void {
+        if (!\array_key_exists('summary', $keyinfo) || !\array_key_exists('fingerprint', $keyinfo)) {
+            throw new \InvalidArgumentException('Keyinfo does not contain required data');
+        }
+    }
 }

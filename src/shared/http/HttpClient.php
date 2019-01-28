@@ -1,22 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface HttpClient {
+    public function get(Url $url, ETag $etag = null): HttpResponse;
 
-    /**
-     * @param Url       $url
-     * @param ETag|null $etag
-     *
-     * @return HttpResponse
-     */
-    public function get(Url $url, ETag $etag = null);
-
-    /**
-     * @param Url       $url
-     * @param ETag|null $etag
-     *
-     * @return HttpResponse
-     */
-    public function head(Url $url, ETag $etag = null);
-
+    public function head(Url $url, ETag $etag = null): HttpResponse;
 }

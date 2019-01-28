@@ -1,6 +1,7 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
+use DOMElement;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
@@ -8,38 +9,25 @@ use PharIo\Version\Version;
 
 class PharRegistry {
 
-    /**
-     * @var Directory
-     */
+    /** @var Directory */
     private $pharDirectory;
 
-    /**
-     * @var XmlFile
-     */
+    /** @var XmlFile */
     private $dbFile;
 
-    /**
-     * @param XmlFile   $xmlFile
-     * @param Directory $pharDirectory
-     */
     public function __construct(XmlFile $xmlFile, Directory $pharDirectory) {
-        $this->dbFile = $xmlFile;
+        $this->dbFile        = $xmlFile;
         $this->pharDirectory = $pharDirectory;
     }
 
-    /**
-     * @param Phar $phar
-     *
-     * @return Phar
-     */
-    public function addPhar(Phar $phar) {
+    public function addPhar(Phar $phar): Phar {
         $destinationFile = $this->savePhar($phar->getFile());
-        $pharNode = $this->dbFile->createElement('phar');
+        $pharNode        = $this->dbFile->createElement('phar');
         $pharNode->setAttribute('name', $phar->getName());
         $pharNode->setAttribute('version', $phar->getVersion()->getVersionString());
         $pharNode->setAttribute(
             'location',
-            $this->pharDirectory . DIRECTORY_SEPARATOR . $phar->getFile()->getFilename()
+            $this->pharDirectory . \DIRECTORY_SEPARATOR . $phar->getFile()->getFilename()
         );
         $hashNode = $this->dbFile->createElement('hash', Sha1Hash::forContent($phar->getFile()->getContent())->asString());
         $hashNode->setAttribute('type', 'sha1');
@@ -67,44 +55,20 @@ class PharRegistry {
      *
      * @return Phar[]
      */
-    public function getPhars($name) {
+    public function getPhars($name): array {
         $phars = [];
-        foreach ($this->dbFile->query(sprintf('//phive:phar[@name="%s"]', $name)) as $pharNode) {
+
+        foreach ($this->dbFile->query(\sprintf('//phive:phar[@name="%s"]', $name)) as $pharNode) {
             $phars[] = $this->nodetoPhar($pharNode);
         }
 
         return $phars;
     }
 
-    /**
-     * @param File $pharFile
-     *
-     * @return Filename
-     */
-    private function savePhar(File $pharFile) {
-        $destination = new Filename($this->getPharDestination($pharFile));
-        $pharFile->saveAs($destination);
-        chmod($destination, 0755);
-
-        return $destination;
-    }
-
-    /**
-     * @param File $file
-     *
-     * @return string
-     */
-    private function getPharDestination(File $file) {
-        return $this->pharDirectory . DIRECTORY_SEPARATOR . $file->getFilename();
-    }
-
-    /**
-     * @param Phar     $phar
-     * @param Filename $destination
-     */
-    public function addUsage(Phar $phar, Filename $destination) {
+    public function addUsage(Phar $phar, Filename $destination): void {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        if ($this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $destination->asString()), $pharNode)->length
+
+        if ($this->dbFile->query(\sprintf('//phive:usage[@destination="%s"]', $destination->asString()), $pharNode)->length
             !== 0
         ) {
             return;
@@ -116,27 +80,11 @@ class PharRegistry {
     }
 
     /**
-     * @param string  $name
-     * @param Version $version
-     *
-     * @return \DOMElement
-     */
-    private function getFirstMatchingPharNode($name, Version $version) {
-        $query = sprintf('//phive:phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
-
-        return $this->dbFile->query($query)->item(0);
-    }
-
-    /**
-     * @param string  $name
-     * @param Version $version
-     *
-     * @return Phar
      * @throws PharRegistryException
      */
-    public function getPhar($name, Version $version) {
+    public function getPhar(string $name, Version $version): Phar {
         if (!$this->hasPhar($name, $version)) {
-            throw new PharRegistryException(sprintf(
+            throw new PharRegistryException(\sprintf(
                 'Phar %s %s not found in database.',
                 $name,
                 $version->getVersionString()
@@ -146,81 +94,39 @@ class PharRegistry {
         return $this->nodetoPhar($this->getFirstMatchingPharNode($name, $version));
     }
 
-    /**
-     * @param string  $name
-     * @param Version $version
-     *
-     * @return bool
-     */
-    public function hasPhar($name, Version $version) {
+    public function hasPhar(string $name, Version $version): bool {
         return $this->getFirstMatchingPharNode($name, $version) !== null;
     }
 
     /**
-     * @param \DOMElement $pharNode
-     *
-     * @return Phar
-     */
-    private function nodetoPhar(\DOMElement $pharNode) {
-        return new Phar(
-            $pharNode->getAttribute('name'),
-            new Version($pharNode->getAttribute('version')),
-            $this->loadPharFile($pharNode->getAttribute('location'))
-        );
-    }
-
-    /**
-     * @param string $filename
-     *
-     * @return File
-     */
-    private function loadPharFile($filename) {
-        return new File(new Filename($filename), file_get_contents($filename));
-    }
-
-    /**
-     * @param string $filename
-     *
-     * @return Phar
      * @throws PharRegistryException
      */
-    public function getByUsage($filename) {
-        $pharNode = $this->dbFile->query(sprintf('//phive:phar[phive:usage/@destination="%s"]', $filename))->item(0);
+    public function getByUsage(Filename $filename): Phar {
+        $pharNode = $this->dbFile->query(\sprintf('//phive:phar[phive:usage/@destination="%s"]', $filename))->item(0);
+
         if (null === $pharNode) {
-            throw new PharRegistryException(sprintf('No phar with usage %s found', $filename));
+            throw new PharRegistryException(\sprintf('No phar with usage %s found', $filename));
         }
 
-        /** @var \DOMElement $pharNode */
+        /* @var DOMElement $pharNode */
         return $this->nodetoPhar($pharNode);
     }
 
-    /**
-     * @param Phar   $phar
-     * @param string $destination
-     */
-    public function removeUsage(Phar $phar, $destination) {
-        $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        $usageNode = $this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $destination), $pharNode)->item(0);
+    public function removeUsage(Phar $phar, Filename $destination): void {
+        $pharNode  = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
+        $usageNode = $this->dbFile->query(\sprintf('//phive:usage[@destination="%s"]', $destination), $pharNode)->item(0);
         $pharNode->removeChild($usageNode);
         $this->dbFile->save();
     }
 
-    /**
-     * @param Phar $phar
-     */
-    public function removePhar(Phar $phar) {
+    public function removePhar(Phar $phar): void {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
         $phar->getFile()->getFilename()->delete();
         $pharNode->parentNode->removeChild($pharNode);
         $this->dbFile->save();
     }
 
-    /**
-     * @param Phar $phar
-     *
-     * @return bool
-     */
-    public function hasUsages(Phar $phar) {
+    public function hasUsages(Phar $phar): bool {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
 
         return $this->dbFile->query('phive:usage', $pharNode)->length > 0;
@@ -229,8 +135,9 @@ class PharRegistry {
     /**
      * @return Phar[]
      */
-    public function getUnusedPhars() {
+    public function getUnusedPhars(): array {
         $unusedPhars = [];
+
         foreach ($this->dbFile->query('//phive:phar[not(phive:usage)]') as $pharNode) {
             $unusedPhars[] = $this->nodetoPhar($pharNode);
         }
@@ -239,13 +146,12 @@ class PharRegistry {
     }
 
     /**
-     * @param Directory $destination
-     *
      * @return Phar[]
      */
-    public function getUsedPharsByDestination(Directory $destination) {
+    public function getUsedPharsByDestination(Directory $destination): array {
         $usedPhars = [];
-        $query = sprintf('//phive:phar[contains(phive:usage/@destination, "%s")]', $destination);
+        $query     = \sprintf('//phive:phar[contains(phive:usage/@destination, "%s")]', $destination);
+
         foreach ($this->dbFile->query($query) as $pharNode) {
             $usedPhars[] = $this->nodetoPhar($pharNode);
         }
@@ -253,22 +159,47 @@ class PharRegistry {
         return $usedPhars;
     }
 
-    /**
-     * @param string $alias
-     *
-     * @return array
-     */
-    public function getKnownSignatureFingerprints($alias) {
+    public function getKnownSignatureFingerprints(string $alias): array {
         $fingerprints = [];
-        $query = sprintf('//phive:phar[@name="%s"]/phive:signature/@fingerprint', $alias);
+        $query        = \sprintf('//phive:phar[@name="%s"]/phive:signature/@fingerprint', $alias);
+
         foreach ($this->dbFile->query($query) as $fingerprintNode) {
-            if (in_array($fingerprintNode->nodeValue, $fingerprints)) {
+            if (\in_array($fingerprintNode->nodeValue, $fingerprints)) {
                 continue;
             }
             $fingerprints[] = $fingerprintNode->nodeValue;
         }
 
-        return array_unique($fingerprints);
+        return \array_unique($fingerprints);
     }
 
+    private function savePhar(File $pharFile): Filename {
+        $destination = new Filename($this->getPharDestination($pharFile));
+        $pharFile->saveAs($destination);
+        \chmod($destination->asString(), 0755);
+
+        return $destination;
+    }
+
+    private function getPharDestination(File $file): string {
+        return $this->pharDirectory . \DIRECTORY_SEPARATOR . $file->getFilename();
+    }
+
+    private function getFirstMatchingPharNode(string $name, Version $version): ?DOMElement {
+        $query = \sprintf('//phive:phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
+
+        return $this->dbFile->query($query)->item(0);
+    }
+
+    private function nodetoPhar(DOMElement $pharNode): Phar {
+        return new Phar(
+            $pharNode->getAttribute('name'),
+            new Version($pharNode->getAttribute('version')),
+            $this->loadPharFile($pharNode->getAttribute('location'))
+        );
+    }
+
+    private function loadPharFile(string $filename): File {
+        return new File(new Filename($filename), \file_get_contents($filename));
+    }
 }

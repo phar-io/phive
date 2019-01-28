@@ -1,28 +1,18 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 
 class LocalRepository implements SourceRepository {
 
-    /**
-     * @var PharRegistry
-     */
+    /** @var PharRegistry */
     private $registry;
 
-    /**
-     * @param PharRegistry $registry
-     */
     public function __construct(PharRegistry $registry) {
         $this->registry = $registry;
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return ReleaseCollection
-     */
-    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar) {
+    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar): ReleaseCollection {
         $releases = new ReleaseCollection();
 
         foreach ($this->registry->getPhars($requestedPhar->asString()) as $phar) {
@@ -42,14 +32,7 @@ class LocalRepository implements SourceRepository {
         return $releases;
     }
 
-    /**
-     * @param Filename $filename
-     *
-     * @return string
-     */
-    private function getPharName(Filename $filename) {
-        $filename = pathinfo($filename->asString(), PATHINFO_BASENAME);
-
-        return $filename;
+    private function getPharName(Filename $filename): string {
+        return \pathinfo($filename->asString(), \PATHINFO_BASENAME);
     }
 }

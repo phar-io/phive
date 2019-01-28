@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
@@ -10,8 +10,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\RemoteSourcesListFileLoader
  */
 class RemoteSourcesListFileLoaderTest extends TestCase {
-    public function testInvokesDownloaderIfLocalFileDoesNotExist() {
-        $url = $this->getUrlMock();
+    public function testInvokesDownloaderIfLocalFileDoesNotExist(): void {
+        $url      = $this->getUrlMock();
         $filename = $this->getFilenameMock();
         $filename->method('exists')->willReturn(false);
         $downloader = $this->getFileDownloaderMock();
@@ -34,9 +34,8 @@ class RemoteSourcesListFileLoaderTest extends TestCase {
         $loader->load();
     }
 
-
-    public function testInvokesDownloaderIfLocalFileIsOutdated() {
-        $url = $this->getUrlMock();
+    public function testInvokesDownloaderIfLocalFileIsOutdated(): void {
+        $url      = $this->getUrlMock();
         $filename = $this->getFilenameMock();
         $filename->method('exists')->willReturn(true);
         $filename->method('isOlderThan')->willReturn(true);
@@ -60,8 +59,8 @@ class RemoteSourcesListFileLoaderTest extends TestCase {
         $loader->load();
     }
 
-    public function testDoesNotInvokeDownloaderIfLocalFileExistsAndIsNotOutdated() {
-        $url = $this->getUrlMock();
+    public function testDoesNotInvokeDownloaderIfLocalFileExistsAndIsNotOutdated(): void {
+        $url      = $this->getUrlMock();
         $filename = $this->getFilenameMock();
         $filename->method('exists')->willReturn(true);
         $filename->method('isOlderThan')->willReturn(false);
@@ -82,43 +81,37 @@ class RemoteSourcesListFileLoaderTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|File
+     * @return File|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getFileMock()
-    {
+    private function getFileMock() {
         return $this->createMock(File::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Output
+     * @return Output|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getOutputMock()
-    {
+    private function getOutputMock() {
         return $this->createMock(Output::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Filename
+     * @return Filename|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getFilenameMock()
-    {
+    private function getFilenameMock() {
         return $this->createMock(Filename::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Url
      */
-    private function getUrlMock()
-    {
+    private function getUrlMock() {
         return $this->createMock(Url::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|FileDownloader
+     * @return FileDownloader|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getFileDownloaderMock()
-    {
+    private function getFileDownloaderMock() {
         return $this->createMock(FileDownloader::class);
     }
-
 }

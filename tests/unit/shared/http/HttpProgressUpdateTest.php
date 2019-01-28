@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
@@ -7,11 +7,17 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\HttpProgressUpdate
  */
 class HttpProgressUpdateTest extends TestCase {
-
     use ScalarTestDataProvider;
 
-    public function testGetUrl() {
-        $url = new Url('https://example.com');
+    public static function percentProvider() {
+        return [
+            [0, 0, 0],
+            [1000, 100, 10.0]
+        ];
+    }
+
+    public function testGetUrl(): void {
+        $url    = new Url('https://example.com');
         $update = new HttpProgressUpdate($url, 10, 1, 0, 0);
         $this->assertSame($url, $update->getUrl());
     }
@@ -21,8 +27,8 @@ class HttpProgressUpdateTest extends TestCase {
      *
      * @param int $value
      */
-    public function testGetExpectedDownloadSize($value) {
-        $url = new Url('https://example.com');
+    public function testGetExpectedDownloadSize($value): void {
+        $url    = new Url('https://example.com');
         $update = new HttpProgressUpdate($url, $value, 1, 0, 0);
         $this->assertSame($value, $update->getExpectedDownloadSize());
     }
@@ -32,8 +38,8 @@ class HttpProgressUpdateTest extends TestCase {
      *
      * @param int $value
      */
-    public function testGetBytesReceived($value) {
-        $url = new Url('https://example.com');
+    public function testGetBytesReceived($value): void {
+        $url    = new Url('https://example.com');
         $update = new HttpProgressUpdate($url, 10, $value, 0, 0);
         $this->assertSame($value, $update->getBytesReceived());
     }
@@ -43,8 +49,8 @@ class HttpProgressUpdateTest extends TestCase {
      *
      * @param int $value
      */
-    public function testGetExpectedUploadSize($value) {
-        $url = new Url('https://example.com');
+    public function testGetExpectedUploadSize($value): void {
+        $url    = new Url('https://example.com');
         $update = new HttpProgressUpdate($url, 0, 0, $value, 0);
         $this->assertSame($value, $update->getExpectedUploadSize());
     }
@@ -54,8 +60,8 @@ class HttpProgressUpdateTest extends TestCase {
      *
      * @param int $value
      */
-    public function testGetBytesSent($value) {
-        $url = new Url('https://example.com');
+    public function testGetBytesSent($value): void {
+        $url    = new Url('https://example.com');
         $update = new HttpProgressUpdate($url, 0, 0, 10, $value);
         $this->assertSame($value, $update->getBytesSent());
     }
@@ -67,8 +73,8 @@ class HttpProgressUpdateTest extends TestCase {
      * @param $received
      * @param $expectedPercent
      */
-    public function testGetDownloadPercent($total, $received, $expectedPercent) {
-        $url = new Url('https://example.com');
+    public function testGetDownloadPercent($total, $received, $expectedPercent): void {
+        $url    = new Url('https://example.com');
         $update = new HttpProgressUpdate($url, $total, $received, 0, 0);
 
         $this->assertSame($expectedPercent, $update->getDownloadPercent());
@@ -81,17 +87,10 @@ class HttpProgressUpdateTest extends TestCase {
      * @param $sent
      * @param $expectedPercent
      */
-    public function testGetUploadPercent($total, $sent, $expectedPercent) {
-        $url = new Url('https://example.com');
+    public function testGetUploadPercent($total, $sent, $expectedPercent): void {
+        $url    = new Url('https://example.com');
         $update = new HttpProgressUpdate($url, 0, 0, $total, $sent);
 
         $this->assertSame($expectedPercent, $update->getUploadPercent());
-    }
-
-    public static function percentProvider() {
-        return [
-            [0, 0, 0],
-            [1000, 100, 10.0]
-        ];
     }
 }

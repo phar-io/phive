@@ -1,139 +1,94 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 use PharIo\Version\VersionConstraint;
 
 class RequestedPhar {
-
-    /**
-     * @var PharIdentifier
-     */
+    /** @var PharIdentifier */
     private $identifier;
 
-    /**
-     * @var VersionConstraint
-     */
+    /** @var VersionConstraint */
     private $versionConstraint;
 
-    /**
-     * @var VersionConstraint
-     */
+    /** @var VersionConstraint */
     private $lockedVersion;
 
-    /**
-     * @var Filename|null
-     */
+    /** @var null|Filename */
     private $location;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $makeCopy;
 
-    /**
-     * @param PharIdentifier    $identifier
-     * @param VersionConstraint $versionConstraint
-     * @param VersionConstraint $lockedVersion
-     * @param Filename|null     $location
-     * @param bool              $makeCopy
-     */
     public function __construct(
         PharIdentifier $identifier,
         VersionConstraint $versionConstraint,
         VersionConstraint $lockedVersion,
         Filename $location = null,
-        $makeCopy = false
+        bool $makeCopy = false
     ) {
-        $this->identifier = $identifier;
+        $this->identifier        = $identifier;
         $this->versionConstraint = $versionConstraint;
-        $this->lockedVersion = $lockedVersion;
-        $this->location = $location;
-        $this->makeCopy = $makeCopy;
+        $this->lockedVersion     = $lockedVersion;
+        $this->location          = $location;
+        $this->makeCopy          = $makeCopy;
     }
 
-    /**
-     * @return PharIdentifier
-     */
-    public function getIdentifier() {
+    public function getIdentifier(): PharIdentifier {
         return $this->identifier;
     }
 
     /**
-     * @return PharAlias
      * @throws \Exception
      */
-    public function getAlias() {
+    public function getAlias(): PharAlias {
         if ($this->identifier instanceof PharAlias) {
             return $this->identifier;
         }
+
         throw new \Exception('Requested PHAR has no alias');
     }
 
     /**
-     * @return PharUrl
      * @throws \Exception
      */
-    public function getUrl() {
+    public function getUrl(): PharUrl {
         if ($this->identifier instanceof PharUrl) {
             return $this->identifier;
         }
+
         throw new \Exception('Requested PHAR has no URL');
     }
 
-    /**
-     * @return bool
-     */
-    public function hasAlias() {
+    public function hasAlias(): bool {
         return $this->identifier instanceof PharAlias;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasUrl() {
+    public function hasUrl(): bool {
         return $this->identifier instanceof PharUrl;
     }
 
-    /**
-     * @return VersionConstraint
-     */
-    public function getVersionConstraint() {
+    public function getVersionConstraint(): VersionConstraint {
         return $this->versionConstraint;
     }
 
-    /**
-     * @return VersionConstraint
-     */
-    public function getLockedVersion() {
+    public function getLockedVersion(): VersionConstraint {
         return $this->lockedVersion;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasLocation() {
+    public function hasLocation(): bool {
         return $this->location !== null;
     }
 
-    /**
-     * @return Filename|null
-     */
-    public function getLocation() {
+    public function getLocation(): ?Filename {
         return $this->location;
     }
 
-    /**
-     * @return string
-     */
-    public function asString() {
+    public function asString(): string {
         return $this->identifier->asString();
     }
 
-    /**
-     * @return bool
-     */
-    public function makeCopy() {
+    public function makeCopy(): bool {
         return $this->makeCopy;
     }
 }

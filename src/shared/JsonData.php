@@ -1,16 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class JsonData {
-
-    /**
-     * @var string
-     */
+    /** @var string */
     private $raw;
 
-    /**
-     * @var \stdClass
-     */
+    /** @var \stdClass */
     private $parsed;
 
     /**
@@ -20,36 +15,27 @@ class JsonData {
      */
     public function __construct($raw) {
         $this->raw = $raw;
-        $parsed = json_decode($raw, false, 512, JSON_BIGINT_AS_STRING);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \InvalidArgumentException(json_last_error_msg(), json_last_error());
+        $parsed    = \json_decode($raw, false, 512, \JSON_BIGINT_AS_STRING);
+
+        if (\json_last_error() !== \JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException(\json_last_error_msg(), \json_last_error());
         }
-        if (!$parsed instanceof \stdClass && !is_array($parsed)) {
+
+        if (!$parsed instanceof \stdClass && !\is_array($parsed)) {
             throw new \InvalidArgumentException('Given JSON string does not parse into object or array');
         }
         $this->parsed = $parsed;
     }
 
-    /**
-     * @return string
-     */
-    public function getRaw() {
+    public function getRaw(): string {
         return $this->raw;
     }
 
-    /**
-     * @return \stdClass
-     */
     public function getParsed() {
         return $this->parsed;
     }
 
-    /**
-     * @param string $fragmentSpecification
-     *
-     * @return bool
-     */
-    public function hasFragment($fragmentSpecification) {
+    public function hasFragment(string $fragmentSpecification): bool {
         try {
             $this->getFragment($fragmentSpecification);
 
@@ -66,10 +52,11 @@ class JsonData {
      */
     public function getFragment($fragmentSpecification) {
         $data = $this->parsed;
-        foreach (explode('.', $fragmentSpecification) as $key) {
-            if (!property_exists($data, $key)) {
+
+        foreach (\explode('.', $fragmentSpecification) as $key) {
+            if (!\property_exists($data, $key)) {
                 throw new \InvalidArgumentException(
-                    sprintf('Fragment %s of %s not found', $key, $fragmentSpecification)
+                    \sprintf('Fragment %s of %s not found', $key, $fragmentSpecification)
                 );
             }
             $data = $data->{$key};
@@ -77,5 +64,4 @@ class JsonData {
 
         return $data;
     }
-
 }

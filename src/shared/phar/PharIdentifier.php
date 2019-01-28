@@ -1,11 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface PharIdentifier {
-
-    /**
-     * @return string
-     */
-    public function asString();
-
+    public function asString(): string;
 }

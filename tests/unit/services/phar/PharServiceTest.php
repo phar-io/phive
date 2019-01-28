@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
@@ -9,9 +9,9 @@ use PHPUnit_Framework_MockObject_MockObject;
  * @covers \PharIo\Phive\PharService
  */
 class PharServiceTest extends TestCase {
-    public function testReturnsPharFromRegistryIfItExists() {
-        $phar = $this->getPharMock();
-        $name = 'some Phar';
+    public function testReturnsPharFromRegistryIfItExists(): void {
+        $phar    = $this->getPharMock();
+        $name    = 'some Phar';
         $version = new Version('1.0.0');
 
         $release = $this->getReleaseMock();
@@ -37,10 +37,9 @@ class PharServiceTest extends TestCase {
         $this->assertSame($phar, $service->getPharFromRelease($release));
     }
 
-    public function testDownloadsPharIfNotPresentInRegistry()
-    {
-        $phar = $this->getPharMock();
-        $name = 'some Phar';
+    public function testDownloadsPharIfNotPresentInRegistry(): void {
+        $phar    = $this->getPharMock();
+        $name    = 'some Phar';
         $version = new Version('1.0.0');
 
         $release = $this->getReleaseMock();
@@ -70,34 +69,30 @@ class PharServiceTest extends TestCase {
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|Phar
+     * @return Phar|PHPUnit_Framework_MockObject_MockObject
      */
-    private function getPharMock()
-    {
+    private function getPharMock() {
         return $this->createMock(Phar::class);
     }
 
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|SupportedRelease
      */
-    private function getReleaseMock()
-    {
+    private function getReleaseMock() {
         return $this->createMock(SupportedRelease::class);
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|PharRegistry
+     * @return PharRegistry|PHPUnit_Framework_MockObject_MockObject
      */
-    private function getPharRegistryMock()
-    {
+    private function getPharRegistryMock() {
         return $this->createMock(PharRegistry::class);
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|PharDownloader
+     * @return PharDownloader|PHPUnit_Framework_MockObject_MockObject
      */
-    private function getPharDownloaderMock()
-    {
+    private function getPharDownloaderMock() {
         return $this->createMock(PharDownloader::class);
     }
 }

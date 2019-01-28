@@ -1,29 +1,14 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
-
-use PharIo\Phive\Cli;
 
 class ComposerCommand extends InstallCommand {
 
-    /**
-     * @var ComposerService
-     */
+    /** @var ComposerService */
     private $composerService;
 
-    /**
-     * @var Cli\Input
-     */
+    /** @var Cli\Input */
     private $input;
 
-    /**
-     * @param ComposerCommandConfig        $config
-     * @param ComposerService              $composerService
-     * @param InstallService               $installService
-     * @param Cli\Input                    $input
-     * @param RequestedPharResolverService $pharResolver
-     *
-     * @internal param PhiveXmlConfig $phiveXmlConfig
-     */
     public function __construct(
         ComposerCommandConfig $config,
         ComposerService $composerService,
@@ -34,25 +19,21 @@ class ComposerCommand extends InstallCommand {
     ) {
         parent::__construct($config, $installService, $pharResolver, $selector);
         $this->composerService = $composerService;
-        $this->input = $input;
+        $this->input           = $input;
     }
 
-    public function execute() {
+    public function execute(): void {
         $targetDirectory = $this->getConfig()->getTargetDirectory();
 
         foreach ($this->composerService->findCandidates($this->getConfig()->getComposerFilename()) as $candidate) {
-            if (!$this->input->confirm(sprintf('Install %s ?', $candidate->asString()))) {
+            if (!$this->input->confirm(\sprintf('Install %s ?', $candidate->asString()))) {
                 continue;
             }
             $this->installRequestedPhar($candidate, $targetDirectory);
         }
     }
 
-    /**
-     * @return InstallCommandConfig|ComposerCommandConfig
-     */
     protected function getConfig() {
         return parent::getConfig();
     }
-
 }

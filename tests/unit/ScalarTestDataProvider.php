@@ -1,12 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 trait ScalarTestDataProvider {
-
-    /**
-     * @return array
-     */
-    public function stringProvider() {
+    public function stringProvider(): array {
         return [
             ['foo'],
             ['bar'],
@@ -15,10 +11,7 @@ trait ScalarTestDataProvider {
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function intProvider() {
+    public function intProvider(): array {
         return [
             [0],
             [1],
@@ -28,14 +21,10 @@ trait ScalarTestDataProvider {
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function boolProvider() {
+    public function boolProvider(): array {
         return [
             [true],
             [false]
         ];
     }
-
 }

@@ -1,6 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
+use DOMElement;
+use DOMNode;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 use PharIo\Version\Version;
@@ -8,33 +10,23 @@ use PharIo\Version\VersionConstraintParser;
 
 abstract class PhiveXmlConfig {
 
-    /**
-     * @var XmlFile
-     */
+    /** @var XmlFile */
     private $configFile;
 
-    /**
-     * @var VersionConstraintParser
-     */
+    /** @var VersionConstraintParser */
     private $versionConstraintParser;
 
-    /**
-     * @param XmlFile                 $configFile
-     * @param VersionConstraintParser $versionConstraintParser
-     */
     public function __construct(XmlFile $configFile, VersionConstraintParser $versionConstraintParser) {
-        $this->configFile = $configFile;
+        $this->configFile              = $configFile;
         $this->versionConstraintParser = $versionConstraintParser;
     }
 
     /**
-     * @param InstalledPhar $installedPhar
-     * @param RequestedPhar $requestedPhar
-     *
      * @throws \Exception
      */
-    public function addPhar(InstalledPhar $installedPhar, RequestedPhar $requestedPhar) {
+    public function addPhar(InstalledPhar $installedPhar, RequestedPhar $requestedPhar): void {
         $name = $installedPhar->getName();
+
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
         } else {
@@ -49,48 +41,31 @@ abstract class PhiveXmlConfig {
 
         $pharNode->setAttribute('version', $installedPhar->getVersionConstraint()->asString());
         $pharNode->setAttribute('installed', $installedPhar->getInstalledVersion()->getVersionString());
-        $pharNode->setAttribute('location', $this->getLocation($installedPhar));
+        $pharNode->setAttribute('location', $this->getLocation($installedPhar)->asString());
         $pharNode->setAttribute('copy', $installedPhar->isCopy() ? 'true' : 'false');
 
         $this->configFile->save();
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasPhar($name) {
+    public function hasPhar(string $name): bool {
         return $this->hasPharNode($name);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasPharLocation($name) {
+    public function hasPharLocation(string $name): bool {
         return $this->hasPhar($name) && $this->getPharNode($name)->hasAttribute('location');
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Filename
-     */
-    public function getPharLocation($name) {
+    public function getPharLocation(string $name): Filename {
         $locationAttribute = $this->getPharNode($name)->getAttribute('location');
-        if (is_dir($locationAttribute)) {
+
+        if (\is_dir($locationAttribute)) {
             return (new Directory($locationAttribute))->file($name)->withAbsolutePath();
         }
 
         return (new Filename($locationAttribute))->withAbsolutePath();
     }
 
-    /**
-     * @param string $name
-     */
-    public function removePhar($name) {
+    public function removePhar(string $name): void {
         if (!$this->hasPharNode($name)) {
             return;
         }
@@ -100,31 +75,26 @@ abstract class PhiveXmlConfig {
     }
 
     /**
-     * @param RequestedPhar $phar
-     *
-     * @return Version
      * @throws ConfigException
      */
-    public function getPharVersion(RequestedPhar $phar) {
+    public function getPharVersion(RequestedPhar $phar): Version {
         $name = $phar->asString();
+
         if (!$this->hasPharNode($name)) {
-            throw new ConfigException(sprintf('PHAR %s not found in phive.xml', $name));
+            throw new ConfigException(\sprintf('PHAR %s not found in phive.xml', $name));
         }
         $pharNode = $this->getPharNode($name);
+
         if (!$pharNode->hasAttribute('installed')) {
-            throw new ConfigException(sprintf('PHAR %s has no installed version', $name));
+            throw new ConfigException(\sprintf('PHAR %s has no installed version', $name));
         }
 
         return new Version($pharNode->getAttribute('installed'));
     }
 
-    /**
-     * @param RequestedPhar $phar
-     *
-     * @return bool
-     */
-    public function isPharInstalled(RequestedPhar $phar) {
+    public function isPharInstalled(RequestedPhar $phar): bool {
         $name = $phar->asString();
+
         if (!$this->hasPharLocation($name)) {
             return false;
         }
@@ -133,52 +103,11 @@ abstract class PhiveXmlConfig {
     }
 
     /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    private function hasPharNode($name) {
-        return $this->getPharNode($name) !== null;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return \DOMElement
-     */
-    private function getPharNode($name) {
-        /** @var \DOMElement $pharItemNode */
-        foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {
-            if (mb_strtolower($pharItemNode->getAttribute('name')) === mb_strtolower($name)) {
-                return $pharItemNode;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param string  $name
-     * @param Version $version
-     *
-     * @return \DOMElement
-     */
-    private function getPharNodeWithSpecificInstalledVersion($name, Version $version) {
-        /** @var \DOMElement $pharItemNode */
-        foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {
-            if (mb_strtolower($pharItemNode->getAttribute('name')) === mb_strtolower($name) &&
-                $pharItemNode->getAttribute('version') === $version->getVersionString()) {
-                return $pharItemNode;
-            }
-        }
-        return null;
-    }
-
-    /**
      * @return ConfiguredPhar[]
      */
-    public function getPhars() {
+    public function getPhars(): array {
         $phars = [];
-        /** @var \DOMElement $pharNode */
+        /** @var DOMElement $pharNode */
         foreach ($this->configFile->query('//phive:phar') as $pharNode) {
             $phars[] = $this->nodeToConfiguredPhar($pharNode);
         }
@@ -186,41 +115,97 @@ abstract class PhiveXmlConfig {
         return $phars;
     }
 
-    /**
-     * @param string  $name
-     * @param Version $version
-     *
-     * @return bool
-     */
-    public function hasConfiguredPhar($name, Version $version) {
+    public function hasConfiguredPhar(string $name, Version $version): bool {
         return $this->getPharNodeWithSpecificInstalledVersion($name, $version) !== null;
     }
 
-    /**
-     * @param string  $name
-     * @param Version $version
-     *
-     * @return ConfiguredPhar
-     */
-    public function getConfiguredPhar($name, Version $version) {
+    public function getConfiguredPhar(string $name, Version $version): ConfiguredPhar {
         return $this->nodeToConfiguredPhar($this->getPharNodeWithSpecificInstalledVersion($name, $version));
     }
 
-    private function nodeToConfiguredPhar(\DOMElement $pharNode) {
+    public function hasTargetDirectory(): bool {
+        return $this->getTargetDirectoryNode() !== null;
+    }
+
+    /**
+     * @throws ConfigException
+     */
+    public function getTargetDirectory(): Directory {
+        $node = $this->getTargetDirectoryNode();
+
+        if ($node === null) {
+            throw new ConfigException('Tools directory is not configured in phive.xml');
+        }
+
+        return new Directory($node->nodeValue);
+    }
+
+    public function setTargetDirectory(Directory $directory): void {
+        if (($node = $this->getTargetDirectoryNode()) === null) {
+            $configurationNode = $this->configFile->query('//phive:configuration')->item(0);
+
+            if ($configurationNode === null) {
+                $configurationNode = $this->configFile->createElement('configuration');
+                $this->configFile->addElement($configurationNode);
+            }
+            $node = $this->configFile->createElement('targetDirectory');
+            $configurationNode->appendChild($node);
+        }
+        $xmlFileDirectory = $this->configFile->getDirectory();
+        $node->nodeValue  = $directory->getRelativePathTo($xmlFileDirectory);
+    }
+
+    abstract protected function getLocation(InstalledPhar $installedPhar): Filename;
+
+    protected function getOwnDirectory(): Directory {
+        return $this->configFile->getDirectory();
+    }
+
+    private function hasPharNode(string $name): bool {
+        return $this->getPharNode($name) !== null;
+    }
+
+    private function getPharNode(string $name): ?DOMElement {
+        /** @var DOMElement $pharItemNode */
+        foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {
+            if (\mb_strtolower($pharItemNode->getAttribute('name')) === \mb_strtolower($name)) {
+                return $pharItemNode;
+            }
+        }
+
+        return null;
+    }
+
+    private function getPharNodeWithSpecificInstalledVersion(string $name, Version $version): ?DOMElement {
+        /** @var DOMElement $pharItemNode */
+        foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {
+            if (\mb_strtolower($pharItemNode->getAttribute('name')) === \mb_strtolower($name) &&
+                $pharItemNode->getAttribute('version') === $version->getVersionString()) {
+                return $pharItemNode;
+            }
+        }
+
+        return null;
+    }
+
+    private function nodeToConfiguredPhar(DOMElement $pharNode): ConfiguredPhar {
         $url = null;
+
         if ($pharNode->hasAttribute('url')) {
-            $url = new PharUrl($pharNode->getAttribute('url'));
-            $pharName = (string)$url;
+            $url               = new PharUrl($pharNode->getAttribute('url'));
+            $pharName          = (string)$url;
             $versionConstraint = $url->getPharVersion()->getVersionString();
         } else {
-            $pharName = $pharNode->getAttribute('name');
+            $pharName          = $pharNode->getAttribute('name');
             $versionConstraint = $pharNode->getAttribute('version');
         }
         $pharVersion = null;
+
         if ($pharNode->hasAttribute('installed') && !empty($pharNode->getAttribute('installed'))) {
             $pharVersion = new Version($pharNode->getAttribute('installed'));
         }
         $location = null;
+
         if ($pharNode->hasAttribute('location') && !empty($pharNode->getAttribute('location'))) {
             $location = new Filename($pharNode->getAttribute('location'));
             // workaround to make sure the directory gets created
@@ -239,62 +224,7 @@ abstract class PhiveXmlConfig {
         );
     }
 
-    /**
-     * @return bool
-     */
-    public function hasTargetDirectory() {
-        return $this->getTargetDirectoryNode() !== null;
-    }
-
-    /**
-     * @return Directory
-     * @throws ConfigException
-     */
-    public function getTargetDirectory() {
-        $node = $this->getTargetDirectoryNode();
-        if ($node === null) {
-            throw new ConfigException('Tools directory is not configured in phive.xml');
-        }
-
-        return new Directory($node->nodeValue);
-    }
-
-    /**
-     * @param Directory $directory
-     */
-    public function setTargetDirectory(Directory $directory) {
-        if (($node = $this->getTargetDirectoryNode()) === null) {
-            $configurationNode = $this->configFile->query('//phive:configuration')->item(0);
-            if ($configurationNode === null) {
-                $configurationNode = $this->configFile->createElement('configuration');
-                $this->configFile->addElement($configurationNode);
-            }
-            $node = $this->configFile->createElement('targetDirectory');
-            $configurationNode->appendChild($node);
-        }
-        $xmlFileDirectory = $this->configFile->getDirectory();
-        $node->nodeValue = $directory->getRelativePathTo($xmlFileDirectory);
-    }
-
-    /**
-     * @param InstalledPhar $installedPhar
-     *
-     * @return Filename
-     */
-    abstract protected function getLocation(InstalledPhar $installedPhar);
-
-    /**
-     * @return Directory
-     */
-    protected function getOwnDirectory() {
-        return $this->configFile->getDirectory();
-    }
-
-    /**
-     * @return \DOMNode
-     */
-    private function getTargetDirectoryNode() {
+    private function getTargetDirectoryNode(): ?DOMNode {
         return $this->configFile->query('//phive:configuration/phive:targetDirectory[1]')->item(0);
     }
-
 }

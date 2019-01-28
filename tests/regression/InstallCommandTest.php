@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\RegressionTests;
 
 use PharIo\FileSystem\Filename;
@@ -13,8 +13,7 @@ use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
 
 class InstallCommandTest extends RegressionTestCase {
-
-    public function testInstallsPhar() {
+    public function testInstallsPhar(): void {
         $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
 
         $this->runPhiveCommand('install', ['phpunit@5.3.1']);
@@ -25,7 +24,7 @@ class InstallCommandTest extends RegressionTestCase {
         );
     }
 
-    public function testCopiesPhar() {
+    public function testCopiesPhar(): void {
         $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
 
         $this->runPhiveCommand('install', ['--copy', 'phpunit@5.3.1']);
@@ -40,7 +39,7 @@ class InstallCommandTest extends RegressionTestCase {
         );
     }
 
-    public function testAddsPharNodeToPhiveXmlConfig() {
+    public function testAddsPharNodeToPhiveXmlConfig(): void {
         $phiveXmlConfig = $this->getPhiveXmlConfig();
         $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
 
@@ -58,15 +57,14 @@ class InstallCommandTest extends RegressionTestCase {
         $this->assertEquals($expectedPhars, $phiveXmlConfig->getPhars());
     }
 
-    public function testThrowsErrorIfGlobalAndTargetOptionsAreCombined() {
+    public function testThrowsErrorIfGlobalAndTargetOptionsAreCombined(): void {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(Runner::RC_PARAM_ERROR);
 
         $this->runPhiveCommand('install', ['--global', '--target tools', 'phpunit']);
     }
 
-    public function testLinksPharToLocationConfiguredInPhiveXml()
-    {
+    public function testLinksPharToLocationConfiguredInPhiveXml(): void {
         $this->addPharToRegistry('phpunit', '5.3.1', 'phpunit-5.3.1.phar');
 
         $phiveXmlConfig = $this->getPhiveXmlConfig();
@@ -91,8 +89,7 @@ class InstallCommandTest extends RegressionTestCase {
         $this->assertFileExists($this->getWorkingDirectory()->child('foo')->file('tests')->asString());
     }
 
-    public function testAddsSourceUrlToPhiveXml()
-    {
+    public function testAddsSourceUrlToPhiveXml(): void {
         $this->runPhiveCommand('install', ['https://phar.phpunit.de/test-mapper-1.0.0.phar']);
 
         $config = $this->getPhiveXmlConfig();
@@ -104,5 +101,4 @@ class InstallCommandTest extends RegressionTestCase {
         $this->assertTrue($phar->hasUrl());
         $this->assertEquals(new PharUrl('https://phar.phpunit.de/test-mapper-1.0.0.phar'), $phar->getUrl());
     }
-
 }

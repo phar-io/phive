@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
@@ -9,30 +9,23 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\PharIoAliasResolver
  */
 class PharIoAliasResolverTest extends TestCase {
-
-    /**
-     * @var SourcesList
-     */
+    /** @var SourcesList */
     private $sourcesList;
 
-    /**
-     * @var RemoteSourcesListFileLoader
-     */
+    /** @var RemoteSourcesListFileLoader */
     private $sourcesListFileLoader;
 
-    /**
-     * @var FileDownloader
-     */
+    /** @var FileDownloader */
     private $fileDownloader;
 
-    public function testReturnsRepository() {
-        $alias = new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint());
+    public function testReturnsRepository(): void {
+        $alias         = new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint());
         $requestedPhar = new RequestedPhar(
             $alias,
             new AnyVersionConstraint(),
             new AnyVersionConstraint()
         );
-        $url = new Url('https://example.com/bar');
+        $url    = new Url('https://example.com/bar');
         $source = new Source('phar.io', $url);
 
         $this->sourcesList = $this->prophesize(SourcesList::class);
@@ -53,5 +46,4 @@ class PharIoAliasResolverTest extends TestCase {
 
         $this->assertInstanceOf(SourceRepository::class, $resolver->resolve($requestedPhar));
     }
-
 }

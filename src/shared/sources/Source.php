@@ -1,53 +1,33 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class Source {
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $type;
 
-    /**
-     * @var Url
-     */
+    /** @var Url */
     private $url;
 
-    /**
-     * Source constructor.
-     *
-     * @param string $type
-     * @param Url    $url
-     */
-    public function __construct($type, Url $url) {
+    public function __construct(string $type, Url $url) {
         $this->ensureValidSourceType($type);
         $this->type = $type;
-        $this->url = $url;
+        $this->url  = $url;
     }
 
-    /**
-     * @return string
-     */
-    public function getType() {
+    public function getType(): string {
         return $this->type;
     }
 
-    /**
-     * @return Url
-     */
-    public function getUrl() {
+    public function getUrl(): Url {
         return $this->url;
     }
 
-    /**
-     * @param string $type
-     */
-    private function ensureValidSourceType($type) {
-        if (!in_array($type, ['phar.io', 'github'])) {
+    private function ensureValidSourceType(string $type): void {
+        if (!\in_array($type, ['phar.io', 'github'])) {
             throw new \InvalidArgumentException(
-                sprintf('Unsupported source repository type "%s"', $type)
+                \sprintf('Unsupported source repository type "%s"', $type)
             );
         }
     }
-
 }

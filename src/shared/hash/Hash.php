@@ -1,24 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface Hash {
+    public static function forContent(string $content): self;
 
-    /**
-     * @return string
-     */
-    public function asString();
+    public function asString(): string;
 
-    /**
-     * @param string $content
-     *
-     * @return Hash
-     */
-    public static function forContent($content);
-
-    /**
-     * @param Hash $otherHash
-     *
-     * @return bool
-     */
-    public function equals(Hash $otherHash);
+    public function equals(self $otherHash): bool;
 }

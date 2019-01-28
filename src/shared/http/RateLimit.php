@@ -1,60 +1,36 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class RateLimit {
-    /**
-     * @var int
-     */
+
+    /** @var int */
     private $limit;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $remaining;
 
-    /**
-     * @var \DateTimeImmutable
-     */
+    /** @var \DateTimeImmutable */
     private $reset;
 
-    /**
-     * RateLimit constructor.
-     *
-     * @param int                $limit
-     * @param int                $remaining
-     * @param \DateTimeImmutable $reset
-     */
-    public function __construct($limit, $remaining, \DateTimeImmutable $reset) {
-        $this->limit = $limit;
+    public function __construct(int $limit, int $remaining, \DateTimeImmutable $reset) {
+        $this->limit     = $limit;
         $this->remaining = $remaining;
-        $this->reset = $reset;
+        $this->reset     = $reset;
     }
 
-    /**
-     * @return int
-     */
-    public function getLimit() {
+    public function getLimit(): int {
         return $this->limit;
     }
 
-    /**
-     * @return int
-     */
-    public function getRemaining() {
+    public function getRemaining(): int {
         return $this->remaining;
     }
 
-    /**
-     * @return bool
-     */
-    public function isWithinLimit() {
+    public function isWithinLimit(): bool {
         return $this->remaining > 0;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getResetTime() {
+    public function getResetTime(): \DateTimeImmutable {
         return $this->reset;
     }
 }

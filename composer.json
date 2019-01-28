@@ -18,7 +18,7 @@
     "issues" : "https://github.com/phar-io/phive/issues"
   },
   "require" : {
-    "php" : ">=5.6.0",
+    "php" : "^7.1",
     "ext-dom" : "*",
     "ext-curl" : "*",
     "phar-io/version": "^2.0",
@@ -30,7 +30,8 @@
     "mikey179/vfsStream": "^1.6.4"
   },
   "suggest": {
-    "ext-gnupg": "*"
+    "ext-gnupg": "*",
+    "ext-json": "*"
   },
   "autoload": {
     "classmap": [

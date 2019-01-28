@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
@@ -7,44 +7,28 @@ use PharIo\FileSystem\Filename;
  * Resolves an alias to a list of Phar.io repository URLs
  */
 class PharIoAliasResolver extends AbstractRequestedPharResolver {
-
-    /**
-     * @var SourcesList
-     */
+    /** @var SourcesList */
     private $sources;
 
-    /**
-     * @var SourcesListFileLoader
-     */
+    /** @var SourcesListFileLoader */
     private $loader;
 
-    /**
-     * @var FileDownloader
-     */
+    /** @var FileDownloader */
     private $fileDownloader;
 
-    /**
-     * @param SourcesListFileLoader $loader
-     * @param FileDownloader        $fileDownloader
-     */
     public function __construct(SourcesListFileLoader $loader, FileDownloader $fileDownloader) {
-        $this->loader = $loader;
+        $this->loader         = $loader;
         $this->fileDownloader = $fileDownloader;
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return SourceRepository
-     */
-    public function resolve(RequestedPhar $requestedPhar) {
+    public function resolve(RequestedPhar $requestedPhar): SourceRepository {
         if (!$requestedPhar->hasAlias()) {
             return $this->tryNext($requestedPhar);
         }
 
         try {
             $source = $this->getSourcesList()->getSourceForAlias($requestedPhar->getAlias());
-            $file = $this->fileDownloader->download($source->getUrl());
+            $file   = $this->fileDownloader->download($source->getUrl());
         } catch (SourcesListException $e) {
             return $this->tryNext($requestedPhar);
         }
@@ -55,7 +39,7 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
                     new JsonData($file->getContent())
                 );
             case 'phar.io':
-                $filename = new Filename(tempnam(sys_get_temp_dir(), 'repo_'));
+                $filename = new Filename(\tempnam(\sys_get_temp_dir(), 'repo_'));
                 $file->saveAs($filename);
 
                 return new PharIoRepository(
@@ -70,15 +54,11 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
         return $this->tryNext($requestedPhar);
     }
 
-    /**
-     * @return SourcesList
-     */
-    protected function getSourcesList() {
+    protected function getSourcesList(): SourcesList {
         if ($this->sources === null) {
             $this->sources = $this->loader->load();
         }
 
         return $this->sources;
     }
-
 }

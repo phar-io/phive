@@ -15,8 +15,7 @@
     </testsuites>
 
     <logging>
-        <log type="coverage-html" target="build/coverage/html" title="phpDox"
-             charset="UTF-8" yui="true" highlight="true"
+        <log type="coverage-html" target="build/coverage/html"
              lowUpperBound="35" highLowerBound="70"/>
         <log type="coverage-xml" target="build/coverage/xml"/>
     </logging>

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -11,48 +11,34 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\ComposerCommand
  */
 class ComposerCommandTest extends TestCase {
-
-    /**
-     * @var ComposerCommandConfig|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ComposerCommandConfig|\PHPUnit_Framework_MockObject_MockObject */
     private $commandConfig;
 
-    /**
-     * @var ComposerService|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var ComposerService|\PHPUnit_Framework_MockObject_MockObject */
     private $composerService;
 
-    /**
-     * @var InstallService|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var InstallService|\PHPUnit_Framework_MockObject_MockObject */
     private $installService;
 
-    /**
-     * @var Input|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Input|\PHPUnit_Framework_MockObject_MockObject */
     private $input;
 
-    /**
-     * @var RequestedPharResolverService|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|RequestedPharResolverService */
     private $pharResolverService;
 
-    /**
-     * @var ComposerCommand
-     */
+    /** @var ComposerCommand */
     private $command;
 
-    /** @var ReleaseSelector|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|ReleaseSelector */
     private $releaseSelector;
 
-    protected function setUp() {
-
-        $this->commandConfig = $this->getComposerCommandConfigMock();
-        $this->composerService = $this->getComposerServiceMock();
-        $this->installService = $this->getInstallServiceMock();
-        $this->input = $this->getInputMock();
+    protected function setUp(): void {
+        $this->commandConfig       = $this->getComposerCommandConfigMock();
+        $this->composerService     = $this->getComposerServiceMock();
+        $this->installService      = $this->getInstallServiceMock();
+        $this->input               = $this->getInputMock();
         $this->pharResolverService = $this->getRequestedPharResolverServiceMock();
-        $this->releaseSelector = $this->getReleaseSelectorMock();
+        $this->releaseSelector     = $this->getReleaseSelectorMock();
 
         $this->command = new ComposerCommand(
             $this->commandConfig,
@@ -64,8 +50,7 @@ class ComposerCommandTest extends TestCase {
         );
     }
 
-    public function testDoesNotInstallCandidateIfInstallationWasNotConfirmend()
-    {
+    public function testDoesNotInstallCandidateIfInstallationWasNotConfirmend(): void {
         $this->commandConfig->method('getComposerFilename')
             ->willReturn(new Filename('composer.json'));
 
@@ -78,8 +63,7 @@ class ComposerCommandTest extends TestCase {
         $this->command->execute();
     }
 
-    public function testDoesInstallsCandidateIfInstallationWasConfirmend()
-    {
+    public function testDoesInstallsCandidateIfInstallationWasConfirmend(): void {
         $this->commandConfig->method('getTargetDirectory')
             ->willReturn($this->getDirectoryMock());
 
@@ -122,29 +106,26 @@ class ComposerCommandTest extends TestCase {
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SupportedRelease
      */
-    private function getReleaseMock()
-    {
+    private function getReleaseMock() {
         return $this->createMock(SupportedRelease::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|ReleaseCollection
      */
-    private function getReleaseCollectionMock()
-    {
+    private function getReleaseCollectionMock() {
         return $this->createMock(ReleaseCollection::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|SourceRepository
      */
-    private function getSourceRepositoryMock()
-    {
+    private function getSourceRepositoryMock() {
         return $this->createMock(SourceRepository::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
@@ -153,8 +134,7 @@ class ComposerCommandTest extends TestCase {
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
-    private function getRequestedPharMock()
-    {
+    private function getRequestedPharMock() {
         return $this->createMock(RequestedPhar::class);
     }
 
@@ -165,31 +145,29 @@ class ComposerCommandTest extends TestCase {
         return $this->createMock(RequestedPharResolverService::class);
     }
 
-
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Input
+     * @return Input|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getInputMock() {
         return $this->createMock(Input::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|ComposerService
+     * @return ComposerService|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getComposerServiceMock()
-    {
+    private function getComposerServiceMock() {
         return $this->createMock(ComposerService::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|ComposerCommandConfig
+     * @return ComposerCommandConfig|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getComposerCommandConfigMock() {
         return $this->createMock(ComposerCommandConfig::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|InstallService
+     * @return InstallService|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getInstallServiceMock() {
         return $this->createMock(InstallService::class);
@@ -198,5 +176,4 @@ class ComposerCommandTest extends TestCase {
     private function getReleaseSelectorMock() {
         return $this->createMock(ReleaseSelector::class);
     }
-
 }

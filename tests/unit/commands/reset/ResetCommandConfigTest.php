@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
@@ -7,8 +7,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\ResetCommandConfig
  */
 class ResetCommandConfigTest extends TestCase {
-
-    public function testGetAliases() {
+    public function testGetAliases(): void {
         $options = $this->getOptionsMock();
         $options->method('getArgumentCount')
             ->willReturn(3);
@@ -21,7 +20,7 @@ class ResetCommandConfigTest extends TestCase {
         $this->assertEquals($expected, $config->getAliases());
     }
 
-    public function testHasAliasesReturnsTrueIfOptionsHaveArguments() {
+    public function testHasAliasesReturnsTrueIfOptionsHaveArguments(): void {
         $options = $this->getOptionsMock();
         $options->method('getArgumentCount')
             ->willReturn(2);
@@ -31,7 +30,7 @@ class ResetCommandConfigTest extends TestCase {
         $this->assertTrue($config->hasAliases());
     }
 
-    public function testHasAliasesReturnsFalseIfOptionsHaveNoArguments() {
+    public function testHasAliasesReturnsFalseIfOptionsHaveNoArguments(): void {
         $options = $this->getOptionsMock();
         $options->method('getArgumentCount')
             ->willReturn(0);
@@ -42,10 +41,9 @@ class ResetCommandConfigTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Options
+     * @return Cli\Options|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOptionsMock() {
         return $this->createMock(Cli\Options::class);
     }
-
 }

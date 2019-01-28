@@ -1,7 +1,7 @@
 #!/usr/bin/env php
-<?php
+<?php declare( strict_types = 1);
 /**
- * Copyright (c) 2015-2017 Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and Contributors
+ * Copyright (c) 2015-2019 Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and Contributors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -35,11 +35,11 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli;
 
-if (!defined('HHVM_VERSION') && (version_compare(phpversion(), '5.6', 'lt'))) {
+if (!defined('HHVM_VERSION') && (version_compare(phpversion(), '7.1', 'lt'))) {
     fwrite(
         STDERR,
         sprintf(
-            "Phive requires PHP 5.6 or later; " .
+            "Phive requires PHP 7.1 or later; " .
             "Upgrading to the latest version of PHP is highly recommended. (Version used: %s)\n\n",
             phpversion()
         )

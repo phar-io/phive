@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use org\bovigo\vfs\vfsStream;
@@ -10,8 +10,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\XmlFile
  */
 class XmlFileTest extends TestCase {
-
-    public function testCanQueryWithoutContextNode() {
+    public function testCanQueryWithoutContextNode(): void {
         $file = new XmlFile(
             new Filename(__DIR__ . '/fixtures/xmlFile.xml'),
             'https://phar.io/phive/test',
@@ -23,7 +22,7 @@ class XmlFileTest extends TestCase {
         $this->assertSame('Node 1 Value', $actual->item(0)->nodeValue);
     }
 
-    public function testCanQueryWithContextNode() {
+    public function testCanQueryWithContextNode(): void {
         $file = new XmlFile(
             new Filename(__DIR__ . '/fixtures/xmlFile.xml'),
             'https://phar.io/phive/test',
@@ -37,7 +36,7 @@ class XmlFileTest extends TestCase {
         $this->assertSame('Node 1 Value', $actual->item(0)->nodeValue);
     }
 
-    public function testSavesXmlToFile() {
+    public function testSavesXmlToFile(): void {
         $mockedDirectory = vfsStream::setup('test');
 
         $this->assertFalse($mockedDirectory->hasChild('someFile.xml'));
@@ -52,7 +51,7 @@ class XmlFileTest extends TestCase {
         $this->assertTrue($mockedDirectory->hasChild('someFile.xml'));
     }
 
-    public function testCreatesExpectedDomElement() {
+    public function testCreatesExpectedDomElement(): void {
         $file = new XmlFile(
             new Filename(__DIR__ . '/fixtures/xmlFile.xml'),
             'https://phar.io/phive/test',
@@ -65,7 +64,7 @@ class XmlFileTest extends TestCase {
         $this->assertSame('someValue', $element->nodeValue);
     }
 
-    public function testReturnsExpectedDirectory() {
+    public function testReturnsExpectedDirectory(): void {
         $file = new XmlFile(
             new Filename(__DIR__ . '/fixtures/xmlFile.xml'),
             'https://phar.io/phive/test',
@@ -76,7 +75,7 @@ class XmlFileTest extends TestCase {
         $this->assertEquals($expected, $file->getDirectory());
     }
 
-    public function testAddsElementToDom() {
+    public function testAddsElementToDom(): void {
         $file = new XmlFile(
             new Filename(__DIR__ . '/fixtures/xmlFile.xml'),
             'https://phar.io/phive/test',
@@ -90,5 +89,4 @@ class XmlFileTest extends TestCase {
         $this->assertSame(1, $file->getDom()->getElementsByTagName('foo')->length);
         $this->assertSame('bar', $file->getDom()->getElementsByTagName('foo')->item(0)->nodeValue);
     }
-
 }

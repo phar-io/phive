@@ -1,11 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class ErrorException extends \ErrorException implements Exception {
-
-    /**
-     * @var array
-     */
+    /** @var array */
     private $context;
 
     public function __construct($message, $code, $severity, $filename, $lineno, array $context, \Exception $previous = null) {
@@ -13,11 +10,7 @@ class ErrorException extends \ErrorException implements Exception {
         $this->context = $context;
     }
 
-    /**
-     * @return array
-     */
-    public function getContext() {
+    public function getContext(): array {
         return $this->context;
     }
-
 }

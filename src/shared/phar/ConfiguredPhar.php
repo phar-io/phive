@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
@@ -7,79 +7,52 @@ use PharIo\Version\VersionConstraint;
 
 class ConfiguredPhar {
 
-    /**
-     * @var string
-     */
-    private $name = '';
+    /** @var string */
+    private $name;
 
-    /**
-     * @var VersionConstraint
-     */
+    /** @var VersionConstraint */
     private $versionConstraint;
 
-    /**
-     * @var Version|null
-     */
+    /** @var null|Version */
     private $installedVersion;
 
-    /**
-     * @var Filename|null
-     */
+    /** @var null|Filename */
     private $location;
 
-    /**
-     * @var PharUrl|null
-     */
+    /** @var null|PharUrl */
     private $url;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $copy;
 
-    /**
-     * @param string            $name
-     * @param VersionConstraint $versionConstraint
-     * @param Version|null      $installedVersion
-     * @param Filename|null     $location
-     * @param PharUrl|null      $url
-     * @param bool              $copy
-     */
     public function __construct(
-        $name,
+        string $name,
         VersionConstraint $versionConstraint,
         Version $installedVersion = null,
         Filename $location = null,
         PharUrl $url = null,
-        $copy = false
+        bool $copy = false
     ) {
-        $this->name = $name;
+        $this->name              = $name;
         $this->versionConstraint = $versionConstraint;
-        $this->installedVersion = $installedVersion;
-        $this->location = $location;
-        $this->url = $url;
-        $this->copy = $copy;
+        $this->installedVersion  = $installedVersion;
+        $this->location          = $location;
+        $this->url               = $url;
+        $this->copy              = $copy;
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
+    public function getName(): string {
         return $this->name;
     }
 
-    /**
-     * @return VersionConstraint
-     */
-    public function getVersionConstraint() {
+    public function getVersionConstraint(): VersionConstraint {
         return $this->versionConstraint;
     }
 
     /**
-     * @return Version
      * @throws \PharIo\Phive\ConfiguredPharException
      */
-    public function getInstalledVersion() {
+    public function getInstalledVersion(): Version {
         if (!$this->isInstalled()) {
             throw new ConfiguredPharException('Phar is not installed');
         }
@@ -87,25 +60,18 @@ class ConfiguredPhar {
         return $this->installedVersion;
     }
 
-    /**
-     * @return bool
-     */
-    public function isInstalled() {
+    public function isInstalled(): bool {
         return $this->installedVersion !== null;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasLocation() {
+    public function hasLocation(): bool {
         return $this->location !== null;
     }
 
     /**
-     * @return Filename
      * @throws \PharIo\Phive\ConfiguredPharException
      */
-    public function getLocation() {
+    public function getLocation(): Filename {
         if (!$this->hasLocation()) {
             throw new ConfiguredPharException(
                 'No location set',
@@ -116,18 +82,14 @@ class ConfiguredPhar {
         return $this->location;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasUrl() {
+    public function hasUrl(): bool {
         return $this->url !== null;
     }
 
     /**
-     * @return PharUrl
      * @throws \PharIo\Phive\ConfiguredPharException
      */
-    public function getUrl() {
+    public function getUrl(): PharUrl {
         if (!$this->hasUrl()) {
             throw new ConfiguredPharException('No URL set', ConfiguredPharException::NoUrl);
         }
@@ -135,10 +97,7 @@ class ConfiguredPhar {
         return $this->url;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCopy() {
+    public function isCopy(): bool {
         return $this->copy;
     }
 }

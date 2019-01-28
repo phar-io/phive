@@ -1,36 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 interface Output {
-
-    /**
-     * @param string $textMessage
-     */
-    public function writeText($textMessage);
-
-    /**
-     * @param string $infoMessage
-     */
-    public function writeInfo($infoMessage);
-
-    /**
-     * @param string $warningMessage
-     */
-    public function writeWarning($warningMessage);
-
-    /**
-     * @param string $errorMessage
-     */
-    public function writeError($errorMessage);
-
-    /**
-     * @param string $progressMessage
-     */
-    public function writeProgress($progressMessage);
-
-    /**
-     * @param string $markdown
-     */
-    public function writeMarkdown($markdown);
-
+    public function writeText(string $textMessage): void;
+    public function writeInfo(string $infoMessage): void;
+    public function writeWarning(string $warningMessage): void;
+    public function writeError(string $errorMessage): void;
+    public function writeProgress(string $progressMessage): void;
+    public function writeMarkdown(string $markdown): void;
 }

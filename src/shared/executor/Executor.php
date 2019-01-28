@@ -1,25 +1,19 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 
 class Executor {
-    /**
-     * @param Filename $commandFilename
-     * @param string   $argLine
-     *
-     * @return ExecutorResult
-     */
-    public function execute(Filename $commandFilename, $argLine) {
+    public function execute(Filename $commandFilename, string $argLine): ExecutorResult {
         $this->ensureFileExists($commandFilename);
         $this->ensureExecutable($commandFilename);
 
-        $executable = sprintf(
+        $executable = \sprintf(
             '%s %s',
-            escapeshellarg($commandFilename->asString()),
+            \escapeshellarg($commandFilename->asString()),
             $argLine
         );
-        exec($executable, $output, $rc);
+        \exec($executable, $output, $rc);
 
         return new ExecutorResult(
             $executable,
@@ -29,14 +23,12 @@ class Executor {
     }
 
     /**
-     * @param Filename $executable
-     *
      * @throws ExecutorException
      */
-    private function ensureFileExists(Filename $executable) {
+    private function ensureFileExists(Filename $executable): void {
         if (!$executable->exists()) {
             throw new ExecutorException(
-                sprintf(
+                \sprintf(
                     'Given executable "%s" does not exist',
                     $executable->asString()
                 ),
@@ -46,14 +38,12 @@ class Executor {
     }
 
     /**
-     * @param Filename $executable
-     *
      * @throws ExecutorException
      */
-    private function ensureExecutable(Filename $executable) {
+    private function ensureExecutable(Filename $executable): void {
         if (!$executable->isExecutable()) {
             throw new ExecutorException(
-                sprintf(
+                \sprintf(
                     'Given executable "%s" is not executable',
                     $executable->asString()
                 ),
@@ -61,5 +51,4 @@ class Executor {
             );
         }
     }
-
 }

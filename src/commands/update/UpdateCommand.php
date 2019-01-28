@@ -1,40 +1,23 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class UpdateCommand implements Cli\Command {
 
-    /**
-     * @var UpdateCommandConfig
-     */
+    /** @var UpdateCommandConfig */
     private $config;
 
-    /**
-     * @var InstallService
-     */
+    /** @var InstallService */
     private $installService;
 
-    /**
-     * @var RequestedPharResolverService
-     */
+    /** @var RequestedPharResolverService */
     private $pharResolver;
 
-    /**
-     * @var PhiveXmlConfig
-     */
+    /** @var PhiveXmlConfig */
     private $phiveXml;
 
-    /**
-     * @var ReleaseSelector
-     */
+    /** @var ReleaseSelector */
     private $selector;
 
-    /**
-     * @param UpdateCommandConfig          $updateCommandConfig
-     * @param InstallService               $installService
-     * @param RequestedPharResolverService $pharResolver
-     * @param PhiveXmlConfig               $phiveXml
-     * @param ReleaseSelector              $selector
-     */
     public function __construct(
         UpdateCommandConfig $updateCommandConfig,
         InstallService $installService,
@@ -42,14 +25,14 @@ class UpdateCommand implements Cli\Command {
         PhiveXmlConfig $phiveXml,
         ReleaseSelector $selector
     ) {
-        $this->config = $updateCommandConfig;
+        $this->config         = $updateCommandConfig;
         $this->installService = $installService;
-        $this->pharResolver = $pharResolver;
-        $this->phiveXml = $phiveXml;
-        $this->selector = $selector;
+        $this->pharResolver   = $pharResolver;
+        $this->phiveXml       = $phiveXml;
+        $this->selector       = $selector;
     }
 
-    public function execute() {
+    public function execute(): void {
         foreach ($this->config->getRequestedPhars() as $requestedPhar) {
             $release = $this->resolveToRelease($requestedPhar);
 
@@ -61,16 +44,10 @@ class UpdateCommand implements Cli\Command {
         }
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return SupportedRelease
-     */
-    private function resolveToRelease(RequestedPhar $requestedPhar) {
+    private function resolveToRelease(RequestedPhar $requestedPhar): SupportedRelease {
         $repository = $this->pharResolver->resolve($requestedPhar);
-        $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
+        $releases   = $repository->getReleasesByRequestedPhar($requestedPhar);
 
         return $this->selector->select($releases, $requestedPhar->getVersionConstraint(), $this->config->forceAcceptUnsignedPhars());
     }
-
 }

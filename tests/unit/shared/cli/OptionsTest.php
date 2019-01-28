@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\CommandOptionsException;
@@ -9,21 +9,18 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\Cli\Options
  */
 class OptionsTest extends TestCase {
-
-    /**
-     * @var Options
-     */
+    /** @var Options */
     private $options;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->options = new Options();
     }
 
-    public function testHasNoArgumentsWhenCreated() {
+    public function testHasNoArgumentsWhenCreated(): void {
         $this->assertEquals(0, $this->options->getArgumentCount());
     }
 
-    public function testAddedArgumentsCanBeRetrieved() {
+    public function testAddedArgumentsCanBeRetrieved(): void {
         $this->options->addArgument('arg1');
         $this->options->addArgument('arg2');
 
@@ -32,18 +29,18 @@ class OptionsTest extends TestCase {
         $this->assertEquals('arg2', $this->options->getArgument(1));
     }
 
-    public function testAccessingNonExistingArgumentThrowsException() {
+    public function testAccessingNonExistingArgumentThrowsException(): void {
         $this->expectException(CommandOptionsException::class);
         $this->expectExceptionCode(CommandOptionsException::InvalidArgumentIndex);
         $this->options->getArgument(2);
     }
 
-    public function testOptionCanBeSet() {
+    public function testOptionCanBeSet(): void {
         $this->options->setOption('opt1', 'val1');
         $this->assertTrue($this->options->hasOption('opt1'));
     }
 
-    public function testOptionCanBeRetrieved() {
+    public function testOptionCanBeRetrieved(): void {
         $this->options->setOption('opt1', 'val1');
         $this->options->setOption('opt2', 'val2');
         $this->options->setOption('opt3', true);
@@ -52,13 +49,13 @@ class OptionsTest extends TestCase {
         $this->assertTrue($this->options->getOption('opt3'));
     }
 
-    public function testAccessingNonExistingOptionThrowsException() {
+    public function testAccessingNonExistingOptionThrowsException(): void {
         $this->expectException(CommandOptionsException::class);
         $this->expectExceptionCode(CommandOptionsException::NoSuchOption);
         $this->options->getOption('not-existing');
     }
 
-    public function testOptionsCanBeMerged() {
+    public function testOptionsCanBeMerged(): void {
         $source = new Options();
         $source->addArgument('arg1');
         $source->setOption('opt1', 'val1');
@@ -69,5 +66,4 @@ class OptionsTest extends TestCase {
         $this->assertTrue($result->hasOption('opt1'));
         $this->assertEquals('val1', $result->getOption('opt1'));
     }
-
 }

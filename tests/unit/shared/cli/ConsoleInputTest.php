@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\ConsoleInput;
@@ -9,28 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\Cli\ConsoleInput
  */
 class ConsoleInputTest extends TestCase {
-
     use ScalarTestDataProvider;
-
-    /**
-     * @dataProvider confirmProvider
-     *
-     * @param string $inputString
-     * @param bool   $expectedResult
-     */
-    public function testConfirmReturnsTrue($inputString, $expectedResult) {
-        $output = $this->getOutputMock();
-        $output->expects($this->once())
-            ->method('writeText')
-            ->with('foo? [Y|n] ');
-        $inputStream = fopen('php://memory', 'w+');
-        fwrite($inputStream, $inputString);
-        rewind($inputStream);
-
-        $input = new ConsoleInput($output, $inputStream);
-
-        $this->assertSame($expectedResult, $input->confirm('foo?'));
-    }
 
     public static function confirmProvider() {
         return [
@@ -43,27 +22,6 @@ class ConsoleInputTest extends TestCase {
         ];
     }
 
-    /**
-     * @dataProvider  capitalizedOptionProvider
-     *
-     * @param bool   $default
-     * @param string $expectedString
-     */
-    public function testCapitalizesExpectedOption($default, $expectedString) {
-        $output = $this->getOutputMock();
-
-        $output->expects($this->once())
-            ->method('writeText')
-            ->with($this->stringContains($expectedString));
-
-        $inputStream = fopen('php://memory', 'w+');
-        fwrite($inputStream, 'y');
-        rewind($inputStream);
-
-        $input = new ConsoleInput($output, $inputStream);
-        $input->confirm('foo?', $default);
-    }
-
     public static function capitalizedOptionProvider() {
         return [
             [true, '[Y|n]'],
@@ -72,26 +30,66 @@ class ConsoleInputTest extends TestCase {
     }
 
     /**
+     * @dataProvider confirmProvider
+     *
+     * @param string $inputString
+     * @param bool   $expectedResult
+     */
+    public function testConfirmReturnsTrue($inputString, $expectedResult): void {
+        $output = $this->getOutputMock();
+        $output->expects($this->once())
+            ->method('writeText')
+            ->with('foo? [Y|n] ');
+        $inputStream = \fopen('php://memory', 'w+');
+        \fwrite($inputStream, $inputString);
+        \rewind($inputStream);
+
+        $input = new ConsoleInput($output, $inputStream);
+
+        $this->assertSame($expectedResult, $input->confirm('foo?'));
+    }
+
+    /**
+     * @dataProvider  capitalizedOptionProvider
+     *
+     * @param bool   $default
+     * @param string $expectedString
+     */
+    public function testCapitalizesExpectedOption($default, $expectedString): void {
+        $output = $this->getOutputMock();
+
+        $output->expects($this->once())
+            ->method('writeText')
+            ->with($this->stringContains($expectedString));
+
+        $inputStream = \fopen('php://memory', 'w+');
+        \fwrite($inputStream, 'y');
+        \rewind($inputStream);
+
+        $input = new ConsoleInput($output, $inputStream);
+        $input->confirm('foo?', $default);
+    }
+
+    /**
      * @dataProvider boolProvider
      *
      * @param bool $default
      */
-    public function testReturnsDefaultOnEnter($default) {
+    public function testReturnsDefaultOnEnter($default): void {
         $output = $this->getOutputMock();
 
-        $inputStream = fopen('php://memory', 'w+');
-        fwrite($inputStream, '');
-        rewind($inputStream);
+        $inputStream = \fopen('php://memory', 'w+');
+        \fwrite($inputStream, "\n");
+        \rewind($inputStream);
 
         $input = new ConsoleInput($output, $inputStream);
         $this->assertSame($default, $input->confirm('foo?', $default));
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Output
+     * @return Output|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOutputMock() {
         return $this->createMock(Output::class);
     }
-
 }

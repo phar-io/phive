@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -7,41 +7,30 @@ use PharIo\Phive\Cli\Options;
 
 class Config {
 
-    /**
-     * @var Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @var Options
-     */
+    /** @var Options */
     private $cliOptions;
 
-    /**
-     * @var \DateTimeImmutable
-     */
+    /** @var \DateTimeImmutable */
     private $now;
 
-    /**
-     * @param Environment             $environment
-     * @param Options                 $cliOptions
-     * @param \DateTimeImmutable|null $now
-     */
     public function __construct(
-        Environment $environment, Options $cliOptions, \DateTimeImmutable $now = null
+        Environment $environment,
+        Options $cliOptions,
+        \DateTimeImmutable $now = null
     ) {
         $this->environment = $environment;
-        $this->cliOptions = $cliOptions;
+        $this->cliOptions  = $cliOptions;
+
         if ($now === null) {
             $now = new \DateTimeImmutable();
         }
         $this->now = $now;
     }
 
-    /**
-     * @return Directory
-     */
-    public function getHomeDirectory() {
+    public function getHomeDirectory(): Directory {
         if ($this->cliOptions->hasOption('home')) {
             return new Directory($this->cliOptions->getOption('home'));
         }
@@ -49,47 +38,36 @@ class Config {
         return $this->environment->getHomeDirectory()->child('.phive');
     }
 
-    /**
-     * @return Directory
-     */
-    public function getWorkingDirectory() {
+    public function getWorkingDirectory(): Directory {
         return $this->environment->getWorkingDirectory();
     }
 
-    /**
-     * @return Directory
-     */
-    public function getToolsDirectory() {
+    public function getToolsDirectory(): Directory {
         return new Directory('tools');
     }
 
     /**
-     * @return Filename
      * @throws NoGPGBinaryFoundException
      */
-    public function getGPGBinaryPath() {
+    public function getGPGBinaryPath(): Filename {
         try {
             return $this->environment->getPathToCommand('gpg');
         } catch (EnvironmentException $e) {
             $message = "No executable gpg binary found. \n Either install gpg or enable the gnupg extension in PHP.";
+
             throw new NoGPGBinaryFoundException($message);
         }
     }
 
-    /**
-     * @return Url
-     */
-    public function getSourcesListUrl() {
+    public function getSourcesListUrl(): Url {
         return new Url('https://phar.io/data/repositories.xml');
     }
 
-    /**
-     * @return KeyIdCollection
-     */
-    public function getTrustedKeyIds() {
+    public function getTrustedKeyIds(): KeyIdCollection {
         $idList = new KeyIdCollection();
+
         if ($this->cliOptions->hasOption('trust-gpg-keys')) {
-            foreach (explode(',', $this->cliOptions->getOption('trust-gpg-keys')) as $id) {
+            foreach (\explode(',', $this->cliOptions->getOption('trust-gpg-keys')) as $id) {
                 $idList->addKeyId($id);
             }
         }
@@ -97,11 +75,7 @@ class Config {
         return $idList;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getMaxAgeForSourcesList() {
+    public function getMaxAgeForSourcesList(): \DateTimeImmutable {
         return $this->now->sub(new \DateInterval('P7D'));
     }
-
 }

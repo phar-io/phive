@@ -1,64 +1,53 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
-
-use PharIo\Phive\Cli;
 
 class RemoveCommand implements Cli\Command {
 
-    /**
-     * @var RemoveCommandConfig
-     */
+    /** @var RemoveCommandConfig */
     private $config;
 
-    /**
-     * @var PharRegistry
-     */
+    /** @var PharRegistry */
     private $pharRegistry;
 
-    /**
-     * @var Cli\Output
-     */
+    /** @var Cli\Output */
     private $output;
 
-    /**
-     * @var PhiveXmlConfig
-     */
+    /** @var PhiveXmlConfig */
     private $phiveXmlConfig;
 
     /**
-     * @param RemoveCommandConfig $config
-     * @param PharRegistry        $pharRegistry
-     * @param Cli\Output          $output
-     * @param PhiveXmlConfig      $phiveXmlConfig
-     *
      * @internal param PharService $pharService
      */
     public function __construct(
-        RemoveCommandConfig $config, PharRegistry $pharRegistry, Cli\Output $output, PhiveXmlConfig $phiveXmlConfig
+        RemoveCommandConfig $config,
+        PharRegistry $pharRegistry,
+        Cli\Output $output,
+        PhiveXmlConfig $phiveXmlConfig
     ) {
-        $this->config = $config;
-        $this->pharRegistry = $pharRegistry;
-        $this->output = $output;
+        $this->config         = $config;
+        $this->pharRegistry   = $pharRegistry;
+        $this->output         = $output;
         $this->phiveXmlConfig = $phiveXmlConfig;
     }
 
-    public function execute() {
+    public function execute(): void {
         $name = $this->config->getPharName();
+
         if (!$this->phiveXmlConfig->hasPhar($name)) {
-            throw new NotFoundException(sprintf('PHAR %s not found in phive.xml, aborting.', $name));
+            throw new NotFoundException(\sprintf('PHAR %s not found in phive.xml, aborting.', $name));
         }
         $location = $this->phiveXmlConfig->getPharLocation($name)->withAbsolutePath();
-        $phar = $this->pharRegistry->getByUsage($location);
+        $phar     = $this->pharRegistry->getByUsage($location);
         $this->output->writeInfo(
-            sprintf('Removing Phar %s %s', $phar->getName(), $phar->getVersion()->getVersionString())
+            \sprintf('Removing Phar %s %s', $phar->getName(), $phar->getVersion()->getVersionString())
         );
         $this->phiveXmlConfig->removePhar($phar->getName());
         $this->pharRegistry->removeUsage($phar, $location);
-        unlink($location);
+        \unlink($location);
 
         if (!$this->pharRegistry->hasUsages($phar)) {
             $this->output->writeInfo(
-                sprintf(
+                \sprintf(
                     'Phar %s %s has no more known usages. You can run \'phive purge\' to remove unused Phars.',
                     $phar->getName(),
                     $phar->getVersion()->getVersionString()
@@ -66,5 +55,4 @@ class RemoveCommand implements Cli\Command {
             );
         }
     }
-
 }

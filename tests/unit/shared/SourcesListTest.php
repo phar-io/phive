@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
@@ -9,23 +9,25 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\SourcesList
  */
 class SourcesListTest extends TestCase {
-
-    public function testThrowsExceptionForUnknownAlias() {
+    public function testThrowsExceptionForUnknownAlias(): void {
         $this->expectException(SourcesListException::class);
         $this->getSourcesList()->getSourceForAlias(
-            new PharAlias('foo', new AnyVersionConstraint(), new AnyVersionConstraint()
+            new PharAlias(
+                'foo',
+                new AnyVersionConstraint(),
+                new AnyVersionConstraint()
             )
         );
     }
 
-    public function testThrowsExceptionIfMultipleRepositoriesAreMatching() {
+    public function testThrowsExceptionIfMultipleRepositoriesAreMatching(): void {
         $this->expectException(SourcesListException::class);
         $this->getSourcesList()->getSourceForAlias(
             new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint())
         );
     }
 
-    public function testReturnsExpectedSource() {
+    public function testReturnsExpectedSource(): void {
         $expected = new Source('phar.io', new Url('https://phar.io'));
         $this->assertEquals(
             $expected,
@@ -35,10 +37,7 @@ class SourcesListTest extends TestCase {
         );
     }
 
-    /**
-     * @return SourcesList
-     */
-    private function getSourcesList() {
+    private function getSourcesList(): SourcesList {
         return new SourcesList(
             new XmlFile(
                 new Filename(__DIR__ . '/../../data/repositories.xml'),
@@ -47,5 +46,4 @@ class SourcesListTest extends TestCase {
             )
         );
     }
-
 }

@@ -1,30 +1,20 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Version\InvalidVersionException;
 
 class GithubRepository implements SourceRepository {
 
-    /**
-     * @var JsonData
-     */
+    /** @var JsonData */
     private $jsonData;
 
-    /**
-     * @param JsonData $json
-     */
     public function __construct(JsonData $json) {
         $this->jsonData = $json;
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return ReleaseCollection
-     */
-    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar) {
+    public function getReleasesByRequestedPhar(RequestedPhar $requestedPhar): ReleaseCollection {
         $releases = new ReleaseCollection();
-        $name = $requestedPhar->getAlias()->asString();
+        $name     = $requestedPhar->getAlias()->asString();
 
         foreach ($this->jsonData->getParsed() as $entry) {
             try {
@@ -34,15 +24,19 @@ class GithubRepository implements SourceRepository {
                 // likely to be an arbitrary tag that erroneously got promoted to release
                 continue;
             }
-            $pharUrl = null;
+            $pharUrl      = null;
             $signatureUrl = null;
+
             foreach ($entry->assets as $asset) {
                 $url = $asset->browser_download_url;
-                if (substr($url, -5, 5) === '.phar') {
+
+                if (\substr($url, -5, 5) === '.phar') {
                     $pharUrl = new PharUrl($url);
+
                     continue;
                 }
-                if (in_array(substr($url, -4, 4), ['.asc', '.sig'], true)) {
+
+                if (\in_array(\substr($url, -4, 4), ['.asc', '.sig'], true)) {
                     $signatureUrl = new Url($url);
                 }
             }
@@ -52,6 +46,7 @@ class GithubRepository implements SourceRepository {
                 $releases->add(
                     new UnsupportedRelease($name, $version, 'No downloadable PHAR')
                 );
+
                 continue;
             }
 
@@ -60,6 +55,7 @@ class GithubRepository implements SourceRepository {
                 $releases->add(
                     new SupportedRelease($name, $version, $pharUrl)
                 );
+
                 continue;
             }
 
@@ -71,5 +67,4 @@ class GithubRepository implements SourceRepository {
 
         return $releases;
     }
-
 }

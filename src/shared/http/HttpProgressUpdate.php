@@ -1,80 +1,48 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class HttpProgressUpdate {
 
-    /**
-     * @var Url
-     */
+    /** @var Url */
     private $url;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $expectedDown;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $received;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $expectedUp;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $sent;
 
-    /**
-     * @param Url $url
-     * @param int $expectedDown
-     * @param int $received
-     * @param int $expectedUp
-     * @param int $sent
-     */
-    public function __construct(Url $url, $expectedDown, $received, $expectedUp, $sent) {
-        $this->url = $url;
+    public function __construct(Url $url, int $expectedDown, int $received, int $expectedUp, int $sent) {
+        $this->url          = $url;
         $this->expectedDown = $expectedDown;
-        $this->received = $received;
-        $this->expectedUp = $expectedUp;
-        $this->sent = $sent;
+        $this->received     = $received;
+        $this->expectedUp   = $expectedUp;
+        $this->sent         = $sent;
     }
 
-    /**
-     * @return Url
-     */
-    public function getUrl() {
+    public function getUrl(): Url {
         return $this->url;
     }
 
-    /**
-     * @return int
-     */
-    public function getExpectedDownloadSize() {
+    public function getExpectedDownloadSize(): int {
         return $this->expectedDown;
     }
 
-    /**
-     * @return int
-     */
-    public function getBytesReceived() {
+    public function getBytesReceived(): int {
         return $this->received;
     }
 
-    /**
-     * @return int
-     */
-    public function getExpectedUploadSize() {
+    public function getExpectedUploadSize(): int {
         return $this->expectedUp;
     }
 
-    /**
-     * @return int
-     */
-    public function getBytesSent() {
+    public function getBytesSent(): int {
         return $this->sent;
     }
 
@@ -83,7 +51,7 @@ class HttpProgressUpdate {
             return 0;
         }
 
-        return round($this->received / ($this->expectedDown / 100));
+        return \round($this->received / ($this->expectedDown / 100));
     }
 
     public function getUploadPercent() {
@@ -91,7 +59,6 @@ class HttpProgressUpdate {
             return 0;
         }
 
-        return round($this->sent / ($this->expectedUp / 100));
+        return \round($this->sent / ($this->expectedUp / 100));
     }
-
 }

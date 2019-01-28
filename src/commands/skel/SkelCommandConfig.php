@@ -1,47 +1,28 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
-
-use PharIo\Phive\Cli;
 
 class SkelCommandConfig {
 
-    /**
-     * @var Cli\Options
-     */
+    /** @var Cli\Options */
     private $cliOptions;
 
-    /**
-     * @var string
-     */
-    private $workingDirectory = '';
+    /** @var string */
+    private $workingDirectory;
 
-    /**
-     * @param Cli\Options        $cliOptions
-     * @param                    $workingDirectory
-     */
-    public function __construct(Cli\Options $cliOptions, $workingDirectory) {
-        $this->cliOptions = $cliOptions;
-        $this->workingDirectory = rtrim($workingDirectory, '/');
+    public function __construct(Cli\Options $cliOptions, string $workingDirectory) {
+        $this->cliOptions       = $cliOptions;
+        $this->workingDirectory = \rtrim($workingDirectory, '/');
     }
 
-    /**
-     * @return bool
-     */
-    public function allowOverwrite() {
+    public function allowOverwrite(): bool {
         return $this->cliOptions->hasOption('force');
     }
 
-    /**
-     * @return string
-     */
-    public function getDestination() {
+    public function getDestination(): string {
         return $this->workingDirectory . '/phive.xml';
     }
 
-    /**
-     * @return string
-     */
-    public function getTemplateFilename() {
+    public function getTemplateFilename(): string {
         return __DIR__ . '/../../../conf/phive.skeleton.xml';
     }
 }

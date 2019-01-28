@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
@@ -10,7 +10,6 @@ use Prophecy\Prophecy\ObjectProphecy;
  * @covers \PharIo\Phive\ChecksumService
  */
 class ChecksumServiceTest extends TestCase {
-
     public static function hashProvider() {
         return [
             ['foo', 'foo', true],
@@ -19,8 +18,8 @@ class ChecksumServiceTest extends TestCase {
         ];
     }
 
-    public function testThrowsExceptionIfExpectedHashClassIsNotSupported() {
-        $file = new File(new Filename('foo'), 'bar');
+    public function testThrowsExceptionIfExpectedHashClassIsNotSupported(): void {
+        $file    = new File(new Filename('foo'), 'bar');
         $service = new ChecksumService();
 
         $this->expectException(\PharIo\Phive\InvalidHashException::class);
@@ -37,8 +36,8 @@ class ChecksumServiceTest extends TestCase {
      *
      * @throws InvalidHashException
      */
-    public function testVerifiesSha1Checksum($expectedHash, $actualHash, $expected) {
-        $expectedHash = new Sha1Hash(hash('sha1', $expectedHash));
+    public function testVerifiesSha1Checksum($expectedHash, $actualHash, $expected): void {
+        $expectedHash = new Sha1Hash(\hash('sha1', $expectedHash));
 
         /** @var File|ObjectProphecy $file */
         $file = $this->getFileProphecy();
@@ -46,13 +45,6 @@ class ChecksumServiceTest extends TestCase {
 
         $service = new ChecksumService();
         $this->assertSame($expected, $service->verify($expectedHash, $file->reveal()));
-    }
-
-    /**
-     * @return ObjectProphecy|File
-     */
-    private function getFileProphecy() {
-        return $this->prophesize(File::class);
     }
 
     /**
@@ -64,8 +56,8 @@ class ChecksumServiceTest extends TestCase {
      *
      * @throws InvalidHashException
      */
-    public function testVerifiesSha256Checksum($expectedHash, $actualHash, $expected) {
-        $expectedHash = new Sha256Hash(hash('sha256', $expectedHash));
+    public function testVerifiesSha256Checksum($expectedHash, $actualHash, $expected): void {
+        $expectedHash = new Sha256Hash(\hash('sha256', $expectedHash));
 
         $file = $this->getFileProphecy();
         $file->getContent()->willReturn($actualHash);
@@ -74,4 +66,10 @@ class ChecksumServiceTest extends TestCase {
         $this->assertSame($expected, $service->verify($expectedHash, $file->reveal()));
     }
 
+    /**
+     * @return File|ObjectProphecy
+     */
+    private function getFileProphecy() {
+        return $this->prophesize(File::class);
+    }
 }

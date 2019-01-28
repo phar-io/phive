@@ -1,31 +1,19 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class PharInstallerLocator {
-
-    /**
-     * @var PharInstallerFactory
-     */
+    /** @var PharInstallerFactory */
     private $factory;
 
-    /**
-     * @param PharInstallerFactory $factory
-     */
     public function __construct(PharInstallerFactory $factory) {
         $this->factory = $factory;
     }
 
-    /**
-     * @param Environment $environment
-     *
-     * @return PharInstaller
-     */
-    public function getPharInstaller(Environment $environment) {
+    public function getPharInstaller(Environment $environment): PharInstaller {
         if ($environment instanceof WindowsEnvironment) {
             return $this->factory->getWindowsPharInstaller();
         }
 
         return $this->factory->getUnixoidPharInstaller();
     }
-
 }

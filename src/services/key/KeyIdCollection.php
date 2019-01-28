@@ -1,26 +1,16 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class KeyIdCollection {
 
-    /**
-     * @var array
-     */
+    /** @var string[] */
     private $keyIds = [];
 
-    /**
-     * @param $keyId
-     */
-    public function addKeyId($keyId) {
+    public function addKeyId(string $keyId): void {
         $this->keyIds[] = $keyId;
     }
 
-    /**
-     * @param $keyId
-     *
-     * @return bool
-     */
-    public function has($keyId) {
-        return in_array($keyId, $this->keyIds, true);
+    public function has(string $keyId): bool {
+        return \in_array($keyId, $this->keyIds, true);
     }
 }

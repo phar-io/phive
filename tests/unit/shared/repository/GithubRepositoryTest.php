@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
@@ -7,8 +7,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\GithubRepository
  */
 class GithubRepositoryTest extends TestCase {
-
-    public function testReturnsExpectedReleases() {
+    public function testReturnsExpectedReleases(): void {
         $pharAlias = $this->getPharAliasMock();
         $pharAlias->method('asString')->willReturn('foo');
 
@@ -58,19 +57,17 @@ class GithubRepositoryTest extends TestCase {
     /**
      * @param string $version
      * @param string $url
-     *
-     * @return \stdClass
      */
-    private function getGithubEntry($version, $url) {
-        $asset = new \stdClass();
+    private function getGithubEntry($version, $url): \stdClass {
+        $asset                       = new \stdClass();
         $asset->browser_download_url = $url;
 
-        $sig = new \stdClass();
+        $sig                       = new \stdClass();
         $sig->browser_download_url = $url . '.asc';
 
-        $entry = new \stdClass();
+        $entry           = new \stdClass();
         $entry->tag_name = $version;
-        $entry->assets = [
+        $entry->assets   = [
             $asset, $sig
         ];
 
@@ -78,14 +75,14 @@ class GithubRepositoryTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|JsonData
+     * @return JsonData|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getJsonDataMock() {
         return $this->createMock(JsonData::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharAlias
+     * @return PharAlias|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharAliasMock() {
         return $this->createMock(PharAlias::class);
@@ -97,5 +94,4 @@ class GithubRepositoryTest extends TestCase {
     private function getRequestedPharMock() {
         return $this->createMock(RequestedPhar::class);
     }
-
 }

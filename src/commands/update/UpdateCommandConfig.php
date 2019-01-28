@@ -1,80 +1,58 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
 
 class UpdateCommandConfig {
 
-    /**
-     * @var Cli\Options
-     */
+    /** @var Cli\Options */
     private $cliOptions;
 
-    /**
-     * @var PhiveXmlConfig
-     */
+    /** @var PhiveXmlConfig */
     private $phiveXmlConfig;
 
-    /**
-     * @var TargetDirectoryLocator
-     */
+    /** @var TargetDirectoryLocator */
     private $targetDirectoryLocator;
 
-    /**
-     * @param Cli\Options            $cliOptions
-     * @param PhiveXmlConfig         $phiveXmlConfig
-     * @param TargetDirectoryLocator $targetDirectoryLocator
-     */
     public function __construct(
         Cli\Options $cliOptions,
         PhiveXmlConfig $phiveXmlConfig,
         TargetDirectoryLocator $targetDirectoryLocator
     ) {
-        $this->cliOptions = $cliOptions;
-        $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->cliOptions             = $cliOptions;
+        $this->phiveXmlConfig         = $phiveXmlConfig;
         $this->targetDirectoryLocator = $targetDirectoryLocator;
     }
 
     /**
      * @return RequestedPhar[]
      */
-    public function getRequestedPhars() {
+    public function getRequestedPhars(): array {
         $filter = $this->getPharsFromCliArguments();
 
         return $this->getPharAliasesFromPhiveXmlConfig($filter);
     }
 
-    /**
-     * @return Directory
-     */
-    public function getTargetDirectory() {
+    public function getTargetDirectory(): Directory {
         return $this->targetDirectoryLocator->getTargetDirectory();
     }
 
-    /**
-     * @return bool
-     */
-    public function preferOffline() {
+    public function preferOffline(): bool {
         return $this->cliOptions->hasOption('prefer-offline');
     }
 
-    /**
-     * @return bool
-     */
-    public function forceAcceptUnsignedPhars() {
+    public function forceAcceptUnsignedPhars(): bool {
         return $this->cliOptions->hasOption('force-accept-unsigned');
     }
 
-
     /**
-     * @param array $filter
-     *
      * @return RequestedPhar[]
      */
-    private function getPharAliasesFromPhiveXmlConfig(array $filter) {
+    private function getPharAliasesFromPhiveXmlConfig(array $filter): array {
         $phars = [];
+
         foreach ($this->phiveXmlConfig->getPhars() as $configuredPhar) {
-            if (!empty($filter) && !in_array((string)$configuredPhar->getName(), $filter)) {
+            if (!empty($filter) && !\in_array($configuredPhar->getName(), $filter)) {
                 continue;
             }
 
@@ -101,12 +79,14 @@ class UpdateCommandConfig {
     }
 
     /**
-     * @return string[]
      * @throws Cli\CommandOptionsException
+     *
+     * @return string[]
      */
-    private function getPharsFromCliArguments() {
-        $phars = [];
+    private function getPharsFromCliArguments(): array {
+        $phars    = [];
         $argCount = $this->cliOptions->getArgumentCount();
+
         for ($i = 0; $i < $argCount; $i++) {
             $phars[] = $this->cliOptions->getArgument($i);
         }

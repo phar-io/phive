@@ -1,52 +1,42 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\ConsoleTable;
 
 class StatusCommand implements Cli\Command {
 
-    /**
-     * @var PhiveXmlConfig
-     */
+    /** @var PhiveXmlConfig */
     private $phiveXmlConfig;
 
-    /**
-     * @var Cli\Output
-     */
+    /** @var Cli\Output */
     private $output;
 
-    /**
-     * @var PharRegistry
-     */
+    /** @var PharRegistry */
     private $pharRegistry;
 
-    /**
-     * @param PhiveXmlConfig $phiveXmlConfig
-     * @param Cli\Output     $output
-     */
     public function __construct(PhiveXmlConfig $phiveXmlConfig, PharRegistry $pharRegistry, Cli\Output $output) {
         $this->phiveXmlConfig = $phiveXmlConfig;
-        $this->pharRegistry = $pharRegistry;
-        $this->output = $output;
+        $this->pharRegistry   = $pharRegistry;
+        $this->output         = $output;
     }
 
-    public function execute() {
-
+    public function execute(): void {
         $this->output->writeText('PHARs configured in phive.xml:' . "\n\n");
 
         $table = new ConsoleTable(['Alias/URL', 'Version Constraint', 'Installed', 'Location', 'Key Ids']);
 
         foreach ($this->phiveXmlConfig->getPhars() as $phar) {
             $installed = '-';
+
             if ($phar->isInstalled()) {
                 $installed = $phar->getInstalledVersion()->getVersionString();
             }
             $location = $phar->hasLocation() ? $phar->getLocation()->asString() : '-';
-            $keys = implode(
+            $keys     = \implode(
                 ', ',
-                array_map(
-                    function($key) {
-                        return substr($key, -16);
+                \array_map(
+                    function ($key) {
+                        return \substr($key, -16);
                     },
                     $this->pharRegistry->getKnownSignatureFingerprints($phar->getName())
                 )
@@ -58,5 +48,4 @@ class StatusCommand implements Cli\Command {
 
         $this->output->writeText($table->asString());
     }
-
 }

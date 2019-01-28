@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -10,8 +10,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\Config
  */
 class ConfigTest extends TestCase {
-
-    public function testGetHomeDirectory() {
+    public function testGetHomeDirectory(): void {
         $homeDirectory = $this->getDirectoryMock();
 
         $directory = $this->getDirectoryMock();
@@ -24,7 +23,7 @@ class ConfigTest extends TestCase {
         $this->assertSame($homeDirectory, $config->getHomeDirectory());
     }
 
-    public function testGetHomeDirectoryOverriddenByCliOptions() {
+    public function testGetHomeDirectoryOverriddenByCliOptions(): void {
         $options = $this->getOptionsMock();
         $options->expects($this->once())
             ->method('hasOption')
@@ -44,7 +43,7 @@ class ConfigTest extends TestCase {
         $this->assertEquals($expectedDirectory, $config->getHomeDirectory());
     }
 
-    public function testGetWorkingDirectory() {
+    public function testGetWorkingDirectory(): void {
         $directory = $this->getDirectoryMock();
 
         $environment = $this->getEnvironmentMock();
@@ -54,7 +53,7 @@ class ConfigTest extends TestCase {
         $this->assertSame($directory, $config->getWorkingDirectory());
     }
 
-    public function testGetGPGBinaryPath() {
+    public function testGetGPGBinaryPath(): void {
         $filename = new Filename('foo');
 
         $environment = $this->getEnvironmentMock();
@@ -65,13 +64,13 @@ class ConfigTest extends TestCase {
         $this->assertSame($filename, $config->getGPGBinaryPath());
     }
 
-    public function testGetToolsDirectory() {
-        $config = new Config($this->getEnvironmentMock(), $this->getOptionsMock());
+    public function testGetToolsDirectory(): void {
+        $config            = new Config($this->getEnvironmentMock(), $this->getOptionsMock());
         $expectedDirectory = new Directory('tools');
         $this->assertEquals($expectedDirectory, $config->getToolsDirectory());
     }
 
-    public function testThrowsNoGPGBinaryFoundExceptionIfPathToGpgWasNotFound() {
+    public function testThrowsNoGPGBinaryFoundExceptionIfPathToGpgWasNotFound(): void {
         $environment = $this->getEnvironmentMock();
         $environment->method('getPathToCommand')->with('gpg')->willThrowException(new EnvironmentException());
 
@@ -81,7 +80,7 @@ class ConfigTest extends TestCase {
         $config->getGPGBinaryPath();
     }
 
-    public function testGetSourcesListUrl() {
+    public function testGetSourcesListUrl(): void {
         $config = new Config($this->getEnvironmentMock(), $this->getOptionsMock());
         $this->assertEquals(
             new Url('https://phar.io/data/repositories.xml'),
@@ -89,15 +88,15 @@ class ConfigTest extends TestCase {
         );
     }
 
-    public function testReturnsExpectedMaxAgeForSourcesList() {
-        $now = new \DateTimeImmutable('25.04.2017 12:23:12');
-        $config = new Config($this->getEnvironmentMock(), $this->getOptionsMock(), $now);
+    public function testReturnsExpectedMaxAgeForSourcesList(): void {
+        $now      = new \DateTimeImmutable('25.04.2017 12:23:12');
+        $config   = new Config($this->getEnvironmentMock(), $this->getOptionsMock(), $now);
         $expected = new \DateTimeImmutable('18.04.2017 12:23:12');
 
         $this->assertEquals($expected, $config->getMaxAgeForSourcesList());
     }
 
-    public function testGetTrustedKeyIds() {
+    public function testGetTrustedKeyIds(): void {
         $expected = new KeyIdCollection();
         $expected->addKeyId('id1');
         $expected->addKeyId('id2');
@@ -113,24 +112,23 @@ class ConfigTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Options
+     * @return Options|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOptionsMock() {
         return $this->createMock(Options::class);
     }
-
 }

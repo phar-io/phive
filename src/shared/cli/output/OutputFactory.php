@@ -1,24 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 class OutputFactory {
-
-    /**
-     * @param bool $outputProgress
-     *
-     * @return Output
-     */
-    public function getConsoleOutput($outputProgress) {
+    public function getConsoleOutput(bool $outputProgress): Output {
         return new ConsoleOutput(ConsoleOutput::VERBOSE_INFO, $outputProgress);
     }
 
-    /**
-     * @param bool $outputProgress
-     *
-     * @return Output
-     */
-    public function getColoredConsoleOutput($outputProgress) {
+    public function getColoredConsoleOutput(bool $outputProgress): Output {
         return new ColoredConsoleOutput(ConsoleOutput::VERBOSE_INFO, $outputProgress);
     }
-
 }

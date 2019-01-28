@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
@@ -8,39 +8,32 @@ use PHPUnit_Framework_MockObject_MockObject;
  * @covers \PharIo\Phive\CurlConfigBuilder
  */
 class CurlConfigBuilderTest extends TestCase {
-
-    /**
-     * @var Environment|PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Environment|PHPUnit_Framework_MockObject_MockObject */
     private $environment;
 
-    /**
-     * @var PhiveVersion|PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PhiveVersion|PHPUnit_Framework_MockObject_MockObject */
     private $phiveVersion;
 
-    /**
-     * @var CurlConfigBuilder
-     */
+    /** @var CurlConfigBuilder */
     private $builder;
 
-    protected function setUp() {
-        $this->environment = $this->getEnvironmentMock();
+    protected function setUp(): void {
+        $this->environment  = $this->getEnvironmentMock();
         $this->phiveVersion = $this->getPhiveVersionMock();
-        $this->builder = new CurlConfigBuilder($this->environment, $this->phiveVersion);
+        $this->builder      = new CurlConfigBuilder($this->environment, $this->phiveVersion);
     }
 
-    public function testSetsExpectedUserAgent() {
+    public function testSetsExpectedUserAgent(): void {
         $this->phiveVersion->method('getVersion')
             ->willReturn('0.8.3');
         $this->environment->method('getRuntimeString')
             ->willReturn('PHP 7.1.11');
 
         $config = $this->builder->build();
-        $this->assertSame('Phive 0.8.3 on PHP 7.1.11', $config->asCurlOptArray()[CURLOPT_USERAGENT]);
+        $this->assertSame('Phive 0.8.3 on PHP 7.1.11', $config->asCurlOptArray()[\CURLOPT_USERAGENT]);
     }
 
-    public function testSetsProxyIfConfiguredInEnvironment() {
+    public function testSetsProxyIfConfiguredInEnvironment(): void {
         $this->environment->method('hasProxy')
             ->willReturn(true);
         $this->environment->method('getProxy')
@@ -48,10 +41,10 @@ class CurlConfigBuilderTest extends TestCase {
 
         $config = $this->builder->build();
 
-        $this->assertSame('proxy.example.com', $config->asCurlOptArray()[CURLOPT_PROXY]);
+        $this->assertSame('proxy.example.com', $config->asCurlOptArray()[\CURLOPT_PROXY]);
     }
 
-    public function testAddsGitHubAuthToken() {
+    public function testAddsGitHubAuthToken(): void {
         $this->environment->method('hasGitHubAuthToken')
             ->willReturn(true);
         $this->environment->method('getGitHubAuthToken')
@@ -63,17 +56,16 @@ class CurlConfigBuilderTest extends TestCase {
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|Environment
+     * @return Environment|PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|PhiveVersion
+     * @return PhiveVersion|PHPUnit_Framework_MockObject_MockObject
      */
     private function getPhiveVersionMock() {
         return $this->createMock(PhiveVersion::class);
     }
-
 }

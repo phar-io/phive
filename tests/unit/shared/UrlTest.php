@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
@@ -8,13 +8,12 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\Url
  */
 class UrlTest extends TestCase {
-
     /**
      * @dataProvider invalidUriProvider
      *
      * @param string $invalidUri
      */
-    public function testThrowsExceptionIfProtocolIsNotHttps($invalidUri) {
+    public function testThrowsExceptionIfProtocolIsNotHttps($invalidUri): void {
         $this->expectException(\InvalidArgumentException::class);
 
         new Url($invalidUri);
@@ -30,28 +29,28 @@ class UrlTest extends TestCase {
         ];
     }
 
-    public function testReturnsTrueForFullyQualifiedURL() {
+    public function testReturnsTrueForFullyQualifiedURL(): void {
         $this->assertTrue(Url::isUrl('proto://host/path'));
     }
 
-    public function testReturnsFalseForStringWithoutProtocolPart() {
+    public function testReturnsFalseForStringWithoutProtocolPart(): void {
         $this->assertFalse(Url::isUrl('host:path'));
     }
 
-    public function testVerificationForHttpsReturnsFalseOnNonHttpsUrl() {
+    public function testVerificationForHttpsReturnsFalseOnNonHttpsUrl(): void {
         $this->assertFalse(Url::isHttpsUrl('http://something'));
     }
 
-    public function testVerificationForHttpsTrueFOnHttpsUrl() {
+    public function testVerificationForHttpsTrueFOnHttpsUrl(): void {
         $this->assertTrue(Url::isHttpsUrl('https://something'));
     }
 
-    public function testCanBeCastToString() {
+    public function testCanBeCastToString(): void {
         $url = new Url('https://example.com');
         $this->assertSame('https://example.com', (string)$url);
     }
 
-    public function testReturnsExpectedHostname() {
+    public function testReturnsExpectedHostname(): void {
         $url = new Url('https://example.com/foo/bar');
         $this->assertSame('example.com', $url->getHostname());
     }
@@ -59,11 +58,10 @@ class UrlTest extends TestCase {
     /**
      * @param string $expected
      * @param string $base
-     * @param array  $params
      *
      * @dataProvider parameterPayload
      */
-    public function testParametersGetAppliedCorrectly($expected, $base, array $params) {
+    public function testParametersGetAppliedCorrectly($expected, $base, array $params): void {
         $this->assertEquals(
             $expected,
             (string)(new Url($base))->withParams($params)
@@ -76,23 +74,23 @@ class UrlTest extends TestCase {
                 'https://base/path',
                 'https://base/path',
                 []
-            ],[ // one
+            ], [ // one
                 'https://base/?foo=1',
                 'https://base/',
                 ['foo' => 1]
-            ],[ // multiple
+            ], [ // multiple
                 'https://base/path?foo=abc&bar=def',
                 'https://base/path',
                 ['foo' => 'abc', 'bar' => 'def']
-            ],[ // add to existing
+            ], [ // add to existing
                 'https://base/path?foo=abc&bar=def',
                 'https://base/path?foo=abc',
                 ['bar' => 'def']
-            ],[ // space within
+            ], [ // space within
                 'https://base/path/?foo=abc%20def',
                 'https://base/path/',
                 ['foo' => 'abc def']
-            ],[ // special chars
+            ], [ // special chars
                 'https://base/path/?foo=%3F%26%3A-%20%2B%22%27%2F%5C',
                 'https://base/path/',
                 ['foo' => '?&:- +"\'/\\']
@@ -100,15 +98,15 @@ class UrlTest extends TestCase {
         ];
     }
 
-    public function testPathCanBeRetrieved() {
+    public function testPathCanBeRetrieved(): void {
         $this->assertEquals('/some', (new Url('https://host/some'))->getPath());
     }
 
-    public function testReturnsRootPathForUrlsWithoutPath() {
+    public function testReturnsRootPathForUrlsWithoutPath(): void {
         $this->assertEquals('/', (new Url('https://host'))->getPath());
     }
 
-    public function testFilenameCanBeRetreived() {
+    public function testFilenameCanBeRetreived(): void {
         $this->assertEquals(
             new Filename('some.phar'),
             (new Url('https://example.com/some.phar'))->getFilename()

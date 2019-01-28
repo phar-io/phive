@@ -1,38 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 abstract class BaseHash implements Hash {
-
-    /**
-     * @var string
-     */
+    /** @var string */
     private $hash;
 
-    /**
-     * Hash constructor.
-     *
-     * @param string $hash
-     */
-    public function __construct($hash) {
+    public function __construct(string $hash) {
         $this->ensureValidHash($hash);
         $this->hash = $hash;
     }
 
-    /**
-     * @return string
-     */
-    public function asString() {
+    public function asString(): string {
         return $this->hash;
     }
 
-    /**
-     * @param Hash $otherHash
-     *
-     * @return bool
-     */
-    public function equals(Hash $otherHash) {
-        return hash_equals($this->hash, $otherHash->asString());
+    public function equals(Hash $otherHash): bool {
+        return \hash_equals($this->hash, $otherHash->asString());
     }
 
-    abstract protected function ensureValidHash($hash);
+    abstract protected function ensureValidHash(string $hash);
 }

@@ -1,60 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 interface Context {
+    public function canContinue(): bool;
 
-    /**
-     * @return bool
-     */
-    public function canContinue();
+    public function knowsOption(string $option): bool;
 
-    /**
-     * @param $option
-     *
-     * @return bool
-     */
-    public function knowsOption($option);
+    public function requiresValue(string $option): bool;
 
-    /**
-     * @param $option
-     *
-     * @return bool
-     */
-    public function requiresValue($option);
+    public function getOptionForChar(string $char): string;
 
-    /**
-     * @param $char
-     *
-     * @return string
-     */
-    public function getOptionForChar($char);
+    public function hasOptionForChar(string $char): bool;
 
-    /**
-     * @param $char
-     *
-     * @return bool
-     */
-    public function hasOptionForChar($char);
+    public function acceptsArguments(): bool;
 
-    /**
-     * @return bool
-     */
-    public function acceptsArguments();
+    public function addArgument(string $arg);
 
-    /**
-     * @param string $arg
-     */
-    public function addArgument($arg);
+    public function setOption(string $option, $value);
 
-    /**
-     * @param string $option
-     * @param mixed  $value
-     */
-    public function setOption($option, $value);
-
-    /**
-     * @return Options
-     */
-    public function getOptions();
-
+    public function getOptions(): Options;
 }

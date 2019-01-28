@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Options;
@@ -9,7 +8,6 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\DefaultCommandConfig
  */
 class DefaultCommandConfigTest extends TestCase {
-
     use ScalarTestDataProvider;
 
     /**
@@ -17,8 +15,7 @@ class DefaultCommandConfigTest extends TestCase {
      *
      * @param bool $hasOption
      */
-    public function testHasVersionOptionReturnsExpectedResult($hasOption)
-    {
+    public function testHasVersionOptionReturnsExpectedResult($hasOption): void {
         $options = $this->getOptionsMock();
         $options->method('hasOption')->with('version')->willReturn($hasOption);
 
@@ -28,12 +25,9 @@ class DefaultCommandConfigTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Options
+     * @return Options|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getOptionsMock()
-    {
+    private function getOptionsMock() {
         return $this->createMock(Options::class);
     }
-
-
 }
