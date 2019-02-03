@@ -28,17 +28,17 @@ class CurlConfigTest extends TestCase {
             \CURLOPT_LOW_SPEED_LIMIT => 128
         ];
         $actual = $config->asCurlOptArray();
-        $this->assertArraySubset($expectedDefaults, $actual);
+        foreach($expectedDefaults as $key => $value) {
+            $this->assertEquals($value, $actual[$key]);
+        }
     }
 
     public function testPutsProxyWithoutCredentialsInCurlOptArray(): void {
+        $proxyHost = 'proxy.example.com';
         $config = new CurlConfig('foo');
-        $config->setProxy('proxy.example.com');
-        $expected = [
-            \CURLOPT_PROXY => 'proxy.example.com'
-        ];
+        $config->setProxy($proxyHost);
         $actual = $config->asCurlOptArray();
-        $this->assertArraySubset($expected, $actual);
+        $this->assertEquals($proxyHost, $actual[\CURLOPT_PROXY]);
     }
 
     public function testPutsProxyWithCredentialsInCurlOptArray(): void {
@@ -49,7 +49,9 @@ class CurlConfigTest extends TestCase {
             \CURLOPT_PROXYUSERPWD => 'someuser:somepassword'
         ];
         $actual = $config->asCurlOptArray();
-        $this->assertArraySubset($expected, $actual);
+        foreach($expected as $key => $value) {
+            $this->assertEquals($value, $actual[$key]);
+        }
     }
 
     public function testAddsLocalSslCertificate(): void {

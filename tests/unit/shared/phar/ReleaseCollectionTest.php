@@ -10,12 +10,12 @@ use PHPUnit\Framework\TestCase;
 class ReleaseCollectionTest extends TestCase {
     public function testAdd(): void {
         $releases = new ReleaseCollection();
-        $this->assertAttributeEmpty('releases', $releases);
+        $this->assertCount(0, $releases);
 
         $release = $this->getReleaseMock();
         $releases->add($release);
 
-        $this->assertAttributeContains($release, 'releases', $releases);
+        $this->assertCount(1, $releases);
     }
 
     /**

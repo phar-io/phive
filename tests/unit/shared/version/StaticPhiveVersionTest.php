@@ -11,7 +11,7 @@ class StaticPhiveVersionTest extends TestCase {
     public function testGetVersionString(): void {
         $version = new StaticPhiveVersion('4.2.1');
 
-        $this->assertContains('4.2.1', $version->getVersionString());
+        $this->assertStringContainsString('4.2.1', $version->getVersionString());
     }
 
     public function testGetVersion(): void {

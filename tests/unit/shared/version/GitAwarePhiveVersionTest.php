@@ -15,7 +15,7 @@ class GitAwarePhiveVersionTest extends TestCase {
 
         $version = new GitAwarePhiveVersion($git);
 
-        $this->assertContains('0.2.0-67-gd2a5e31', $version->getVersionString());
+        $this->assertStringContainsString('0.2.0-67-gd2a5e31', $version->getVersionString());
     }
 
     public function testGetVersionReturnsFallbackVersionIfNoGitRepositoryIsPresent(): void {
