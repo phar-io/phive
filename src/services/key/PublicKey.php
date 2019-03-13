@@ -66,7 +66,7 @@ class PublicKey {
      */
     private function parseInfo($info): void {
         foreach (\explode("\n", $info) as $line) {
-            $parts = \explode(':', $line);
+            $parts = \explode(':', \urldecode($line));
 
             switch ($parts[0]) {
                 default: {
