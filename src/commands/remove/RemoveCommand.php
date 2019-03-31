@@ -43,7 +43,7 @@ class RemoveCommand implements Cli\Command {
         );
         $this->phiveXmlConfig->removePhar($phar->getName());
         $this->pharRegistry->removeUsage($phar, $location);
-        \unlink($location);
+        \unlink($location->asString());
 
         if (!$this->pharRegistry->hasUsages($phar)) {
             $this->output->writeInfo(
