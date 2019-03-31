@@ -40,17 +40,17 @@ class RetryingHttpClient implements HttpClient {
         return $this->doTry('head', $url, $etag);
     }
 
-    public function get(Url $url, ETag $etag = null): HttpResponse {
+    public function get(Url $url, ETag $etag = null, string $ip = null): HttpResponse {
         $this->triesPerformed = 0;
 
-        return $this->doTry('get', $url, $etag);
+        return $this->doTry('get', $url, $etag, $ip);
     }
 
-    private function doTry($method, Url $url, ETag $etag = null) {
+    private function doTry($method, Url $url, ETag $etag = null, string $ip = null) {
         try {
             $this->triesPerformed++;
 
-            return $this->client->$method($url, $etag);
+            return $this->client->$method($url, $etag, $ip);
         } catch (HttpException $e) {
             if ($this->triesPerformed < $this->maxTries && isset(self::retryCodes[$e->getCode()])) {
                 $this->output->writeInfo(
@@ -58,7 +58,7 @@ class RetryingHttpClient implements HttpClient {
                 );
                 \sleep(2);
 
-                return $this->doTry($method, $url, $etag);
+                return $this->doTry($method, $url, $etag, $ip);
             }
 
             throw $e;

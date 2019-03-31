@@ -42,8 +42,8 @@ class GnupgKeyDownloader implements KeyDownloader {
                 $this->output->writeInfo(\sprintf('Trying %s (%s)', $keyServerName, $ipAddress));
 
                 try {
-                    $keyInfo   = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($infoParams));
-                    $publicKey = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($publicParams));
+                    $keyInfo   = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($infoParams), null, $ipAddress);
+                    $publicKey = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($publicParams), null, $ipAddress);
 
                     $this->ensureSuccess($keyInfo);
                     $this->ensureSuccess($publicKey);

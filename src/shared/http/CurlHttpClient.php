@@ -15,6 +15,9 @@ class CurlHttpClient implements HttpClient {
     /** @var ETag */
     private $etag;
 
+    /** @var string */
+    private $ip;
+
     /** @var array */
     private $rateLimitHeaders = [];
 
@@ -48,9 +51,10 @@ class CurlHttpClient implements HttpClient {
     /**
      * @throws HttpException
      */
-    public function get(Url $url, ETag $etag = null): HttpResponse {
+    public function get(Url $url, ETag $etag = null, string $ip = null): HttpResponse {
         $this->url  = $url;
         $this->etag = $etag;
+        $this->ip   = $ip;
 
         $this->progressHandler->start($url);
         $this->setupCurlInstance();
@@ -92,6 +96,9 @@ class CurlHttpClient implements HttpClient {
         $this->curl->setOptArray($this->config->asCurlOptArray());
         $this->curl->enableProgressMeter([$this, 'handleProgressInfo']);
         $this->curl->setHeaderFunction([$this, 'handleHeaderInput']);
+        if ($this->ip !== null) {
+            $this->curl->setResolve($this->url->getHostname() . ':443:' . $this->ip);
+        }
 
         $headers = [];
 

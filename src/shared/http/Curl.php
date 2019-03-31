@@ -13,7 +13,7 @@ class Curl {
     }
 
     public function setResolve(string $resolveString): void {
-        \curl_setopt($this->curlHandle, \CURLOPT_RESOLVE, $resolveString);
+        \curl_setopt($this->curlHandle, \CURLOPT_RESOLVE, array($resolveString));
     }
 
     public function addHttpHeaders(array $headers): void {
