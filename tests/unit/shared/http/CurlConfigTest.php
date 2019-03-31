@@ -28,14 +28,15 @@ class CurlConfigTest extends TestCase {
             \CURLOPT_LOW_SPEED_LIMIT => 128
         ];
         $actual = $config->asCurlOptArray();
-        foreach($expectedDefaults as $key => $value) {
+
+        foreach ($expectedDefaults as $key => $value) {
             $this->assertEquals($value, $actual[$key]);
         }
     }
 
     public function testPutsProxyWithoutCredentialsInCurlOptArray(): void {
         $proxyHost = 'proxy.example.com';
-        $config = new CurlConfig('foo');
+        $config    = new CurlConfig('foo');
         $config->setProxy($proxyHost);
         $actual = $config->asCurlOptArray();
         $this->assertEquals($proxyHost, $actual[\CURLOPT_PROXY]);
@@ -49,7 +50,8 @@ class CurlConfigTest extends TestCase {
             \CURLOPT_PROXYUSERPWD => 'someuser:somepassword'
         ];
         $actual = $config->asCurlOptArray();
-        foreach($expected as $key => $value) {
+
+        foreach ($expected as $key => $value) {
             $this->assertEquals($value, $actual[$key]);
         }
     }

@@ -85,9 +85,10 @@ class PharDownloader {
 
         if (!$signatureVerificationResult->wasVerificationSuccessful()) {
             throw new VerificationFailedException(
-                sprintf(
+                \sprintf(
                     "Signature could not be verified\n%s",
-                    $signatureVerificationResult->getStatusMessage())
+                    $signatureVerificationResult->getStatusMessage()
+                )
             );
         }
 
