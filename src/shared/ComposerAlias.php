@@ -26,7 +26,7 @@ class ComposerAlias {
     }
 
     /**
-     * @param $alias
+     * @param string $alias
      *
      * @throws \InvalidArgumentException
      */
