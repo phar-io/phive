@@ -1,6 +1,7 @@
 parameters:
     level: 5
     paths:
+        - %currentWorkingDirectory%/phive
         - %currentWorkingDirectory%/src/
     autoload_files:
         - %currentWorkingDirectory%/tests/phpstan-bootstrap.php
