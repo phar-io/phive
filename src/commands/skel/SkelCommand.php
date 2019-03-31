@@ -9,7 +9,7 @@ class SkelCommand implements Cli\Command {
     /** @var PhiveVersion */
     private $version;
 
-    /** @var \DateTime */
+    /** @var \DateTimeImmutable */
     private $now;
 
     public function __construct(SkelCommandConfig $config, PhiveVersion $version, \DateTimeImmutable $now = null) {
