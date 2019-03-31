@@ -12,7 +12,7 @@ class CurlHttpClient implements HttpClient {
     /** @var Url */
     private $url;
 
-    /** @var Etag */
+    /** @var ETag */
     private $etag;
 
     /** @var array */
