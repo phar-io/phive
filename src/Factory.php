@@ -255,7 +255,7 @@ class Factory {
     }
 
     private function getPhiveVersion(): PhiveVersion {
-        if (!$this->version) {
+        if (!$this->version instanceof PhiveVersion) {
             $this->version = new GitAwarePhiveVersion($this->getGit());
         }
 

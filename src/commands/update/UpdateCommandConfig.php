@@ -59,7 +59,7 @@ class UpdateCommandConfig {
             if (Url::isUrl($configuredPhar->getName())) {
                 $identifier = new PharUrl($configuredPhar->getName());
             } elseif ($configuredPhar->hasUrl()) {
-                $identifier = new PharUrl($configuredPhar->getUrl());
+                $identifier = new PharUrl($configuredPhar->getUrl()->asString());
             } else {
                 $identifier = new PharAlias($configuredPhar->getName());
             }

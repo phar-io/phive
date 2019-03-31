@@ -68,7 +68,7 @@ class Phar {
      */
     public function getManifest(): Manifest {
         try {
-            return ManifestLoader::fromPhar($this->file->getFilename());
+            return ManifestLoader::fromPhar($this->file->getFilename()->asString());
         } catch (ManifestLoaderException $e) {
             throw new PharException('Loading manifest failed.', 0, $e);
         }

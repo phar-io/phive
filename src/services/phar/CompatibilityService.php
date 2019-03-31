@@ -46,7 +46,7 @@ class CompatibilityService {
                     if (!$php->complies($phpversion)) {
                         $issues[] = \sprintf(
                             'PHP Version %s required, but %s in use',
-                            $php,
+                            $php->asString(),
                             \PHP_VERSION
                         );
                     }

@@ -98,19 +98,19 @@ class SelfupdateCommand implements Cli\Command {
             );
         }
 
-        if (false === \copy($tmpFilename, $destination->asString())) {
+        if (false === \copy($tmpFilename->asString(), $destination->asString())) {
             throw new InstallationFailedException(
                 \sprintf('Could not copy temporary file to %s', $destination->asString())
             );
         }
 
-        if (false === \chmod($destination, 0755)) {
+        if (false === \chmod($destination->asString(), 0755)) {
             throw new InstallationFailedException(
                 \sprintf('Could not make %s executable, please fix manually', $destination->asString())
             );
         }
 
-        if (false === \unlink($tmpFilename)) {
+        if (false === \unlink($tmpFilename->asString())) {
             throw new InstallationFailedException(
                 \sprintf('Could not remove temporary file %s, please fix manually', $tmpFilename->asString())
             );
