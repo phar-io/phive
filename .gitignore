@@ -1,8 +1,4 @@
-/.buildpath
-/.project
-/.settings
 /.idea
-/bin
 /build
 /phpunit.xml
 /tools
@@ -12,3 +8,4 @@
 /tests/regression/fixtures/phive-home/http-cache
 /tests/regression/under-test.phar
 cache.properties
+/.php_cs.cache
