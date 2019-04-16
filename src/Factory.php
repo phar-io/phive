@@ -338,7 +338,7 @@ class Factory {
 
     private function getPgpKeyDownloader(): GnupgKeyDownloader {
         return new GnupgKeyDownloader(
-            $this->getRetryingHttpClient(),
+            $this->getRingdownCurlHttpClient(),
             include __DIR__ . '/../conf/pgp-keyservers.php',
             $this->getOutput()
         );
@@ -442,5 +442,13 @@ class Factory {
 
     private function getReleaseSelector(): ReleaseSelector {
         return new ReleaseSelector($this->getOutput());
+    }
+
+    private function getRingdownCurlHttpClient(): RingdownCurlHttpClient {
+        return new RingdownCurlHttpClient(
+            $this->getHttpClient(),
+            $this->getCurlConfig(),
+            $this->getOutput()
+        );
     }
 }

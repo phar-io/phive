@@ -18,6 +18,9 @@ class CurlConfig {
     /** @var array */
     private $authenticationTokens = [];
 
+    /** @var array */
+    private $hostMap = [];
+
     public function __construct(string $userAgent) {
         $this->userAgent = $userAgent;
     }
@@ -98,5 +101,20 @@ class CurlConfig {
         }
 
         return $this->authenticationTokens[$hostname];
+    }
+
+    public function setResolvedIp(string $hostname, string $ip): void {
+        $this->hostMap[$hostname] = $ip;
+    }
+
+    public function hasResolvedIp($hostname): bool {
+        return isset($this->hostMap[$hostname]);
+    }
+
+    public function getResolvedIp(string $hostname) {
+        if (!$this->hasResolvedIp($hostname)) {
+            throw new CurlConfigException(\sprintf('No resolved IP for hostname %s found', $hostname));
+        }
+        return $this->hostMap[$hostname];
     }
 }

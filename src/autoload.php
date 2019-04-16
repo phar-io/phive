@@ -158,6 +158,7 @@ spl_autoload_register(
                 'phario\\phive\\resolveexception' => '/shared/exceptions/ResolveException.php',
                 'phario\\phive\\resolvingstrategy' => '/services/resolver/strategy/ResolvingStrategy.php',
                 'phario\\phive\\retryinghttpclient' => '/shared/http/RetryingHttpClient.php',
+                'phario\\phive\\ringdowncurlhttpclient' => '/shared/http/RingdownCurlHttpClient.php',
                 'phario\\phive\\selfupdatecommand' => '/commands/selfupdate/SelfupdateCommand.php',
                 'phario\\phive\\sha1hash' => '/shared/hash/sha/Sha1Hash.php',
                 'phario\\phive\\sha256hash' => '/shared/hash/sha/Sha256Hash.php',

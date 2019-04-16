@@ -36,66 +36,30 @@ class GnupgKeyDownloader implements KeyDownloader {
         ]);
 
         foreach ($this->keyServers as $keyServerName) {
-            $ipList = $this->resolveHostname($keyServerName);
+            try {
+                $keyInfo   = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($infoParams));
+                $publicKey = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($publicParams));
 
-            foreach ($ipList as $ipAddress) {
-                $this->output->writeInfo(\sprintf('Trying %s (%s)', $keyServerName, $ipAddress));
+                $this->ensureSuccess($keyInfo);
+                $this->ensureSuccess($publicKey);
+            } catch (HttpException $e) {
+                $this->output->writeWarning(
+                    \sprintf('Failed with error code %s: %s', $e->getCode(), $e->getMessage())
+                );
 
-                try {
-                    $keyInfo   = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($infoParams));
-                    $publicKey = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($publicParams));
+                continue;
+            }
 
-                    $this->ensureSuccess($keyInfo);
-                    $this->ensureSuccess($publicKey);
-                } catch (HttpException $e) {
-                    $this->output->writeWarning(
-                        \sprintf('Failed with error code %s: %s', $e->getCode(), $e->getMessage())
-                    );
+            $this->output->writeInfo('Successfully downloaded key');
 
-                    continue;
-                }
-
-                $this->output->writeInfo('Successfully downloaded key');
-
-                try {
-                    return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
-                } catch (PublicKeyException $e) {
-                    throw new DownloadFailedException($e->getMessage(), $e->getCode(), $e);
-                }
+            try {
+                return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
+            } catch (PublicKeyException $e) {
+                throw new DownloadFailedException($e->getMessage(), $e->getCode(), $e);
             }
         }
 
         throw new DownloadFailedException(\sprintf('PublicKey %s not found on key servers', $keyId));
-    }
-
-    private function resolveHostname(string $hostname): array {
-        $ipList = \array_merge(
-            $this->queryDNS($hostname, \DNS_A),
-            $this->queryDNS($hostname, \DNS_AAAA)
-        );
-
-        if (!\count($ipList)) {
-            throw new GnupgKeyDownloaderException(
-                \sprintf('DNS Problem: Did not find any IP for hostname "%s"', $hostname)
-            );
-        }
-
-        return $ipList;
-    }
-
-    private function queryDNS($hostname, $type): array {
-        $ipList = [];
-
-        try {
-            $results = \dns_get_record($hostname, $type);
-
-            foreach ($results as $result) {
-                $ipList[] = $result[ $type === \DNS_A ? 'ip' : 'ipv6' ];
-            }
-        } catch (\Exception $e) {
-        }
-
-        return $ipList;
     }
 
     /**

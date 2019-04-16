@@ -105,6 +105,10 @@ class CurlHttpClient implements HttpClient {
             $this->curl->setCertificateFile($this->config->getLocalSslCertificate($hostname)->getCertificateFile());
         }
 
+        if ($this->config->hasResolvedIp($hostname)) {
+            $this->curl->setResolve($hostname . ':443:' . $this->config->getResolvedIp($hostname));
+        }
+
         if ($this->config->hasAuthenticationToken($hostname)) {
             $headers[] = \sprintf('Authorization: token %s', $this->config->getAuthenticationToken($hostname));
         }
