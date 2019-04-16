@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 class GnupgVerificationResult implements VerificationResult {
 
     /** @var array */
-    private $verificationData = [];
+    private $verificationData;
 
     public function __construct(array $data) {
         $this->validate($data);
@@ -16,7 +16,6 @@ class GnupgVerificationResult implements VerificationResult {
     }
 
     public function isKnownKey(): bool {
-        /** @noinspection SuspiciousBinaryOperationInspection */
         return ($this->verificationData['summary'] & 128) !== 128;
     }
 

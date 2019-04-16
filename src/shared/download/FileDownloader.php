@@ -11,7 +11,7 @@ class FileDownloader {
     /** @var CacheBackend */
     private $cache;
 
-    /** @var RateLimit|null */
+    /** @var null|RateLimit */
     private $rateLimit;
 
     public function __construct(HttpClient $httpClient, CacheBackend $cache) {
