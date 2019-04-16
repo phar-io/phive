@@ -22,6 +22,8 @@ class Runner {
 
     public const RC_BUG_FOUND = 10;
 
+    // HHVM_RUNTIME = 99
+
     /** @var CommandLocator */
     private $locator;
 
