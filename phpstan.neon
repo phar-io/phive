@@ -1,8 +1,10 @@
 parameters:
     level: 5
     paths:
+        - %currentWorkingDirectory%/phive
         - %currentWorkingDirectory%/src/
     autoload_files:
+        - %currentWorkingDirectory%/src/autoload.php
         - %currentWorkingDirectory%/build/phpstan/bootstrap.php
     ignoreErrors:
         # Level 2
