@@ -28,7 +28,6 @@ class GnupgVerificationResult implements VerificationResult {
     }
 
     private function validate(array $keyinfo): void {
-        var_dump($keyinfo);
         if (!\array_key_exists('summary', $keyinfo) || !\array_key_exists('fingerprint', $keyinfo)) {
             throw new \InvalidArgumentException('Keyinfo does not contain required data');
         }
