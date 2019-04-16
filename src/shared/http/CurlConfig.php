@@ -62,17 +62,10 @@ class CurlConfig {
             \CURLOPT_PROXY           => $this->proxyUrl,
             \CURLOPT_PROXYUSERPWD    => $this->proxyCredentials,
             \CURLOPT_LOW_SPEED_TIME  => 90,
-            \CURLOPT_LOW_SPEED_LIMIT => 128
+            \CURLOPT_LOW_SPEED_LIMIT => 128,
+            \CURLOPT_PROTOCOLS       => \CURLPROTO_HTTPS
         ];
 
-        /*
-         * CURLOPT_PROTOCOLS is not available in older versions of HHVM,
-         * so we explicitly have to check if it is defined.
-         * See https://github.com/facebook/hhvm/issues/3702
-         */
-        if (\defined('CURLOPT_PROTOCOLS')) {
-            $options[\CURLOPT_PROTOCOLS] = \CURLPROTO_HTTPS;
-        }
 
         /* Added in PHP 7.0.7 and requires Curl 7.49+ */
         if (\defined('CURLOPT_TCP_FASTOPEN')) {

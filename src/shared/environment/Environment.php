@@ -84,17 +84,12 @@ abstract class Environment {
 
     public function getRuntimeString(): string {
         return \sprintf(
-            '%s %s',
-            $this->isHHVM() ? 'HHVM' : 'PHP',
+            'PHP %s',
             $this->getRuntimeVersion()
         );
     }
 
     public function getRuntimeVersion(): string {
-        if ($this->isHHVM()) {
-            return HHVM_VERSION;
-        }
-
         return \PHP_VERSION;
     }
 
@@ -109,10 +104,6 @@ abstract class Environment {
     abstract public function getGlobalBinDir(): Directory;
 
     abstract protected function getWhichCommand(): string;
-
-    private function isHHVM(): bool {
-        return \defined('HHVM_VERSION');
-    }
 
     private function disableXDebug(): void {
         if (!\extension_loaded('xdebug')) {
