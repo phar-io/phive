@@ -8,14 +8,10 @@ class RingdownCurlHttpClient implements HttpClient {
     /** @var HttpClient */
     private $client;
 
-    /**
-     * @var CurlConfig
-     */
+    /** @var CurlConfig */
     private $config;
 
-    /**
-     * @var Output
-     */
+    /** @var Output */
     private $output;
 
     /** @var array */
@@ -39,9 +35,10 @@ class RingdownCurlHttpClient implements HttpClient {
         $hostname = $url->getHostname();
         $response = null;
 
-        foreach($this->resolveHostname($hostname) as $ip) {
+        foreach ($this->resolveHostname($hostname) as $ip) {
             $this->config->setResolvedIp($hostname, $ip);
-            $this->output->writeInfo(sprintf('Trying to connect to %s (%s)' ,$hostname, $ip));
+            $this->output->writeInfo(\sprintf('Trying to connect to %s (%s)', $hostname, $ip));
+
             try {
                 $response = $this->client->$method($url, $etag);
                 /** @var $response HttpResponse */
@@ -63,7 +60,6 @@ class RingdownCurlHttpClient implements HttpClient {
 
     private function resolveHostname(string $hostname): array {
         if (!isset($this->resolved[$hostname])) {
-
             $ipList = \array_merge(
                 $this->queryDNS($hostname, \DNS_A),
                 $this->queryDNS($hostname, \DNS_AAAA)
@@ -72,7 +68,7 @@ class RingdownCurlHttpClient implements HttpClient {
             if (!\count($ipList)) {
                 throw new HttpException(
                     \sprintf('DNS Problem: Did not find any IP for hostname "%s"', $hostname),
-                    CURLE_COULDNT_RESOLVE_HOST
+                    \CURLE_COULDNT_RESOLVE_HOST
                 );
             }
 
@@ -80,7 +76,6 @@ class RingdownCurlHttpClient implements HttpClient {
         }
 
         return $this->resolved[$hostname];
-
     }
 
     private function queryDNS($hostname, $type): array {
@@ -99,5 +94,4 @@ class RingdownCurlHttpClient implements HttpClient {
     private function removeUnavailable(string $hostname): void {
         \array_shift($this->resolved[$hostname]);
     }
-
 }

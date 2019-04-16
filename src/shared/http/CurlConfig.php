@@ -115,6 +115,7 @@ class CurlConfig {
         if (!$this->hasResolvedIp($hostname)) {
             throw new CurlConfigException(\sprintf('No resolved IP for hostname %s found', $hostname));
         }
+
         return $this->hostMap[$hostname];
     }
 }
