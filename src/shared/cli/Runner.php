@@ -86,7 +86,7 @@ class Runner {
     /**
      * @throws ErrorException
      */
-    public function errorHandler(int $code, string $message, string $file, string $line, array $context): void {
+    public function errorHandler(int $code, string $message, string $file, int $line, array $context): void {
         throw new ErrorException($message, $code, 1, $file, $line, $context);
     }
 
