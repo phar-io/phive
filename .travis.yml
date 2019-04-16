@@ -19,7 +19,7 @@ cache:
 
 install:
 - travis_retry composer install --no-interaction --prefer-source
-- phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C
+- phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C,8E730BA25823D8B5
 
 script: "./tools/phpunit"
 
