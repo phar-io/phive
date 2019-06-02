@@ -2,6 +2,21 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.12.2] - 2019-06-02
+
+### Fixed
+ 
+* [#181](https://github.com/phar-io/phive/issues/181): Fixed umlauts in GPG key info
+* Retries of failed key downloads now always use a different key server
+
+### Changed
+
+* PHPStan added to the repository (thanks to @szepeviktor!)
+* Improved error message on failed signature verification
+* Added `keys.fedoraproject.org` and `keyserver.ubuntu.com` to keyservers
+* Dropped support for PHP < 7.0
+* Dropped support for HHVM
+
 ## [0.12.1] - 2018-12-05
 
 ### Fixed
@@ -261,7 +276,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.12.1...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.13.0...HEAD
+[0.13.0]: https://github.com/phar-io/phive/compare/0.12.1...0.13.0
 [0.12.1]: https://github.com/phar-io/phive/compare/0.12.0...0.12.1
 [0.12.0]: https://github.com/phar-io/phive/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/phar-io/phive/compare/0.10.0...0.11.0
