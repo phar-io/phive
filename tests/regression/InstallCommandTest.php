@@ -19,7 +19,7 @@ class InstallCommandTest extends RegressionTestCase {
         $this->runPhiveCommand('install', ['phpunit@5.3.1']);
 
         $this->assertSymlinkTargetEquals(
-            $this->getToolsDirectory()->file('phpunit'),
+            $this->getToolsDirectory()->file('phpunit')->asString(),
             $this->getPhiveHomeDirectory()->child('phars')->file('phpunit-5.3.1.phar')->asString()
         );
     }

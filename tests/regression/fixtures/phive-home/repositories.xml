@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <repositories xmlns="https://phar.io/repository-list">
+    <phar alias="phpbench" composer="phpbench/phpbench">
+        <repository type="github" url="https://api.github.com/repos/phpbench/phpbench/releases" />
+    </phar>
+    <phar alias="infection" composer="infection/infection">
+        <repository type="github" url="https://api.github.com/repos/infection/infection/releases" />
+    </phar>
     <phar alias="phpab" composer="theseer/autoload">
         <repository type="github" url="https://api.github.com/repos/theseer/autoload/releases" />
     </phar>
@@ -17,6 +23,9 @@
     </phar>
     <phar alias="phpbu" composer="phpbu/phpbu">
         <repository url="https://phar.phpbu.de/phive.xml"/>
+    </phar>
+    <phar alias="php-doc-check" composer="nielsdeblaauw/php-doc-check">
+        <repository type="github" url="https://api.github.com/repos/nielsdeblaauw/php-doc-check/releases"/>
     </phar>
     <phar alias="dephpend" composer="dephpend/dephpend">
         <repository url="https://phar.dephpend.com/phive.xml"/>
@@ -71,5 +80,20 @@
     </phar>
     <phar alias="ecc" composer="ngabor84/ecc">
         <repository type="github" url="https://api.github.com/repos/ngabor84/ecc/releases" />
+    </phar>
+    <phar alias="wp" composer="wp-cli/wp-cli">
+        <repository type="github" url="https://api.github.com/repos/wp-cli/wp-cli/releases" />
+    </phar>
+    <phar alias="psh" composer="shopware/psh">
+        <repository type="github" url="https://api.github.com/repos/shopwareLabs/psh/releases" />
+    </phar>
+    <phar alias="sw-cli-tools" composer="shopwarelabs/sw-cli-tools">
+        <repository type="github" url="https://api.github.com/repos/shopwareLabs/sw-cli-tools/releases" />
+    </phar>
+    <phar alias="paratest" composer="brianium/paratest">
+        <repository type="github" url="https://api.github.com/repos/paratestphp/paratest/releases" />
+    </phar>
+    <phar alias="deptrac" composer="sensiolabs-de/deptrac">
+        <repository type="github" url="https://api.github.com/repos/sensiolabs-de/deptrac/releases" />
     </phar>
 </repositories>

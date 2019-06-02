@@ -7,7 +7,7 @@ class RemoveCommandTest extends RegressionTestCase {
         $this->usePhiveXmlConfig(__DIR__ . '/fixtures/removeCommandTest/phive.xml');
         $this->createSymlink(
             $this->getPhiveHomeDirectory()->child('phars')->file('phpunit-5.3.1.phar')->asString(),
-            $this->getToolsDirectory()->file('phpunit')
+            $this->getToolsDirectory()->file('phpunit')->asString()
         );
 
         $this->runPhiveCommand('remove', ['phpunit']);
