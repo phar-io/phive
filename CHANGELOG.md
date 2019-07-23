@@ -2,6 +2,18 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.12.3] - 2019-07-??
+
+### Fixed
+ 
+* [#202](https://github.com/phar-io/phive/issues/202): Installing different version of phpstan or php-cs-fixer does not work.
+
+### Changed
+
+* Added `keys.openpgp.org` to keyserver list
+* Changed order of keyservers: new verifing keyserver first, use fedora & ubuntu second, sks as last resort
+  (This will be less of an issue once [#158](https://github.com/phar-io/phive/issues/158) is implemented.)
+
 ## [0.12.2] - 2019-06-02
 
 ### Fixed
