@@ -7,7 +7,7 @@ before_install:
 - composer self-update
 - if [ -n "$GITHUB_AUTH_TOKEN" ]; then echo "Github auth token found." ; fi
 - if [ ! -d $HOME/.phive ]; then mkdir $HOME/.phive ; fi
-- if [ ! -f $HOME/.phive/phive.phar ]; then ant getphive ; mv phive.phar $HOME/.phive ; fi
+- if [ ! -f $HOME/.phive/phive.phar ]; then sudo apt-get install -y ant ; ant getphive ; mv phive.phar $HOME/.phive ; fi
 - sudo cp $HOME/.phive/phive.phar /usr/local/bin/phive
 
 cache:
