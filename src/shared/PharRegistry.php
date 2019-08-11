@@ -176,7 +176,7 @@ class PharRegistry {
         $targetDir = $destination->getDirectory();
         if (!$targetDir->isWritable()) {
             throw new FileNotWritableException(
-                sprintf('Cannot write phar to %s', $targetDir->asString())
+                sprintf('Cannot write phar to %s', (string)$targetDir)
             );
         }
 
