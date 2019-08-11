@@ -23,6 +23,8 @@ cache:
 install:
 - travis_retry composer install --no-interaction --prefer-source
 - phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C,8E730BA25823D8B5
+- if [ "${TRAVIS_PHP_VERSION:0:3}" == 7.1 ]; then phive --no-progress install phpunit@^7.5; fi
+
 
 script: "./tools/phpunit"
 
