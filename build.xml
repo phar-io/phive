@@ -127,6 +127,7 @@
             <arg value="--local-user" />
             <arg value="team@phar.io" />
             <arg value="--detach-sign" />
+            <arg value="--armor" />
             <arg value="--output" />
             <arg path="${basedir}/build/phar/phive-${version}.phar.asc" />
             <arg path="${basedir}/build/phar/phive-${version}.phar" />
