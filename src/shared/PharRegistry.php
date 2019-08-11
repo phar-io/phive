@@ -172,6 +172,14 @@ class PharRegistry {
 
     private function savePhar(Phar $phar): Filename {
         $destination = new Filename($this->getPharDestination($phar));
+
+        $targetDir = $destination->getDirectory();
+        if (!$targetDir->isWritable()) {
+            throw new FileNotWritableException(
+                sprintf('Cannot write phar to %s', $targetDir->asString())
+            );
+        }
+
         $phar->getFile()->saveAs($destination);
         \chmod($destination->asString(), 0755);
 
