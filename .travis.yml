@@ -4,6 +4,8 @@ os:
 language: php
 
 before_install:
+- sudo apt-get -qq update
+- sudo apt-get install ant
 - composer self-update
 - if [ -n "$GITHUB_AUTH_TOKEN" ]; then echo "Github auth token found." ; fi
 - if [ ! -d $HOME/.phive ]; then mkdir $HOME/.phive ; fi
