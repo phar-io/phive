@@ -21,14 +21,11 @@ class PharRegistry {
     }
 
     public function addPhar(Phar $phar): Phar {
-        $destinationFile = $this->savePhar($phar->getFile());
+        $destinationFile = $this->savePhar($phar);
         $pharNode        = $this->dbFile->createElement('phar');
         $pharNode->setAttribute('name', $phar->getName());
         $pharNode->setAttribute('version', $phar->getVersion()->getVersionString());
-        $pharNode->setAttribute(
-            'location',
-            $this->pharDirectory . \DIRECTORY_SEPARATOR . $phar->getFile()->getFilename()
-        );
+        $pharNode->setAttribute('location', $destinationFile->asString());
         $hashNode = $this->dbFile->createElement('hash', Sha1Hash::forContent($phar->getFile()->getContent())->asString());
         $hashNode->setAttribute('type', 'sha1');
         $pharNode->appendChild($hashNode);
@@ -173,16 +170,30 @@ class PharRegistry {
         return \array_unique($fingerprints);
     }
 
-    private function savePhar(File $pharFile): Filename {
-        $destination = new Filename($this->getPharDestination($pharFile));
-        $pharFile->saveAs($destination);
+    private function savePhar(Phar $phar): Filename {
+        $destination = new Filename($this->getPharDestination($phar));
+
+        $targetDir = $destination->getDirectory();
+        if (!$targetDir->isWritable()) {
+            throw new FileNotWritableException(
+                sprintf('Cannot write phar to %s', (string)$targetDir)
+            );
+        }
+
+        $phar->getFile()->saveAs($destination);
         \chmod($destination->asString(), 0755);
 
         return $destination;
     }
 
-    private function getPharDestination(File $file): string {
-        return $this->pharDirectory . \DIRECTORY_SEPARATOR . $file->getFilename();
+    private function getPharDestination(Phar $phar): string {
+
+        return sprintf(
+            '%s/%s-%s.phar',
+            $this->pharDirectory,
+            $phar->getName(),
+            $phar->getVersion()->getVersionString()
+        );
     }
 
     private function getFirstMatchingPharNode(string $name, Version $version): ?DOMElement {

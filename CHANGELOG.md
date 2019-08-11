@@ -8,7 +8,6 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 * [#203](https://github.com/phar-io/phive/issues/203): Error installing behat
 
-
 ## [0.12.3] - 2019-07-24
 
 ### Fixed

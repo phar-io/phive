@@ -4,6 +4,8 @@ os:
 language: php
 
 before_install:
+- sudo apt-get -qq update
+- sudo apt-get install ant
 - composer self-update
 - if [ -n "$GITHUB_AUTH_TOKEN" ]; then echo "Github auth token found." ; fi
 - if [ ! -d $HOME/.phive ]; then mkdir $HOME/.phive ; fi
@@ -21,12 +23,14 @@ cache:
 install:
 - travis_retry composer install --no-interaction --prefer-source
 - phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C,8E730BA25823D8B5
+- if [ "${TRAVIS_PHP_VERSION:0:3}" == 7.1 ]; then phive --no-progress install phpunit@^7.5; fi
+
 
 script: "./tools/phpunit"
 
 php:
-- 7.1.28
-- 7.2.17
+- 7.1.31
+- 7.2.21
 - 7.3
 - 7.1snapshot
 - 7.2snapshot

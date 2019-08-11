@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'hkps.pool.sks-keyservers.net',
+    'keys.openpgp.org',
     'keys.fedoraproject.org',
-    'keyserver.ubuntu.com'
+    'keyserver.ubuntu.com',
+    'hkps.pool.sks-keyservers.net'
 ];
