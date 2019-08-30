@@ -100,7 +100,7 @@ class Runner {
     }
 
     private function showErrorWithTrace(string $error, string $file, int $line, array $trace = null): void {
-        $baseLen = \strlen(\realpath(__DIR__ . '/../../..')) + 1;
+        $baseLen = \strlen(dirname(__DIR__, 3) . '') + 1;
 
         $message   = [$error];
         $message[] = '';
