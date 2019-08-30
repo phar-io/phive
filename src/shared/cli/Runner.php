@@ -93,7 +93,7 @@ class Runner {
     public function shutdownHandler(): void {
         $error = \error_get_last();
 
-        if ($error === null) {
+        if ($error === null || $error['file'] === 'Unknown') {
             return;
         }
         $this->showErrorWithTrace($error['message'], $error['file'], $error['line'], \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
