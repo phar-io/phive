@@ -9,10 +9,10 @@
     <!-- PHIVE CONFIGURATION -->
 
     <!--
-        By default, PHIVE stores all PHARs and some additional files containing meta data in ~/.PHIVE.
+        By default, PHIVE stores all PHARs and some additional files containing meta data in ~/.phive.
         You can change the working directory, but it is recommended to stick with it.
 
-        <config home="~/.PHIVE" />
+        <config home="~/.phive" />
     -->
 
     <!-- DEPENDENCY MANAGEMENT -->
@@ -22,14 +22,15 @@
         Although not recommended, you can leave out the version attribute, so the newest available version will
         be installed.
 
-        <phar name="phpunit" version="4.6.*" />
+        <phar name="phpunit" version="^4.6" />
     -->
 
     <!--
         If the dependency you need is not listed on https://phar.io or you do not want to rely on a central database,
-        you can also add an URL pointing to any PHAR to your config.
+        you can also add an URL pointing to any PHAR to your config or use the github "project/repository" combination.
 
         <phar url="https://some.tld/tool.phar" />
+        <phar url="someone/somerepo" />
     -->
 
 </phive>

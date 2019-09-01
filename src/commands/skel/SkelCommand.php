@@ -41,7 +41,7 @@ class SkelCommand implements Cli\Command {
 
         if (\file_exists($destination) && !$this->config->allowOverwrite()) {
             throw new IOException(
-                'A PHIVE configuration file already exists. Use the "-force" switch to overwrite it.'
+                'A PHIVE configuration file already exists. Use the "--force" switch to overwrite it.'
             );
         }
         \file_put_contents($this->config->getDestination(), $skeleton);
