@@ -5,14 +5,13 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 ## [0.12.4] - 2019-08-11
 
 ### Fixed
- 
-* [#203](https://github.com/phar-io/phive/issues/203): Error installing behat
 
+* [#203](https://github.com/phar-io/phive/issues/203): Error installing behat
 
 ## [0.12.3] - 2019-07-24
 
 ### Fixed
- 
+
 * [#202](https://github.com/phar-io/phive/issues/202): Installing different version of phpstan or php-cs-fixer does not work.
 
 ### Changed
@@ -24,7 +23,7 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 ## [0.12.2] - 2019-06-02
 
 ### Fixed
- 
+
 * [#181](https://github.com/phar-io/phive/issues/181): Fixed umlauts in GPG key info
 * Retries of failed key downloads now always use a different key server
 
@@ -295,8 +294,10 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.13.0...HEAD
-[0.13.0]: https://github.com/phar-io/phive/compare/0.12.1...0.13.0
+[Unreleased]: https://github.com/phar-io/phive/compare/0.12.4...HEAD
+[0.12.4]: https://github.com/phar-io/phive/compare/0.12.3...0.12.4
+[0.12.3]: https://github.com/phar-io/phive/compare/0.12.2...0.12.3
+[0.12.2]: https://github.com/phar-io/phive/compare/0.12.1...0.12.2
 [0.12.1]: https://github.com/phar-io/phive/compare/0.12.0...0.12.1
 [0.12.0]: https://github.com/phar-io/phive/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/phar-io/phive/compare/0.10.0...0.11.0
