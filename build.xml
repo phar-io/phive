@@ -70,7 +70,7 @@
             <arg value="--trust-gpg-keys" />
             <arg value="4AA394086372C20A,2A8299CE842DD38C" />
             <arg value="phpab" />
-            <arg value="phpunit@^5.7" />
+            <arg value="phpunit@^8.0" />
         </exec>
     </target>
 
