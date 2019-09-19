@@ -2,6 +2,24 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.13.0] - 2019-09-19
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+
+* [#206](https://github.com/phar-io/phive/issues/206): Phpstan key produces errors
+
+### Changed
+
+* Since the new openpgp keyserver does not offer the same information on keys
+  as the sks keyservers, the local gpg binary / ext/gnupg is now used to gather
+  information on keys prior to importing them to the phive key ring.
+  Please report any issues this change may cause!
+
+* [#185](https://github.com/phar-io/phive/issues/185): Support 0x prefix in --trust-gpg-keys
+
+
 ## [0.12.4] - 2019-08-11
 
 ### Fixed
