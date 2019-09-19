@@ -312,7 +312,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.12.4...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.13.0...HEAD
+[0.13.0]: https://github.com/phar-io/phive/compare/0.12.4...0.13.0
 [0.12.4]: https://github.com/phar-io/phive/compare/0.12.3...0.12.4
 [0.12.3]: https://github.com/phar-io/phive/compare/0.12.2...0.12.3
 [0.12.2]: https://github.com/phar-io/phive/compare/0.12.1...0.12.2
