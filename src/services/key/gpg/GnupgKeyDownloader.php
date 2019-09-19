@@ -23,7 +23,7 @@ class GnupgKeyDownloader implements KeyDownloader {
         $this->httpClient = $httpClient;
         $this->keyServers = $keyServers;
         $this->output     = $output;
-        $this->reader = $reader;
+        $this->reader     = $reader;
     }
 
     /**

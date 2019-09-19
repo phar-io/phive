@@ -42,6 +42,4 @@ class GnupgKeyDownloaderTest extends TestCase {
         );
         $downloader->download($keyid);
     }
-
-
 }

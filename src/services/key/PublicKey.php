@@ -20,19 +20,13 @@ class PublicKey {
 
     /**
      * PublicKey constructor.
-     *
-     * @param string             $id
-     * @param string             $fingerprint
-     * @param array              $uids
-     * @param string             $public
-     * @param \DateTimeImmutable $created
      */
     public function __construct(string $id, string $fingerprint, array $uids, string $public, \DateTimeImmutable $created) {
-        $this->id = $id;
+        $this->id          = $id;
         $this->fingerprint = $fingerprint;
-        $this->uids = $uids;
-        $this->public = $public;
-        $this->created = $created;
+        $this->uids        = $uids;
+        $this->public      = $public;
+        $this->created     = $created;
     }
 
     public function getId(): string {
@@ -41,7 +35,7 @@ class PublicKey {
 
     public function getInfo(): string {
         $info   = [];
-        $info[] = "\tFingerprint: " . implode(' ', \str_split($this->fingerprint, 4));
+        $info[] = "\tFingerprint: " . \implode(' ', \str_split($this->fingerprint, 4));
         $info[] = '';
 
         foreach ($this->uids as $uid) {

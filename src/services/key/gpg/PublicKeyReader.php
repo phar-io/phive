@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use DateTimeImmutable;
@@ -15,11 +15,9 @@ class PublicKeyReader {
 
     /**
      * PublicKeyReader constructor.
-     *
-     * @param Gnupg $gnupg
      */
     public function __construct(Gnupg $gnupg, Directory $workDir) {
-        $this->gnupg = $gnupg;
+        $this->gnupg   = $gnupg;
         $this->workDir = $workDir;
     }
 
@@ -28,7 +26,8 @@ class PublicKeyReader {
         $result = $this->gnupg->keyinfo($id)[0];
 
         $uids = [];
-        foreach($result['uids'] as $pos => $uid) {
+
+        foreach ($result['uids'] as $pos => $uid) {
             $uids[] = $uid['uid'];
         }
 
@@ -54,7 +53,7 @@ class PublicKeyReader {
         );
     }
 
-    private function cleanUp() {
+    private function cleanUp(): void {
         $this->workDir->file('pubring.kbx')->delete();
         $this->workDir->file('pubring.kbx~')->delete();
         $this->workDir->file('trustdb.gpg')->delete();

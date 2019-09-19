@@ -174,9 +174,10 @@ class PharRegistry {
         $destination = new Filename($this->getPharDestination($phar));
 
         $targetDir = $destination->getDirectory();
+
         if (!$targetDir->isWritable()) {
             throw new FileNotWritableException(
-                sprintf('Cannot write phar to %s', (string)$targetDir)
+                \sprintf('Cannot write phar to %s', (string)$targetDir)
             );
         }
 
@@ -187,8 +188,7 @@ class PharRegistry {
     }
 
     private function getPharDestination(Phar $phar): string {
-
-        return sprintf(
+        return \sprintf(
             '%s/%s-%s.phar',
             $this->pharDirectory,
             $phar->getName(),
