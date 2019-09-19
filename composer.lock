@@ -105,17 +105,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/gnupg.git",
-                "reference": "0cb0d272d68934aa387a5652c4ba1bc4c41fe216"
+                "reference": "891d3b52bae24365d297d431e9df45a0e4ec29fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/0cb0d272d68934aa387a5652c4ba1bc4c41fe216",
-                "reference": "0cb0d272d68934aa387a5652c4ba1bc4c41fe216",
+                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/891d3b52bae24365d297d431e9df45a0e4ec29fa",
+                "reference": "891d3b52bae24365d297d431e9df45a0e4ec29fa",
                 "shasum": ""
             },
             "require": {
                 "phar-io/executor": "1.0.x-dev",
-                "php": "^5.6||^7.0"
+                "phar-io/filesystem": "1.0.x-dev",
+                "php": "^7.2"
             },
             "type": "library",
             "extra": {
@@ -145,7 +146,7 @@
                 }
             ],
             "description": "Thin GnuPG wrapper class around the gnupg binary, mimicking the pecl/gnupg api",
-            "time": "2017-03-20T22:41:49+00:00"
+            "time": "2019-09-19T11:33:43+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -252,24 +253,24 @@
     ],
     "packages-dev": [
         {
-            "name": "mikey179/vfsStream",
-            "version": "v1.6.5",
+            "name": "mikey179/vfsstream",
+            "version": "v1.6.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mikey179/vfsStream.git",
-                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145"
+                "url": "https://github.com/bovigo/vfsStream.git",
+                "reference": "2b544ac3a21bcc4dde5d90c4ae8d06f4319055fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
-                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/2b544ac3a21bcc4dde5d90c4ae8d06f4319055fb",
+                "reference": "2b544ac3a21bcc4dde5d90c4ae8d06f4319055fb",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.5"
+                "phpunit/phpunit": "^4.5|^5.0"
             },
             "type": "library",
             "extra": {
@@ -295,7 +296,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2017-08-01T08:02:14+00:00"
+            "time": "2019-08-01T01:38:37+00:00"
         }
     ],
     "aliases": [],
