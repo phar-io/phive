@@ -48,24 +48,6 @@ class FactoryTest extends TestCase {
     }
 
     /**
-     * @backupGlobals true
-     */
-    public function testGetCurlSetsProxyFromEnvironment(): void {
-        $this->markTestIncomplete();
-
-        $_SERVER['https_proxy'] = 'http://example.com';
-
-        $request = $this->getRequestMock();
-        $options = $this->getOptionsMock();
-        $request->method('parse')->willReturn($options);
-        $request->method('getOptions')->willReturn($options);
-
-        $factory = new Factory($request);
-
-        $factory->getFileDownloader();
-    }
-
-    /**
      * @return Environment|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {

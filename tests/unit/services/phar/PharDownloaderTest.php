@@ -100,40 +100,6 @@ class PharDownloaderTest extends TestCase {
         $downloader->download($release);
     }
 
-    public function testThrowsExceptionIfChecksumVerificationFails(): void {
-        $this->markTestSkipped('Needs fixing');
-
-        $sigUrl  = new Url('https://example.com/foo.phar.asc');
-        $url     = new PharUrl('https://example.com/foo.phar');
-        $release = new SupportedRelease('foo', new Version('1.0.0'), $url, $sigUrl, new Sha1Hash(\sha1('not-matching')));
-
-        $sigResponse = $this->createMock(HttpResponse::class);
-        $sigResponse->method('getBody')->willReturn('phar-signature');
-        $sigResponse->method('isSuccess')->willReturn(true);
-
-        $response = $this->createMock(HttpResponse::class);
-        $response->method('getBody')->willReturn('phar-content');
-        $response->method('isSuccess')->willReturn(true);
-
-        $httpClient = $this->createMock(HttpClient::class);
-        $httpClient->method('get')->with($url)->willReturn($response);
-        $httpClient->method('get')->with($sigUrl)->willReturn($sigResponse);
-
-        $this->signatureVerifier->method('verify')->with(['phar-content', 'phar-signature', []])
-            ->willReturn($this->verificationResult);
-
-        $downloader = new PharDownloader(
-            $httpClient,
-            $this->signatureVerifier,
-            $this->checksumService->reveal(),
-            $this->getPharRegistryMock()
-        );
-
-        $this->expectException(\PharIo\Phive\VerificationFailedException::class);
-
-        $downloader->download($release);
-    }
-
     /**
      * @return PharRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
