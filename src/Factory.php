@@ -340,6 +340,7 @@ class Factory {
         return new GnupgKeyDownloader(
             $this->getRingdownCurlHttpClient(),
             include __DIR__ . '/../conf/pgp-keyservers.php',
+            $this->getPublicKeyReader(),
             $this->getOutput()
         );
     }
@@ -449,6 +450,20 @@ class Factory {
             $this->getHttpClient(),
             $this->getCurlConfig(),
             $this->getOutput()
+        );
+    }
+
+    private function getTemporaryGnupg(): \Gnupg {
+        $home = $this->getConfig()->getHomeDirectory()->child('_tmp_wrk');
+        $bin  = $this->getConfig()->getGPGBinaryPath();
+
+        return (new GnuPGFactory($bin))->createGnuPG($home);
+    }
+
+    private function getPublicKeyReader(): PublicKeyReader {
+        return new PublicKeyReader(
+            $this->getTemporaryGnupg(),
+            $this->getConfig()->getHomeDirectory()->child('_tmp_wrk')
         );
     }
 }

@@ -13,13 +13,17 @@ class GnupgKeyDownloader implements KeyDownloader {
     /** @var Cli\Output */
     private $output;
 
+    /** @var PublicKeyReader */
+    private $reader;
+
     /**
      * @param string[] $keyServers
      */
-    public function __construct(HttpClient $httpClient, array $keyServers, Cli\Output $output) {
+    public function __construct(HttpClient $httpClient, array $keyServers, PublicKeyReader $reader, Cli\Output $output) {
         $this->httpClient = $httpClient;
         $this->keyServers = $keyServers;
         $this->output     = $output;
+        $this->reader = $reader;
     }
 
     /**
@@ -27,20 +31,14 @@ class GnupgKeyDownloader implements KeyDownloader {
      */
     public function download(string $keyId): PublicKey {
         $publicParams = [
-            'search'  => '0x' . $keyId,
             'op'      => 'get',
-            'options' => 'mr'
+            'options' => 'mr',
+            'search'  => '0x' . $keyId
         ];
-        $infoParams = \array_merge($publicParams, [
-            'op' => 'index'
-        ]);
 
         foreach ($this->keyServers as $keyServerName) {
             try {
-                $keyInfo   = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($infoParams));
                 $publicKey = $this->httpClient->get((new Url('https://' . $keyServerName . self::PATH))->withParams($publicParams));
-
-                $this->ensureSuccess($keyInfo);
                 $this->ensureSuccess($publicKey);
             } catch (HttpException $e) {
                 $this->output->writeWarning(
@@ -50,12 +48,14 @@ class GnupgKeyDownloader implements KeyDownloader {
                 continue;
             }
 
-            $this->output->writeInfo('Successfully downloaded key');
+            $this->output->writeInfo('Successfully downloaded key.');
 
             try {
-                return new PublicKey($keyId, $keyInfo->getBody(), $publicKey->getBody());
-            } catch (PublicKeyException $e) {
-                throw new DownloadFailedException($e->getMessage(), $e->getCode(), $e);
+                return $this->reader->parse($keyId, $publicKey->getBody());
+            } catch (\Throwable $t) {
+                $this->output->writeWarning(
+                    \sprintf('Parsing key data failed with error code %s: %s', $t->getCode(), $t->getMessage())
+                );
             }
         }
 
