@@ -4,6 +4,7 @@ namespace PharIo\Phive;
 use DateTimeImmutable;
 use Gnupg;
 use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\Filename;
 
 class PublicKeyReader {
 
@@ -54,8 +55,24 @@ class PublicKeyReader {
     }
 
     private function cleanUp(): void {
-        $this->workDir->file('pubring.kbx')->delete();
-        $this->workDir->file('pubring.kbx~')->delete();
-        $this->workDir->file('trustdb.gpg')->delete();
+        $list = [
+            $this->workDir->file('trustdb.gpg'),
+
+            // GnuPG 1.x only
+            $this->workDir->file('pubring.gpg'),
+            $this->workDir->file('pubring.gpg~'),
+            $this->workDir->file('secring.gpg'),
+
+            // GnuPG 2.x only
+            $this->workDir->file('pubring.kbx'),
+            $this->workDir->file('pubring.kbx~')
+        ];
+
+        foreach($list as $file) {
+            /** @var Filename $file */
+            if ($file->exists()) {
+                $file->delete();
+            }
+        }
     }
 }
