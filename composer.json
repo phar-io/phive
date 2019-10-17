@@ -27,7 +27,7 @@
     "phar-io/manifest": "^1.0"
   },
   "require-dev": {
-    "mikey179/vfsStream": "^1.6.4"
+    "mikey179/vfsstream": "^1.6.4"
   },
   "suggest": {
     "ext-gnupg": "*",
