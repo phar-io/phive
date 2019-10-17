@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c4829aa5322f0fa85abea0361075251",
+    "content-hash": "8f64c262bfd34938fcd0c2a095ca2274",
     "packages": [
         {
             "name": "phar-io/executor",
