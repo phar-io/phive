@@ -85,7 +85,7 @@ class InstallCommandConfig {
                 $configuredPhar->getVersionConstraint(),
                 $this->getVersionToInstall($configuredPhar),
                 $location,
-                $configuredPhar->isCopy()
+                $this->makeCopy() || $configuredPhar->isCopy()
             );
         }
 
