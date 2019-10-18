@@ -1,12 +1,5 @@
 name: 'Phive ant'
 description: 'Ant wrapper for phive in github actions'
-inputs:
-  target:  # id of input
-    description: 'Ant target to execute'
-    required: false
-    default: 'build'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.target }}
