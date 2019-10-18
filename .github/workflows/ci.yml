@@ -1,0 +1,21 @@
+name: Code quallity checks
+# This workflow is triggered on pushes to the repository.
+on: [push]
+
+jobs:
+  qa:
+    # This job runs on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: composer
+        uses: docker://composer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: install --no-interaction --prefer-dist --optimize-autoloader
+      - name: phive
+        uses: './.github/actions/phive-ant'
+        with:
+          target: 'getphive'
+
