@@ -18,7 +18,7 @@ jobs:
       - name: phive
         uses: './.github/actions/phive-ant'
         with:
-          target: 'getphive'
+          args: 'getphive'
 
       - name: php-cs-fixer
         uses: './.github/actions/phive-ant'
