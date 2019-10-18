@@ -14,8 +14,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: install --no-interaction --prefer-dist --optimize-autoloader
+
       - name: phive
         uses: './.github/actions/phive-ant'
         with:
           target: 'getphive'
 
+      - name: php-cs-fixer
+        uses: './.github/actions/phive-ant'
+        env:
+          phive.bin: "/phive.phar"
+        with:
+          target: install-tools php-cs-fixer
