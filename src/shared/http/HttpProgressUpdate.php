@@ -46,7 +46,7 @@ class HttpProgressUpdate {
         return $this->sent;
     }
 
-    public function getDownloadPercent() {
+    public function getDownloadPercent(): float {
         if ($this->expectedDown === 0) {
             return 0;
         }
@@ -54,7 +54,7 @@ class HttpProgressUpdate {
         return \round($this->received / ($this->expectedDown / 100));
     }
 
-    public function getUploadPercent() {
+    public function getUploadPercent(): float {
         if ($this->expectedUp === 0) {
             return 0;
         }

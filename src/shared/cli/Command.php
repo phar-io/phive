@@ -2,5 +2,5 @@
 namespace PharIo\Phive\Cli;
 
 interface Command {
-    public function execute();
+    public function execute(): void;
 }

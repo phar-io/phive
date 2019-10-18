@@ -5,7 +5,7 @@ use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
 class XmlFile {
-    /** @var \DOMDocument */
+    /** @var null|\DOMDocument */
     private $dom;
 
     /** @var \DOMXPath */
@@ -62,6 +62,7 @@ class XmlFile {
         return $this->dom;
     }
 
+    /** @psalm-assert \DomDocument $this->dom */
     private function init(): void {
         if ($this->dom instanceof \DOMDocument) {
             return;

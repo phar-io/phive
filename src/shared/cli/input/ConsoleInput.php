@@ -6,9 +6,12 @@ class ConsoleInput implements Input {
     /** @var Output */
     private $output;
 
-    /** @var resource */
+    /** @var false|resource */
     private $inputStream;
 
+    /**
+     * @param false|resource $inputStreamHandle
+     */
     public function __construct(Output $output, $inputStreamHandle = \STDIN) {
         $this->output      = $output;
         $this->inputStream = $inputStreamHandle;
@@ -17,6 +20,10 @@ class ConsoleInput implements Input {
     public function confirm(string $message, bool $default = true): bool {
         $yesOption = $default === true ? 'Y' : 'y';
         $noOption  = $default === false ? 'N' : 'n';
+
+        if ($this->inputStream === false) {
+            throw new RunnerException('Needs tty to be able to confirm');
+        }
 
         do {
             $this->output->writeText(\rtrim($message) . \sprintf(' [%s|%s] ', $yesOption, $noOption));

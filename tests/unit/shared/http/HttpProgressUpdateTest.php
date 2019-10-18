@@ -11,7 +11,7 @@ class HttpProgressUpdateTest extends TestCase {
 
     public static function percentProvider() {
         return [
-            [0, 0, 0],
+            [0, 0, 0.0],
             [1000, 100, 10.0]
         ];
     }

@@ -8,5 +8,5 @@ interface CacheBackend {
 
     public function getEtag(Url $url): ETag;
 
-    public function storeEntry(Url $url, ETag $etag, string $content);
+    public function storeEntry(Url $url, ETag $etag, string $content): void;
 }

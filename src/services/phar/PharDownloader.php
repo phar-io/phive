@@ -57,7 +57,7 @@ class PharDownloader {
 
             if (!$response->isSuccess()) {
                 throw new DownloadFailedException(
-                    \sprintf('Failed to download load %s: HTTP Code %d', $url, $response->getHttpCode()),
+                    \sprintf('Failed to download load %s: HTTP Code %d', (string)$url, $response->getHttpCode()),
                     $response->getHttpCode()
                 );
             }
@@ -65,8 +65,8 @@ class PharDownloader {
             return new File($url->getFilename(), $response->getBody());
         } catch (HttpException $e) {
             throw new DownloadFailedException(
-                \sprintf('Unexpected HTTP error when requesting %s: %s', $url, $e->getMessage()),
-                $e->getCode(),
+                \sprintf('Unexpected HTTP error when requesting %s: %s', (string)$url, $e->getMessage()),
+                (int) $e->getCode(),
                 $e
             );
         }
@@ -80,6 +80,7 @@ class PharDownloader {
             return '{NONE}';
         }
 
+        /** @psalm-suppress PossiblyNullArgument */
         $signatureFile               = $this->downloadFile($release->getSignatureUrl());
         $signatureVerificationResult = $this->signatureVerifier->verify($phar->getContent(), $signatureFile->getContent(), $knownFingerprints);
 
@@ -92,9 +93,14 @@ class PharDownloader {
             );
         }
 
+        /* @psalm-suppress PossiblyNullArgument */
         if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $phar)) {
             throw new VerificationFailedException(
-                \sprintf('Wrong checksum! Expected %s', $release->getExpectedHash()->asString())
+                \sprintf(
+                    'Wrong checksum! Expected %s',
+                    /* @psalm-suppress PossiblyNullReference */
+                    $release->getExpectedHash()->asString()
+                )
             );
         }
 

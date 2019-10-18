@@ -27,7 +27,7 @@ class PharUrl extends Url implements PharIdentifier {
         }
 
         if (\count($matches) !== 2) {
-            throw new UnsupportedVersionConstraintException(\sprintf('Could not extract PHAR version from %s', $this));
+            throw new UnsupportedVersionConstraintException(\sprintf('Could not extract PHAR version from %s', (string)$this));
         }
 
         return new Version($matches[1]);

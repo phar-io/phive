@@ -33,7 +33,12 @@ class ComposerCommand extends InstallCommand {
         }
     }
 
-    protected function getConfig() {
+    /**
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-return ComposerCommandConfig
+     */
+    protected function getConfig(): InstallCommandConfig {
         return parent::getConfig();
     }
 }

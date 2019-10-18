@@ -5,7 +5,7 @@ class JsonData {
     /** @var string */
     private $raw;
 
-    /** @var \stdClass */
+    /** @var array|\stdClass */
     private $parsed;
 
     /**
@@ -31,6 +31,9 @@ class JsonData {
         return $this->raw;
     }
 
+    /**
+     * @return array<\StdClass>
+     */
     public function getParsed() {
         return $this->parsed;
     }
@@ -48,9 +51,10 @@ class JsonData {
     /**
      * @param string $fragmentSpecification
      *
-     * @return mixed|\stdClass
+     * @return array<string, string>
      */
     public function getFragment($fragmentSpecification) {
+        /** @var \StdClass $data */
         $data = $this->parsed;
 
         foreach (\explode('.', $fragmentSpecification) as $key) {

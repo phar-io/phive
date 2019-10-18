@@ -18,5 +18,5 @@ abstract class BaseHash implements Hash {
         return \hash_equals($this->hash, $otherHash->asString());
     }
 
-    abstract protected function ensureValidHash(string $hash);
+    abstract protected function ensureValidHash(string $hash): void;
 }

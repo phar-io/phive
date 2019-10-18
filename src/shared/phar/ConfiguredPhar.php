@@ -60,10 +60,12 @@ class ConfiguredPhar {
         return $this->installedVersion;
     }
 
+    /** @psalm-assert-if-true Version $this->installedVersion */
     public function isInstalled(): bool {
         return $this->installedVersion !== null;
     }
 
+    /** @psalm-assert !null $this->location */
     public function hasLocation(): bool {
         return $this->location !== null;
     }
@@ -82,6 +84,7 @@ class ConfiguredPhar {
         return $this->location;
     }
 
+    /** @psalm-assert !null $this->url */
     public function hasUrl(): bool {
         return $this->url !== null;
     }

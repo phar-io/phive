@@ -48,13 +48,13 @@ class ConsoleOutput implements Output {
     public function writeMarkdown(string $markdown): void {
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
         // bold => yellow
-        $markdown = \preg_replace_callback('/(\*\*|__)(.*?)\1/', function ($matches) {
+        $markdown = \preg_replace_callback('/(\*\*|__)(.*?)\1/', static function (array $matches): string {
             return $matches[2];
         }, $markdown);
 
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
         // italic => green
-        $markdown = \preg_replace_callback('/(\*|_)(.*?)\1/', function ($matches) {
+        $markdown = \preg_replace_callback('/(\*|_)(.*?)\1/', static function (array $matches): string {
             return $matches[2];
         }, $markdown);
 

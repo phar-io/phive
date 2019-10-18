@@ -9,7 +9,7 @@ class GitAwarePhiveVersion extends PhiveVersion {
     /** @var Git */
     private $git;
 
-    /** @var string */
+    /** @var null|string */
     private $version;
 
     public function __construct(Git $git) {

@@ -17,7 +17,7 @@ class Url {
         return \strpos($string, '://') !== false;
     }
 
-    public static function isHttpsUrl($string): bool {
+    public static function isHttpsUrl(string $string): bool {
         return \stripos($string, 'https://') === 0;
     }
 

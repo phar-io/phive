@@ -63,7 +63,7 @@ class Runner {
         } catch (RunnerException $e) {
             $this->showException($e);
 
-            return $e->getCode();
+            return (int)$e->getCode();
         } catch (ErrorException $e) {
             $this->showErrorWithTrace($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
 
@@ -86,7 +86,7 @@ class Runner {
     /**
      * @throws ErrorException
      */
-    public function errorHandler(int $code, string $message, string $file, int $line, array $context): void {
+    public function errorHandler(int $code, string $message, string $file, int $line, array $context): bool {
         throw new ErrorException($message, $code, 1, $file, $line, $context);
     }
 
@@ -99,6 +99,9 @@ class Runner {
         $this->showErrorWithTrace($error['message'], $error['file'], $error['line'], \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
     }
 
+    /**
+     * @param array<int, array<string, string>> $trace
+     */
     private function showErrorWithTrace(string $error, string $file, int $line, array $trace = null): void {
         $baseLen = \strlen(\dirname(__DIR__, 3) . '') + 1;
 
@@ -168,7 +171,7 @@ class Runner {
         }
     }
 
-    private function parseRequest(): ?string {
+    private function parseRequest(): string {
         try {
             $options = $this->request->parse(new PhiveContext());
 
@@ -213,7 +216,7 @@ class Runner {
         }
     }
 
-    private function showException(\Exception $e): void {
+    private function showException(\Throwable $e): void {
         foreach (\explode("\n", $e->getMessage()) as $line) {
             $this->output->writeError($line);
         }

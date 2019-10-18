@@ -11,13 +11,13 @@ class SupportedRelease implements Release {
     /** @var PharUrl */
     private $url;
 
-    /** @var Hash */
+    /** @var null|Hash */
     private $expectedHash;
 
     /** @var string */
     private $name;
 
-    /** @var Url */
+    /** @var null|Url */
     private $signatureUrl;
 
     public function __construct(string $name, Version $version, PharUrl $url, Url $signatureUrl = null, Hash $expectedHash = null) {
@@ -44,19 +44,21 @@ class SupportedRelease implements Release {
         return $this->url;
     }
 
+    /** @psalm-assert-if-true Url $this->signatureUrl */
     public function hasSignatureUrl(): bool {
         return $this->signatureUrl !== null;
     }
 
-    public function getSignatureUrl(): Url {
+    public function getSignatureUrl(): ?Url {
         return $this->signatureUrl;
     }
 
+    /** @psalm-assert-if-true Hash $this->expectedHash */
     public function hasExpectedHash(): bool {
         return $this->expectedHash !== null;
     }
 
-    public function getExpectedHash(): Hash {
+    public function getExpectedHash(): ?Hash {
         return $this->expectedHash;
     }
 }

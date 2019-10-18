@@ -7,5 +7,5 @@ namespace PharIo\Phive;
 interface RequestedPharResolver {
     public function resolve(RequestedPhar $requestedPhar): SourceRepository;
 
-    public function setNext(self $resolver);
+    public function setNext(self $resolver): void;
 }

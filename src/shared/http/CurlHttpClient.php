@@ -12,7 +12,7 @@ class CurlHttpClient implements HttpClient {
     /** @var Url */
     private $url;
 
-    /** @var ETag */
+    /** @var null|ETag */
     private $etag;
 
     /** @var array */
@@ -60,6 +60,9 @@ class CurlHttpClient implements HttpClient {
         return $result;
     }
 
+    /**
+     * @param resource $ch
+     */
     public function handleProgressInfo($ch, int $expectedDown, int $received, int $expectedUp, int $sent): int {
         $httpCode = $this->curl->getHttpCode();
 
@@ -72,6 +75,9 @@ class CurlHttpClient implements HttpClient {
         ) ? 0 : 1;
     }
 
+    /**
+     * @param resource $ch
+     */
     public function handleHeaderInput($ch, string $line): int {
         $parts = \explode(':', \trim($line));
 
@@ -129,12 +135,12 @@ class CurlHttpClient implements HttpClient {
         $httpCode = $this->curl->getHttpCode();
 
         if ($httpCode >= 400 || \in_array($httpCode, [200, 304], true)) {
-            return new HttpResponse($httpCode, $result ?? '', $this->etag, $this->parseRateLimitHeaders());
+            return new HttpResponse($httpCode, $result ?: '', $this->etag, $this->parseRateLimitHeaders());
         }
 
         if ($httpCode > 0) {
             throw new HttpException(
-                \sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url),
+                \sprintf('Unexpected Response Code %d while requesting %s', $httpCode, (string)$this->url),
                 $httpCode
             );
         }

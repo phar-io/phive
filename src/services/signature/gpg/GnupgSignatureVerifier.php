@@ -35,7 +35,7 @@ class GnupgSignatureVerifier implements SignatureVerifier {
 
             return $result;
         } catch (\Exception $e) {
-            throw new VerificationFailedException($e->getMessage(), $e->getCode(), $e);
+            throw new VerificationFailedException($e->getMessage(), (int)$e->getCode(), $e);
         }
     }
 
