@@ -86,6 +86,36 @@ class InstallCommandConfigTest extends TestCase {
         $this->assertEquals($expected, $commandConfig->getRequestedPhars());
     }
 
+    public function testCopyFlagOverWritesConfigOnInstall(): void {
+        $options = $this->getOptionsMock();
+        $options->expects($this->once())
+            ->method('getArgumentCount')
+            ->willReturn(0);
+
+        $options->expects($this->exactly(2))->method('hasOption')->with('copy')->willReturn(true);
+
+        $configuredPhar1 = new ConfiguredPhar('Some Phar', new AnyVersionConstraint());
+        $configuredPhar2 = new ConfiguredPhar('Some Other Phar', new ExactVersionConstraint('1.2.3'), new Version('1.2.3'));
+
+        $phiveXmlConfig = $this->getPhiveXmlConfigMock();
+        $phiveXmlConfig->expects($this->once())
+            ->method('getPhars')
+            ->willReturn([$configuredPhar1, $configuredPhar2]);
+
+        $expectedPhars = [
+            new RequestedPhar(new PharAlias('Some Phar'), new AnyVersionConstraint(), new AnyVersionConstraint(), null, true),
+            new RequestedPhar(new PharAlias('Some Other Phar'), new ExactVersionConstraint('1.2.3'), new ExactVersionConstraint('1.2.3'), null, true)
+        ];
+
+        $commandConfig = new InstallCommandConfig(
+            $options,
+            $phiveXmlConfig,
+            $this->getEnvironmentMock(),
+            $this->getTargetDirectoryLocatorMock()
+        );
+        $this->assertEquals($expectedPhars, $commandConfig->getRequestedPhars());
+    }
+
     /**
      * @dataProvider boolProvider
      *
