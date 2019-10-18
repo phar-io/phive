@@ -25,4 +25,4 @@ jobs:
         env:
           phive.bin: "/phive.phar"
         with:
-          target: install-tools php-cs-fixer
+          args: install-tools php-cs-fixer
