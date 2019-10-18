@@ -16,13 +16,13 @@ class ColoredConsoleOutput extends ConsoleOutput {
 
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
         // bold => yellow
-        $markdown = \preg_replace_callback('/(\*\*|__)(.*?)\1/', function ($matches) {
+        $markdown = \preg_replace_callback('/(\*\*|__)(.*?)\1/', static function (array $matches): string {
             return "\033[33m" . $matches[2] . "\033[0m"; // 0m
         }, $markdown);
 
         /** @noinspection CallableParameterUseCaseInTypeContextInspection */
         // italic => green
-        $markdown = \preg_replace_callback('/(\*|_)(.*?)\1/', function ($matches) {
+        $markdown = \preg_replace_callback('/(\*|_)(.*?)\1/', static function (array $matches): string {
             return "\033[32m" . $matches[2] . "\033[0m";
         }, $markdown);
 

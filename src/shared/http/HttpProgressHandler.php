@@ -2,9 +2,9 @@
 namespace PharIo\Phive;
 
 interface HttpProgressHandler {
-    public function start(Url $url);
+    public function start(Url $url): void;
 
-    public function finished();
+    public function finished(): void;
 
     /**
      * Method is called with updates from transfers (upload/download)

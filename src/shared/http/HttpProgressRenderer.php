@@ -35,16 +35,16 @@ class HttpProgressRenderer implements HttpProgressHandler {
         }
 
         if ($this->first) {
-            $this->output->writeInfo(\sprintf('Downloading %s', $this->url));
+            $this->output->writeInfo(\sprintf('Downloading %s', (string)$this->url));
             $this->first = false;
         }
 
         $progressString = $update->getDownloadPercent();
 
-        if ($progressString === $this->prevProgress) {
+        if ((string)$progressString === $this->prevProgress) {
             return true;
         }
-        $this->prevProgress = $progressString;
+        $this->prevProgress = (string)$progressString;
 
         $template = ' ╰|%s| %s / %s - %3d%%';
 

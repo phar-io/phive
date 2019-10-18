@@ -58,7 +58,7 @@ class CompatibilityService {
                     if (!\extension_loaded((string)$requirement)) {
                         $issues[] = \sprintf(
                             'Extension %s is required, but not installed or activated',
-                            $requirement
+                            (string)$requirement
                         );
                     }
                 }

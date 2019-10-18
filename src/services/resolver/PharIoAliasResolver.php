@@ -7,7 +7,7 @@ use PharIo\FileSystem\Filename;
  * Resolves an alias to a list of Phar.io repository URLs
  */
 class PharIoAliasResolver extends AbstractRequestedPharResolver {
-    /** @var SourcesList */
+    /** @var null|SourcesList */
     private $sources;
 
     /** @var SourcesListFileLoader */
@@ -54,6 +54,7 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
         return $this->tryNext($requestedPhar);
     }
 
+    /** @psalm-assert !null $this->sources */
     protected function getSourcesList(): SourcesList {
         if ($this->sources === null) {
             $this->sources = $this->loader->load();

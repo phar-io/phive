@@ -9,6 +9,9 @@ abstract class Environment {
     /** @var array */
     protected $server = [];
 
+    /**
+     * @return static
+     */
     public static function fromSuperGlobals() {
         return new static($_SERVER);
     }
@@ -65,7 +68,7 @@ abstract class Environment {
         return $this->server['GITHUB_AUTH_TOKEN'];
     }
 
-    public function getPhiveCommandPath() {
+    public function getPhiveCommandPath(): string {
         return $this->server['PHP_SELF'];
     }
 

@@ -45,7 +45,7 @@ class InstallCommand implements Cli\Command {
         $this->installService->execute($release, $requestedPhar, $destination);
     }
 
-    protected function getConfig() {
+    protected function getConfig(): InstallCommandConfig {
         return $this->config;
     }
 

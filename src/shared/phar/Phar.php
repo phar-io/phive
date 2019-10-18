@@ -40,6 +40,7 @@ class Phar {
         return $this->file;
     }
 
+    /** @psalm-assert-if-true string $this->signatureFingerprint */
     public function hasSignatureFingerprint(): bool {
         return $this->signatureFingerprint !== null;
     }

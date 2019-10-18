@@ -28,7 +28,7 @@ class RetryingHttpClient implements HttpClient {
     /** @var Cli\Output */
     private $output;
 
-    public function __construct(Cli\Output $output, HttpClient $client, $maxTries) {
+    public function __construct(Cli\Output $output, HttpClient $client, int $maxTries) {
         $this->maxTries = $maxTries;
         $this->client   = $client;
         $this->output   = $output;
@@ -46,7 +46,7 @@ class RetryingHttpClient implements HttpClient {
         return $this->doTry('get', $url, $etag);
     }
 
-    private function doTry(string $method, Url $url, ETag $etag = null) {
+    private function doTry(string $method, Url $url, ETag $etag = null): HttpResponse {
         try {
             $this->triesPerformed++;
 

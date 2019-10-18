@@ -76,6 +76,7 @@ class RequestedPhar {
         return $this->lockedVersion;
     }
 
+    /** @psalm-assert-if-true Filename $this->location */
     public function hasLocation(): bool {
         return $this->location !== null;
     }

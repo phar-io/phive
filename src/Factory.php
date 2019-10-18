@@ -2,24 +2,23 @@
 namespace PharIo\Phive;
 
 use PharIo\GnuPG\Factory as GnuPGFactory;
-use PharIo\GnuPG\GnuPG;
 use PharIo\Version\VersionConstraintParser;
 
 class Factory {
 
-    /** @var CurlConfig */
+    /** @var null|CurlConfig */
     private $curlConfig;
 
-    /** @var PhiveVersion */
+    /** @var null|PhiveVersion */
     private $version;
 
     /** @var Cli\Request */
     private $request;
 
-    /** @var Environment */
+    /** @var null|Environment */
     private $environment;
 
-    /** @var PharRegistry */
+    /** @var null|PharRegistry */
     private $registry;
 
     public function __construct(Cli\Request $request, PhiveVersion $version = null) {
@@ -215,6 +214,7 @@ class Factory {
         );
     }
 
+    /** @psalm-assert !null $this->registry */
     public function getPharRegistry(): PharRegistry {
         if ($this->registry === null) {
             $this->registry = new PharRegistry(
@@ -254,6 +254,7 @@ class Factory {
         return new CommandLocator($this);
     }
 
+    /** @psalm-assert !null $this->version */
     private function getPhiveVersion(): PhiveVersion {
         if ($this->version === null) {
             $this->version = new GitAwarePhiveVersion($this->getGit());
@@ -316,10 +317,7 @@ class Factory {
         return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
     }
 
-    /**
-     * @return \Gnupg|GnuPG
-     */
-    private function getGnupg() {
+    private function getGnupg(): \Gnupg {
         $home = $this->getConfig()->getHomeDirectory()->child('gpg');
         $bin  = $this->getConfig()->getGPGBinaryPath();
 
@@ -358,7 +356,7 @@ class Factory {
     }
 
     private function getPharInstaller(): PharInstaller {
-        return $this->getPharInstallerLocator()->getPharInstaller($this->environment);
+        return $this->getPharInstallerLocator()->getPharInstaller($this->getEnvironment());
     }
 
     private function getPhiveXmlConfig(bool $global): PhiveXmlConfig {
@@ -433,6 +431,7 @@ class Factory {
         );
     }
 
+    /** @psalm-assert !null $this->curlConfig */
     private function getCurlConfig(): CurlConfig {
         if ($this->curlConfig === null) {
             $this->curlConfig = (new CurlConfigBuilder($this->getEnvironment(), $this->getPhiveVersion()))->build();

@@ -120,7 +120,13 @@ abstract class PhiveXmlConfig {
     }
 
     public function getConfiguredPhar(string $name, Version $version): ConfiguredPhar {
-        return $this->nodeToConfiguredPhar($this->getPharNodeWithSpecificInstalledVersion($name, $version));
+        $pharNode = $this->getPharNodeWithSpecificInstalledVersion($name, $version);
+
+        if ($pharNode !== null) {
+            return $this->nodeToConfiguredPhar($pharNode);
+        }
+
+        throw new ConfigException(\sprintf('PHAR %s not found in phive.xml', $name));
     }
 
     public function hasTargetDirectory(): bool {
@@ -165,6 +171,7 @@ abstract class PhiveXmlConfig {
         return $this->getPharNode($name) !== null;
     }
 
+    /** @psalm-ignore-nullable-return */
     private function getPharNode(string $name): ?DOMElement {
         /** @var DOMElement $pharItemNode */
         foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {

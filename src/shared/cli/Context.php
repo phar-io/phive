@@ -14,9 +14,12 @@ interface Context {
 
     public function acceptsArguments(): bool;
 
-    public function addArgument(string $arg);
+    public function addArgument(string $arg): void;
 
-    public function setOption(string $option, $value);
+    /**
+     * @param mixed $value
+     */
+    public function setOption(string $option, $value): void;
 
     public function getOptions(): Options;
 }

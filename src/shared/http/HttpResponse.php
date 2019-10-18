@@ -12,7 +12,7 @@ class HttpResponse {
     /** @var null|ETag */
     private $etag;
 
-    /** @var RateLimit */
+    /** @var null|RateLimit */
     private $rateLimit;
 
     public function __construct(int $httpCode, string $responseBody, ETag $etag = null, RateLimit $rateLimit = null) {
@@ -38,6 +38,7 @@ class HttpResponse {
         return $this->responseBody;
     }
 
+    /** @psalm-assert !null $this->etag */
     public function hasETag(): bool {
         return $this->etag !== null;
     }
@@ -53,6 +54,7 @@ class HttpResponse {
         return $this->etag;
     }
 
+    /** @psalm-assert-if-true RateLimit $this->rateLimit */
     public function hasRateLimit(): bool {
         return $this->rateLimit !== null;
     }

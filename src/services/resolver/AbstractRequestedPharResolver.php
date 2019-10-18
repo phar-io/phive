@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
 abstract class AbstractRequestedPharResolver implements RequestedPharResolver {
-    /** @var RequestedPharResolver */
+    /** @var null|RequestedPharResolver */
     private $next;
 
     public function setNext(RequestedPharResolver $resolver): void {

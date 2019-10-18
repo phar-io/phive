@@ -45,7 +45,7 @@ abstract class PharInstaller {
     /**
      * @throws LinkCreationFailedException
      */
-    abstract protected function link(Filename $phar, Filename $destination);
+    abstract protected function link(Filename $phar, Filename $destination): void;
 
     /**
      * @throws FileNotWritableException

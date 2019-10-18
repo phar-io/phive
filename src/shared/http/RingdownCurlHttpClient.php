@@ -78,7 +78,7 @@ class RingdownCurlHttpClient implements HttpClient {
         return $this->resolved[$hostname];
     }
 
-    private function queryDNS($hostname, $type): array {
+    private function queryDNS(string $hostname, int $type): array {
         $ipList = [];
 
         try {

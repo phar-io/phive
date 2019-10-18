@@ -57,16 +57,11 @@ class Curl {
         return \curl_setopt($ch, $option, $value);
     }
 
+    /**
+     * @return string|false
+     */
     public function exec() {
         return \curl_exec($this->curlHandle);
-    }
-
-    /**
-     * @param resource $ch
-     * @param null|int $opt
-     */
-    public function getInfo($ch, $opt = null) {
-        return \curl_getinfo($ch, $opt);
     }
 
     public function getLastErrorMessage(): string {

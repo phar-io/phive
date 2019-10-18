@@ -14,6 +14,11 @@ abstract class GeneralContext implements Context {
         $this->options->addArgument($arg);
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @throws ContextException
+     */
     public function setOption(string $option, $value): void {
         $this->ensureNotConflicting($option);
         $this->options->setOption($option, $value);
@@ -82,7 +87,7 @@ abstract class GeneralContext implements Context {
         return [];
     }
 
-    private function ensureNotConflicting($option): void {
+    private function ensureNotConflicting(string $option): void {
         $list = $this->getConflictingOptions();
 
         foreach ($list as $pair) {

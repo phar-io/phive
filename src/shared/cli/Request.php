@@ -66,7 +66,7 @@ class Request {
         return $this->pos < $this->count;
     }
 
-    private function handleLongOption(Context $context, $option): void {
+    private function handleLongOption(Context $context, string $option): void {
         if (!$context->knowsOption($option)) {
             throw new RequestException(
                 \sprintf('Unknown option: %s', $option),
@@ -96,7 +96,7 @@ class Request {
         $this->setOption($context, $option, $value);
     }
 
-    private function handleShortOption(Context $context, $char, $isLast): void {
+    private function handleShortOption(Context $context, string $char, bool $isLast): void {
         if (!$context->hasOptionForChar($char)) {
             throw new RequestException(
                 \sprintf('Unknown option: %s', $char),
@@ -126,7 +126,7 @@ class Request {
         }
     }
 
-    private function handleArgument(Context $context, $arg): void {
+    private function handleArgument(Context $context, string $arg): void {
         if (!$context->acceptsArguments()) {
             throw new RequestException(
                 'Unexpected argument ' . $arg,
@@ -136,7 +136,12 @@ class Request {
         $context->addArgument($arg);
     }
 
-    private function setOption(Context $context, $option, $value): void {
+    /**
+     * @param mixed $value
+     *
+     * @throws RequestException
+     */
+    private function setOption(Context $context, string $option, $value): void {
         try {
             $context->setOption($option, $value);
         } catch (ContextException $e) {

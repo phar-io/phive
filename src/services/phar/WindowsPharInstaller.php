@@ -9,7 +9,7 @@ class WindowsPharInstaller extends PharInstaller {
     /** @var string */
     private $template;
 
-    public function __construct(Cli\Output $output, $template) {
+    public function __construct(Cli\Output $output, string $template) {
         parent::__construct($output);
         $this->template = $template;
     }

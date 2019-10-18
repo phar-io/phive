@@ -5,7 +5,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
     /** @var FileDownloader */
     private $fileDownloader;
 
-    /** @var RateLimit */
+    /** @var null|RateLimit */
     private $rateLimit;
 
     /** @var HttpClient */
@@ -76,6 +76,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
         }
     }
 
+    /** @psalm-assert !null $this->rateLimit */
     private function initRateLimit(): void {
         if ($this->rateLimit !== null) {
             return;

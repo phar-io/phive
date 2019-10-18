@@ -3,7 +3,7 @@ namespace PharIo\Phive;
 
 class UrlRepository implements SourceRepository {
 
-    /** @var Url */
+    /** @var null|Url */
     private $url;
 
     /** @var null|Url */
@@ -11,9 +11,6 @@ class UrlRepository implements SourceRepository {
 
     /**
      * UrlRepository constructor.
-     *
-     * @param Url $url
-     * @param Url $sigUrl
      */
     public function __construct(Url $url = null, Url $sigUrl = null) {
         $this->url    = $url;
