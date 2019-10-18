@@ -68,7 +68,7 @@ class PublicKeyReader {
             $this->workDir->file('pubring.kbx~')
         ];
 
-        foreach($list as $file) {
+        foreach ($list as $file) {
             /** @var Filename $file */
             if ($file->exists()) {
                 $file->delete();

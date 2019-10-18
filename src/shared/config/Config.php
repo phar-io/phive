@@ -68,9 +68,9 @@ class Config {
 
         if ($this->cliOptions->hasOption('trust-gpg-keys')) {
             foreach (\explode(',', $this->cliOptions->getOption('trust-gpg-keys')) as $id) {
-                $id = trim($id);
+                $id = \trim($id);
                 $idList->addKeyId(
-                    strpos($id, '0x') === 0 ? substr($id, 2) : $id
+                    \strpos($id, '0x') === 0 ? \substr($id, 2) : $id
                 );
             }
         }
