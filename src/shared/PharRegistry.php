@@ -101,7 +101,7 @@ class PharRegistry {
     public function getByUsage(Filename $filename): Phar {
         $pharNode = $this->dbFile->query(\sprintf('//phive:phar[phive:usage/@destination="%s"]', (string)$filename))->item(0);
 
-        if (null === $pharNode) {
+        if ($pharNode === null) {
             throw new PharRegistryException(\sprintf('No phar with usage %s found', (string)$filename));
         }
 
@@ -112,7 +112,7 @@ class PharRegistry {
     public function removeUsage(Phar $phar, Filename $destination): void {
         $pharNode  = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
         $usageNode = $this->dbFile->query(\sprintf('//phive:usage[@destination="%s"]', (string)$destination), $pharNode)->item(0);
-        if (null === $usageNode) {
+        if ($usageNode === null) {
             throw new PharRegistryException(\sprintf('No phar with usage %s found', (string)$destination));
         }
 
