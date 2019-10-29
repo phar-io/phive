@@ -105,12 +105,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/gnupg.git",
-                "reference": "c6153ff6e6b2d014f384fb733e14233fd53d97fb"
+                "reference": "788b591d04906b9fc5075294a0cb471783047f29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/c6153ff6e6b2d014f384fb733e14233fd53d97fb",
-                "reference": "c6153ff6e6b2d014f384fb733e14233fd53d97fb",
+                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/788b591d04906b9fc5075294a0cb471783047f29",
+                "reference": "788b591d04906b9fc5075294a0cb471783047f29",
                 "shasum": ""
             },
             "require": {
@@ -146,7 +146,7 @@
                 }
             ],
             "description": "Thin GnuPG wrapper class around the gnupg binary, mimicking the pecl/gnupg api",
-            "time": "2019-09-19T17:56:24+00:00"
+            "time": "2019-10-29T16:14:43+00:00"
         },
         {
             "name": "phar-io/manifest",
