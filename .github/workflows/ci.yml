@@ -20,9 +20,16 @@ jobs:
         with:
           args: 'getphive'
 
+      - name: phive install
+        uses: './.github/actions/phive-ant'
+        env:
+          phive.bin: "/phive.phar"
+        with:
+          args: -Dphive.bin=./phive.phar install-tools
+
       - name: php-cs-fixer
         uses: './.github/actions/phive-ant'
         env:
           phive.bin: "/phive.phar"
         with:
-          args: -Dphive.bin=./phive.phar install-tools php-cs-fixer
+          args: -Dphive.bin=./phive.phar php-cs-fixer
