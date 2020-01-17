@@ -162,6 +162,17 @@ class Factory {
         );
     }
 
+    public function getOutdatedCommand(): OutdatedCommand {
+        return new OutdatedCommand(
+            $this->getRequestedPharResolverBuilder()->build(
+                $this->getRemoteFirstResolvingStrategy()
+            ),
+            $this->getReleaseSelector(),
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            $this->getOutput()
+        );
+    }
+
     public function getDefaultCommand(): DefaultCommand {
         return new DefaultCommand(
             $this->getVersionCommand(),

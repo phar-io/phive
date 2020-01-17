@@ -53,6 +53,9 @@
 **status**
     Get a list of configured PHARs for the current directory
 
+**outdated**
+    Get a list of phars that are outdated and could be updated
+
 **update [--prefer-offline] [<alias1> <alias2> ...]**
     Update PHARs configured in the project's phive.xml to the newest applicable version.
 

@@ -18,6 +18,7 @@ class CommandLocator implements Cli\CommandLocator {
             case '': {
                 return $this->factory->getDefaultCommand();
             }
+
             case 'help': {
                 return $this->factory->getHelpCommand();
             }
@@ -28,6 +29,10 @@ class CommandLocator implements Cli\CommandLocator {
 
             case 'install': {
                 return $this->factory->getInstallCommand();
+            }
+
+            case 'outdated': {
+                return $this->factory->getOutdatedCommand();
             }
 
             case 'list': {

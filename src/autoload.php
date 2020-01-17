@@ -115,6 +115,7 @@ spl_autoload_register(
                 'phario\\phive\\localsslcertificate' => '/shared/http/LocalSslCertificate.php',
                 'phario\\phive\\nogpgbinaryfoundexception' => '/shared/exceptions/NoGPGBinaryFoundException.php',
                 'phario\\phive\\notfoundexception' => '/shared/exceptions/NotFoundException.php',
+                'phario\\phive\\outdatedcommand' => '/commands/outdated/OutdatedCommand.php',
                 'phario\\phive\\phar' => '/shared/phar/Phar.php',
                 'phario\\phive\\pharalias' => '/shared/phar/PharAlias.php',
                 'phario\\phive\\phardownloader' => '/services/phar/PharDownloader.php',
