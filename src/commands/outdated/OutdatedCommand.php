@@ -18,28 +18,29 @@ class OutdatedCommand implements Cli\Command {
     private $selector;
 
     public function __construct(RequestedPharResolverService $pharResolver, ReleaseSelector $selector, PhiveXmlConfig $phiveXmlConfig, Cli\Output $output) {
-        $this->pharResolver = $pharResolver;
-        $this->selector = $selector;
+        $this->pharResolver   = $pharResolver;
+        $this->selector       = $selector;
         $this->phiveXmlConfig = $phiveXmlConfig;
-        $this->output = $output;
+        $this->output         = $output;
     }
 
     public function execute(): void {
         $outdated = 0;
-        $table = new ConsoleTable(['Name', 'Version Constraint', 'Installed', 'Available']);
+        $table    = new ConsoleTable(['Name', 'Version Constraint', 'Installed', 'Available']);
 
-        foreach($this->phiveXmlConfig->getPhars() as $phar) {
+        foreach ($this->phiveXmlConfig->getPhars() as $phar) {
             if (!$phar->isInstalled()) {
                 continue;
             }
 
             if ($phar->hasUrl() || Url::isUrl($phar->getName())) {
                 $this->output->writeWarning(
-                    sprintf(
+                    \sprintf(
                         'Phar "%s" installed via URL - cannot check for newer versions',
                         $phar->getName()
                     )
                 );
+
                 continue;
             }
 
@@ -67,11 +68,12 @@ class OutdatedCommand implements Cli\Command {
 
         if ($outdated === 0) {
             $this->output->writeText('Congrats, no outdated phars found');
+
             return;
         }
 
         $this->output->writeText(
-            sprintf('Found %d outdated PHARs in phive.xml:', $outdated)
+            \sprintf('Found %d outdated PHARs in phive.xml:', $outdated)
             . "\n\n" .
             $table->asString()
         );
@@ -79,9 +81,8 @@ class OutdatedCommand implements Cli\Command {
 
     private function resolveToRelease(RequestedPhar $requestedPhar): SupportedRelease {
         $repository = $this->pharResolver->resolve($requestedPhar);
-        $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
+        $releases   = $repository->getReleasesByRequestedPhar($requestedPhar);
 
         return $this->selector->select($releases, $requestedPhar->getVersionConstraint(), true);
     }
-
 }
