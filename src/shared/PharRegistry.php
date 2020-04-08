@@ -65,13 +65,15 @@ class PharRegistry {
     public function addUsage(Phar $phar, Filename $destination): void {
         $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
 
-        if ($this->dbFile->query(\sprintf('//phive:usage[@destination="%s"]', $destination->asString()), $pharNode)->length
+        $absolutePath = $destination->withAbsolutePath()->asString();
+
+        if ($this->dbFile->query(\sprintf('//phive:usage[@destination="%s"]', $absolutePath), $pharNode)->length
             !== 0
         ) {
             return;
         }
         $usageNode = $this->dbFile->createElement('usage');
-        $usageNode->setAttribute('destination', $destination->asString());
+        $usageNode->setAttribute('destination', $absolutePath);
         $pharNode->appendChild($usageNode);
         $this->dbFile->save();
     }
@@ -147,6 +149,19 @@ class PharRegistry {
     }
 
     /**
+     * @return UsedPhar[]
+     */
+    public function getAllPhars(): array {
+        $installedPhars = [];
+
+        foreach ($this->dbFile->query('//phive:phar') as $pharNode) {
+            $installedPhars[] = $this->nodetoUsedPhar($pharNode);
+        }
+
+        return $installedPhars;
+    }
+
+    /**
      * @return Phar[]
      */
     public function getUsedPharsByDestination(Directory $destination): array {
@@ -214,6 +229,22 @@ class PharRegistry {
             $pharNode->getAttribute('name'),
             new Version($pharNode->getAttribute('version')),
             $this->loadPharFile($pharNode->getAttribute('location'))
+        );
+    }
+
+    private function nodetoUsedPhar(DOMElement $pharNode): UsedPhar {
+        $nodes = $this->dbFile->query('phive:usage', $pharNode);
+        $path = [];
+
+        foreach ($nodes as $node) {
+            $path[] = $node->getAttribute('destination');
+        }
+
+        return new UsedPhar(
+            $pharNode->getAttribute('name'),
+            new Version($pharNode->getAttribute('version')),
+            $this->loadPharFile($pharNode->getAttribute('location')),
+            $path
         );
     }
 
