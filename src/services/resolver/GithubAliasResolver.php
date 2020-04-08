@@ -82,7 +82,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
             return;
         }
 
-        $response        = $this->httpClient->head(new Url('https://api.github.com/user'));
+        $response        = $this->httpClient->get(new Url('https://api.github.com/rate_limit'));
         $this->rateLimit = $response->getRateLimit();
     }
 
