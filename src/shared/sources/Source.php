@@ -24,7 +24,7 @@ class Source {
     }
 
     private function ensureValidSourceType(string $type): void {
-        if (!\in_array($type, ['phar.io', 'github'])) {
+        if (!\in_array($type, ['phar.io', 'github', 'gitlab'])) {
             throw new \InvalidArgumentException(
                 \sprintf('Unsupported source repository type "%s"', $type)
             );

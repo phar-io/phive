@@ -32,6 +32,10 @@ class RequestedPharResolverFactory {
         return $this->factory->getGithubAliasResolver();
     }
 
+    public function getGitlabAliasResolver(): GitlabAliasResolver {
+        return $this->factory->getGitlabAliasResolver();
+    }
+
     public function getLocalSourcesListFileLoader(): LocalSourcesListFileLoader {
         return new LocalSourcesListFileLoader(
             $this->factory->getConfig()->getHomeDirectory()->file('local.xml')

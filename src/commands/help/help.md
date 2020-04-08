@@ -19,8 +19,8 @@
 **install [--target bin/] <alias|url> [<alias|url> ...]**
     Perform installation of a phar distributed application or library
 
-    _alias/url_                    Installation via github profile/project, phar.io alias
-                                 or explicit download form given URL
+    _alias/url_                    Installation via github profile/project, gitlab profile/project,
+                                 phar.io alias or explicit download form given URL
 
     _-t, --target_                 Set custom target directory for the PHAR
 

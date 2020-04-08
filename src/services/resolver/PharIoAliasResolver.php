@@ -38,6 +38,10 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
                 return new GithubRepository(
                     new JsonData($file->getContent())
                 );
+            case 'gitlab':
+                return new GitlabRepository(
+                    new JsonData($file->getContent())
+                );
             case 'phar.io':
                 $filename = new Filename(\tempnam(\sys_get_temp_dir(), 'repo_'));
                 $file->saveAs($filename);

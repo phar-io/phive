@@ -33,11 +33,8 @@ class CurlConfigBuilder {
             $curlConfig->setProxy($this->environment->getProxy());
         }
 
-        if ($this->environment->hasGitHubAuthToken()) {
-            $curlConfig->addAuthenticationToken(
-                'api.github.com',
-                $this->environment->getGitHubAuthToken()
-            );
+        foreach ($this->environment->getAuthentications() as $authentication) {
+            $curlConfig->addAuthenticationToken($authentication);
         }
 
         return $curlConfig;
