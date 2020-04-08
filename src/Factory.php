@@ -146,7 +146,7 @@ class Factory {
         return new StatusCommand(
             new StatusCommandConfig(
                 $this->request->parse(new StatusContext()),
-                $this->getPhiveXmlConfig(false),
+                $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
                 $this->getPharRegistry()
             ),
             $this->getPharRegistry(),
