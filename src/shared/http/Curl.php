@@ -58,7 +58,7 @@ class Curl {
     }
 
     /**
-     * @return string|false
+     * @return false|string
      */
     public function exec() {
         return \curl_exec($this->curlHandle);

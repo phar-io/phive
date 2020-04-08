@@ -112,6 +112,7 @@ class PharRegistry {
     public function removeUsage(Phar $phar, Filename $destination): void {
         $pharNode  = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
         $usageNode = $this->dbFile->query(\sprintf('//phive:usage[@destination="%s"]', (string)$destination), $pharNode)->item(0);
+
         if ($usageNode === null) {
             throw new PharRegistryException(\sprintf('No phar with usage %s found', (string)$destination));
         }

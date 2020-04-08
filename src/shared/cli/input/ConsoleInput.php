@@ -28,7 +28,7 @@ class ConsoleInput implements Input {
         do {
             $this->output->writeText(\rtrim($message) . \sprintf(' [%s|%s] ', $yesOption, $noOption));
             $response = \strtolower(\rtrim(\fgets($this->inputStream)));
-        } while (!\in_array($response, ['y', 'n', '']));
+        } while (!\in_array($response, ['y', 'n', ''], true));
 
         if ($response === '') {
             return $default;

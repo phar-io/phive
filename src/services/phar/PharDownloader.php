@@ -66,7 +66,7 @@ class PharDownloader {
         } catch (HttpException $e) {
             throw new DownloadFailedException(
                 \sprintf('Unexpected HTTP error when requesting %s: %s', (string)$url, $e->getMessage()),
-                (int) $e->getCode(),
+                (int)$e->getCode(),
                 $e
             );
         }
