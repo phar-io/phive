@@ -4,6 +4,9 @@ namespace PharIo\Phive;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
+/**
+ * @covers \PharIo\Phive\GnupgKeyDownloader
+ */
 class GnupgKeyDownloaderTest extends TestCase {
     /** @var CurlHttpClient|ObjectProphecy */
     private $curl;

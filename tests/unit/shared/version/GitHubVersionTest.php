@@ -4,6 +4,9 @@ namespace PharIo\Phive;
 use PharIo\Version\VersionNumber;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PharIo\Phive\GitHubVersion
+ */
 class GitHubVersionTest extends TestCase {
     /**
      * @dataProvider versionPrefixProvider

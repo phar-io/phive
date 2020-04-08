@@ -111,6 +111,20 @@ class UnixoidEnvironmentTest extends TestCase {
         $environment->getGitHubAuthToken();
     }
 
+    public function testGetAuthentications(): void {
+        $environment = new UnixoidEnvironment([], $this->getExecutorMock());
+        $this->assertCount(0, $environment->getAuthentications());
+
+        $environment = new UnixoidEnvironment(['GITHUB_AUTH_TOKEN' => 'foo'], $this->getExecutorMock());
+        $this->assertCount(1, $environment->getAuthentications());
+
+        $environment = new UnixoidEnvironment(
+            ['GITHUB_AUTH_TOKEN' => 'foo', 'GITLAB_AUTH_TOKEN' => 'bar'],
+            $this->getExecutorMock()
+        );
+        $this->assertCount(2, $environment->getAuthentications());
+    }
+
     /**
      * @return Executor|\PHPUnit_Framework_MockObject_MockObject
      */

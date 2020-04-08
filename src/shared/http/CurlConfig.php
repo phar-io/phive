@@ -80,12 +80,14 @@ class CurlConfig {
     /**
      * @throws CurlConfigException
      */
-    public function addAuthenticationToken(string $hostname, string $token): void {
+    public function addAuthenticationToken(Authentication $authentication): void {
+        $hostname = $authentication->getDomain();
+
         if ($this->hasAuthenticationToken($hostname)) {
             throw new CurlConfigException(\sprintf('Authentication token for hostname %s already set', $hostname));
         }
 
-        $this->authenticationTokens[$hostname] = $token;
+        $this->authenticationTokens[$hostname] = $authentication;
     }
 
     public function hasAuthenticationToken(string $hostname): bool {
@@ -95,7 +97,7 @@ class CurlConfig {
     /**
      * @throws CurlConfigException
      */
-    public function getAuthenticationToken(string $hostname): string {
+    public function getAuthenticationToken(string $hostname): Authentication {
         if (!$this->hasAuthenticationToken($hostname)) {
             throw new CurlConfigException(\sprintf('No authentication for hostname %s found', $hostname));
         }

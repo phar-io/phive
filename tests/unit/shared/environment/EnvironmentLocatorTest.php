@@ -3,6 +3,9 @@ namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \PharIo\Phive\EnvironmentLocator
+ */
 class EnvironmentLocatorTest extends TestCase {
     /**
      * @dataProvider osProvider

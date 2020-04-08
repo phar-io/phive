@@ -9,6 +9,7 @@ spl_autoload_register(
             $classes = array(
                 'phario\\phive\\abstractrequestedpharresolver' => '/services/resolver/AbstractRequestedPharResolver.php',
                 'phario\\phive\\abstractresolvingstrategy' => '/services/resolver/strategy/AbstractResolvingStrategy.php',
+                'phario\\phive\\authentication' => '/shared/http/Authentication.php',
                 'phario\\phive\\basehash' => '/shared/hash/BaseHash.php',
                 'phario\\phive\\cachebackend' => '/shared/http/CacheBackend.php',
                 'phario\\phive\\checksumservice' => '/services/checksum/ChecksumService.php',
@@ -75,6 +76,8 @@ spl_autoload_register(
                 'phario\\phive\\githubaliasresolverexception' => '/GithubAliasResolverException.php',
                 'phario\\phive\\githubrepository' => '/shared/repository/GithubRepository.php',
                 'phario\\phive\\githubversion' => '/shared/version/GitHubVersion.php',
+                'phario\\phive\\gitlabaliasresolver' => '/services/resolver/GitlabAliasResolver.php',
+                'phario\\phive\\gitlabrepository' => '/shared/repository/GitlabRepository.php',
                 'phario\\phive\\globalphivexmlconfig' => '/shared/config/GlobalPhiveXmlConfig.php',
                 'phario\\phive\\gnupgkeydownloader' => '/services/key/gpg/GnupgKeyDownloader.php',
                 'phario\\phive\\gnupgkeydownloaderexception' => '/shared/exceptions/GnupgKeyDownloaderException.php',

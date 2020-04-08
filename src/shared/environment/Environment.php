@@ -56,6 +56,20 @@ abstract class Environment {
         return \array_key_exists('https_proxy', $this->server);
     }
 
+    public function getAuthentications(): array {
+        $authList = [];
+
+        if ($this->hasGitHubAuthToken()) {
+            $authList[] = new Authentication('api.github.com', Authentication::TYPE_TOKEN, $this->getGitHubAuthToken());
+        }
+
+        if (\array_key_exists('GITLAB_AUTH_TOKEN', $this->server)) {
+            $authList[] = new Authentication('gitlab.com', Authentication::TYPE_BEARER, $this->server['GITLAB_AUTH_TOKEN']);
+        }
+
+        return $authList;
+    }
+
     public function hasGitHubAuthToken(): bool {
         return \array_key_exists('GITHUB_AUTH_TOKEN', $this->server);
     }

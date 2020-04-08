@@ -116,7 +116,7 @@ class CurlHttpClient implements HttpClient {
         }
 
         if ($this->config->hasAuthenticationToken($hostname)) {
-            $headers[] = \sprintf('Authorization: token %s', $this->config->getAuthenticationToken($hostname));
+            $headers[] = $this->config->getAuthenticationToken($hostname)->asString();
         }
 
         if (\count($headers) > 0) {

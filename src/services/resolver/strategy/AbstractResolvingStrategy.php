@@ -13,6 +13,9 @@ class AbstractResolvingStrategy implements ResolvingStrategy {
         // github.com
         $service->addResolver($this->factory->getGithubAliasResolver());
 
+        // gitlab.com
+        $service->addResolver($this->factory->getGitlabAliasResolver());
+
         // local repository XML
         $service->addResolver(
             $this->factory->getPharIoAliasResolver($this->factory->getLocalSourcesListFileLoader())

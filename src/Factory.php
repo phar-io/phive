@@ -257,6 +257,12 @@ class Factory {
         );
     }
 
+    public function getGitlabAliasResolver(): GitlabAliasResolver {
+        return new GitlabAliasResolver(
+            $this->getFileDownloader()
+        );
+    }
+
     private function getTargetDirectoryLocator(): TargetDirectoryLocator {
         return new TargetDirectoryLocator(
             $this->getConfig(),
