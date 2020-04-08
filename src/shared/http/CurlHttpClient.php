@@ -85,7 +85,7 @@ class CurlHttpClient implements HttpClient {
             $this->etag = new ETag(\trim($parts[1]));
         }
 
-        if (\strpos($parts[0], 'X-RateLimit-') !== false) {
+        if (\stripos($parts[0], 'X-RateLimit-') !== false) {
             $this->rateLimitHeaders[\substr($parts[0], 12)] = \trim($parts[1]);
         }
 
