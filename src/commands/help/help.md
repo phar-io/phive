@@ -53,7 +53,8 @@
 **status [--all]**
     Get a list of configured PHARs for the current directory
     
-    _--all_    List all downloaded PHARs and their usages across the filesystem.
+    _--all_          List all downloaded PHARs and their usages across the filesystem.
+    _-g, --global_   List globally installed phars
 
 **outdated**
     Get a list of phars that are outdated and could be updated

@@ -64,4 +64,8 @@ class StatusCommandConfig {
     public function allInstalled(): bool {
         return $this->cliOptions->hasOption('all');
     }
+
+    public function globalInstalled(): bool {
+        return $this->cliOptions->hasOption('global');
+    }
 }

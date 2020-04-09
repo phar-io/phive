@@ -26,35 +26,47 @@ class StatusCommand implements Cli\Command {
 
     public function execute(): void {
         $allInstalled = $this->statusCommandConfig->allInstalled();
+        $globalInstalled = $this->statusCommandConfig->globalInstalled();
 
-        if ($allInstalled) {
-            $this->getAllInstalled();
+        if ($allInstalled || $globalInstalled) {
+            $this->showForSystem();
 
             return;
         }
 
-        $this->getCurrentInstalled();
+        $this->showForProject();
     }
 
-    private function getCurrentInstalled(): void {
+    private function showForProject(): void {
+        $phars = $this->statusCommandConfig->getPhars();
+        if (count($phars) === 0) {
+            $this->output->writeText("\nNo PHARs configured in phive.xml.\n\n");
+            return;
+        }
 
         $this->output->writeText('PHARs configured in phive.xml:' . "\n\n");
 
         $table = new ConsoleTable(['Alias/URL', 'Version Constraint', 'Installed', 'Location', 'Key Ids']);
 
-        foreach ($this->statusCommandConfig->getPhars() as $phar) {
+        foreach ($phars as $phar) {
             $table->addRow($this->buildRow($phar));
         }
 
         $this->output->writeText($table->asString());
     }
 
-    private function getAllInstalled(): void {
-         $this->output->writeText('PHARs configured in your system:' . "\n\n");
+    private function showForSystem(): void {
+        $phars = $this->statusCommandConfig->getPhars();
+        if (count($phars) === 0) {
+            $this->output->writeText("\nNo PHARs configured in your system.\n");
+            return;
+        }
 
-         $table = new ConsoleTable(['Alias/URL', 'Version', 'Usage Location', 'Key Ids']);
+        $this->output->writeText('PHARs configured in your system:' . "\n\n");
 
-        foreach ($this->statusCommandConfig->getPhars() as $phar) {
+        $table = new ConsoleTable(['Alias/URL', 'Version', 'Usage Location', 'Key Ids']);
+
+        foreach ($phars as $phar) {
             $row = $this->buildRow($phar);
             unset($row[1]);
             $table->addRow(array_values($row));
