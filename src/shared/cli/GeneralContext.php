@@ -15,8 +15,6 @@ abstract class GeneralContext implements Context {
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws ContextException
      */
     public function setOption(string $option, $value): void {

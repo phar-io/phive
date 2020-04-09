@@ -235,7 +235,7 @@ class PharRegistry {
 
     private function nodetoUsedPhar(DOMElement $pharNode): UsedPhar {
         $nodes = $this->dbFile->query('phive:usage', $pharNode);
-        $path = [];
+        $path  = [];
 
         foreach ($nodes as $node) {
             $path[] = $node->getAttribute('destination');

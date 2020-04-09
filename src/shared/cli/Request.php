@@ -137,8 +137,6 @@ class Request {
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws RequestException
      */
     private function setOption(Context $context, string $option, $value): void {

@@ -30,8 +30,8 @@ class StatusCommandConfig {
             return $this->phiveXmlConfig->getPhars();
         }
 
-        $usedPhar = array_map(function (UsedPhar $phar) {
-            if (count($phar->getUsages()) === 0) {
+        $usedPhar = \array_map(function (UsedPhar $phar) {
+            if (\count($phar->getUsages()) === 0) {
                 return [new ConfiguredPhar(
                     $phar->getName(),
                     new AnyVersionConstraint(),
@@ -39,7 +39,7 @@ class StatusCommandConfig {
                 )];
             }
 
-            return array_map(function (string $path) use ($phar) {
+            return \array_map(function (string $path) use ($phar) {
                 return new ConfiguredPhar(
                     $phar->getName(),
                     new AnyVersionConstraint(),
@@ -49,11 +49,11 @@ class StatusCommandConfig {
             }, $phar->getUsages());
         }, $this->pharRegistry->getAllPhars());
 
-        $usedPhar = array_reduce($usedPhar, function ($accumulator, array $items) {
-            return array_merge($accumulator, $items);
+        $usedPhar = \array_reduce($usedPhar, function ($accumulator, array $items) {
+            return \array_merge($accumulator, $items);
         }, []);
 
-        usort($usedPhar, function (ConfiguredPhar $pharA, ConfiguredPhar $pharB) {
+        \usort($usedPhar, function (ConfiguredPhar $pharA, ConfiguredPhar $pharB) {
             return [$pharA->getName(), $pharA->getInstalledVersion()]
                 <=> [$pharB->getName(), $pharB->getInstalledVersion()];
         });

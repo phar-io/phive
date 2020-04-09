@@ -6,7 +6,7 @@ use PharIo\Phive\Cli\GeneralContext;
 class StatusContext extends GeneralContext {
     protected function getKnownOptions(): array {
         return [
-            'all' => 'a',
+            'all'    => 'a',
             'global' => 'g'
         ];
     }
@@ -16,5 +16,4 @@ class StatusContext extends GeneralContext {
             ['all' => 'global']
         ];
     }
-
 }

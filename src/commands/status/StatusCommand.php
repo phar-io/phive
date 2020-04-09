@@ -25,7 +25,7 @@ class StatusCommand implements Cli\Command {
     }
 
     public function execute(): void {
-        $allInstalled = $this->statusCommandConfig->allInstalled();
+        $allInstalled    = $this->statusCommandConfig->allInstalled();
         $globalInstalled = $this->statusCommandConfig->globalInstalled();
 
         if ($allInstalled || $globalInstalled) {
@@ -39,8 +39,10 @@ class StatusCommand implements Cli\Command {
 
     private function showForProject(): void {
         $phars = $this->statusCommandConfig->getPhars();
-        if (count($phars) === 0) {
+
+        if (\count($phars) === 0) {
             $this->output->writeText("\nNo PHARs configured in phive.xml.\n\n");
+
             return;
         }
 
@@ -57,8 +59,10 @@ class StatusCommand implements Cli\Command {
 
     private function showForSystem(): void {
         $phars = $this->statusCommandConfig->getPhars();
-        if (count($phars) === 0) {
+
+        if (\count($phars) === 0) {
             $this->output->writeText("\nNo PHARs configured in your system.\n");
+
             return;
         }
 
@@ -69,7 +73,7 @@ class StatusCommand implements Cli\Command {
         foreach ($phars as $phar) {
             $row = $this->buildRow($phar);
             unset($row[1]);
-            $table->addRow(array_values($row));
+            $table->addRow(\array_values($row));
         }
 
         $this->output->writeText($table->asString());

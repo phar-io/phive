@@ -12,7 +12,7 @@ abstract class Environment {
     /**
      * @return static
      */
-    public static function fromSuperGlobals() {
+    public static function fromSuperGlobals(): self {
         return new static($_SERVER);
     }
 
