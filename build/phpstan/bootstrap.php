@@ -24,7 +24,8 @@ class DOMNodeList implements Traversable, Countable {
      */
     public $length;
 
-    public function item ($index) {}
+    public function item($index): void {
+    }
 }
 
 /**
