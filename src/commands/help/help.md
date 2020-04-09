@@ -50,10 +50,10 @@
 **skel**
     Create a default configuration file
 
-**status [--all]**
+**status [--all] [--global]**
     Get a list of configured PHARs for the current directory
     
-    _--all_          List all downloaded PHARs and their usages across the filesystem.
+    _-a, --all_      List all downloaded PHARs and their usages across the filesystem.
     _-g, --global_   List globally installed phars
 
 **outdated**
