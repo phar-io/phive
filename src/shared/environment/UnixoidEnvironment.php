@@ -2,14 +2,16 @@
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
-use PharIo\FileSystem\Filename;
 
 class UnixoidEnvironment extends Environment {
 
     /** @var Executor */
     private $executor;
 
-    public static function fromSuperGlobals(): self {
+    /** @var null|string */
+    private $whichCommand;
+
+    public static function fromSuperGlobals(): Environment {
         return new static($_SERVER, new Executor());
     }
 
@@ -32,20 +34,6 @@ class UnixoidEnvironment extends Environment {
         }
 
         return new Directory($this->server['HOME']);
-    }
-
-    /**
-     * @throws EnvironmentException
-     */
-    public function getPathToCommand(string $command): Filename {
-        $result = \exec(\sprintf('which %s', $command), $output, $exitCode);
-
-        if ($exitCode !== 0) {
-            throw new EnvironmentException(\sprintf('Command %s not found', $command));
-        }
-        $resultLines = \explode("\n", $result);
-
-        return new Filename($resultLines[0]);
     }
 
     /**
@@ -75,6 +63,20 @@ class UnixoidEnvironment extends Environment {
     }
 
     protected function getWhichCommand(): string {
+        if ($this->whichCommand !== null) {
+            return $this->whichCommand;
+        }
+
+        foreach (['which', 'type -Pa', 'command -a'] as $tool) {
+            \exec($tool . ' ls 2>/dev/null', $output, $exitCode);
+
+            if ($exitCode === 0) {
+                $this->whichCommand = $tool;
+
+                return $tool;
+            }
+        }
+
         return 'which';
     }
 }
