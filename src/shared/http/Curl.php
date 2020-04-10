@@ -57,11 +57,13 @@ class Curl {
         return \curl_setopt($ch, $option, $value);
     }
 
-    /**
-     * @return false|string
-     */
-    public function exec() {
-        return \curl_exec($this->curlHandle);
+    public function exec(): string {
+        $result = \curl_exec($this->curlHandle);
+        if ($result === false) {
+            throw new CurlException('Request failed');
+        }
+
+        return $result;
     }
 
     public function getLastErrorMessage(): string {

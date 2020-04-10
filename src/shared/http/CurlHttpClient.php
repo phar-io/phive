@@ -130,7 +130,14 @@ class CurlHttpClient implements HttpClient {
     private function execRequest(): HttpResponse {
         $this->rateLimitHeaders = [];
 
-        $result = $this->curl->exec();
+        try {
+            $result = $this->curl->exec();
+        } catch (CurlException $e) {
+            throw new HttpException(
+                $this->curl->getLastErrorMessage() . ' (while requesting ' . $this->url . ')',
+                $this->curl->getLastErrorNumber()
+            );
+        }
 
         $httpCode = $this->curl->getHttpCode();
 
