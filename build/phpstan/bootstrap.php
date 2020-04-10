@@ -10,32 +10,43 @@ class Gnupg {
     }
 }
 
-/**
- * @template-covariant TNode as DomElement
- * @template-implements Traversable<int, TNode>
- */
-class DOMNodeList implements Traversable, Countable {
+if (!class_exists('DOMNodeList')) {
     /**
-     * @var int
-     *
-     * @since 5.0
-     * The number of nodes in the list. The range of valid child node indices is 0 to length - 1 inclusive.
-     * @link http://php.net/manual/en/class.domnodelist.php#domnodelist.props.length
+     * @template-covariant  TNode as DomElement
+     * @template-implements Traversable<int, TNode>
      */
-    public $length;
+    class DOMNodeList implements Traversable, Countable
+    {
 
-    public function item($index): void {
+        /**
+         * @var int
+         *
+         * @since 5.0
+         * The number of nodes in the list. The range of valid child node indices is 0 to length - 1 inclusive.
+         * @link  http://php.net/manual/en/class.domnodelist.php#domnodelist.props.length
+         */
+        public $length;
+
+        /**
+         * @return TNode|null
+         */
+        public function item($index): void {
+        }
     }
 }
 
-/**
- * @return resource
- */
-function curl_init(?string $url) {
+if (!function_exists('curl_init')) {
+    /**
+     * @return resource
+     */
+    function curl_init(?string $url) {
+    }
 }
 
-/**
- * @param resource $handle
- */
-function curl_exec($handle): string {
+if (!function_exists('curl_exec')) {
+    /**
+     * @param resource $handle
+     */
+    function curl_exec($handle): string {
+    }
 }

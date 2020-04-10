@@ -24,7 +24,7 @@ abstract class Environment {
      * @throws EnvironmentException
      */
     public function getPathToCommand(string $command): Filename {
-        $result = \exec(\sprintf('%s %s', $this->getWhichCommand(), $command), $output, $exitCode);
+        $result = \exec(\sprintf('%s %s', $this->getWhichCommand(), \escapeshellarg($command)), $output, $exitCode);
 
         if ($exitCode !== 0) {
             throw new EnvironmentException(\sprintf('Command %s not found', $command));
