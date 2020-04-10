@@ -86,7 +86,8 @@ class CurlHttpClient implements HttpClient {
         }
 
         if (\stripos($parts[0], 'X-RateLimit-') !== false) {
-            $this->rateLimitHeaders[\substr($parts[0], 12)] = \trim($parts[1]);
+            $field = \ucfirst(\strtolower(\substr($parts[0], 12)));
+            $this->rateLimitHeaders[$field] = \trim($parts[1]);
         }
 
         return \mb_strlen($line);
