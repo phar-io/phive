@@ -96,33 +96,26 @@ class UnixoidEnvironmentTest extends TestCase {
         $this->assertSame($expectedResult, $env->supportsColoredOutput());
     }
 
-    public function testGetGitHubAuthToken(): void {
-        $environment = new UnixoidEnvironment([], $this->getExecutorMock());
-        $this->assertFalse($environment->hasGitHubAuthToken());
-
-        $environment = new UnixoidEnvironment(['GITHUB_AUTH_TOKEN' => 'foo'], $this->getExecutorMock());
-        $this->assertTrue($environment->hasGitHubAuthToken());
-        $this->assertSame('foo', $environment->getGitHubAuthToken());
-    }
-
     public function testGetGitHubAuthTokenThrowsExceptionIfNotPresentInEnvironment(): void {
         $environment = new UnixoidEnvironment([], $this->getExecutorMock());
         $this->expectException(\BadMethodCallException::class);
-        $environment->getGitHubAuthToken();
+        $environment->getAuthentication('api.github.com');
     }
 
-    public function testGetAuthentications(): void {
+    public function testGetAuthentication(): void {
         $environment = new UnixoidEnvironment([], $this->getExecutorMock());
-        $this->assertCount(0, $environment->getAuthentications());
+        $this->assertFalse($environment->hasAuthentication('api.github.com'));
+        $this->assertFalse($environment->hasAuthentication('gitlab.com'));
 
         $environment = new UnixoidEnvironment(['GITHUB_AUTH_TOKEN' => 'foo'], $this->getExecutorMock());
-        $this->assertCount(1, $environment->getAuthentications());
+        $this->assertEquals('Authorization: Token foo', $environment->getAuthentication('api.github.com')->asString());
 
         $environment = new UnixoidEnvironment(
             ['GITHUB_AUTH_TOKEN' => 'foo', 'GITLAB_AUTH_TOKEN' => 'bar'],
             $this->getExecutorMock()
         );
-        $this->assertCount(2, $environment->getAuthentications());
+        $this->assertEquals('Authorization: Token foo', $environment->getAuthentication('api.github.com')->asString());
+        $this->assertEquals('Authorization: Bearer bar', $environment->getAuthentication('gitlab.com')->asString());
     }
 
     /**

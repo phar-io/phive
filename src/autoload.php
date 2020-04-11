@@ -9,7 +9,10 @@ spl_autoload_register(
             $classes = array(
                 'phario\\phive\\abstractrequestedpharresolver' => '/services/resolver/AbstractRequestedPharResolver.php',
                 'phario\\phive\\abstractresolvingstrategy' => '/services/resolver/strategy/AbstractResolvingStrategy.php',
+                'phario\\phive\\authconfig' => '/shared/config/AuthConfig.php',
                 'phario\\phive\\authentication' => '/shared/http/Authentication.php',
+                'phario\\phive\\authxmlconfig' => '/shared/config/AuthXmlConfig.php',
+                'phario\\phive\\authxmlconfigfilelocator' => '/shared/config/AuthXmlConfigFileLocator.php',
                 'phario\\phive\\basehash' => '/shared/hash/BaseHash.php',
                 'phario\\phive\\cachebackend' => '/shared/http/CacheBackend.php',
                 'phario\\phive\\checksumservice' => '/services/checksum/ChecksumService.php',
@@ -40,6 +43,7 @@ spl_autoload_register(
                 'phario\\phive\\composercommandconfig' => '/commands/composer/ComposerCommandConfig.php',
                 'phario\\phive\\composercontext' => '/commands/composer/ComposerContext.php',
                 'phario\\phive\\composerservice' => '/commands/composer/ComposerService.php',
+                'phario\\phive\\compositeauthconfig' => '/shared/config/CompositeAuthConfig.php',
                 'phario\\phive\\config' => '/shared/config/Config.php',
                 'phario\\phive\\configexception' => '/shared/exceptions/ConfigException.php',
                 'phario\\phive\\configuredphar' => '/shared/phar/ConfiguredPhar.php',

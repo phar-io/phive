@@ -19,10 +19,18 @@ class SkelCommandConfig {
     }
 
     public function getDestination(): string {
+        if ($this->cliOptions->hasOption('auth')) {
+            return $this->workingDirectory . '/phive-auth.xml';
+        }
+
         return $this->workingDirectory . '/phive.xml';
     }
 
     public function getTemplateFilename(): string {
+        if ($this->cliOptions->hasOption('auth')) {
+            return __DIR__ . '/../../../conf/phive-auth.skeleton.xml';
+        }
+
         return __DIR__ . '/../../../conf/phive.skeleton.xml';
     }
 }

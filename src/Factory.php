@@ -229,6 +229,22 @@ class Factory {
         );
     }
 
+    public function getAuthConfig(): AuthConfig {
+        return new CompositeAuthConfig([
+            $this->getEnvironment(),
+            new AuthXmlConfig(new XmlFile(
+                $this->getAuthXmlConfigFileLocator()->getFile(false),
+                'https://phar.io/phive-auth',
+                'auth'
+            )),
+            new AuthXmlConfig(new XmlFile(
+                $this->getAuthXmlConfigFileLocator()->getFile(true),
+                'https://phar.io/phive-auth',
+                'auth'
+            ))
+        ]);
+    }
+
     /** @psalm-assert !null $this->registry */
     public function getPharRegistry(): PharRegistry {
         if ($this->registry === null) {
@@ -409,6 +425,13 @@ class Factory {
         );
     }
 
+    private function getAuthXmlConfigFileLocator(): AuthXmlConfigFileLocator {
+        return new AuthXmlConfigFileLocator(
+            $this->getEnvironment(),
+            $this->getConfig()
+        );
+    }
+
     private function getComposerService(): ComposerService {
         return new ComposerService($this->getSourcesList());
     }
@@ -455,7 +478,7 @@ class Factory {
     /** @psalm-assert !null $this->curlConfig */
     private function getCurlConfig(): CurlConfig {
         if ($this->curlConfig === null) {
-            $this->curlConfig = (new CurlConfigBuilder($this->getEnvironment(), $this->getPhiveVersion()))->build();
+            $this->curlConfig = (new CurlConfigBuilder($this->getEnvironment(), $this->getPhiveVersion(), $this->getAuthConfig()))->build();
         }
 
         return $this->curlConfig;

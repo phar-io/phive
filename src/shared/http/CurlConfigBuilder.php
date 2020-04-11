@@ -9,9 +9,13 @@ class CurlConfigBuilder {
     /** @var PhiveVersion */
     private $phiveVersion;
 
-    public function __construct(Environment $environment, PhiveVersion $phiveVersion) {
+    /** @var AuthConfig */
+    private $authConfig;
+
+    public function __construct(Environment $environment, PhiveVersion $phiveVersion, AuthConfig $authConfig) {
         $this->environment  = $environment;
         $this->phiveVersion = $phiveVersion;
+        $this->authConfig   = $authConfig;
     }
 
     public function build(): CurlConfig {
@@ -33,9 +37,7 @@ class CurlConfigBuilder {
             $curlConfig->setProxy($this->environment->getProxy());
         }
 
-        foreach ($this->environment->getAuthentications() as $authentication) {
-            $curlConfig->addAuthenticationToken($authentication);
-        }
+        $curlConfig->setAuthConfig($this->authConfig);
 
         return $curlConfig;
     }
