@@ -59,6 +59,7 @@ class Curl {
 
     public function exec(): string {
         $result = \curl_exec($this->curlHandle);
+
         if ($result === false) {
             throw new CurlException('Request failed');
         }
