@@ -80,14 +80,18 @@ class CurlHttpClient implements HttpClient {
      */
     public function handleHeaderInput($ch, string $line): int {
         $parts = \explode(':', \trim($line));
-
-        if (\strtolower($parts[0]) === 'etag') {
-            $this->etag = new ETag(\trim($parts[1]));
+        if (!isset($parts[1])) {
+            return \mb_strlen($line);
         }
 
-        if (\stripos($parts[0], 'X-RateLimit-') !== false) {
-            $field = \ucfirst(\strtolower(\substr($parts[0], 12)));
-            $this->rateLimitHeaders[$field] = \trim($parts[1]);
+        [$header, $value] = $parts;
+        $header = \ucfirst(\strtolower($header));
+        $value = \trim($value);
+
+        if ($header === 'Etag') {
+            $this->etag = new ETag($value);
+        } else if (preg_match('/^(X-)?RateLimit-(.*)$/i', $header, $matches) === 1) {
+            $this->rateLimitHeaders[$matches[2]] = $value;
         }
 
         return \mb_strlen($line);
