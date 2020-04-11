@@ -47,8 +47,10 @@
 **selfupdate**
     Update PHIVE to the latest version.
 
-**skel**
+**skel [--auth]**
     Create a default configuration file
+
+    _-a, --auth_   Create authentication configuration file
 
 **status [--all] [--global]**
     Get a list of configured PHARs for the current directory

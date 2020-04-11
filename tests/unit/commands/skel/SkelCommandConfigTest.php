@@ -35,13 +35,25 @@ class SkelCommandConfigTest extends TestCase {
     }
 
     public function testGetDestination(): void {
+        $this->cliOptionsProphecy->hasOption('auth')->willReturn(false);
         $config = new SkelCommandConfig($this->cliOptionsProphecy->reveal(), '/tmp/');
         $this->assertEquals('/tmp/phive.xml', $config->getDestination());
+
+        $this->cliOptionsProphecy->hasOption('auth')->willReturn(true);
+        $config = new SkelCommandConfig($this->cliOptionsProphecy->reveal(), '/tmp/');
+        $this->assertEquals('/tmp/phive-auth.xml', $config->getDestination());
     }
 
     public function testGetTemplateFilename(): void {
+        $this->cliOptionsProphecy->hasOption('auth')->willReturn(false);
         $config   = new SkelCommandConfig($this->cliOptionsProphecy->reveal(), '/tmp/');
         $expected = \realpath(__DIR__ . '/../../../../conf/phive.skeleton.xml');
+        $actual   = \realpath($config->getTemplateFilename());
+        $this->assertEquals($expected, $actual);
+
+        $this->cliOptionsProphecy->hasOption('auth')->willReturn(true);
+        $config   = new SkelCommandConfig($this->cliOptionsProphecy->reveal(), '/tmp/');
+        $expected = \realpath(__DIR__ . '/../../../../conf/phive-auth.skeleton.xml');
         $actual   = \realpath($config->getTemplateFilename());
         $this->assertEquals($expected, $actual);
     }

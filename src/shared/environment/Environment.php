@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
-abstract class Environment {
+abstract class Environment implements AuthConfig {
 
     /** @var array */
     protected $server = [];
@@ -56,30 +56,30 @@ abstract class Environment {
         return \array_key_exists('https_proxy', $this->server);
     }
 
-    public function getAuthentications(): array {
-        $authList = [];
-
-        if ($this->hasGitHubAuthToken()) {
-            $authList[] = new Authentication('api.github.com', Authentication::TYPE_TOKEN, $this->getGitHubAuthToken());
+    public function hasAuthentication(string $domain): bool {
+        switch ($domain) {
+            case 'api.github.com':
+                return \array_key_exists('GITHUB_AUTH_TOKEN', $this->server);
+            case 'gitlab.com':
+                return \array_key_exists('GITLAB_AUTH_TOKEN', $this->server);
+            default:
+                return false;
         }
-
-        if (\array_key_exists('GITLAB_AUTH_TOKEN', $this->server)) {
-            $authList[] = new Authentication('gitlab.com', Authentication::TYPE_BEARER, $this->server['GITLAB_AUTH_TOKEN']);
-        }
-
-        return $authList;
     }
 
-    public function hasGitHubAuthToken(): bool {
-        return \array_key_exists('GITHUB_AUTH_TOKEN', $this->server);
-    }
-
-    public function getGitHubAuthToken(): string {
-        if (!$this->hasGitHubAuthToken()) {
-            throw new \BadMethodCallException('GITHUB_AUTH_TOKEN not set in environment');
+    public function getAuthentication(string $domain): Authentication {
+        if (!$this->hasAuthentication($domain)) {
+            throw new \BadMethodCallException('Authentication not set in environment');
         }
 
-        return $this->server['GITHUB_AUTH_TOKEN'];
+        switch ($domain) {
+            case 'api.github.com':
+                return new Authentication($domain, Authentication::TYPE_TOKEN, $this->server['GITHUB_AUTH_TOKEN']);
+            case 'gitlab.com':
+                return new Authentication($domain, Authentication::TYPE_BEARER, $this->server['GITLAB_AUTH_TOKEN']);
+            default:
+                throw new \BadMethodCallException('Unknown authentication');
+        }
     }
 
     public function getPhiveCommandPath(): string {

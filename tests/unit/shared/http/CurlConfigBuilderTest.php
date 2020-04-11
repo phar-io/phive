@@ -17,10 +17,14 @@ class CurlConfigBuilderTest extends TestCase {
     /** @var CurlConfigBuilder */
     private $builder;
 
+    /** @var AuthConfig|PHPUnit_Framework_MockObject_MockObject */
+    private $authConfig;
+
     protected function setUp(): void {
         $this->environment  = $this->getEnvironmentMock();
         $this->phiveVersion = $this->getPhiveVersionMock();
-        $this->builder      = new CurlConfigBuilder($this->environment, $this->phiveVersion);
+        $this->authConfig   = $this->getAuthConfigMock();
+        $this->builder      = new CurlConfigBuilder($this->environment, $this->phiveVersion, $this->authConfig);
     }
 
     public function testSetsExpectedUserAgent(): void {
@@ -45,8 +49,12 @@ class CurlConfigBuilderTest extends TestCase {
     }
 
     public function testAddsGitHubAuthToken(): void {
-        $this->environment->method('getAuthentications')
-            ->willReturn([new Authentication('api.github.com', 'token', 'foo')]);
+        $this->authConfig->method('getAuthentication')
+            ->with('api.github.com')
+            ->willReturn(new Authentication('api.github.com', 'token', 'foo'));
+        $this->authConfig->method('hasAuthentication')
+            ->with('api.github.com')
+            ->willReturn(true);
 
         $config = $this->builder->build();
         $this->assertTrue($config->hasAuthenticationToken('api.github.com'));
@@ -54,8 +62,12 @@ class CurlConfigBuilderTest extends TestCase {
     }
 
     public function testAddsGitLabAuthToken(): void {
-        $this->environment->method('getAuthentications')
-            ->willReturn([new Authentication('gitlab.com', 'bearer', 'foo')]);
+        $this->authConfig->method('getAuthentication')
+            ->with('gitlab.com')
+            ->willReturn(new Authentication('gitlab.com', 'bearer', 'foo'));
+        $this->authConfig->method('hasAuthentication')
+            ->with('gitlab.com')
+            ->willReturn(true);
 
         $config = $this->builder->build();
         $this->assertTrue($config->hasAuthenticationToken('gitlab.com'));
@@ -74,5 +86,12 @@ class CurlConfigBuilderTest extends TestCase {
      */
     private function getPhiveVersionMock() {
         return $this->createMock(PhiveVersion::class);
+    }
+
+    /**
+     * @return AuthConfig|PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getAuthConfigMock() {
+        return $this->createMock(AuthConfig::class);
     }
 }

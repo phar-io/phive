@@ -15,8 +15,8 @@ class CurlConfig {
     /** @var array */
     private $localSslCertificates = [];
 
-    /** @var array */
-    private $authenticationTokens = [];
+    /** @var AuthConfig */
+    private $authConfig;
 
     /** @var array<string,string> */
     private $hostMap = [];
@@ -77,21 +77,12 @@ class CurlConfig {
         return $options;
     }
 
-    /**
-     * @throws CurlConfigException
-     */
-    public function addAuthenticationToken(Authentication $authentication): void {
-        $hostname = $authentication->getDomain();
-
-        if ($this->hasAuthenticationToken($hostname)) {
-            throw new CurlConfigException(\sprintf('Authentication token for hostname %s already set', $hostname));
-        }
-
-        $this->authenticationTokens[$hostname] = $authentication;
+    public function setAuthConfig(AuthConfig $authConfig): void {
+        $this->authConfig = $authConfig;
     }
 
     public function hasAuthenticationToken(string $hostname): bool {
-        return \array_key_exists($hostname, $this->authenticationTokens);
+        return $this->authConfig->hasAuthentication($hostname);
     }
 
     /**
@@ -102,7 +93,7 @@ class CurlConfig {
             throw new CurlConfigException(\sprintf('No authentication for hostname %s found', $hostname));
         }
 
-        return $this->authenticationTokens[$hostname];
+        return $this->authConfig->getAuthentication($hostname);
     }
 
     public function setResolvedIp(string $hostname, string $ip): void {
