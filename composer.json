@@ -18,7 +18,7 @@
     "issues" : "https://github.com/phar-io/phive/issues"
   },
   "require" : {
-    "php" : "^7.1",
+    "php" : "^7.2",
     "ext-dom" : "*",
     "ext-curl" : "*",
     "phar-io/version": "^2.0",
