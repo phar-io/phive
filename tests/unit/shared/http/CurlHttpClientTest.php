@@ -147,11 +147,13 @@ class CurlHttpClientTest extends TestCase {
         $expectedRateLimit = new RateLimit(25, 10, new \DateTimeImmutable('@1514645901'));
 
         $this->curl->method('exec')
-            ->willReturnCallback(function (): void {
+            ->willReturnCallback(function (): string {
                 // simulate header function call, which is normally done by Curl
                 $this->curlHttpClient->handleHeaderInput(null, 'X-RateLimit-Limit: 25');
                 $this->curlHttpClient->handleHeaderInput(null, 'X-RateLimit-Remaining: 10');
                 $this->curlHttpClient->handleHeaderInput(null, 'X-RateLimit-Reset: 1514645901');
+
+                return '';
             });
 
         $actualResponse = $this->curlHttpClient->get(new Url('https://example.com'));
@@ -178,9 +180,11 @@ class CurlHttpClientTest extends TestCase {
             ->willReturn(200);
 
         $this->curl->method('exec')
-            ->willReturnCallback(function (): void {
+            ->willReturnCallback(function (): string {
                 // simulate header function call, which is normally done by Curl
                 $this->curlHttpClient->handleHeaderInput(null, 'etag: foo');
+
+                return '';
             });
 
         $expectedETag = new ETag('foo');
