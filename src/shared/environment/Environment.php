@@ -74,9 +74,9 @@ abstract class Environment implements AuthConfig {
 
         switch ($domain) {
             case 'api.github.com':
-                return new Authentication($domain, Authentication::TYPE_TOKEN, $this->server['GITHUB_AUTH_TOKEN']);
+                return new Authentication($domain, 'Token', $this->server['GITHUB_AUTH_TOKEN']);
             case 'gitlab.com':
-                return new Authentication($domain, Authentication::TYPE_BEARER, $this->server['GITLAB_AUTH_TOKEN']);
+                return new Authentication($domain, 'Bearer', $this->server['GITLAB_AUTH_TOKEN']);
             default:
                 throw new \BadMethodCallException('Unknown authentication');
         }

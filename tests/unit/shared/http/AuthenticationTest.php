@@ -11,7 +11,7 @@ class AuthenticationTest extends TestCase {
     public function testCanBeConvertedToString(): void {
         $this->assertEquals(
             'Authorization: Bearer foo',
-            (new Authentication('example.com', Authentication::TYPE_BEARER, 'foo'))->asString()
+            (new Authentication('example.com', 'Bearer', 'foo'))->asString()
         );
     }
 

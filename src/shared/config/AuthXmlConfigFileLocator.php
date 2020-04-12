@@ -2,7 +2,7 @@
 namespace PharIo\Phive;
 
 class AuthXmlConfigFileLocator {
-    public const FILENAME = 'phive-auth.xml';
+    private const FILENAME = 'phive-auth.xml';
 
     /** @var Config */
     private $config;

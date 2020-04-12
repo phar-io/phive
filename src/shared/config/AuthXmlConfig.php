@@ -19,17 +19,53 @@ class AuthXmlConfig implements AuthConfig {
         return $result->count() > 0;
     }
 
+    /**
+     * @throws AuthException
+     */
     public function getAuthentication(string $domain): Authentication {
+        if (!$this->hasAuthentication($domain)) {
+            throw new AuthException(\sprintf('No authentication data for %s', $domain));
+        }
+
         $query  = \sprintf('//phive:domain[@host="%s"]', $domain);
         $result = $this->xmlFile->query($query);
 
         /** @var \DOMElement $auth */
         $auth = $result->item(0);
 
-        if (\mb_strtolower($auth->getAttribute('type')) === 'basic' && $auth->hasAttribute('username')) {
-            return Authentication::fromLoginPassword($domain, $auth->getAttribute('username'), $auth->getAttribute('password'));
+        if (!$auth->hasAttribute('type')) {
+            throw new AuthException(\sprintf('Authentication data for %s is invalid', $domain));
         }
 
-        return new Authentication($domain, $auth->getAttribute('type'), $auth->getAttribute('credentials'));
+        if ($auth->getAttribute('type') === 'Basic') {
+            return $this->handleBasicAuthentication($domain, $auth);
+        }
+
+        if ($auth->hasAttribute('credentials') && !empty($auth->getAttribute('credentials'))) {
+            return new Authentication($domain, $auth->getAttribute('type'), $auth->getAttribute('credentials'));
+        }
+
+        throw new AuthException(\sprintf('Authentication data for %s is invalid', $domain));
+    }
+
+    /**
+     * @throws AuthException
+     */
+    private function handleBasicAuthentication(string $domain, \DOMElement $node): Authentication {
+        if (
+            $node->hasAttribute('username')
+            && !empty($username = $node->getAttribute('username'))
+            && \strpos($username, ':') === false
+            && $node->hasAttribute('password')
+            && !empty($node->getAttribute('password'))
+        ) {
+            return Authentication::fromLoginPassword($domain, $username, $node->getAttribute('password'));
+        }
+
+        if ($node->hasAttribute('credentials') && !empty($node->getAttribute('credentials'))) {
+            return new Authentication($domain, 'Basic', $node->getAttribute('credentials'));
+        }
+
+        throw new AuthException(\sprintf('Basic authentication data for %s is invalid', $domain));
     }
 }
