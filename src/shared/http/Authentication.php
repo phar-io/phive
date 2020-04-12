@@ -2,10 +2,6 @@
 namespace PharIo\Phive;
 
 class Authentication {
-    public const TYPE_TOKEN  = 'Token';
-    public const TYPE_BEARER = 'Bearer';
-    public const TYPE_BASIC  = 'Basic';
-    public const TYPE_DIGEST = 'Digest';
 
     /** @var string */
     private $type;
@@ -17,7 +13,7 @@ class Authentication {
     public static function fromLoginPassword(string $domain, string $login, string $password): Authentication {
         $credentials = \base64_encode($login . ':' . $password);
 
-        return new static($domain, self::TYPE_BASIC, $credentials);
+        return new static($domain, 'Basic', $credentials);
     }
 
     public function __construct(string $domain, string $type, string $credentials) {

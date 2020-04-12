@@ -11,6 +11,7 @@ spl_autoload_register(
                 'phario\\phive\\abstractresolvingstrategy' => '/services/resolver/strategy/AbstractResolvingStrategy.php',
                 'phario\\phive\\authconfig' => '/shared/config/AuthConfig.php',
                 'phario\\phive\\authentication' => '/shared/http/Authentication.php',
+                'phario\\phive\\authexception' => '/shared/exceptions/AuthException.php',
                 'phario\\phive\\authxmlconfig' => '/shared/config/AuthXmlConfig.php',
                 'phario\\phive\\authxmlconfigfilelocator' => '/shared/config/AuthXmlConfigFileLocator.php',
                 'phario\\phive\\basehash' => '/shared/hash/BaseHash.php',
