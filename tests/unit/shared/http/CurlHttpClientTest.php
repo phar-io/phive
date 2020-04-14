@@ -195,15 +195,15 @@ class CurlHttpClientTest extends TestCase {
         $this->assertEquals($expectedETag, $actualResponse->getETag());
     }
 
-    public function testAddsAuthorizationHeaderIfTokenIsProvided(): void {
+    public function testAddsAuthorizationHeaderIfAuthIsProvided(): void {
         $this->curl->method('getHttpCode')
             ->willReturn(200);
 
-        $this->curlConfig->method('hasAuthenticationToken')
+        $this->curlConfig->method('hasAuthentication')
             ->with('example.com')
             ->willReturn(true);
 
-        $this->curlConfig->method('getAuthenticationToken')
+        $this->curlConfig->method('getAuthentication')
             ->with('example.com')
             ->willReturn(new Authentication('example.com', 'token', 'foobar'));
 

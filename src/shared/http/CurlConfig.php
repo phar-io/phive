@@ -81,15 +81,15 @@ class CurlConfig {
         $this->authConfig = $authConfig;
     }
 
-    public function hasAuthenticationToken(string $hostname): bool {
+    public function hasAuthentication(string $hostname): bool {
         return $this->authConfig->hasAuthentication($hostname);
     }
 
     /**
      * @throws CurlConfigException
      */
-    public function getAuthenticationToken(string $hostname): Authentication {
-        if (!$this->hasAuthenticationToken($hostname)) {
+    public function getAuthentication(string $hostname): Authentication {
+        if (!$this->hasAuthentication($hostname)) {
             throw new CurlConfigException(\sprintf('No authentication for hostname %s found', $hostname));
         }
 
