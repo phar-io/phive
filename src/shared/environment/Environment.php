@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
-abstract class Environment implements AuthConfig {
+abstract class Environment {
 
     /** @var array */
     protected $server = [];
@@ -56,30 +56,16 @@ abstract class Environment implements AuthConfig {
         return \array_key_exists('https_proxy', $this->server);
     }
 
-    public function hasAuthentication(string $domain): bool {
-        switch ($domain) {
-            case 'api.github.com':
-                return \array_key_exists('GITHUB_AUTH_TOKEN', $this->server);
-            case 'gitlab.com':
-                return \array_key_exists('GITLAB_AUTH_TOKEN', $this->server);
-            default:
-                return false;
-        }
+    public function hasVariable(string $name): bool {
+        return \array_key_exists($name, $this->server);
     }
 
-    public function getAuthentication(string $domain): Authentication {
-        if (!$this->hasAuthentication($domain)) {
-            throw new \BadMethodCallException('Authentication not set in environment');
+    public function getVariable(string $name): string {
+        if (!$this->hasVariable($name)) {
+            throw new \BadMethodCallException(\sprintf('Variable %s is not set in environment', $name));
         }
 
-        switch ($domain) {
-            case 'api.github.com':
-                return new Authentication($domain, 'Token', $this->server['GITHUB_AUTH_TOKEN']);
-            case 'gitlab.com':
-                return new Authentication($domain, 'Bearer', $this->server['GITLAB_AUTH_TOKEN']);
-            default:
-                throw new \BadMethodCallException('Unknown authentication');
-        }
+        return $this->server[$name];
     }
 
     public function getPhiveCommandPath(): string {
