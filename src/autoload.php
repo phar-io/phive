@@ -61,6 +61,7 @@ spl_autoload_register(
                 'phario\\phive\\directurlresolver' => '/services/resolver/DirectUrlResolver.php',
                 'phario\\phive\\downloadfailedexception' => '/shared/exceptions/DownloadFailedException.php',
                 'phario\\phive\\environment' => '/shared/environment/Environment.php',
+                'phario\\phive\\environmentauthconfig' => '/shared/config/EnvironmentAuthConfig.php',
                 'phario\\phive\\environmentexception' => '/shared/exceptions/EnvironmentException.php',
                 'phario\\phive\\environmentlocator' => '/shared/environment/EnvironmentLocator.php',
                 'phario\\phive\\errorexception' => '/shared/exceptions/ErrorException.php',

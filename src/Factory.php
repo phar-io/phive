@@ -231,7 +231,7 @@ class Factory {
 
     public function getAuthConfig(): AuthConfig {
         return new CompositeAuthConfig([
-            $this->getEnvironment(),
+            new EnvironmentAuthConfig($this->getEnvironment()),
             new AuthXmlConfig(new XmlFile(
                 $this->getAuthXmlConfigFileLocator()->getFile(false),
                 'https://phar.io/phive-auth',

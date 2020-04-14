@@ -96,26 +96,19 @@ class UnixoidEnvironmentTest extends TestCase {
         $this->assertSame($expectedResult, $env->supportsColoredOutput());
     }
 
-    public function testGetGitHubAuthTokenThrowsExceptionIfNotPresentInEnvironment(): void {
+    public function testHasVariable(): void {
         $environment = new UnixoidEnvironment([], $this->getExecutorMock());
-        $this->expectException(\BadMethodCallException::class);
-        $environment->getAuthentication('api.github.com');
+        $this->assertFalse($environment->hasVariable('GITHUB_AUTH_TOKEN'));
+        $this->assertFalse($environment->hasVariable('FOO'));
+
+        $environment = new UnixoidEnvironment(['FOO' => 'bar'], $this->getExecutorMock());
+        $this->assertTrue($environment->hasVariable('FOO'));
     }
 
-    public function testGetAuthentication(): void {
-        $environment = new UnixoidEnvironment([], $this->getExecutorMock());
-        $this->assertFalse($environment->hasAuthentication('api.github.com'));
-        $this->assertFalse($environment->hasAuthentication('gitlab.com'));
-
-        $environment = new UnixoidEnvironment(['GITHUB_AUTH_TOKEN' => 'foo'], $this->getExecutorMock());
-        $this->assertEquals('Authorization: Token foo', $environment->getAuthentication('api.github.com')->asString());
-
-        $environment = new UnixoidEnvironment(
-            ['GITHUB_AUTH_TOKEN' => 'foo', 'GITLAB_AUTH_TOKEN' => 'bar'],
-            $this->getExecutorMock()
-        );
-        $this->assertEquals('Authorization: Token foo', $environment->getAuthentication('api.github.com')->asString());
-        $this->assertEquals('Authorization: Bearer bar', $environment->getAuthentication('gitlab.com')->asString());
+    public function testGetVariable(): void {
+        $environment = new UnixoidEnvironment(['FOO' => 'bar'], $this->getExecutorMock());
+        $this->assertTrue($environment->hasVariable('FOO'));
+        $this->assertEquals('bar', $environment->getVariable('FOO'));
     }
 
     /**
