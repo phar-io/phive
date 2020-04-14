@@ -121,8 +121,8 @@ class CurlHttpClient implements HttpClient {
             $this->curl->setResolve($hostname . ':443:' . $this->config->getResolvedIp($hostname));
         }
 
-        if ($this->config->hasAuthenticationToken($hostname)) {
-            $headers[] = $this->config->getAuthenticationToken($hostname)->asString();
+        if ($this->config->hasAuthentication($hostname)) {
+            $headers[] = $this->config->getAuthentication($hostname)->asString();
         }
 
         if (\count($headers) > 0) {

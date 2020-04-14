@@ -57,8 +57,8 @@ class CurlConfigBuilderTest extends TestCase {
             ->willReturn(true);
 
         $config = $this->builder->build();
-        $this->assertTrue($config->hasAuthenticationToken('api.github.com'));
-        $this->assertSame('Authorization: token foo', $config->getAuthenticationToken('api.github.com')->asString());
+        $this->assertTrue($config->hasAuthentication('api.github.com'));
+        $this->assertSame('Authorization: token foo', $config->getAuthentication('api.github.com')->asString());
     }
 
     public function testAddsGitLabAuthToken(): void {
@@ -70,8 +70,8 @@ class CurlConfigBuilderTest extends TestCase {
             ->willReturn(true);
 
         $config = $this->builder->build();
-        $this->assertTrue($config->hasAuthenticationToken('gitlab.com'));
-        $this->assertSame('Authorization: bearer foo', $config->getAuthenticationToken('gitlab.com')->asString());
+        $this->assertTrue($config->hasAuthentication('gitlab.com'));
+        $this->assertSame('Authorization: bearer foo', $config->getAuthentication('gitlab.com')->asString());
     }
 
     /**
