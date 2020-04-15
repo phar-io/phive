@@ -181,7 +181,7 @@ class PharRegistry {
         $query        = \sprintf('//phive:phar[@name="%s"]/phive:signature/@fingerprint', $alias);
 
         foreach ($this->dbFile->query($query) as $fingerprintNode) {
-            if (\in_array($fingerprintNode->nodeValue, $fingerprints)) {
+            if (\in_array($fingerprintNode->nodeValue, $fingerprints, true)) {
                 continue;
             }
             $fingerprints[] = $fingerprintNode->nodeValue;

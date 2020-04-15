@@ -35,7 +35,7 @@ class ResetCommand implements Cli\Command {
         }
 
         foreach ($this->pharRegistry->getUsedPharsByDestination($this->environment->getWorkingDirectory()) as $phar) {
-            if (!empty($aliasFilter) && !\in_array($phar->getName(), $aliasFilter)) {
+            if (!empty($aliasFilter) && !\in_array($phar->getName(), $aliasFilter, true)) {
                 continue;
             }
             $this->pharInstaller->install($phar->getFile(), $this->environment->getWorkingDirectory()->file($phar->getName()), false);

@@ -29,7 +29,7 @@ abstract class Environment {
         if ($exitCode !== 0) {
             throw new EnvironmentException(\sprintf('Command %s not found', $command));
         }
-        $resultLines = \explode("\n", $result);
+        $resultLines = \explode("\n", $result, 2);
 
         return new Filename($resultLines[0]);
     }

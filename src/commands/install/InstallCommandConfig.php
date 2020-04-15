@@ -34,7 +34,7 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\ConfigException
+     * @throws ConfigException
      * @throws \PharIo\Phive\Cli\CommandOptionsException
      */
     public function getTargetDirectory(): Directory {
@@ -46,12 +46,12 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\UnsupportedVersionConstraintException
-     * @throws \PharIo\Phive\InstallCommandConfigException
-     * @throws \PharIo\Phive\ConfiguredPharException
+     * @return RequestedPhar[]
+     * @throws InstallCommandConfigException
+     * @throws ConfiguredPharException
      * @throws Cli\CommandOptionsException
      *
-     * @return RequestedPhar[]
+     * @throws UnsupportedVersionConstraintException
      */
     public function getRequestedPhars(): array {
         if ($this->cliOptions->getArgumentCount() === 0) {
@@ -70,9 +70,9 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\ConfiguredPharException
-     *
      * @return RequestedPhar[]
+     * @throws ConfiguredPharException
+     *
      */
     private function getPharsFromPhiveXmlConfig(): array {
         $phars = [];
@@ -93,11 +93,11 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\InstallCommandConfigException
+     * @return RequestedPhar[]
      * @throws Cli\CommandOptionsException
      * @throws UnsupportedVersionConstraintException
      *
-     * @return RequestedPhar[]
+     * @throws InstallCommandConfigException
      */
     private function getPharsFromCliArguments(): array {
         $phars    = [];
@@ -149,7 +149,7 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\ConfiguredPharException
+     * @throws ConfiguredPharException
      */
     private function getIdentifier(ConfiguredPhar $configuredPhar): PharIdentifier {
         if (Url::isUrl($configuredPhar->getName())) {
@@ -164,7 +164,7 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\ConfiguredPharException
+     * @throws ConfiguredPharException
      */
     private function getVersionToInstall(ConfiguredPhar $configuredPhar): VersionConstraint {
         $versionConstraint = $configuredPhar->getVersionConstraint();

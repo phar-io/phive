@@ -89,7 +89,7 @@ class StatusCommand implements Cli\Command {
         $keys     = \implode(
             ', ',
             \array_map(
-                function ($key) {
+                static function ($key) {
                     return \substr($key, -16);
                 },
                 $this->pharRegistry->getKnownSignatureFingerprints($phar->getName())

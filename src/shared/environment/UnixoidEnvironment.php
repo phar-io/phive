@@ -25,7 +25,7 @@ class UnixoidEnvironment extends Environment {
     }
 
     /**
-     * @throws \PharIo\Phive\DirectoryException
+     * @throws DirectoryException
      * @throws \BadMethodCallException
      */
     public function getHomeDirectory(): Directory {
@@ -37,7 +37,7 @@ class UnixoidEnvironment extends Environment {
     }
 
     /**
-     * @throws \PharIo\Phive\EnvironmentException
+     * @throws EnvironmentException
      */
     public function supportsColoredOutput(): bool {
         if (!$this->isInteractive()) {

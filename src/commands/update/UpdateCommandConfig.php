@@ -52,7 +52,7 @@ class UpdateCommandConfig {
         $phars = [];
 
         foreach ($this->phiveXmlConfig->getPhars() as $configuredPhar) {
-            if (!empty($filter) && !\in_array($configuredPhar->getName(), $filter)) {
+            if (!empty($filter) && !\in_array($configuredPhar->getName(), $filter, true)) {
                 continue;
             }
 

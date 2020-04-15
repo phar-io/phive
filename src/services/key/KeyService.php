@@ -35,7 +35,7 @@ class KeyService {
     public function importKey(string $keyId, array $knownFingerprints): KeyImportResult {
         $key = $this->downloadKey($keyId);
 
-        if (!empty($knownFingerprints) && !\in_array($key->getFingerprint(), $knownFingerprints)) {
+        if (!empty($knownFingerprints) && !\in_array($key->getFingerprint(), $knownFingerprints, true)) {
             $this->output->writeWarning(
                 "This is NOT a key that has been used to install previous versions of this PHAR.\n"
                 . "           While this can be perfectly valid (maybe the maintainer switched to a new key),\n"

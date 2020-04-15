@@ -22,7 +22,7 @@ class StatusCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\ConfigException
+     * @throws ConfigException
      * @throws \PharIo\Phive\Cli\CommandOptionsException
      */
     public function getPhars(): array {
@@ -30,7 +30,7 @@ class StatusCommandConfig {
             return $this->phiveXmlConfig->getPhars();
         }
 
-        $usedPhar = \array_map(function (UsedPhar $phar) {
+        $usedPhar = \array_map(static function (UsedPhar $phar) {
             if (\count($phar->getUsages()) === 0) {
                 return [new ConfiguredPhar(
                     $phar->getName(),
@@ -39,7 +39,7 @@ class StatusCommandConfig {
                 )];
             }
 
-            return \array_map(function (string $path) use ($phar) {
+            return \array_map(static function (string $path) use ($phar) {
                 return new ConfiguredPhar(
                     $phar->getName(),
                     new AnyVersionConstraint(),
@@ -49,11 +49,11 @@ class StatusCommandConfig {
             }, $phar->getUsages());
         }, $this->pharRegistry->getAllPhars());
 
-        $usedPhar = \array_reduce($usedPhar, function ($accumulator, array $items) {
+        $usedPhar = \array_reduce($usedPhar, static function ($accumulator, array $items) {
             return \array_merge($accumulator, $items);
         }, []);
 
-        \usort($usedPhar, function (ConfiguredPhar $pharA, ConfiguredPhar $pharB) {
+        \usort($usedPhar, static function (ConfiguredPhar $pharA, ConfiguredPhar $pharB) {
             return [$pharA->getName(), $pharA->getInstalledVersion()]
                 <=> [$pharB->getName(), $pharB->getInstalledVersion()];
         });

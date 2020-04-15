@@ -50,7 +50,7 @@ class ConfiguredPhar {
     }
 
     /**
-     * @throws \PharIo\Phive\ConfiguredPharException
+     * @throws ConfiguredPharException
      */
     public function getInstalledVersion(): Version {
         if (!$this->isInstalled()) {
@@ -71,7 +71,7 @@ class ConfiguredPhar {
     }
 
     /**
-     * @throws \PharIo\Phive\ConfiguredPharException
+     * @throws ConfiguredPharException
      */
     public function getLocation(): Filename {
         if (!$this->hasLocation()) {
@@ -90,7 +90,7 @@ class ConfiguredPhar {
     }
 
     /**
-     * @throws \PharIo\Phive\ConfiguredPharException
+     * @throws ConfiguredPharException
      */
     public function getUrl(): PharUrl {
         if (!$this->hasUrl()) {

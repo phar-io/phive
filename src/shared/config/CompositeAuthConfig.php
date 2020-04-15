@@ -6,8 +6,6 @@ class CompositeAuthConfig implements AuthConfig {
     private $authConfigs;
 
     /**
-     * CompositeAuthConfig constructor.
-     *
      * @param AuthConfig[] $authConfigs
      */
     public function __construct(array $authConfigs) {
@@ -21,7 +19,7 @@ class CompositeAuthConfig implements AuthConfig {
             }
         }
 
-        throw new \Exception(\sprintf('No authentication data for "%s"', $domain));
+        throw new AuthException(\sprintf('No authentication data for %s', $domain));
     }
 
     public function hasAuthentication(string $domain): bool {
