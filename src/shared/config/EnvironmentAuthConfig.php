@@ -36,10 +36,10 @@ class EnvironmentAuthConfig implements AuthConfig {
         switch ($domain) {
             // "Token" Authorizations
             case 'api.github.com':
-                return new Authentication($domain, 'Token', $token);
+                return new TokenAuthentication($domain, $token);
             // "Bearer" Authorizations
             case 'gitlab.com':
-                return new Authentication($domain, 'Bearer', $token);
+                return new BearerAuthentication($domain, $token);
             default:
                 throw new \BadMethodCallException('Unknown authentication');
         }

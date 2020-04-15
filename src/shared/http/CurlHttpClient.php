@@ -122,7 +122,7 @@ class CurlHttpClient implements HttpClient {
         }
 
         if ($this->config->hasAuthentication($hostname)) {
-            $headers[] = $this->config->getAuthentication($hostname)->asString();
+            $headers[] = $this->config->getAuthentication($hostname)->asHttpHeaderString();
         }
 
         if (\count($headers) > 0) {

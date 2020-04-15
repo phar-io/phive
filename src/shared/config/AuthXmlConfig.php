@@ -37,15 +37,26 @@ class AuthXmlConfig implements AuthConfig {
             throw new AuthException(\sprintf('Authentication data for %s is invalid', $domain));
         }
 
-        if ($auth->getAttribute('type') === 'Basic') {
+        $authType = $auth->getAttribute('type');
+
+        if ($authType === 'Basic') {
             return $this->handleBasicAuthentication($domain, $auth);
         }
 
-        if ($auth->hasAttribute('credentials') && !empty($auth->getAttribute('credentials'))) {
-            return new Authentication($domain, $auth->getAttribute('type'), $auth->getAttribute('credentials'));
+        if (!$auth->hasAttribute('credentials') || empty($auth->getAttribute('credentials'))) {
+            throw new AuthException(\sprintf('Authentication data for %s is invalid', $domain));
         }
 
-        throw new AuthException(\sprintf('Authentication data for %s is invalid', $domain));
+        $authCredentials = $auth->getAttribute('credentials');
+
+        switch ($authType) {
+            case 'Token':
+                return new TokenAuthentication($domain, $authCredentials);
+            case 'Bearer':
+                return new BearerAuthentication($domain, $authCredentials);
+            default:
+                throw new AuthException(\sprintf('Invalid authentication type for %s', $domain));
+        }
     }
 
     /**
@@ -59,11 +70,11 @@ class AuthXmlConfig implements AuthConfig {
             && $node->hasAttribute('password')
             && !empty($node->getAttribute('password'))
         ) {
-            return Authentication::fromLoginPassword($domain, $username, $node->getAttribute('password'));
+            return BasicAuthentication::fromLoginPassword($domain, $username, $node->getAttribute('password'));
         }
 
         if ($node->hasAttribute('credentials') && !empty($node->getAttribute('credentials'))) {
-            return new Authentication($domain, 'Basic', $node->getAttribute('credentials'));
+            return new BasicAuthentication($domain, $node->getAttribute('credentials'));
         }
 
         throw new AuthException(\sprintf('Basic authentication data for %s is invalid', $domain));

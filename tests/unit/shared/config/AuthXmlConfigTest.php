@@ -17,7 +17,7 @@ class AuthXmlConfigTest extends TestCase {
         $authXml = new AuthXmlConfig($xmlFile);
 
         $auth = $authXml->getAuthentication('example.com');
-        $this->assertEquals('Authorization: Basic foo', $auth->asString());
+        $this->assertEquals('Authorization: Basic foo', $auth->asHttpHeaderString());
     }
 
     public function testGetAuthenticationTypeOther(): void {
@@ -30,7 +30,7 @@ class AuthXmlConfigTest extends TestCase {
         $authXml = new AuthXmlConfig($xmlFile);
 
         $auth = $authXml->getAuthentication('example.com');
-        $this->assertEquals('Authorization: Bearer foobar', $auth->asString());
+        $this->assertEquals('Authorization: Bearer foobar', $auth->asHttpHeaderString());
     }
 
     public function testGetAuthenticationWithUsernamePassword(): void {
@@ -43,7 +43,7 @@ class AuthXmlConfigTest extends TestCase {
         $authXml = new AuthXmlConfig($xmlFile);
 
         $auth = $authXml->getAuthentication('example.com');
-        $this->assertEquals('Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==', $auth->asString());
+        $this->assertEquals('Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==', $auth->asHttpHeaderString());
     }
 
     public function testHasAuthenticationWithNoResult(): void {
