@@ -46,12 +46,12 @@ class InstallCommandConfig {
     }
 
     /**
-     * @return RequestedPhar[]
      * @throws InstallCommandConfigException
      * @throws ConfiguredPharException
      * @throws Cli\CommandOptionsException
-     *
      * @throws UnsupportedVersionConstraintException
+     *
+     * @return RequestedPhar[]
      */
     public function getRequestedPhars(): array {
         if ($this->cliOptions->getArgumentCount() === 0) {
@@ -70,9 +70,9 @@ class InstallCommandConfig {
     }
 
     /**
-     * @return RequestedPhar[]
      * @throws ConfiguredPharException
      *
+     * @return RequestedPhar[]
      */
     private function getPharsFromPhiveXmlConfig(): array {
         $phars = [];
@@ -93,11 +93,11 @@ class InstallCommandConfig {
     }
 
     /**
-     * @return RequestedPhar[]
      * @throws Cli\CommandOptionsException
      * @throws UnsupportedVersionConstraintException
-     *
      * @throws InstallCommandConfigException
+     *
+     * @return RequestedPhar[]
      */
     private function getPharsFromCliArguments(): array {
         $phars    = [];
