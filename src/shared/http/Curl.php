@@ -49,14 +49,6 @@ class Curl {
         \curl_setopt_array($this->curlHandle, $options);
     }
 
-    /**
-     * @param resource       $ch
-     * @param callable|mixed $value
-     */
-    public function setOpt($ch, int $option, $value): bool {
-        return \curl_setopt($ch, $option, $value);
-    }
-
     public function exec(): string {
         $result = \curl_exec($this->curlHandle);
 

@@ -5,6 +5,7 @@ abstract class Authentication {
 
     /** @var string */
     private $credentials;
+
     /** @var string */
     private $domain;
 
@@ -15,10 +16,6 @@ abstract class Authentication {
 
     public function asHttpHeaderString(): string {
         return \sprintf('Authorization: %s %s', $this->getType(), $this->credentials);
-    }
-
-    public function getDomain(): string {
-        return $this->domain;
     }
 
     abstract protected function getType(): string;
