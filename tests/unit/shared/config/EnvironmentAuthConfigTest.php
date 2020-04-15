@@ -29,7 +29,7 @@ class EnvironmentAuthConfigTest extends TestCase {
 
         $this->assertEquals(
             'Authorization: Token foo',
-            $authConfig->getAuthentication('api.github.com')->asString()
+            $authConfig->getAuthentication('api.github.com')->asHttpHeaderString()
         );
 
         $environment = $this->createMock(Environment::class);
@@ -40,7 +40,7 @@ class EnvironmentAuthConfigTest extends TestCase {
 
         $this->assertEquals(
             'Authorization: Bearer bar',
-            $authConfig->getAuthentication('gitlab.com')->asString()
+            $authConfig->getAuthentication('gitlab.com')->asHttpHeaderString()
         );
 
         $this->expectException(AuthException::class);

@@ -1,7 +1,8 @@
 <?php declare(strict_types = 1);
 namespace unit\shared\http;
 
-use PharIo\Phive\Authentication;
+use PharIo\Phive\BasicAuthentication;
+use PharIo\Phive\BearerAuthentication;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,7 +12,7 @@ class AuthenticationTest extends TestCase {
     public function testCanBeConvertedToString(): void {
         $this->assertEquals(
             'Authorization: Bearer foo',
-            (new Authentication('example.com', 'Bearer', 'foo'))->asString()
+            (new BearerAuthentication('example.com', 'foo'))->asHttpHeaderString()
         );
     }
 
@@ -19,7 +20,7 @@ class AuthenticationTest extends TestCase {
         // https://tools.ietf.org/html/rfc7617#section-2
         $this->assertEquals(
             'Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==',
-            Authentication::fromLoginPassword('example.com', 'Aladdin', 'open sesame')->asString()
+            BasicAuthentication::fromLoginPassword('example.com', 'Aladdin', 'open sesame')->asHttpHeaderString()
         );
     }
 }

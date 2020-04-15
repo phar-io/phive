@@ -51,27 +51,27 @@ class CurlConfigBuilderTest extends TestCase {
     public function testAddsGitHubAuthToken(): void {
         $this->authConfig->method('getAuthentication')
             ->with('api.github.com')
-            ->willReturn(new Authentication('api.github.com', 'token', 'foo'));
+            ->willReturn(new TokenAuthentication('api.github.com', 'foo'));
         $this->authConfig->method('hasAuthentication')
             ->with('api.github.com')
             ->willReturn(true);
 
         $config = $this->builder->build();
         $this->assertTrue($config->hasAuthentication('api.github.com'));
-        $this->assertSame('Authorization: token foo', $config->getAuthentication('api.github.com')->asString());
+        $this->assertSame('Authorization: Token foo', $config->getAuthentication('api.github.com')->asHttpHeaderString());
     }
 
     public function testAddsGitLabAuthToken(): void {
         $this->authConfig->method('getAuthentication')
             ->with('gitlab.com')
-            ->willReturn(new Authentication('gitlab.com', 'bearer', 'foo'));
+            ->willReturn(new BearerAuthentication('gitlab.com', 'foo'));
         $this->authConfig->method('hasAuthentication')
             ->with('gitlab.com')
             ->willReturn(true);
 
         $config = $this->builder->build();
         $this->assertTrue($config->hasAuthentication('gitlab.com'));
-        $this->assertSame('Authorization: bearer foo', $config->getAuthentication('gitlab.com')->asString());
+        $this->assertSame('Authorization: Bearer foo', $config->getAuthentication('gitlab.com')->asHttpHeaderString());
     }
 
     /**
