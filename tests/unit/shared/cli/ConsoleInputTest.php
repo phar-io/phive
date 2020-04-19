@@ -3,6 +3,7 @@ namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\ConsoleInput;
 use PharIo\Phive\Cli\Output;
+use PharIo\Phive\Cli\RunnerException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -84,6 +85,27 @@ class ConsoleInputTest extends TestCase {
 
         $input = new ConsoleInput($output, $inputStream);
         $this->assertSame($default, $input->confirm('foo?', $default));
+    }
+
+    public function testOnNonInteractive(): void {
+        $output = $this->getOutputMock();
+        $output->expects($this->once())
+            ->method('writeText')
+            ->with('foo? [Y|n] ');
+
+        /*
+         * Emulate a non-interactive shell by not writing anything
+         *
+         * In a real shell it can be emulate with `echo -n | phive install ...`
+         */
+        $inputStream = \fopen('php://memory', 'r');
+
+        $input = new ConsoleInput($output, $inputStream);
+
+        $this->expectException(RunnerException::class);
+        $this->expectExceptionMessage('Needs tty to be able to confirm');
+
+        $input->confirm('foo?');
     }
 
     /**

@@ -27,7 +27,13 @@ class ConsoleInput implements Input {
 
         do {
             $this->output->writeText(\rtrim($message) . \sprintf(' [%s|%s] ', $yesOption, $noOption));
-            $response = \strtolower(\rtrim(\fgets($this->inputStream)));
+            $input = \fgets($this->inputStream);
+
+            if ($input === false) {
+                throw new RunnerException('Needs tty to be able to confirm');
+            }
+
+            $response = \strtolower(\rtrim($input));
         } while (!\in_array($response, ['y', 'n', ''], true));
 
         if ($response === '') {
