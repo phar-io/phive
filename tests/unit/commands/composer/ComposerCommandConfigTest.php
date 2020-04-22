@@ -12,15 +12,6 @@ use PHPUnit\Framework\TestCase;
 class ComposerCommandConfigTest extends TestCase {
     use ScalarTestDataProvider;
 
-    public static function doNotAddToPhiveXmlProvider(): array {
-        return [
-            [true, false, true],
-            [true, true, true],
-            [false, true, true],
-            [false, false, false],
-        ];
-    }
-
     public function testGetTargetDirectory(): void {
         $directory = $this->getDirectoryMock();
 
@@ -36,33 +27,6 @@ class ComposerCommandConfigTest extends TestCase {
         );
 
         $this->assertSame($directory, $commandConfig->getTargetDirectory());
-    }
-
-    /**
-     * @dataProvider doNotAddToPhiveXmlProvider
-     *
-     * @param bool $temporaryValue
-     * @param bool $globalValue
-     * @param bool $expected
-     */
-    public function testDoNotAddToPhiveXml($temporaryValue, $globalValue, $expected): void {
-        $options = $this->getOptionsMock();
-        $options->method('hasOption')->willReturnMap(
-            [
-                ['temporary', $temporaryValue],
-                ['global', $globalValue]
-            ]
-        );
-
-        $commandConfig = new ComposerCommandConfig(
-            $options,
-            $this->getPhiveXmlConfigMock(),
-            $this->getEnvironmentMock(),
-            $this->getTargetDirectoryLocatorMock(),
-            $this->getDirectoryMock()
-        );
-
-        $this->assertSame($expected, $commandConfig->doNotAddToPhiveXml());
     }
 
     public function testGetComposerFilename(): void {

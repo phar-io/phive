@@ -156,4 +156,11 @@
         </exec>
     </target>
 
+    <target name="find-dead-code" depends="install-tools" description="Find dead code">
+        <exec executable="./tools/psalm" failonerror="true">
+            <arg value="--config=psalm.deadcode.xml" />
+            <arg value="--show-info=true" />
+        </exec>
+    </target>
+
 </project>

@@ -59,7 +59,6 @@ spl_autoload_register(
                 'phario\\phive\\curlhttpclient' => '/shared/http/CurlHttpClient.php',
                 'phario\\phive\\defaultcommand' => '/commands/default/DefaultCommand.php',
                 'phario\\phive\\defaultcommandconfig' => '/commands/default/DefaultCommandConfig.php',
-                'phario\\phive\\directoryexception' => '/shared/exceptions/DirectoryException.php',
                 'phario\\phive\\directurlresolver' => '/services/resolver/DirectUrlResolver.php',
                 'phario\\phive\\downloadfailedexception' => '/shared/exceptions/DownloadFailedException.php',
                 'phario\\phive\\environment' => '/shared/environment/Environment.php',
