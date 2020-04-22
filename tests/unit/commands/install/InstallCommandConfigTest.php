@@ -123,8 +123,9 @@ class InstallCommandConfigTest extends TestCase {
      */
     public function testDoNotAddToPhiveXml($switch): void {
         $options = $this->getOptionsMock();
-        $options->expects($this->any())
+        $options->expects($this->once())
             ->method('hasOption')
+            ->with('temporary')
             ->willReturn($switch);
 
         $config = new InstallCommandConfig(

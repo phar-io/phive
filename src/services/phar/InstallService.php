@@ -39,7 +39,7 @@ class InstallService {
         $this->compatibilityService = $compatibilityChecker;
     }
 
-    public function execute(SupportedRelease $release, RequestedPhar $requestedPhar, Filename $destination): void {
+    public function execute(SupportedRelease $release, RequestedPhar $requestedPhar, Filename $destination, bool $updatePhiveXml): void {
         $versionConstraint = $requestedPhar->getVersionConstraint();
         $makeCopy          = $requestedPhar->makeCopy();
         $phar              = $this->pharService->getPharFromRelease($release);
@@ -59,16 +59,18 @@ class InstallService {
             }
         }
 
-        $this->phiveXml->addPhar(
-            new InstalledPhar(
-                $phar->getName(),
-                $release->getVersion(),
-                $this->getInstalledVersionConstraint($versionConstraint, $release->getVersion()),
-                $destination,
-                $makeCopy
-            ),
-            $requestedPhar
-        );
+        if ($updatePhiveXml) {
+            $this->phiveXml->addPhar(
+                new InstalledPhar(
+                    $phar->getName(),
+                    $release->getVersion(),
+                    $this->getInstalledVersionConstraint($versionConstraint, $release->getVersion()),
+                    $destination,
+                    $makeCopy
+                ),
+                $requestedPhar
+            );
+        }
     }
 
     private function getInstalledVersionConstraint(VersionConstraint $requestedVersionConstraint, Version $installedVersion): VersionConstraint {

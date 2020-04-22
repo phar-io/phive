@@ -62,7 +62,7 @@ class InstallCommandConfig {
     }
 
     public function doNotAddToPhiveXml(): bool {
-        return $this->cliOptions->hasOption('temporary') || $this->installGlobally();
+        return $this->cliOptions->hasOption('temporary');
     }
 
     public function forceAcceptUnsignedPhars(): bool {

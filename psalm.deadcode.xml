@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<psalm
+    resolveFromConfigFile="true"
+    findUnusedCode="true"
+    findUnusedVariablesAndParams="true"
+    errorLevel="1"
+    useDocblockPropertyTypes="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <file name="build/phar/bootstrap.php.in"/>
+        <directory name="./src" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="tests" />
+            <file name="src/autoload.php" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <stubs>
+        <file name="./build/phpstan/bootstrap.php" />
+    </stubs>
+
+    <issueHandlers>
+        <AbstractInstantiation errorLevel="suppress" />
+        <AbstractMethodCall errorLevel="suppress" />
+        <ArgumentTypeCoercion errorLevel="suppress" />
+        <AssignmentToVoid errorLevel="suppress" />
+        <CircularReference errorLevel="suppress" />
+        <ConflictingReferenceConstraint errorLevel="suppress" />
+        <ContinueOutsideLoop errorLevel="suppress" />
+        <DeprecatedClass errorLevel="suppress" />
+        <DeprecatedConstant errorLevel="suppress" />
+        <DeprecatedFunction errorLevel="suppress" />
+        <DeprecatedInterface errorLevel="suppress" />
+        <DeprecatedMethod errorLevel="suppress" />
+        <DeprecatedProperty errorLevel="suppress" />
+        <DeprecatedTrait errorLevel="suppress" />
+        <DocblockTypeContradiction errorLevel="suppress" />
+        <DuplicateArrayKey errorLevel="suppress" />
+        <DuplicateClass errorLevel="suppress" />
+        <DuplicateFunction errorLevel="suppress" />
+        <DuplicateMethod errorLevel="suppress" />
+        <DuplicateParam errorLevel="suppress" />
+        <EmptyArrayAccess errorLevel="suppress" />
+        <FalsableReturnStatement errorLevel="suppress" />
+        <FalseOperand errorLevel="suppress" />
+        <ForbiddenCode errorLevel="suppress" />
+        <ForbiddenEcho errorLevel="suppress" />
+        <ImplementedParamTypeMismatch errorLevel="suppress" />
+        <ImplementedReturnTypeMismatch errorLevel="suppress" />
+        <ImplicitToStringCast errorLevel="suppress" />
+        <ImpureByReferenceAssignment errorLevel="suppress" />
+        <ImpureFunctionCall errorLevel="suppress" />
+        <ImpureMethodCall errorLevel="suppress" />
+        <ImpurePropertyAssignment errorLevel="suppress" />
+        <ImpureStaticProperty errorLevel="suppress" />
+        <ImpureStaticVariable errorLevel="suppress" />
+        <InterfaceInstantiation errorLevel="suppress" />
+        <InternalClass errorLevel="suppress" />
+        <InternalMethod errorLevel="suppress" />
+        <InternalProperty errorLevel="suppress" />
+        <InvalidArgument errorLevel="suppress" />
+        <InvalidArrayAccess errorLevel="suppress" />
+        <InvalidArrayAssignment errorLevel="suppress" />
+        <InvalidArrayOffset errorLevel="suppress" />
+        <InvalidCast errorLevel="suppress" />
+        <InvalidCatch errorLevel="suppress" />
+        <InvalidClone errorLevel="suppress" />
+        <InvalidDocblock errorLevel="suppress" />
+        <InvalidDocblockParamName errorLevel="suppress" />
+        <InvalidFalsableReturnType errorLevel="suppress" />
+        <InvalidFunctionCall errorLevel="suppress" />
+        <InvalidGlobal errorLevel="suppress" />
+        <InvalidIterator errorLevel="suppress" />
+        <InvalidMethodCall errorLevel="suppress" />
+        <InvalidNullableReturnType errorLevel="suppress" />
+        <InvalidOperand errorLevel="suppress" />
+        <InvalidParamDefault errorLevel="suppress" />
+        <InvalidPassByReference errorLevel="suppress" />
+        <InvalidPropertyAssignment errorLevel="suppress" />
+        <InvalidPropertyAssignmentValue errorLevel="suppress" />
+        <InvalidPropertyFetch errorLevel="suppress" />
+        <InvalidReturnStatement errorLevel="suppress" />
+        <InvalidReturnType errorLevel="suppress" />
+        <InvalidScalarArgument errorLevel="suppress" />
+        <InvalidScope errorLevel="suppress" />
+        <InvalidStaticInvocation errorLevel="suppress" />
+        <InvalidStringClass errorLevel="suppress" />
+        <InvalidTemplateParam errorLevel="suppress" />
+        <InvalidThrow errorLevel="suppress" />
+        <InvalidToString errorLevel="suppress" />
+        <LessSpecificImplementedReturnType errorLevel="suppress" />
+        <LessSpecificReturnStatement errorLevel="suppress" />
+        <LessSpecificReturnType errorLevel="suppress" />
+        <LoopInvalidation errorLevel="suppress" />
+        <MethodSignatureMismatch errorLevel="suppress" />
+        <MethodSignatureMustOmitReturnType errorLevel="suppress" />
+        <MismatchingDocblockParamType errorLevel="suppress" />
+        <MismatchingDocblockReturnType errorLevel="suppress" />
+        <MisplacedRequiredParam errorLevel="suppress" />
+        <MissingClosureParamType errorLevel="suppress" />
+        <MissingClosureReturnType errorLevel="suppress" />
+        <MissingConstructor errorLevel="suppress" />
+        <MissingDependency errorLevel="suppress" />
+        <MissingDocblockType errorLevel="suppress" />
+        <MissingFile errorLevel="suppress" />
+        <MissingImmutableAnnotation errorLevel="suppress" />
+        <MissingParamType errorLevel="suppress" />
+        <MissingPropertyType errorLevel="suppress" />
+        <MissingReturnType errorLevel="suppress" />
+        <MissingTemplateParam errorLevel="suppress" />
+        <MissingThrowsDocblock errorLevel="suppress" />
+        <MixedArgument errorLevel="suppress" />
+        <MixedArgumentTypeCoercion errorLevel="suppress" />
+        <MixedArrayAccess errorLevel="suppress" />
+        <MixedArrayAssignment errorLevel="suppress" />
+        <MixedArrayOffset errorLevel="suppress" />
+        <MixedArrayTypeCoercion errorLevel="suppress" />
+        <MixedAssignment errorLevel="suppress" />
+        <MixedFunctionCall errorLevel="suppress" />
+        <MixedInferredReturnType errorLevel="suppress" />
+        <MixedMethodCall errorLevel="suppress" />
+        <MixedOperand errorLevel="suppress" />
+        <MixedPropertyAssignment errorLevel="suppress" />
+        <MixedPropertyFetch errorLevel="suppress" />
+        <MixedPropertyTypeCoercion errorLevel="suppress" />
+        <MixedReturnStatement errorLevel="suppress" />
+        <MixedReturnTypeCoercion errorLevel="suppress" />
+        <MixedStringOffsetAssignment errorLevel="suppress" />
+        <MoreSpecificImplementedParamType errorLevel="suppress" />
+        <MoreSpecificReturnType errorLevel="suppress" />
+        <MutableDependency errorLevel="suppress" />
+        <NoInterfaceProperties errorLevel="suppress" />
+        <NoValue errorLevel="suppress" />
+        <NonStaticSelfCall errorLevel="suppress" />
+        <NullArgument errorLevel="suppress" />
+        <NullArrayAccess errorLevel="suppress" />
+        <NullArrayOffset errorLevel="suppress" />
+        <NullFunctionCall errorLevel="suppress" />
+        <NullIterator errorLevel="suppress" />
+        <NullOperand errorLevel="suppress" />
+        <NullPropertyAssignment errorLevel="suppress" />
+        <NullPropertyFetch errorLevel="suppress" />
+        <NullReference errorLevel="suppress" />
+        <NullableReturnStatement errorLevel="suppress" />
+        <OverriddenMethodAccess errorLevel="suppress" />
+        <OverriddenPropertyAccess errorLevel="suppress" />
+        <ParadoxicalCondition errorLevel="suppress" />
+        <ParentNotFound errorLevel="suppress" />
+        <PossibleRawObjectIteration errorLevel="suppress" />
+        <PossiblyFalseArgument errorLevel="suppress" />
+        <PossiblyFalseIterator errorLevel="suppress" />
+        <PossiblyFalseOperand errorLevel="suppress" />
+        <PossiblyFalsePropertyAssignmentValue errorLevel="suppress" />
+        <PossiblyFalseReference errorLevel="suppress" />
+        <PossiblyInvalidArgument errorLevel="suppress" />
+        <PossiblyInvalidArrayAccess errorLevel="suppress" />
+        <PossiblyInvalidArrayAssignment errorLevel="suppress" />
+        <PossiblyInvalidArrayOffset errorLevel="suppress" />
+        <PossiblyInvalidCast errorLevel="suppress" />
+        <PossiblyInvalidFunctionCall errorLevel="suppress" />
+        <PossiblyInvalidIterator errorLevel="suppress" />
+        <PossiblyInvalidMethodCall errorLevel="suppress" />
+        <PossiblyInvalidOperand errorLevel="suppress" />
+        <PossiblyInvalidPropertyAssignment errorLevel="suppress" />
+        <PossiblyInvalidPropertyAssignmentValue errorLevel="suppress" />
+        <PossiblyInvalidPropertyFetch errorLevel="suppress" />
+        <PossiblyNullArgument errorLevel="suppress" />
+        <PossiblyNullArrayAccess errorLevel="suppress" />
+        <PossiblyNullArrayAssignment errorLevel="suppress" />
+        <PossiblyNullArrayOffset errorLevel="suppress" />
+        <PossiblyNullFunctionCall errorLevel="suppress" />
+        <PossiblyNullIterator errorLevel="suppress" />
+        <PossiblyNullOperand errorLevel="suppress" />
+        <PossiblyNullPropertyAssignment errorLevel="suppress" />
+        <PossiblyNullPropertyAssignmentValue errorLevel="suppress" />
+        <PossiblyNullPropertyFetch errorLevel="suppress" />
+        <PossiblyNullReference errorLevel="suppress" />
+        <PossiblyUndefinedArrayOffset errorLevel="suppress" />
+        <PossiblyUndefinedGlobalVariable errorLevel="suppress" />
+        <PossiblyUndefinedIntArrayOffset errorLevel="suppress" />
+        <PossiblyUndefinedMethod errorLevel="suppress" />
+        <PossiblyUndefinedStringArrayOffset errorLevel="suppress" />
+        <PossiblyUndefinedVariable errorLevel="suppress" />
+        <PropertyNotSetInConstructor errorLevel="suppress" />
+        <PropertyTypeCoercion errorLevel="suppress" />
+        <RawObjectIteration errorLevel="suppress" />
+        <RedundantCondition errorLevel="suppress" />
+        <RedundantConditionGivenDocblockType errorLevel="suppress" />
+        <ReferenceConstraintViolation errorLevel="suppress" />
+        <ReservedWord errorLevel="suppress" />
+        <StringIncrement errorLevel="suppress" />
+        <TaintedInput errorLevel="suppress" />
+        <TooFewArguments errorLevel="suppress" />
+        <TooManyArguments errorLevel="suppress" />
+        <TooManyTemplateParams errorLevel="suppress" />
+        <TraitMethodSignatureMismatch errorLevel="suppress" />
+        <TypeCoercion errorLevel="suppress" />
+        <TypeDoesNotContainNull errorLevel="suppress" />
+        <TypeDoesNotContainType errorLevel="suppress" />
+        <UncaughtThrowInGlobalScope errorLevel="suppress" />
+        <UnimplementedAbstractMethod errorLevel="suppress" />
+        <UnimplementedInterfaceMethod errorLevel="suppress" />
+        <UninitializedProperty errorLevel="suppress" />
+        <UnnecessaryVarAnnotation errorLevel="suppress" />
+        <UnrecognizedExpression errorLevel="suppress" />
+        <UnrecognizedStatement errorLevel="suppress" />
+        <UnresolvableInclude errorLevel="suppress" />
+
+        <UndefinedConstant>
+            <errorLevel type="suppress">
+                 <file name="build/phar/bootstrap.php.in"/>
+            </errorLevel>
+        </UndefinedConstant>
+
+        <UndefinedMethod>
+            <errorLevel type="info">
+                <referencedMethod name="DOMNode::getAttribute"/>
+            </errorLevel>
+        </UndefinedMethod>
+    </issueHandlers>
+</psalm>
