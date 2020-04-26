@@ -56,13 +56,13 @@ class OutdatedCommand implements Cli\Command {
     }
 
     private function renderCliOutput(array $outdated): string {
-        if (count($outdated) === 0) {
+        if (\count($outdated) === 0) {
             return 'Congrats, no outdated phars found';
         }
 
         $table    = new ConsoleTable(['Name', 'Version Constraint', 'Installed', 'Available']);
 
-        foreach($outdated as $entry) {
+        foreach ($outdated as $entry) {
             $table->addRow([
                 $entry['name'],
                 $entry['constraint'],
@@ -76,7 +76,6 @@ class OutdatedCommand implements Cli\Command {
             $outdated,
             $table->asString()
         );
-
     }
 
     private function gatherOutdated(): array {
@@ -111,12 +110,11 @@ class OutdatedCommand implements Cli\Command {
             }
 
             $outdated[] = [
-                'name' => $phar->getName(),
+                'name'       => $phar->getName(),
                 'constraint' => $phar->getVersionConstraint()->asString(),
-                'installed' => $phar->getInstalledVersion()->getVersionString(),
-                'available' => $latest->getVersion()->getVersionString()
+                'installed'  => $phar->getInstalledVersion()->getVersionString(),
+                'available'  => $latest->getVersion()->getVersionString()
             ];
-
         }
 
         return $outdated;
@@ -130,25 +128,25 @@ class OutdatedCommand implements Cli\Command {
     }
 
     private function renderJsonOutput(array $outdated) {
-
-        return json_encode(['outdated' => $outdated], JSON_PRETTY_PRINT);
+        return \json_encode(['outdated' => $outdated], \JSON_PRETTY_PRINT);
     }
 
     private function renderXmlOutput(array $outdated) {
         $dom = new DOMDocument();
         $dom->loadXML('<?xml version="1.0" encoding="UTF-8" ?><outdated xmlns="https://phar.io/outdated" />');
 
-
         $root = $dom->documentElement;
-        foreach($outdated as $entry) {
+
+        foreach ($outdated as $entry) {
             $node = $dom->createElementNS('https://phar.io/outdated', 'phar');
-            foreach($entry as $field => $value) {
+
+            foreach ($entry as $field => $value) {
                 $node->setAttribute($field, $value);
             }
             $root->appendChild($node);
         }
 
-        $dom->formatOutput = true;
+        $dom->formatOutput       = true;
         $dom->preserveWhiteSpace = false;
 
         return $dom->saveXML();

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
@@ -20,6 +20,7 @@ class OutdatedConfig {
         if (!$this->saveToFile()) {
             throw new OutdatedConfigException('No output file name set');
         }
+
         return new Filename($this->options->getOption('output'));
     }
 
@@ -30,5 +31,4 @@ class OutdatedConfig {
     public function wantsXml(): bool {
         return $this->options->hasOption('xml');
     }
-
 }
