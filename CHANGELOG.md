@@ -2,6 +2,31 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.14.0] - 2020-04-??
+
+Please note: Version 0.14.x requires PHP 7.2 or later.
+Thanks to [MacFJA](https://github.com/MacFJA) for major contributions to this release!
+
+### Added
+
+* [#40](https://github.com/phar-io/phive/issues/40): Support installing PHARs from locations requiring authentication via [PR #232](https://github.com/phar-io/phive/pull/232) by [MacFJA](https://github.com/MacFJA)
+* [#72](https://github.com/phar-io/phive/issues/72): List of all installed Phars via [PR #229](https://github.com/phar-io/phive/pull/229) by [MacFJA](https://github.com/MacFJA) 
+* via [PR #230](https://github.com/phar-io/phive/pull/230) by [MacFJA](https://github.com/MacFJA): GitLab as an alias resolver
+* [#223](https://github.com/phar-io/phive/issues/223): phive outdated: How to know when packages needs to be updated?
+
+### Fixed
+
+* [#218](https://github.com/phar-io/phive/issues/218): Error when we are unable to read CLI input via [PR #235](https://github.com/phar-io/phive/pull/235) by [MacFJA](https://github.com/MacFJA) 
+* [#226](https://github.com/phar-io/phive/issues/226): Crappy connection results in type error
+* [#228](https://github.com/phar-io/phive/issues/228): [ERROR] No RateLimit present in response
+* [#236](https://github.com/phar-io/phive/issues/236): Temporary option not used via [PR #238](https://github.com/phar-io/phive/pull/238) by [MacFJA](https://github.com/MacFJA)
+
+### Changed
+  
+* [#217](https://github.com/phar-io/phive/issues/217): Hard dependency on `which` command via [PR #231](https://github.com/phar-io/phive/pull/231) by [MacFJA](https://github.com/MacFJA)
+
+
+
 ## [0.13.2] - 2019-10-30
 
 Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
@@ -331,7 +356,9 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.13.1...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.14.0...HEAD
+[0.14.0]: https://github.com/phar-io/phive/compare/0.13.2...0.14.0
+[0.13.2]: https://github.com/phar-io/phive/compare/0.13.0...0.13.2
 [0.13.1]: https://github.com/phar-io/phive/compare/0.13.0...0.13.1
 [0.13.0]: https://github.com/phar-io/phive/compare/0.12.4...0.13.0
 [0.12.4]: https://github.com/phar-io/phive/compare/0.12.3...0.12.4
