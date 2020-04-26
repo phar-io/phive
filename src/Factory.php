@@ -167,9 +167,8 @@ class Factory {
 
     public function getOutdatedCommand(): OutdatedCommand {
         return new OutdatedCommand(
-            $this->getRequestedPharResolverBuilder()->build(
-                $this->getRemoteFirstResolvingStrategy()
-            ),
+            new OutdatedConfig($this->request->parse(new OutdatedContext())),
+            $this->getRequestedPharResolverBuilder()->build($this->getRemoteFirstResolvingStrategy()),
             $this->getReleaseSelector(),
             $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
             $this->getOutput()
@@ -356,7 +355,7 @@ class Factory {
 
     private function getGnupg(): \Gnupg {
         $home = $this->getConfig()->getHomeDirectory()->child('gpg');
-        $bin  = $this->getConfig()->getGPGBinaryPath();
+        $bin = $this->getConfig()->getGPGBinaryPath();
 
         return (new GnuPGFactory($bin))->createGnuPG($home);
     }
@@ -498,7 +497,7 @@ class Factory {
 
     private function getTemporaryGnupg(): \Gnupg {
         $home = $this->getConfig()->getHomeDirectory()->child('_tmp_wrk');
-        $bin  = $this->getConfig()->getGPGBinaryPath();
+        $bin = $this->getConfig()->getGPGBinaryPath();
 
         return (new GnuPGFactory($bin))->createGnuPG($home);
     }
