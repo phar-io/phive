@@ -24,7 +24,7 @@ class GnupgVerificationResult implements VerificationResult {
     }
 
     public function getStatusMessage(): string {
-        return \implode("\n", $this->verificationData['status']);
+        return \implode("\n", (array)$this->verificationData['status']);
     }
 
     private function validate(array $keyinfo): void {
