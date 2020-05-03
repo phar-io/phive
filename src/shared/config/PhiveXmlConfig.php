@@ -163,10 +163,6 @@ abstract class PhiveXmlConfig {
 
     abstract protected function getLocation(InstalledPhar $installedPhar): Filename;
 
-    protected function getOwnDirectory(): Directory {
-        return $this->configFile->getDirectory();
-    }
-
     private function hasPharNode(string $name): bool {
         return $this->getPharNode($name) !== null;
     }

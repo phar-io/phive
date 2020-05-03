@@ -37,8 +37,12 @@ class RequestedPharResolverFactory {
     }
 
     public function getLocalSourcesListFileLoader(): LocalSourcesListFileLoader {
+        return $this->factory->getLocalSourcesListFileLoader();
+    }
+
+    public function getProjectSourcesListFileLoader(): LocalSourcesListFileLoader {
         return new LocalSourcesListFileLoader(
-            $this->factory->getConfig()->getHomeDirectory()->file('local.xml')
+            $this->factory->getConfig()->getWorkingDirectory()->child('.phive')->file('repositories.xml')
         );
     }
 }

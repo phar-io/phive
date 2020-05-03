@@ -60,7 +60,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $installedPhar->method('getName')->willReturn('phpunit');
         $installedPhar->method('getLocation')->willReturn($filename);
 
-        $config = new LocalPhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
+        $config = new LocalPhiveXmlConfig($configFile, $this->getVersionConstraintParserMock(), $this->getEnvironmentMock());
 
         $configFile->expects($this->once())->method('save');
 
@@ -69,7 +69,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
 
     public function testFindsPharNodesWithoutMatchingCase(): void {
         $xmlFile = new XmlFile(new Filename(__DIR__ . '/fixtures/phive.xml'), 'https://phar.io/phive', 'phive');
-        $config  = new LocalPhiveXmlConfig($xmlFile, new VersionConstraintParser());
+        $config  = new LocalPhiveXmlConfig($xmlFile, new VersionConstraintParser(), $this->getEnvironmentMock());
         $this->assertTrue($config->hasPhar('theseer/AUTOLOAD'));
     }
 
@@ -110,7 +110,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
 
-        $config = new LocalPhiveXmlConfig($configFile, $this->getVersionConstraintParserMock());
+        $config = new LocalPhiveXmlConfig($configFile, $this->getVersionConstraintParserMock(), $this->getEnvironmentMock());
 
         $configFile->expects($this->once())->method('save');
         $configFile->method('getDirectory')->willReturn($this->getDirectoryMock());
@@ -144,7 +144,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $configFile->method('query')->with('//phive:phar')
             ->willReturn($frag->childNodes);
 
-        $config   = new LocalPhiveXmlConfig($configFile, $parserMock);
+        $config   = new LocalPhiveXmlConfig($configFile, $parserMock, $this->getEnvironmentMock());
         $expected = [
             new ConfiguredPhar('https://example.com/phpunit-5.3.0.phar', new AnyVersionConstraint(), null, null, new PharUrl('https://example.com/phpunit-5.3.0.phar')),
             new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12'), new Filename(__DIR__ . '/fixtures/tools/phpunit')),
@@ -209,5 +209,12 @@ class LocalPhiveXmlConfigTest extends TestCase {
      */
     private function getFilenameMock() {
         return $this->createMock(Filename::class);
+    }
+
+    /**
+     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getEnvironmentMock() {
+        return $this->createMock(Environment::class);
     }
 }
