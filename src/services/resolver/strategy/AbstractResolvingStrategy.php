@@ -10,6 +10,11 @@ class AbstractResolvingStrategy implements ResolvingStrategy {
     }
 
     public function execute(RequestedPharResolverService $service): void {
+        // project repository
+        $service->addResolver(
+            $this->factory->getPharIoAliasResolver($this->factory->getProjectSourcesListFileLoader())
+        );
+
         // github.com
         $service->addResolver($this->factory->getGithubAliasResolver());
 

@@ -416,21 +416,24 @@ class Factory {
                 'https://phar.io/phive',
                 'phive'
             ),
-            new VersionConstraintParser()
+            new VersionConstraintParser(),
+            $this->getEnvironment()
         );
     }
 
     private function getPhiveXmlConfigFileLocator(): PhiveXmlConfigFileLocator {
         return new PhiveXmlConfigFileLocator(
             $this->getEnvironment(),
-            $this->getConfig()
+            $this->getConfig(),
+            $this->getOutput()
         );
     }
 
     private function getAuthXmlConfigFileLocator(): AuthXmlConfigFileLocator {
         return new AuthXmlConfigFileLocator(
             $this->getEnvironment(),
-            $this->getConfig()
+            $this->getConfig(),
+            $this->getOutput()
         );
     }
 
