@@ -32,6 +32,7 @@ class Factory {
             $this->getOutput(),
             $this->getPhiveVersion(),
             $this->getEnvironment(),
+            $this->getMigrationService(),
             $this->request
         );
     }
@@ -175,6 +176,14 @@ class Factory {
         );
     }
 
+    public function getMigrateCommand(): MigrateCommand {
+        return new MigrateCommand(
+            $this->getMigrationService(),
+            new MigrateCommandConfig($this->request->parse(new MigrateContext())),
+            $this->getOutput()
+        );
+    }
+
     public function getDefaultCommand(): DefaultCommand {
         return new DefaultCommand(
             $this->getVersionCommand(),
@@ -249,7 +258,7 @@ class Factory {
         if ($this->registry === null) {
             $this->registry = new PharRegistry(
                 new XmlFile(
-                    $this->getConfig()->getHomeDirectory()->file('/phars.xml'),
+                    $this->getConfig()->getHomeDirectory()->file('/database.xml'),
                     'https://phar.io/phive/installdb',
                     'phars'
                 ),
@@ -477,6 +486,12 @@ class Factory {
         return new CompatibilityService(
             $this->getOutput(),
             $this->getConsoleInput()
+        );
+    }
+
+    private function getMigrationService(): MigrationService {
+        return new MigrationService(
+            new MigrationFactory($this, $this->environment)
         );
     }
 

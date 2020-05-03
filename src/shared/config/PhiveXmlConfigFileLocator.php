@@ -19,7 +19,7 @@ class PhiveXmlConfigFileLocator {
 
     public function getFile(bool $global): \PharIo\FileSystem\Filename {
         if ($global) {
-            return $this->config->getHomeDirectory()->file('phive.xml');
+            return $this->config->getHomeDirectory()->file('global.xml');
         }
 
         $primary  = $this->environment->getWorkingDirectory()->child('.phive')->file('phars.xml');

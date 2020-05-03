@@ -5,6 +5,8 @@ use PharIo\Phive\Environment;
 use PharIo\Phive\ErrorException;
 use PharIo\Phive\Exception;
 use PharIo\Phive\ExtensionsMissingException;
+use PharIo\Phive\MigrationService;
+use PharIo\Phive\MigrationsFailedException;
 use PharIo\Phive\PhiveContext;
 use PharIo\Phive\PhiveVersion;
 
@@ -19,6 +21,8 @@ class Runner {
     public const RC_ERROR = 4;
 
     public const RC_PARAM_ERROR = 5;
+
+    public const RC_MIGRATION_FAILED = 6;
 
     public const RC_BUG_FOUND = 10;
 
@@ -38,19 +42,23 @@ class Runner {
 
     /** @var Request */
     private $request;
+    /** @var MigrationService */
+    private $migrationService;
 
     public function __construct(
         CommandLocator $locator,
         Output $output,
         PhiveVersion $version,
         Environment $env,
+        MigrationService $migrationService,
         Request $request
     ) {
-        $this->locator     = $locator;
-        $this->output      = $output;
-        $this->version     = $version;
-        $this->environment = $env;
-        $this->request     = $request;
+        $this->locator          = $locator;
+        $this->output           = $output;
+        $this->version          = $version;
+        $this->environment      = $env;
+        $this->request          = $request;
+        $this->migrationService = $migrationService;
     }
 
     public function run(): int {
@@ -160,6 +168,7 @@ class Runner {
     private function ensureFitness(): void {
         try {
             $this->environment->ensureFitness();
+            $this->migrationService->ensureFitness();
         } catch (ExtensionsMissingException $e) {
             throw new RunnerException(
                 \sprintf(
@@ -167,6 +176,14 @@ class Runner {
                     \implode("\n          ", $e->getMissing())
                 ),
                 self::RC_EXT_MISSING
+            );
+        } catch (MigrationsFailedException $failedException) {
+            throw new RunnerException(
+                \sprintf(
+                    "Phive is not ready to run due to the following failed migration(s):\n\n          %s\n",
+                    \implode("\n          ", $failedException->getFailed())
+                ),
+                self::RC_MIGRATION_FAILED
             );
         }
     }
