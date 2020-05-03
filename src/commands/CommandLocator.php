@@ -76,6 +76,9 @@ class CommandLocator implements Cli\CommandLocator {
                 return $this->factory->getSelfupdateCommand();
             }
 
+            case 'migrate':
+                return $this->factory->getMigrateCommand();
+
             default: {
                 throw new Cli\CommandLocatorException(
                     \sprintf('Command "%s" is not a valid command', $command),

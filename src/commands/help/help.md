@@ -61,6 +61,11 @@
 **outdated**
     Get a list of phars that are outdated and could be updated
 
+**migrate [--list]**
+    Run Phive migration
+    
+    _-l, --list_   List the status of all migrations
+
 **update [--prefer-offline] [<alias1> <alias2> ...]**
     Update PHARs configured in the project's phive.xml to the newest applicable version.
 
