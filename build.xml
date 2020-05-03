@@ -149,7 +149,7 @@
         </exec>
     </target>
 
-    <target name="php-cs-fixer" description="Dry run php csfixer">
+    <target name="php-cs-fixer" depends="install-tools" description="Dry run php csfixer">
         <exec executable="./tools/php-cs-fixer" failonerror="true">
             <arg value="fix" />
             <arg value="--dry-run" />
