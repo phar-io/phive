@@ -11,7 +11,7 @@ class HomePharsXmlMigration implements Migration {
 
     public function canMigrate(): bool {
         return $this->config->getHomeDirectory()->file('phars.xml')->exists()
-            && !$this->config->getHomeDirectory()->file('database.xml')->exists();
+            && !$this->config->getRegistry()->exists();
     }
 
     public function mustMigrate(): bool {
@@ -24,7 +24,7 @@ class HomePharsXmlMigration implements Migration {
         }
 
         $old = $this->config->getHomeDirectory()->file('phars.xml');
-        $new = $this->config->getHomeDirectory()->file('database.xml');
+        $new = $this->config->getRegistry();
 
         $new->putContent($old->read()->getContent());
         $old->delete();
@@ -36,6 +36,6 @@ class HomePharsXmlMigration implements Migration {
 
     public function inError(): bool {
         return $this->config->getHomeDirectory()->file('phars.xml')->exists()
-            && $this->config->getHomeDirectory()->file('database.xml')->exists();
+            && $this->config->getRegistry()->exists();
     }
 }

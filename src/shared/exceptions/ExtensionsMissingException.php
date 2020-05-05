@@ -8,8 +8,8 @@ class ExtensionsMissingException extends \Exception {
     /**
      * ExtensionsMissingException constructor.
      */
-    public function __construct(array $failed) {
-        $this->missing = $failed;
+    public function __construct(array $missing) {
+        $this->missing = $missing;
         parent::__construct();
     }
 

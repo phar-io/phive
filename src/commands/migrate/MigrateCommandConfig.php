@@ -10,7 +10,7 @@ class MigrateCommandConfig {
         $this->cliOptions = $options;
     }
 
-    public function showList(): bool {
+    public function showStatus(): bool {
         return $this->cliOptions->hasOption('list');
     }
 }

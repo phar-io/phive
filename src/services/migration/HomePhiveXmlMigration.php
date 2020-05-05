@@ -11,7 +11,7 @@ class HomePhiveXmlMigration implements Migration {
 
     public function canMigrate(): bool {
         return $this->config->getHomeDirectory()->file('phive.xml')->exists()
-            && !$this->config->getHomeDirectory()->file('global.xml')->exists();
+            && !$this->config->getGlobalInstallation()->exists();
     }
 
     public function mustMigrate(): bool {
@@ -24,7 +24,7 @@ class HomePhiveXmlMigration implements Migration {
         }
 
         $old = $this->config->getHomeDirectory()->file('phive.xml');
-        $new = $this->config->getHomeDirectory()->file('global.xml');
+        $new = $this->config->getGlobalInstallation();
 
         $new->putContent($old->read()->getContent());
         $old->delete();
@@ -36,6 +36,6 @@ class HomePhiveXmlMigration implements Migration {
 
     public function inError(): bool {
         return $this->config->getHomeDirectory()->file('phive.xml')->exists()
-            && $this->config->getHomeDirectory()->file('global.xml')->exists();
+            && $this->config->getGlobalInstallation()->exists();
     }
 }

@@ -202,7 +202,7 @@ class Factory {
     public function getRemoteSourcesListFileLoader(): RemoteSourcesListFileLoader {
         return new RemoteSourcesListFileLoader(
             $this->getConfig()->getSourcesListUrl(),
-            $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
+            $this->getConfig()->getPharIoRepositories(),
             $this->getFileDownloader(),
             $this->getOutput(),
             $this->getConfig()->getMaxAgeForSourcesList()
@@ -211,7 +211,7 @@ class Factory {
 
     public function getLocalSourcesListFileLoader(): LocalSourcesListFileLoader {
         return new LocalSourcesListFileLoader(
-            $this->getConfig()->getHomeDirectory()->file('local.xml')
+            $this->getConfig()->getLocalRepositories()
         );
     }
 
@@ -258,11 +258,11 @@ class Factory {
         if ($this->registry === null) {
             $this->registry = new PharRegistry(
                 new XmlFile(
-                    $this->getConfig()->getHomeDirectory()->file('/database.xml'),
+                    $this->getConfig()->getRegistry(),
                     'https://phar.io/phive/installdb',
                     'phars'
                 ),
-                $this->getConfig()->getHomeDirectory()->child('phars')
+                $this->getConfig()->getPharsDirectory()
             );
         }
 
@@ -363,7 +363,7 @@ class Factory {
     }
 
     private function getGnupg(): GnuPG {
-        $home = $this->getConfig()->getHomeDirectory()->child('gpg');
+        $home = $this->getConfig()->getGPGDirectory();
         $bin  = $this->getConfig()->getGPGBinaryPath();
 
         return new GnuPG(
@@ -455,7 +455,7 @@ class Factory {
     }
 
     private function getFileStorageCacheBackend(): FileStorageCacheBackend {
-        return new FileStorageCacheBackend($this->getConfig()->getHomeDirectory()->child('http-cache'));
+        return new FileStorageCacheBackend($this->getConfig()->getHttpCacheDirectory());
     }
 
     private function getRequestedPharResolverBuilder(): RequestedPharResolverServiceBuilder {
@@ -516,8 +516,8 @@ class Factory {
         );
     }
 
-    private function getTemporaryGnupg(): Gnupg {
-        $home = $this->getConfig()->getHomeDirectory()->child('_tmp_wrk');
+    private function getTemporaryGnupg(): GnuPG {
+        $home = $this->getConfig()->getTemporaryWorkingDirectory();
         $bin  = $this->getConfig()->getGPGBinaryPath();
 
         return new GnuPG(
@@ -529,7 +529,7 @@ class Factory {
     private function getPublicKeyReader(): PublicKeyReader {
         return new PublicKeyReader(
             $this->getTemporaryGnupg(),
-            $this->getConfig()->getHomeDirectory()->child('_tmp_wrk')
+            $this->getConfig()->getTemporaryWorkingDirectory()
         );
     }
 }

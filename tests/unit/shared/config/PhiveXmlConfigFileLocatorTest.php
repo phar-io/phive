@@ -2,6 +2,7 @@
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
+use PharIo\Phive\Cli\Options;
 use PharIo\Phive\Cli\Output;
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +20,7 @@ class PhiveXmlConfigFileLocatorTest extends TestCase {
 
         $locator = new PhiveXmlConfigFileLocator(
             $environmentMock,
-            $this->getConfigMock(),
+            new Config($environmentMock, new Options()),
             $outputMock
         );
 
@@ -38,12 +39,5 @@ class PhiveXmlConfigFileLocatorTest extends TestCase {
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);
-    }
-
-    /**
-     * @return Config|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getConfigMock() {
-        return $this->createMock(Config::class);
     }
 }

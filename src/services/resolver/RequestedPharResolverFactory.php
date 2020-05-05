@@ -42,7 +42,7 @@ class RequestedPharResolverFactory {
 
     public function getProjectSourcesListFileLoader(): LocalSourcesListFileLoader {
         return new LocalSourcesListFileLoader(
-            $this->factory->getConfig()->getWorkingDirectory()->child('.phive')->file('repositories.xml')
+            $this->factory->getConfig()->getProjectRepositories()
         );
     }
 }
