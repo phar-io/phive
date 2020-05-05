@@ -33,7 +33,7 @@ class MigrateCommand implements Cli\Command {
     }
 
     public function execute(): void {
-        if ($this->config->showList()) {
+        if ($this->config->showStatus()) {
             $migrations = $this->migrationService->getAllMigration();
             $table      = new ConsoleTable(['Status', 'Mandatory', 'Description']);
 

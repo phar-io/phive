@@ -19,10 +19,10 @@ class AuthXmlConfigFileLocator {
 
     public function getFile(bool $global): \PharIo\FileSystem\Filename {
         if ($global) {
-            return $this->config->getHomeDirectory()->file('auth.xml');
+            return $this->config->getGlobalAuth();
         }
 
-        $primary  = $this->environment->getWorkingDirectory()->child('.phive')->file('auth.xml');
+        $primary  = $this->config->getProjectAuth();
         $fallback = $this->environment->getWorkingDirectory()->file('phive-auth.xml');
 
         if ($primary->exists() && $fallback->exists()) {

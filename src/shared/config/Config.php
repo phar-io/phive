@@ -38,8 +38,56 @@ class Config {
         return $this->environment->getHomeDirectory()->child('.phive');
     }
 
+    public function getRegistry(): Filename {
+        return $this->getHomeDirectory()->file('registry.xml');
+    }
+
+    public function getGlobalAuth(): Filename {
+        return $this->getHomeDirectory()->file('auth.xml');
+    }
+
+    public function getPharIoRepositories(): Filename {
+        return $this->getHomeDirectory()->file('repositories.xml');
+    }
+
+    public function getLocalRepositories(): Filename {
+        return $this->getHomeDirectory()->file('local.xml');
+    }
+
+    public function getPharsDirectory(): Directory {
+        return $this->getHomeDirectory()->child('phars');
+    }
+
+    public function getGPGDirectory(): Directory {
+        return $this->getHomeDirectory()->child('gpg');
+    }
+
+    public function getHttpCacheDirectory(): Directory {
+        return $this->getHomeDirectory()->child('http-cache');
+    }
+
+    public function getTemporaryWorkingDirectory(): Directory {
+        return $this->getHomeDirectory()->child('_tmp_wrk');
+    }
+
+    public function getGlobalInstallation(): Filename {
+        return $this->getHomeDirectory()->file('global.xml');
+    }
+
     public function getWorkingDirectory(): Directory {
         return $this->environment->getWorkingDirectory();
+    }
+
+    public function getProjectRepositories(): Filename {
+        return $this->getWorkingDirectory()->child('.phive')->file('repositories.xml');
+    }
+
+    public function getProjectAuth(): Filename {
+        return $this->getWorkingDirectory()->child('.phive')->file('auth.xml');
+    }
+
+    public function getProjectInstallation(): Filename {
+        return $this->getWorkingDirectory()->child('.phive')->file('phars.xml');
     }
 
     public function getToolsDirectory(): Directory {
