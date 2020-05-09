@@ -34,7 +34,7 @@ class HomePharsXmlMigration implements Migration {
 
         $new->putContent($old->read()->getContent());
 
-        $this->output->writeText('Migration of global authentication configuration almost finish.');
+        $this->output->writeText('Migration of list of installed phars almost finish. ');
 
         if ($this->input->confirm('Do you want to keep the old file?', true)) {
             $old->renameTo('phars.xml.backup');

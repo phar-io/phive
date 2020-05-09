@@ -22,7 +22,7 @@ class ProjectPhiveXmlMigration implements Migration {
         return $this->environment->getWorkingDirectory()->file('phive.xml')->exists()
             && (
                 !$this->environment->getWorkingDirectory()->hasChild('.phive')
-                || !$this->config->getProjectAuth()->exists()
+                || !$this->config->getProjectInstallation()->exists()
             );
     }
 
@@ -40,7 +40,7 @@ class ProjectPhiveXmlMigration implements Migration {
 
         $new->putContent($old->read()->getContent());
 
-        $this->output->writeText('Migration of project Phive configuration almost finish.');
+        $this->output->writeText('Migration of project Phive configuration almost finish. ');
 
         if ($this->input->confirm('Do you want to keep the old file?', true)) {
             $old->renameTo('phive.xml.backup');

@@ -34,7 +34,7 @@ class HomePhiveXmlMigration implements Migration {
 
         $new->putContent($old->read()->getContent());
 
-        $this->output->writeText('Migration of global phive configuration almost finish.');
+        $this->output->writeText('Migration of global phive configuration almost finish. ');
 
         if ($this->input->confirm('Do you want to keep the old file?', true)) {
             $old->renameTo('phive.xml.backup');
