@@ -36,7 +36,7 @@ class HomeAuthXmlMigration implements Migration {
         $newContent = \str_replace('https://phar.io/phive-auth', 'https://phar.io/auth', $oldContent);
         $new->putContent($newContent);
 
-        $this->output->writeText('Migration of global authentication configuration almost finish.');
+        $this->output->writeText('Migration of global authentication configuration almost finish. ');
 
         if ($this->input->confirm('Do you want to keep the old file?', true)) {
             $old->renameTo('phive-auth.xml.backup');
