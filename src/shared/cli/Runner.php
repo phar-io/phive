@@ -65,6 +65,7 @@ class Runner {
         try {
             $this->ensureFitness();
             $this->setupRuntime();
+            $this->migrationService->runMandatory();
             $this->execute();
 
             return self::RC_OK;

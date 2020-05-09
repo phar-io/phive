@@ -29,7 +29,9 @@ class ProjectAuthXmlMigration implements Migration {
         $old = $this->environment->getWorkingDirectory()->file('phive-auth.xml');
         $new = $this->environment->getWorkingDirectory()->child('.phive')->file('auth.xml');
 
-        $new->putContent($old->read()->getContent());
+        $oldContent = $old->read()->getContent();
+        $newContent = \str_replace('https://phar.io/phive-auth', 'https://phar.io/auth', $oldContent);
+        $new->putContent($newContent);
         $old->delete();
     }
 

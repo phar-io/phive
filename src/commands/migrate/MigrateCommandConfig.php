@@ -11,6 +11,6 @@ class MigrateCommandConfig {
     }
 
     public function showStatus(): bool {
-        return $this->cliOptions->hasOption('list');
+        return $this->cliOptions->hasOption('status');
     }
 }
