@@ -4,8 +4,14 @@ namespace PharIo\Phive;
 class HomePhiveXmlMigration implements Migration {
     /** @var Config */
     private $config;
+    /** @var Cli\Output */
+    private $output;
+    /** @var Cli\Input */
+    private $input;
 
-    public function __construct(Config $config) {
+    public function __construct(Config $config, Cli\Output $output, Cli\Input $input) {
+        $this->output = $output;
+        $this->input  = $input;
         $this->config = $config;
     }
 
@@ -27,7 +33,14 @@ class HomePhiveXmlMigration implements Migration {
         $new = $this->config->getGlobalInstallation();
 
         $new->putContent($old->read()->getContent());
-        $old->delete();
+
+        $this->output->writeText('Migration of global phive configuration almost finish.');
+
+        if ($this->input->confirm('Do you want to keep the old file?', true)) {
+            $old->renameTo('phive.xml.backup');
+        } else {
+            $old->delete();
+        }
     }
 
     public function getDescription(): string {

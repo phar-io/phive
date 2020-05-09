@@ -4,8 +4,14 @@ namespace PharIo\Phive;
 class HomePharsXmlMigration implements Migration {
     /** @var Config */
     private $config;
+    /** @var Cli\Output */
+    private $output;
+    /** @var Cli\Input */
+    private $input;
 
-    public function __construct(Config $config) {
+    public function __construct(Config $config, Cli\Output $output, Cli\Input $input) {
+        $this->output = $output;
+        $this->input  = $input;
         $this->config = $config;
     }
 
@@ -27,7 +33,14 @@ class HomePharsXmlMigration implements Migration {
         $new = $this->config->getRegistry();
 
         $new->putContent($old->read()->getContent());
-        $old->delete();
+
+        $this->output->writeText('Migration of global authentication configuration almost finish.');
+
+        if ($this->input->confirm('Do you want to keep the old file?', true)) {
+            $old->renameTo('phars.xml.backup');
+        } else {
+            $old->delete();
+        }
     }
 
     public function getDescription(): string {

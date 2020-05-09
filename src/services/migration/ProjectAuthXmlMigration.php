@@ -4,16 +4,25 @@ namespace PharIo\Phive;
 class ProjectAuthXmlMigration implements Migration {
     /** @var Environment */
     private $environment;
+    /** @var Cli\Output */
+    private $output;
+    /** @var Cli\Input */
+    private $input;
+    /** @var Config */
+    private $config;
 
-    public function __construct(Environment $environment) {
+    public function __construct(Environment $environment, Config $config, Cli\Output $output, Cli\Input $input) {
         $this->environment = $environment;
+        $this->output      = $output;
+        $this->input       = $input;
+        $this->config      = $config;
     }
 
     public function canMigrate(): bool {
         return $this->environment->getWorkingDirectory()->file('phive-auth.xml')->exists()
             && (
                 !$this->environment->getWorkingDirectory()->hasChild('.phive')
-                || !$this->environment->getWorkingDirectory()->child('.phive')->file('auth.xml')->exists()
+                || !$this->config->getProjectAuth()->exists()
             );
     }
 
@@ -27,12 +36,19 @@ class ProjectAuthXmlMigration implements Migration {
         }
 
         $old = $this->environment->getWorkingDirectory()->file('phive-auth.xml');
-        $new = $this->environment->getWorkingDirectory()->child('.phive')->file('auth.xml');
+        $new = $this->config->getProjectAuth();
 
         $oldContent = $old->read()->getContent();
         $newContent = \str_replace('https://phar.io/phive-auth', 'https://phar.io/auth', $oldContent);
         $new->putContent($newContent);
-        $old->delete();
+
+        $this->output->writeText('Migration of authentication configuration almost finish.');
+
+        if ($this->input->confirm('Do you want to keep the old file?', true)) {
+            $old->renameTo('phive-auth.xml.backup');
+        } else {
+            $old->delete();
+        }
     }
 
     public function getDescription(): string {
@@ -42,6 +58,6 @@ class ProjectAuthXmlMigration implements Migration {
     public function inError(): bool {
         return $this->environment->getWorkingDirectory()->file('phive-auth.xml')->exists()
             && $this->environment->getWorkingDirectory()->hasChild('.phive')
-            && $this->environment->getWorkingDirectory()->child('.phive')->file('auth.xml')->exists();
+            && $this->config->getProjectAuth()->exists();
     }
 }
