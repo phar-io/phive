@@ -19,8 +19,8 @@
 **install [--target bin/] <alias|url> [<alias|url> ...]**
     Perform installation of a phar distributed application or library
 
-    _alias/url_                    Installation via github profile/project, phar.io alias
-                                 or explicit download form given URL
+    _alias/url_                    Installation via github profile/project, gitlab profile/project,
+                                 phar.io alias or explicit download form given URL
 
     _-t, --target_                 Set custom target directory for the PHAR
 
@@ -47,11 +47,19 @@
 **selfupdate**
     Update PHIVE to the latest version.
 
-**skel**
+**skel [--auth]**
     Create a default configuration file
 
-**status**
+    _-a, --auth_   Create authentication configuration file
+
+**status [--all] [--global]**
     Get a list of configured PHARs for the current directory
+    
+    _-a, --all_      List all downloaded PHARs and their usages across the filesystem.
+    _-g, --global_   List globally installed phars
+
+**outdated**
+    Get a list of phars that are outdated and could be updated
 
 **update [--prefer-offline] [<alias1> <alias2> ...]**
     Update PHARs configured in the project's phive.xml to the newest applicable version.

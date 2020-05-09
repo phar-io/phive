@@ -1,11 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
 use PharIo\Phive\Cli\Options;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
-use PharIo\Version\SpecificMajorAndMinorVersionConstraint;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 
@@ -13,12 +12,11 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\InstallCommandConfig
  */
 class InstallCommandConfigTest extends TestCase {
-
     use ScalarTestDataProvider;
 
-    public function testGetTargetDirectory() {
+    public function testGetTargetDirectory(): void {
         $directory = $this->getDirectoryMock();
-        $locator = $this->getTargetDirectoryLocatorMock();
+        $locator   = $this->getTargetDirectoryLocatorMock();
         $locator->method('getTargetDirectory')->willReturn($directory);
 
         $commandConfig = new InstallCommandConfig(
@@ -31,7 +29,7 @@ class InstallCommandConfigTest extends TestCase {
         $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
 
-    public function testGetRequestedPharsFromPhiveXmlConfig() {
+    public function testGetRequestedPharsFromPhiveXmlConfig(): void {
         $options = $this->getOptionsMock();
         $options->expects($this->once())
             ->method('getArgumentCount')
@@ -59,7 +57,7 @@ class InstallCommandConfigTest extends TestCase {
         $this->assertEquals($expectedPhars, $commandConfig->getRequestedPhars());
     }
 
-    public function testGetRequestedPharsFromCliOptions() {
+    public function testGetRequestedPharsFromCliOptions(): void {
         $options = $this->getOptionsMock();
         $options->expects($this->any())
             ->method('getArgumentCount')
@@ -88,15 +86,46 @@ class InstallCommandConfigTest extends TestCase {
         $this->assertEquals($expected, $commandConfig->getRequestedPhars());
     }
 
+    public function testCopyFlagOverWritesConfigOnInstall(): void {
+        $options = $this->getOptionsMock();
+        $options->expects($this->once())
+            ->method('getArgumentCount')
+            ->willReturn(0);
+
+        $options->expects($this->exactly(2))->method('hasOption')->with('copy')->willReturn(true);
+
+        $configuredPhar1 = new ConfiguredPhar('Some Phar', new AnyVersionConstraint());
+        $configuredPhar2 = new ConfiguredPhar('Some Other Phar', new ExactVersionConstraint('1.2.3'), new Version('1.2.3'));
+
+        $phiveXmlConfig = $this->getPhiveXmlConfigMock();
+        $phiveXmlConfig->expects($this->once())
+            ->method('getPhars')
+            ->willReturn([$configuredPhar1, $configuredPhar2]);
+
+        $expectedPhars = [
+            new RequestedPhar(new PharAlias('Some Phar'), new AnyVersionConstraint(), new AnyVersionConstraint(), null, true),
+            new RequestedPhar(new PharAlias('Some Other Phar'), new ExactVersionConstraint('1.2.3'), new ExactVersionConstraint('1.2.3'), null, true)
+        ];
+
+        $commandConfig = new InstallCommandConfig(
+            $options,
+            $phiveXmlConfig,
+            $this->getEnvironmentMock(),
+            $this->getTargetDirectoryLocatorMock()
+        );
+        $this->assertEquals($expectedPhars, $commandConfig->getRequestedPhars());
+    }
+
     /**
      * @dataProvider boolProvider
      *
      * @param bool $switch
      */
-    public function testDoNotAddToPhiveXml($switch) {
+    public function testDoNotAddToPhiveXml($switch): void {
         $options = $this->getOptionsMock();
-        $options->expects($this->any())
+        $options->expects($this->once())
             ->method('hasOption')
+            ->with('temporary')
             ->willReturn($switch);
 
         $config = new InstallCommandConfig(
@@ -109,8 +138,7 @@ class InstallCommandConfigTest extends TestCase {
         $this->assertSame($switch, $config->doNotAddToPhiveXml());
     }
 
-    public function testConvertsRequestedPharAliasToLowercase()
-    {
+    public function testConvertsRequestedPharAliasToLowercase(): void {
         $options = $this->getOptionsMock();
         $options->expects($this->any())
             ->method('getArgumentCount')
@@ -145,31 +173,30 @@ class InstallCommandConfigTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Options
+     * @return Options|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOptionsMock() {
         return $this->createMock(Options::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
+     * @return PhiveXmlConfig|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getPhiveXmlConfigMock() {
         return $this->createMock(PhiveXmlConfig::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);
     }
-
 }

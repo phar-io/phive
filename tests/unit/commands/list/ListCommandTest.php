@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Output;
@@ -8,11 +8,10 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\ListCommand
  */
 class ListCommandTest extends TestCase {
-
-    public function testWritesExpectedAliasesToOutput() {
-        $sourcesList = $this->getSourcesListMock();
+    public function testWritesExpectedAliasesToOutput(): void {
+        $sourcesList  = $this->getSourcesListMock();
         $localSources = $this->getSourcesListMock();
-        $output = $this->getOutputMock();
+        $output       = $this->getOutputMock();
 
         $localSources->method('getAliases')
             ->willReturn(['phpdox']);
@@ -48,10 +47,9 @@ class ListCommandTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Output
+     * @return Output|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOutputMock() {
         return $this->createMock(Output::class);
     }
-
 }

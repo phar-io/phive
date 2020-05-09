@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class SourcesListException extends \Exception implements Exception {
-
-    const ComposerAliasNotFound = 1;
-
+    public const ComposerAliasNotFound = 1;
 }

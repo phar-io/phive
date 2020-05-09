@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
@@ -14,43 +14,25 @@ class UnsupportedRelease implements Release {
     /** @var string */
     private $reason;
 
-    /**
-     * @param string  $name
-     * @param Version $version
-     * @param string  $reason
-     */
-    public function __construct($name, Version $version, $reason) {
-        $this->name = $name;
+    public function __construct(string $name, Version $version, string $reason) {
+        $this->name    = $name;
         $this->version = $version;
-        $this->reason = $reason;
+        $this->reason  = $reason;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSupported() {
+    public function isSupported(): bool {
         return false;
     }
 
-    /**
-     * @return Version
-     */
-    public function getVersion() {
+    public function getVersion(): Version {
         return $this->version;
     }
 
-    /**
-     * @return string
-     */
-    public function getReason() {
+    public function getReason(): string {
         return $this->reason;
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
+    public function getName(): string {
         return $this->name;
     }
-
 }

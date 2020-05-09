@@ -1,25 +1,15 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class StaticPhiveVersion extends PhiveVersion {
-
-    /**
-     * @var string
-     */
+    /** @var string */
     private $version;
 
-    /**
-     * @param string $version
-     */
-    public function __construct($version) {
+    public function __construct(string $version) {
         $this->version = $version;
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion() {
+    public function getVersion(): string {
         return $this->version;
     }
-
 }

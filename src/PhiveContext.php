@@ -1,40 +1,27 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\GeneralContext;
 
 class PhiveContext extends GeneralContext {
-
-    protected function getKnownOptions() {
-        return [
-            'version' => false,
-            'help' => false,
-            'home' => false,
-            'no-progress' => false
-        ];
-    }
-
-    /**
-     * @param string $option
-     *
-     * @return bool
-     */
-    public function requiresValue($option) {
+    public function requiresValue(string $option): bool {
         return $option === 'home';
     }
 
-    /**
-     * @return bool
-     */
-    public function acceptsArguments() {
+    public function acceptsArguments(): bool {
         return $this->getOptions()->getArgumentCount() === 0;
     }
 
-    /**
-     * @return bool
-     */
-    public function canContinue() {
+    public function canContinue(): bool {
         return $this->acceptsArguments();
     }
 
+    protected function getKnownOptions(): array {
+        return [
+            'version'     => false,
+            'help'        => false,
+            'home'        => false,
+            'no-progress' => false
+        ];
+    }
 }

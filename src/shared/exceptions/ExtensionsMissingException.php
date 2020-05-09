@@ -1,29 +1,19 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class ExtensionsMissingException extends \Exception {
-
-    /**
-     * @var array
-     */
+    /** @var array */
     private $missing;
 
     /**
      * ExtensionsMissingException constructor.
-     *
-     * @param array $missing
-     *
      */
     public function __construct(array $missing) {
         $this->missing = $missing;
         parent::__construct();
     }
 
-    /**
-     * @return array
-     */
-    public function getMissing() {
+    public function getMissing(): array {
         return $this->missing;
     }
-
 }

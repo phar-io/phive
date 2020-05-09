@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.6.1@7857b07f91bed5afae98574243fed7ec4088d623">
+  <file src="src/commands/install/InstallCommand.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>Filename</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$requestedPhar-&gt;getLocation()</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/services/phar/PharDownloader.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$release-&gt;getExpectedHash()</code>
+    </PossiblyNullArgument>
+    <PossiblyNullReference occurrences="1">
+      <code>asString</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/shared/cli/GeneralContext.php">
+    <FalsableReturnStatement occurrences="1">
+      <code>\array_search($char, $this-&gt;getKnownOptions(), true)</code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType occurrences="1">
+      <code>string</code>
+    </InvalidFalsableReturnType>
+  </file>
+</files>

@@ -1,26 +1,18 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 
 class LocalSourcesListFileLoader implements SourcesListFileLoader {
 
-    /**
-     * @var Filename
-     */
+    /** @var Filename */
     private $filename;
 
-    /**
-     * @param Filename $filename
-     */
     public function __construct(Filename $filename) {
         $this->filename = $filename;
     }
 
-    /**
-     * @return SourcesList
-     */
-    public function load() {
+    public function load(): SourcesList {
         return new SourcesList(
             new XmlFile(
                 $this->filename,
@@ -29,5 +21,4 @@ class LocalSourcesListFileLoader implements SourcesListFileLoader {
             )
         );
     }
-
 }

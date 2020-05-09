@@ -1,98 +1,64 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
 
 class SupportedRelease implements Release {
 
-    /**
-     * @var Version
-     */
+    /** @var Version */
     private $version;
 
-    /**
-     * @var PharUrl
-     */
+    /** @var PharUrl */
     private $url;
 
-    /**
-     * @var Hash
-     */
+    /** @var null|Hash */
     private $expectedHash;
 
-    /**
-     * @var string
-     */
-    private $name = '';
+    /** @var string */
+    private $name;
 
-    /**
-     * @var Url
-     */
+    /** @var null|Url */
     private $signatureUrl;
 
-    /**
-     * @param string  $name
-     * @param Version $version
-     * @param PharUrl $url
-     * @param Url     $signatureUrl
-     * @param Hash    $expectedHash
-     */
-    public function __construct($name, Version $version, PharUrl $url, Url $signatureUrl = null, Hash $expectedHash = null) {
-        $this->name = $name;
-        $this->version = $version;
-        $this->url = $url;
+    public function __construct(string $name, Version $version, PharUrl $url, Url $signatureUrl = null, Hash $expectedHash = null) {
+        $this->name         = $name;
+        $this->version      = $version;
+        $this->url          = $url;
         $this->signatureUrl = $signatureUrl;
         $this->expectedHash = $expectedHash;
     }
 
-    public function isSupported() {
+    public function isSupported(): bool {
         return true;
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
+    public function getName(): string {
         return $this->name;
     }
 
-    /**
-     * @return Version
-     */
-    public function getVersion() {
+    public function getVersion(): Version {
         return $this->version;
     }
 
-    /**
-     * @return PharUrl
-     */
-    public function getUrl() {
+    public function getUrl(): PharUrl {
         return $this->url;
     }
 
-    public function hasSignatureUrl() {
+    /** @psalm-assert-if-true Url $this->signatureUrl */
+    public function hasSignatureUrl(): bool {
         return $this->signatureUrl !== null;
     }
 
-    /**
-     * @return Url
-     */
-    public function getSignatureUrl() {
+    public function getSignatureUrl(): ?Url {
         return $this->signatureUrl;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasExpectedHash() {
+    /** @psalm-assert-if-true Hash $this->expectedHash */
+    public function hasExpectedHash(): bool {
         return $this->expectedHash !== null;
     }
 
-    /**
-     * @return Hash
-     */
-    public function getExpectedHash() {
+    public function getExpectedHash(): ?Hash {
         return $this->expectedHash;
     }
-
 }

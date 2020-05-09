@@ -1,22 +1,17 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
 
 class WindowsEnvironment extends Environment {
-
-    /**
-     * @return bool
-     */
-    public function hasHomeDirectory() {
-        return array_key_exists('HOMEDRIVE', $this->server) && array_key_exists('HOMEPATH', $this->server);
+    public function hasHomeDirectory(): bool {
+        return \array_key_exists('HOMEDRIVE', $this->server) && \array_key_exists('HOMEPATH', $this->server);
     }
 
     /**
-     * @return Directory
      * @throws \BadMethodCallException
      */
-    public function getHomeDirectory() {
+    public function getHomeDirectory(): Directory {
         if (!$this->hasHomeDirectory()) {
             throw new \BadMethodCallException('No home directory set in environment');
         }
@@ -24,24 +19,15 @@ class WindowsEnvironment extends Environment {
         return new Directory($this->server['HOMEDRIVE'] . $this->server['HOMEPATH']);
     }
 
-    /**
-     * @return string
-     */
-    protected function getWhichCommand() {
+    public function supportsColoredOutput(): bool {
+        return \array_key_exists('ANSICON', $this->server) || \array_key_exists('ConEmuANSI', $this->server);
+    }
+
+    public function getGlobalBinDir(): Directory {
+        return new Directory(\dirname($this->getBinaryName()));
+    }
+
+    protected function getWhichCommand(): string {
         return 'where.exe';
-    }
-
-    /**
-     * @return bool
-     */
-    public function supportsColoredOutput() {
-        return array_key_exists('ANSICON', $this->server) || array_key_exists('ConEmuANSI', $this->server);
-    }
-
-    /**
-     * @return Directory
-     */
-    public function getGlobalBinDir() {
-        return new Directory(dirname($this->getBinaryName()));
     }
 }

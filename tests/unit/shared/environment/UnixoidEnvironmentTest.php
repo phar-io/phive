@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -9,8 +9,18 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\Environment
  */
 class UnixoidEnvironmentTest extends TestCase {
+    public static function tputCommandDataProvider() {
+        return [
+            [1, '', false],
+            [2, '', false],
+            [0, '0', false],
+            [0, '7', false],
+            [0, '8', true],
+            [0, '255', true]
+        ];
+    }
 
-    public function testReturnsExpectedGlobalBinDir() {
+    public function testReturnsExpectedGlobalBinDir(): void {
         $env = new UnixoidEnvironment([], $this->getExecutorMock());
         $this->assertEquals(new Directory('/usr/local/bin'), $env->getGlobalBinDir());
     }
@@ -18,10 +28,9 @@ class UnixoidEnvironmentTest extends TestCase {
     /**
      * @dataProvider hasProxyProvider
      *
-     * @param array $server
      * @param bool $expected
      */
-    public function testHasProxy(array $server, $expected) {
+    public function testHasProxy(array $server, $expected): void {
         $env = new UnixoidEnvironment($server, $this->getExecutorMock());
         $this->assertSame($expected, $env->hasProxy());
     }
@@ -38,7 +47,7 @@ class UnixoidEnvironmentTest extends TestCase {
      *
      * @param string $proxy
      */
-    public function testGetProxy($proxy) {
+    public function testGetProxy($proxy): void {
         $env = new UnixoidEnvironment(['https_proxy' => $proxy], $this->getExecutorMock());
         $this->assertSame($proxy, $env->getProxy());
     }
@@ -50,18 +59,18 @@ class UnixoidEnvironmentTest extends TestCase {
         ];
     }
 
-    public function testGetHomeDirectory() {
+    public function testGetHomeDirectory(): void {
         $env = new UnixoidEnvironment(['HOME' => __DIR__], $this->getExecutorMock());
         $this->assertSame(__DIR__, (string)$env->getHomeDirectory());
     }
 
-    public function testGetProxyThrowsExceptionIfProxyIsNotSet() {
+    public function testGetProxyThrowsExceptionIfProxyIsNotSet(): void {
         $env = new UnixoidEnvironment([], $this->getExecutorMock());
         $this->expectException(\BadMethodCallException::class);
         $env->getProxy();
     }
 
-    public function testGetHomeDirectoryThrowsExceptionIfHomeIsNotSet() {
+    public function testGetHomeDirectoryThrowsExceptionIfHomeIsNotSet(): void {
         $env = new UnixoidEnvironment([], $this->getExecutorMock());
         $this->expectException(\BadMethodCallException::class);
         $env->getHomeDirectory();
@@ -70,17 +79,16 @@ class UnixoidEnvironmentTest extends TestCase {
     /**
      * @dataProvider tputCommandDataProvider
      *
-     * @param int $commandExitCode
+     * @param int    $commandExitCode
      * @param string $commandOutput
-     * @param bool $expectedResult
+     * @param bool   $expectedResult
      */
-    public function testSupportsColoredOutput($commandExitCode, $commandOutput, $expectedResult) {
-
-        if (!function_exists('posix_isatty') || !posix_isatty(STDOUT)) {
+    public function testSupportsColoredOutput($commandExitCode, $commandOutput, $expectedResult): void {
+        if (!\function_exists('posix_isatty') || !\posix_isatty(\STDOUT)) {
             $this->markTestSkipped('requires tty');
         }
 
-        $result = new ExecutorResult('tput', [$commandOutput], $commandExitCode);
+        $result   = new ExecutorResult('tput', [$commandOutput], $commandExitCode);
         $executor = $this->getExecutorMock();
         $executor->method('execute')->willReturn($result);
 
@@ -88,34 +96,23 @@ class UnixoidEnvironmentTest extends TestCase {
         $this->assertSame($expectedResult, $env->supportsColoredOutput());
     }
 
-    public static function tputCommandDataProvider() {
-        return [
-            [1, '', false],
-            [2, '', false],
-            [0, '0', false],
-            [0, '7', false],
-            [0, '8', true],
-            [0, '255', true]
-        ];
+    public function testHasVariable(): void {
+        $environment = new UnixoidEnvironment([], $this->getExecutorMock());
+        $this->assertFalse($environment->hasVariable('GITHUB_AUTH_TOKEN'));
+        $this->assertFalse($environment->hasVariable('FOO'));
+
+        $environment = new UnixoidEnvironment(['FOO' => 'bar'], $this->getExecutorMock());
+        $this->assertTrue($environment->hasVariable('FOO'));
     }
 
-    public function testGetGitHubAuthToken() {
-        $environment = new UnixoidEnvironment([], $this->getExecutorMock());
-        $this->assertFalse($environment->hasGitHubAuthToken());
-
-        $environment = new UnixoidEnvironment(['GITHUB_AUTH_TOKEN' => 'foo'], $this->getExecutorMock());
-        $this->assertTrue($environment->hasGitHubAuthToken());
-        $this->assertSame('foo', $environment->getGitHubAuthToken());
-    }
-
-    public function testGetGitHubAuthTokenThrowsExceptionIfNotPresentInEnvironment() {
-        $environment = new UnixoidEnvironment([], $this->getExecutorMock());
-        $this->expectException(\BadMethodCallException::class);
-        $environment->getGitHubAuthToken();
+    public function testGetVariable(): void {
+        $environment = new UnixoidEnvironment(['FOO' => 'bar'], $this->getExecutorMock());
+        $this->assertTrue($environment->hasVariable('FOO'));
+        $this->assertEquals('bar', $environment->getVariable('FOO'));
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Executor
+     * @return Executor|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getExecutorMock() {
         return $this->createMock(Executor::class);

@@ -1,11 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface SourcesListFileLoader {
-
-    /**
-     * @return SourcesList
-     */
-    public function load();
-
+    public function load(): SourcesList;
 }

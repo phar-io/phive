@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
@@ -6,34 +6,25 @@ use PharIo\Version\VersionConstraintParser;
 
 class ComposerService {
 
-    /**
-     * @var SourcesList
-     */
+    /** @var SourcesList */
     private $sourcesList;
 
-    /**
-     * ComposerService constructor.
-     *
-     * @param SourcesList $sourcesList
-     */
     public function __construct(SourcesList $sourcesList) {
         $this->sourcesList = $sourcesList;
     }
 
     /**
-     * @param Filename $composerFilename
-     *
      * @return RequestedPhar[]
      */
-    public function findCandidates(Filename $composerFilename) {
-        $list = [];
+    public function findCandidates(Filename $composerFilename): array {
+        $list   = [];
         $parser = new VersionConstraintParser();
 
         foreach ($this->getRequires($composerFilename) as $required => $constraint) {
             try {
-                $aliasName = $this->sourcesList->getAliasForComposerAlias(new ComposerAlias($required));
+                $aliasName         = $this->sourcesList->getAliasForComposerAlias(new ComposerAlias($required));
                 $versionConstraint = $parser->parse($constraint);
-                $list[] = new RequestedPhar(new PharAlias($aliasName), $versionConstraint, $versionConstraint);
+                $list[]            = new RequestedPhar(new PharAlias($aliasName), $versionConstraint, $versionConstraint);
             } catch (\Exception $e) {
                 continue;
             }
@@ -42,15 +33,10 @@ class ComposerService {
         return $list;
     }
 
-    /**
-     * @param Filename $composerFilename
-     *
-     * @return array
-     */
-    private function getRequires(Filename $composerFilename) {
+    private function getRequires(Filename $composerFilename): array {
         if (!$composerFilename->exists()) {
             throw new \InvalidArgumentException(
-                sprintf('Specified file %s does not exist', $composerFilename->asString())
+                \sprintf('Specified file %s does not exist', $composerFilename->asString())
             );
         }
 
@@ -71,5 +57,4 @@ class ComposerService {
 
         return $requires;
     }
-
 }

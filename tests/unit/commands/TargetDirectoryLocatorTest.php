@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -9,10 +9,9 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\TargetDirectoryLocator
  */
 class TargetDirectoryLocatorTest extends TestCase {
-
-    public function testGetTargetDirectoryReturnsDefault() {
+    public function testGetTargetDirectoryReturnsDefault(): void {
         $directory = $this->getDirectoryMock();
-        $config = $this->getConfigMock();
+        $config    = $this->getConfigMock();
 
         $config->expects($this->once())
             ->method('getToolsDirectory')
@@ -23,7 +22,7 @@ class TargetDirectoryLocatorTest extends TestCase {
         $this->assertSame($directory, $locator->getTargetDirectory());
     }
 
-    public function testGetTargetDirectoryReturnsDirectoryFromCliOptions() {
+    public function testGetTargetDirectoryReturnsDirectoryFromCliOptions(): void {
         $cliOptions = $this->getOptionsMock();
         $cliOptions->expects($this->once())
             ->method('hasOption')->with('target')->willReturn(true);
@@ -37,7 +36,7 @@ class TargetDirectoryLocatorTest extends TestCase {
         $this->assertEquals($expectedDirectory, $locator->getTargetDirectory());
     }
 
-    public function testGetTargetDirectoryReturnsDirectoryFromPhiveXmlConfig() {
+    public function testGetTargetDirectoryReturnsDirectoryFromPhiveXmlConfig(): void {
         $directory = $this->getDirectoryMock();
 
         $xmlConfig = $this->getPhiveXmlConfigMock();
@@ -54,31 +53,30 @@ class TargetDirectoryLocatorTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Config
+     * @return Config|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getConfigMock() {
         return $this->createMock(Config::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Options
+     * @return Options|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOptionsMock() {
         return $this->createMock(Options::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
+     * @return PhiveXmlConfig|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getPhiveXmlConfigMock() {
         return $this->createMock(PhiveXmlConfig::class);
     }
-
 }

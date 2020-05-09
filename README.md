@@ -24,12 +24,15 @@ Installation of PHIVE is easy and about the last time you have to do anything ph
 Grab your copy of PHIVE from the [releases](https://github.com/phar-io/phive/releases) section at our GitHub page or
 follow these simple steps:
 
-    wget https://phar.io/releases/phive.phar
-    wget https://phar.io/releases/phive.phar.asc
-    gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79
-    gpg --verify phive.phar.asc phive.phar
-    chmod +x phive.phar
-    sudo mv phive.phar /usr/bin/phive
+```bash
+wget -O phive.phar "https://phar.io/releases/phive.phar"
+wget -O phive.phar.asc "https://phar.io/releases/phive.phar.asc"
+gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79
+gpg --verify phive.phar.asc phive.phar
+rm phive.phar.asc
+chmod +x phive.phar
+mv phive.phar /usr/local/bin/phive
+```
 
 ## Sample Usages
 

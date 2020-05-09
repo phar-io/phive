@@ -1,61 +1,39 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class ExecutorResult {
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $command;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $output;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $exitCode;
 
-    /**
-     * ExecutorResult constructor.
-     *
-     * @param string   $command
-     * @param string[] $output
-     * @param int      $exitCode
-     */
-    public function __construct($command, array $output, $exitCode) {
-        $this->command = $command;
-        $this->output = $output;
+    public function __construct(string $command, array $output, int $exitCode) {
+        $this->command  = $command;
+        $this->output   = $output;
         $this->exitCode = $exitCode;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSuccess() {
+    public function isSuccess(): bool {
         return $this->exitCode === 0;
     }
 
-    /**
-     * @return int
-     */
-    public function getExitCode() {
+    public function getExitCode(): int {
         return $this->exitCode;
     }
 
     /**
      * @return string[]
      */
-    public function getOutput() {
+    public function getOutput(): array {
         return $this->output;
     }
 
-    /**
-     * @return string
-     */
-    public function getCommand() {
+    public function getCommand(): string {
         return $this->command;
     }
 }

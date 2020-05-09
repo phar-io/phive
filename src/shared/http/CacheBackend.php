@@ -1,33 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface CacheBackend {
+    public function hasEntry(Url $url): bool;
 
-    /**
-     * @param Url $url
-     *
-     * @return bool
-     */
-    public function hasEntry(Url $url);
+    public function getContent(Url $url): string;
 
-    /**
-     * @param Url $url
-     *
-     * @return string
-     */
-    public function getContent(Url $url);
+    public function getEtag(Url $url): ETag;
 
-    /**
-     * @param Url $url
-     *
-     * @return ETag
-     */
-    public function getEtag(Url $url);
-
-    /**
-     * @param Url    $url
-     * @param ETag   $etag
-     * @param string $content
-     */
-    public function storeEntry(Url $url, ETag $etag, $content);
+    public function storeEntry(Url $url, ETag $etag, string $content): void;
 }

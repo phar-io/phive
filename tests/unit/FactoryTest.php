@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\Request;
@@ -8,26 +8,24 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\Factory
  */
 class FactoryTest extends TestCase {
-
     /**
      * @dataProvider factoryMethodProvider
      *
      * @param string $method
      * @param string $expectedClass
      */
-    public function testInstantiation($method, $expectedClass) {
+    public function testInstantiation($method, $expectedClass): void {
         $request = $this->getRequestMock();
         $options = $this->getOptionsMock();
         $request->method('parse')->willReturn($options);
         $request->method('getOptions')->willReturn($options);
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Factory $factory */
+        /** @var Factory|\PHPUnit_Framework_MockObject_MockObject $factory */
         $factory = $this->getMockBuilder(Factory::class)
             ->setConstructorArgs([$request])
             ->setMethods(['getSourcesList'])
             ->getMock();
-        $factory->method('getSourcesList')->willReturn($this->createMock(SourcesList::class));
-        $this->assertInstanceOf($expectedClass, call_user_func([$factory, $method]));
+        $this->assertInstanceOf($expectedClass, \call_user_func([$factory, $method]));
     }
 
     public function factoryMethodProvider() {
@@ -50,25 +48,7 @@ class FactoryTest extends TestCase {
     }
 
     /**
-     * @backupGlobals true
-     */
-    public function testGetCurlSetsProxyFromEnvironment() {
-        $this->markTestIncomplete();
-
-        $_SERVER['https_proxy'] = 'http://example.com';
-
-        $request = $this->getRequestMock();
-        $options = $this->getOptionsMock();
-        $request->method('parse')->willReturn($options);
-        $request->method('getOptions')->willReturn($options);
-
-        $factory = new Factory($request);
-
-        $factory->getFileDownloader();
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);
@@ -82,10 +62,9 @@ class FactoryTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Options
+     * @return Cli\Options|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOptionsMock() {
         return $this->createMock(Cli\Options::class);
     }
-
 }

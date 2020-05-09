@@ -1,51 +1,32 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\GnuPG\Factory as GnuPGFactory;
-use PharIo\GnuPG\GnuPG;
-use PharIo\Phive\Cli;
 use PharIo\Version\VersionConstraintParser;
 
 class Factory {
 
-    /**
-     * @var CurlConfig
-     */
+    /** @var null|CurlConfig */
     private $curlConfig;
 
-    /**
-     * @var PhiveVersion
-     */
+    /** @var null|PhiveVersion */
     private $version;
 
-    /**
-     * @var Cli\Request
-     */
+    /** @var Cli\Request */
     private $request;
 
-    /**
-     * @var Environment
-     */
+    /** @var null|Environment */
     private $environment;
 
-    /**
-     * @var PharRegistry
-     */
+    /** @var null|PharRegistry */
     private $registry;
 
-    /**
-     * @param Cli\Request  $request
-     * @param PhiveVersion $version
-     */
     public function __construct(Cli\Request $request, PhiveVersion $version = null) {
         $this->request = $request;
         $this->version = $version;
     }
 
-    /**
-     * @return Cli\Runner
-     */
-    public function getRunner() {
+    public function getRunner(): Cli\Runner {
         return new Cli\Runner(
             $this->getCommandLocator(),
             $this->getOutput(),
@@ -55,44 +36,29 @@ class Factory {
         );
     }
 
-    /**
-     * @return VersionCommand
-     */
-    public function getVersionCommand() {
+    public function getVersionCommand(): VersionCommand {
         return new VersionCommand;
     }
 
-    /**
-     * @return HelpCommand
-     */
-    public function getHelpCommand() {
+    public function getHelpCommand(): HelpCommand {
         return new HelpCommand(
             $this->getEnvironment(),
             $this->getOutput()
         );
     }
 
-    /**
-     * @return SkelCommand
-     */
-    public function getSkelCommand() {
+    public function getSkelCommand(): SkelCommand {
         return new SkelCommand(
-            new SkelCommandConfig($this->request->parse(new SkelContext()), getcwd()),
+            new SkelCommandConfig($this->request->parse(new SkelContext()), \getcwd()),
             $this->getPhiveVersion()
         );
     }
 
-    /**
-     * @return UpdateRepositoryListCommand
-     */
-    public function getUpdateRepositoryListCommand() {
+    public function getUpdateRepositoryListCommand(): UpdateRepositoryListCommand {
         return new UpdateRepositoryListCommand($this->getRemoteSourcesListFileLoader());
     }
 
-    /**
-     * @return RemoveCommand
-     */
-    public function getRemoveCommand() {
+    public function getRemoveCommand(): RemoveCommand {
         return new RemoveCommand(
             new RemoveCommandConfig($this->request->parse(new RemoveContext()), $this->getTargetDirectoryLocator()),
             $this->getPharRegistry(),
@@ -101,10 +67,7 @@ class Factory {
         );
     }
 
-    /**
-     * @return ResetCommand
-     */
-    public function getResetCommand() {
+    public function getResetCommand(): ResetCommand {
         return new ResetCommand(
             new ResetCommandConfig($this->request->parse(new ResetContext())),
             $this->getPharRegistry(),
@@ -113,10 +76,7 @@ class Factory {
         );
     }
 
-    /**
-     * @return InstallCommand
-     */
-    public function getInstallCommand() {
+    public function getInstallCommand(): InstallCommand {
         return new InstallCommand(
             new InstallCommandConfig(
                 $this->request->parse(new InstallContext()),
@@ -130,10 +90,7 @@ class Factory {
         );
     }
 
-    /**
-     * @return UpdateCommand
-     */
-    public function getUpdateCommand() {
+    public function getUpdateCommand(): UpdateCommand {
         $config = new UpdateCommandConfig(
             $this->request->parse(new UpdateContext()),
             $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
@@ -151,10 +108,7 @@ class Factory {
         );
     }
 
-    /**
-     * @return ListCommand
-     */
-    public function getListCommand() {
+    public function getListCommand(): ListCommand {
         return new ListCommand(
             $this->getSourcesList(),
             $this->getLocalSourcesList(),
@@ -162,20 +116,14 @@ class Factory {
         );
     }
 
-    /**
-     * @return PurgeCommand
-     */
-    public function getPurgeCommand() {
+    public function getPurgeCommand(): PurgeCommand {
         return new PurgeCommand(
             $this->getPharRegistry(),
             $this->getOutput()
         );
     }
 
-    /**
-     * @return ComposerCommand
-     */
-    public function getComposerCommand() {
+    public function getComposerCommand(): ComposerCommand {
         return new ComposerCommand(
             new ComposerCommandConfig(
                 $this->request->parse(new ComposerContext()),
@@ -194,21 +142,19 @@ class Factory {
         );
     }
 
-    /**
-     * @return StatusCommand
-     */
-    public function getStatusCommand() {
+    public function getStatusCommand(): StatusCommand {
         return new StatusCommand(
-            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            new StatusCommandConfig(
+                $this->request->parse(new StatusContext()),
+                $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+                $this->getPharRegistry()
+            ),
             $this->getPharRegistry(),
             $this->getOutput()
         );
     }
 
-    /**
-     * @return SelfupdateCommand
-     */
-    public function getSelfupdateCommand() {
+    public function getSelfupdateCommand(): SelfupdateCommand {
         return new SelfupdateCommand(
             $this->getPharDownloader(),
             $this->getGithubAliasResolver(),
@@ -219,10 +165,17 @@ class Factory {
         );
     }
 
-    /**
-     * @return DefaultCommand
-     */
-    public function getDefaultCommand() {
+    public function getOutdatedCommand(): OutdatedCommand {
+        return new OutdatedCommand(
+            new OutdatedConfig($this->request->parse(new OutdatedContext())),
+            $this->getRequestedPharResolverBuilder()->build($this->getRemoteFirstResolvingStrategy()),
+            $this->getReleaseSelector(),
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            $this->getOutput()
+        );
+    }
+
+    public function getDefaultCommand(): DefaultCommand {
         return new DefaultCommand(
             $this->getVersionCommand(),
             $this->getHelpCommand(),
@@ -230,81 +183,14 @@ class Factory {
         );
     }
 
-    /**
-     * @return TargetDirectoryLocator
-     */
-    private function getTargetDirectoryLocator() {
-        return new TargetDirectoryLocator(
-            $this->getConfig(),
-            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
-            $this->request->getOptions()
-        );
-    }
-
-    /**
-     * @return CommandLocator
-     */
-    private function getCommandLocator() {
-        return new CommandLocator($this);
-    }
-
-    /**
-     * @return Cli\Output
-     */
-    public function getOutput() {
+    public function getOutput(): Cli\Output {
         return (new Cli\OutputLocator(new Cli\OutputFactory()))->getOutput(
             $this->getEnvironment(),
             !$this->request->getOptions()->hasOption('no-progress')
         );
     }
 
-    /**
-     * @return PhiveVersion
-     */
-    private function getPhiveVersion() {
-        if (!$this->version) {
-            $this->version = new GitAwarePhiveVersion($this->getGit());
-        }
-
-        return $this->version;
-    }
-
-    /**
-     * @return InstallService
-     */
-    private function getInstallService() {
-        return new InstallService(
-            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
-            $this->getPharInstaller(),
-            $this->getPharRegistry(),
-            $this->getPharService(),
-            $this->getCompatibilityService()
-        );
-    }
-
-    /**
-     * @return Git
-     */
-    private function getGit() {
-        return new Git($this->getEnvironment()->getWorkingDirectory());
-    }
-
-    /**
-     * @return Environment
-     */
-    private function getEnvironment() {
-        if (null === $this->environment) {
-            $locator = new EnvironmentLocator();
-            $this->environment = $locator->getEnvironment(PHP_OS);
-        }
-
-        return $this->environment;
-    }
-
-    /**
-     * @return RemoteSourcesListFileLoader
-     */
-    public function getRemoteSourcesListFileLoader() {
+    public function getRemoteSourcesListFileLoader(): RemoteSourcesListFileLoader {
         return new RemoteSourcesListFileLoader(
             $this->getConfig()->getSourcesListUrl(),
             $this->getConfig()->getHomeDirectory()->file('repositories.xml'),
@@ -314,50 +200,27 @@ class Factory {
         );
     }
 
-    /**
-     * @return LocalSourcesListFileLoader
-     */
-    public function getLocalSourcesListFileLoader() {
+    public function getLocalSourcesListFileLoader(): LocalSourcesListFileLoader {
         return new LocalSourcesListFileLoader(
             $this->getConfig()->getHomeDirectory()->file('local.xml')
         );
     }
 
-    /**
-     * @return Config
-     */
-    public function getConfig() {
+    public function getConfig(): Config {
         return new Config(
             $this->getEnvironment(),
             $this->request->getOptions()
         );
     }
 
-    /**
-     * @return FileDownloader
-     */
-    public function getFileDownloader() {
+    public function getFileDownloader(): FileDownloader {
         return new FileDownloader(
             $this->getRetryingHttpClient(),
             $this->getFileStorageCacheBackend()
         );
     }
 
-    /**
-     * @return RetryingHttpClient
-     */
-    private function getRetryingHttpClient() {
-        return new RetryingHttpClient(
-            $this->getOutput(),
-            $this->getHttpClient(),
-            5
-        );
-    }
-
-    /**
-     * @return CurlHttpClient
-     */
-    public function getHttpClient() {
+    public function getHttpClient(): CurlHttpClient {
         return new CurlHttpClient(
             $this->getCurlConfig(),
             $this->getHttpProgressRenderer(),
@@ -365,17 +228,24 @@ class Factory {
         );
     }
 
-    /**
-     * @return HttpProgressRenderer
-     */
-    private function getHttpProgressRenderer() {
-        return new HttpProgressRenderer($this->getOutput());
+    public function getAuthConfig(): AuthConfig {
+        return new CompositeAuthConfig([
+            new EnvironmentAuthConfig($this->getEnvironment()),
+            new AuthXmlConfig(new XmlFile(
+                $this->getAuthXmlConfigFileLocator()->getFile(false),
+                'https://phar.io/phive-auth',
+                'auth'
+            )),
+            new AuthXmlConfig(new XmlFile(
+                $this->getAuthXmlConfigFileLocator()->getFile(true),
+                'https://phar.io/phive-auth',
+                'auth'
+            ))
+        ]);
     }
 
-    /**
-     * @return PharRegistry
-     */
-    public function getPharRegistry() {
+    /** @psalm-assert !null $this->registry */
+    public function getPharRegistry(): PharRegistry {
         if ($this->registry === null) {
             $this->registry = new PharRegistry(
                 new XmlFile(
@@ -390,20 +260,87 @@ class Factory {
         return $this->registry;
     }
 
-    /**
-     * @return PharService
-     */
-    private function getPharService() {
+    public function getRequestedPharResolverService(): RequestedPharResolverService {
+        return new RequestedPharResolverService();
+    }
+
+    public function getGithubAliasResolver(): GithubAliasResolver {
+        return new GithubAliasResolver(
+            $this->getHttpClient(),
+            $this->getFileDownloader(),
+            $this->getOutput()
+        );
+    }
+
+    public function getGitlabAliasResolver(): GitlabAliasResolver {
+        return new GitlabAliasResolver(
+            $this->getFileDownloader()
+        );
+    }
+
+    private function getTargetDirectoryLocator(): TargetDirectoryLocator {
+        return new TargetDirectoryLocator(
+            $this->getConfig(),
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            $this->request->getOptions()
+        );
+    }
+
+    private function getCommandLocator(): CommandLocator {
+        return new CommandLocator($this);
+    }
+
+    /** @psalm-assert !null $this->version */
+    private function getPhiveVersion(): PhiveVersion {
+        if ($this->version === null) {
+            $this->version = new GitAwarePhiveVersion($this->getGit());
+        }
+
+        return $this->version;
+    }
+
+    private function getInstallService(): InstallService {
+        return new InstallService(
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            $this->getPharInstaller(),
+            $this->getPharRegistry(),
+            $this->getPharService(),
+            $this->getCompatibilityService()
+        );
+    }
+
+    private function getGit(): Git {
+        return new Git($this->getEnvironment()->getWorkingDirectory());
+    }
+
+    private function getEnvironment(): Environment {
+        if (null === $this->environment) {
+            $this->environment = (new EnvironmentLocator())->getEnvironment(\PHP_OS);
+        }
+
+        return $this->environment;
+    }
+
+    private function getRetryingHttpClient(): RetryingHttpClient {
+        return new RetryingHttpClient(
+            $this->getOutput(),
+            $this->getHttpClient(),
+            5
+        );
+    }
+
+    private function getHttpProgressRenderer(): HttpProgressRenderer {
+        return new HttpProgressRenderer($this->getOutput());
+    }
+
+    private function getPharService(): PharService {
         return new PharService(
             $this->getPharRegistry(),
             $this->getPharDownloader()
         );
     }
 
-    /**
-     * @return PharDownloader
-     */
-    private function getPharDownloader() {
+    private function getPharDownloader(): PharDownloader {
         return new PharDownloader(
             $this->getRetryingHttpClient(),
             $this->getGnupgSignatureVerifier(),
@@ -412,27 +349,18 @@ class Factory {
         );
     }
 
-    /**
-     * @return SignatureVerifier
-     */
-    private function getGnupgSignatureVerifier() {
+    private function getGnupgSignatureVerifier(): SignatureVerifier {
         return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
     }
 
-    /**
-     * @return \Gnupg|GnuPG
-     */
-    private function getGnupg() {
+    private function getGnupg(): \Gnupg {
         $home = $this->getConfig()->getHomeDirectory()->child('gpg');
-        $bin = $this->getConfig()->getGPGBinaryPath();
+        $bin  = $this->getConfig()->getGPGBinaryPath();
 
         return (new GnuPGFactory($bin))->createGnuPG($home);
     }
 
-    /**
-     * @return KeyService
-     */
-    private function getKeyService() {
+    private function getKeyService(): KeyService {
         return new KeyService(
             $this->getPgpKeyDownloader(),
             $this->getGnupgKeyImporter(),
@@ -442,51 +370,32 @@ class Factory {
         );
     }
 
-    /**
-     * @return GnupgKeyDownloader
-     */
-    private function getPgpKeyDownloader() {
+    private function getPgpKeyDownloader(): GnupgKeyDownloader {
         return new GnupgKeyDownloader(
-            $this->getRetryingHttpClient(),
+            $this->getRingdownCurlHttpClient(),
             include __DIR__ . '/../conf/pgp-keyservers.php',
+            $this->getPublicKeyReader(),
             $this->getOutput()
         );
     }
 
-    /**
-     * @return KeyImporter
-     */
-    private function getGnupgKeyImporter() {
+    private function getGnupgKeyImporter(): KeyImporter {
         return new GnupgKeyImporter($this->getGnupg());
     }
 
-    /**
-     * @return Cli\ConsoleInput
-     */
-    private function getConsoleInput() {
+    private function getConsoleInput(): Cli\ConsoleInput {
         return new Cli\ConsoleInput($this->getOutput());
     }
 
-    /**
-     * @return ChecksumService
-     */
-    private function getChecksumService() {
+    private function getChecksumService(): ChecksumService {
         return new ChecksumService();
     }
 
-    /**
-     * @return PharInstaller
-     */
-    private function getPharInstaller() {
-        return $this->getPharInstallerLocator()->getPharInstaller($this->environment);
+    private function getPharInstaller(): PharInstaller {
+        return $this->getPharInstallerLocator()->getPharInstaller($this->getEnvironment());
     }
 
-    /**
-     * @param bool $global
-     *
-     * @return PhiveXmlConfig
-     */
-    private function getPhiveXmlConfig($global) {
+    private function getPhiveXmlConfig(bool $global): PhiveXmlConfig {
         if ($global) {
             return new GlobalPhiveXmlConfig(
                 new XmlFile(
@@ -497,6 +406,7 @@ class Factory {
                 new VersionConstraintParser()
             );
         }
+
         return new LocalPhiveXmlConfig(
             new XmlFile(
                 $this->getPhiveXmlConfigFileLocator()->getFile($global),
@@ -507,113 +417,95 @@ class Factory {
         );
     }
 
-    /**
-     * @return PhiveXmlConfigFileLocator
-     */
-    private function getPhiveXmlConfigFileLocator() {
+    private function getPhiveXmlConfigFileLocator(): PhiveXmlConfigFileLocator {
         return new PhiveXmlConfigFileLocator(
             $this->getEnvironment(),
             $this->getConfig()
         );
     }
 
-    /**
-     * @return ComposerService
-     */
-    private function getComposerService() {
-        return new ComposerService($this->getSourcesList());
-    }
-
-    /**
-     * @return RequestedPharResolverService
-     */
-    public function getRequestedPharResolverService() {
-        return new RequestedPharResolverService();
-    }
-
-    /**
-     * @return GithubAliasResolver
-     */
-    public function getGithubAliasResolver() {
-        return new GithubAliasResolver(
-            $this->getHttpClient(),
-            $this->getFileDownloader(),
-            $this->getOutput()
+    private function getAuthXmlConfigFileLocator(): AuthXmlConfigFileLocator {
+        return new AuthXmlConfigFileLocator(
+            $this->getEnvironment(),
+            $this->getConfig()
         );
     }
 
-    /**
-     * @return PharInstallerLocator
-     */
-    private function getPharInstallerLocator() {
+    private function getComposerService(): ComposerService {
+        return new ComposerService($this->getSourcesList());
+    }
+
+    private function getPharInstallerLocator(): PharInstallerLocator {
         return new PharInstallerLocator(new PharInstallerFactory($this));
     }
 
-    /**
-     * @return FileStorageCacheBackend
-     */
-    private function getFileStorageCacheBackend() {
+    private function getFileStorageCacheBackend(): FileStorageCacheBackend {
         return new FileStorageCacheBackend($this->getConfig()->getHomeDirectory()->child('http-cache'));
     }
 
-    /**
-     * @return RequestedPharResolverServiceBuilder
-     */
-    private function getRequestedPharResolverBuilder() {
+    private function getRequestedPharResolverBuilder(): RequestedPharResolverServiceBuilder {
         return new RequestedPharResolverServiceBuilder($this);
     }
 
-    /**
-     * @return SourcesList
-     */
-    private function getSourcesList() {
+    private function getSourcesList(): SourcesList {
         return $this->getRemoteSourcesListFileLoader()->load();
     }
 
-    /**
-     * @return SourcesList
-     */
-    private function getLocalSourcesList() {
+    private function getLocalSourcesList(): SourcesList {
         return $this->getLocalSourcesListFileLoader()->load();
     }
 
-    /**
-     * @return LocalFirstResolvingStrategy
-     */
-    private function getLocalFirstResolvingStrategy() {
+    private function getLocalFirstResolvingStrategy(): LocalFirstResolvingStrategy {
         return new LocalFirstResolvingStrategy($this->getRequestedPharResolverFactory());
     }
 
-    /**
-     * @return RemoteFirstResolvingStrategy
-     */
-    private function getRemoteFirstResolvingStrategy() {
+    private function getRemoteFirstResolvingStrategy(): RemoteFirstResolvingStrategy {
         return new RemoteFirstResolvingStrategy($this->getRequestedPharResolverFactory());
     }
 
-    /**
-     * @return RequestedPharResolverFactory
-     */
-    private function getRequestedPharResolverFactory() {
+    private function getRequestedPharResolverFactory(): RequestedPharResolverFactory {
         return new RequestedPharResolverFactory($this);
     }
 
-    private function getCompatibilityService() {
+    private function getCompatibilityService(): CompatibilityService {
         return new CompatibilityService(
             $this->getOutput(),
             $this->getConsoleInput()
         );
     }
 
-    private function getCurlConfig() {
+    /** @psalm-assert !null $this->curlConfig */
+    private function getCurlConfig(): CurlConfig {
         if ($this->curlConfig === null) {
-            $this->curlConfig = (new CurlConfigBuilder($this->getEnvironment(), $this->getPhiveVersion()))->build();
+            $this->curlConfig = (new CurlConfigBuilder($this->getEnvironment(), $this->getPhiveVersion(), $this->getAuthConfig()))->build();
         }
 
         return $this->curlConfig;
     }
 
-    private function getReleaseSelector() {
+    private function getReleaseSelector(): ReleaseSelector {
         return new ReleaseSelector($this->getOutput());
+    }
+
+    private function getRingdownCurlHttpClient(): RingdownCurlHttpClient {
+        return new RingdownCurlHttpClient(
+            $this->getHttpClient(),
+            $this->getCurlConfig(),
+            $this->getOutput()
+        );
+    }
+
+    private function getTemporaryGnupg(): \Gnupg {
+        $home = $this->getConfig()->getHomeDirectory()->child('_tmp_wrk');
+        $bin  = $this->getConfig()->getGPGBinaryPath();
+
+        return (new GnuPGFactory($bin))->createGnuPG($home);
+    }
+
+    private function getPublicKeyReader(): PublicKeyReader {
+        return new PublicKeyReader(
+            $this->getTemporaryGnupg(),
+            $this->getConfig()->getHomeDirectory()->child('_tmp_wrk')
+        );
     }
 }

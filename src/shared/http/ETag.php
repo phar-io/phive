@@ -1,24 +1,16 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class ETag {
 
+    /** @var string */
     private $value;
 
-    /**
-     * ETag constructor.
-     *
-     * @param $value
-     */
-    public function __construct($value) {
+    public function __construct(string $value) {
         $this->value = $value;
     }
 
-    /**
-     * @return mixed
-     */
-    public function asString() {
+    public function asString(): string {
         return $this->value;
     }
-
 }

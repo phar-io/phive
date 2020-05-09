@@ -1,33 +1,24 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
-
-use PharIo\Phive\Cli;
 
 class CommandLocator implements Cli\CommandLocator {
 
-    /**
-     * @var Factory
-     */
+    /** @var Factory */
     private $factory;
 
-    /**
-     * @param Factory $factory
-     */
     public function __construct(Factory $factory) {
         $this->factory = $factory;
     }
 
     /**
-     * @param string $command
-     *
-     * @return Cli\Command
      * @throws Cli\CommandLocatorException
      */
-    public function getCommand($command) {
+    public function getCommand(string $command): Cli\Command {
         switch ($command) {
             case '': {
                 return $this->factory->getDefaultCommand();
             }
+
             case 'help': {
                 return $this->factory->getHelpCommand();
             }
@@ -38,6 +29,10 @@ class CommandLocator implements Cli\CommandLocator {
 
             case 'install': {
                 return $this->factory->getInstallCommand();
+            }
+
+            case 'outdated': {
+                return $this->factory->getOutdatedCommand();
             }
 
             case 'list': {
@@ -83,11 +78,10 @@ class CommandLocator implements Cli\CommandLocator {
 
             default: {
                 throw new Cli\CommandLocatorException(
-                    sprintf('Command "%s" is not a valid command', $command),
+                    \sprintf('Command "%s" is not a valid command', $command),
                     Cli\CommandLocatorException::UnknownCommand
                 );
             }
         }
     }
-
 }

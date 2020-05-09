@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PHPUnit\Framework\TestCase;
@@ -8,39 +8,36 @@ use PHPUnit_Framework_MockObject_MockObject;
  * @covers \PharIo\Phive\CurlConfigBuilder
  */
 class CurlConfigBuilderTest extends TestCase {
-
-    /**
-     * @var Environment|PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var Environment|PHPUnit_Framework_MockObject_MockObject */
     private $environment;
 
-    /**
-     * @var PhiveVersion|PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var PhiveVersion|PHPUnit_Framework_MockObject_MockObject */
     private $phiveVersion;
 
-    /**
-     * @var CurlConfigBuilder
-     */
+    /** @var CurlConfigBuilder */
     private $builder;
 
-    protected function setUp() {
-        $this->environment = $this->getEnvironmentMock();
+    /** @var AuthConfig|PHPUnit_Framework_MockObject_MockObject */
+    private $authConfig;
+
+    protected function setUp(): void {
+        $this->environment  = $this->getEnvironmentMock();
         $this->phiveVersion = $this->getPhiveVersionMock();
-        $this->builder = new CurlConfigBuilder($this->environment, $this->phiveVersion);
+        $this->authConfig   = $this->getAuthConfigMock();
+        $this->builder      = new CurlConfigBuilder($this->environment, $this->phiveVersion, $this->authConfig);
     }
 
-    public function testSetsExpectedUserAgent() {
+    public function testSetsExpectedUserAgent(): void {
         $this->phiveVersion->method('getVersion')
             ->willReturn('0.8.3');
         $this->environment->method('getRuntimeString')
             ->willReturn('PHP 7.1.11');
 
         $config = $this->builder->build();
-        $this->assertSame('Phive 0.8.3 on PHP 7.1.11', $config->asCurlOptArray()[CURLOPT_USERAGENT]);
+        $this->assertSame('Phive 0.8.3 on PHP 7.1.11', $config->asCurlOptArray()[\CURLOPT_USERAGENT]);
     }
 
-    public function testSetsProxyIfConfiguredInEnvironment() {
+    public function testSetsProxyIfConfiguredInEnvironment(): void {
         $this->environment->method('hasProxy')
             ->willReturn(true);
         $this->environment->method('getProxy')
@@ -48,32 +45,53 @@ class CurlConfigBuilderTest extends TestCase {
 
         $config = $this->builder->build();
 
-        $this->assertSame('proxy.example.com', $config->asCurlOptArray()[CURLOPT_PROXY]);
+        $this->assertSame('proxy.example.com', $config->asCurlOptArray()[\CURLOPT_PROXY]);
     }
 
-    public function testAddsGitHubAuthToken() {
-        $this->environment->method('hasGitHubAuthToken')
+    public function testAddsGitHubAuthToken(): void {
+        $this->authConfig->method('getAuthentication')
+            ->with('api.github.com')
+            ->willReturn(new TokenAuthentication('api.github.com', 'foo'));
+        $this->authConfig->method('hasAuthentication')
+            ->with('api.github.com')
             ->willReturn(true);
-        $this->environment->method('getGitHubAuthToken')
-            ->willReturn('foo');
 
         $config = $this->builder->build();
-        $this->assertTrue($config->hasAuthenticationToken('api.github.com'));
-        $this->assertSame('foo', $config->getAuthenticationToken('api.github.com'));
+        $this->assertTrue($config->hasAuthentication('api.github.com'));
+        $this->assertSame('Authorization: Token foo', $config->getAuthentication('api.github.com')->asHttpHeaderString());
+    }
+
+    public function testAddsGitLabAuthToken(): void {
+        $this->authConfig->method('getAuthentication')
+            ->with('gitlab.com')
+            ->willReturn(new BearerAuthentication('gitlab.com', 'foo'));
+        $this->authConfig->method('hasAuthentication')
+            ->with('gitlab.com')
+            ->willReturn(true);
+
+        $config = $this->builder->build();
+        $this->assertTrue($config->hasAuthentication('gitlab.com'));
+        $this->assertSame('Authorization: Bearer foo', $config->getAuthentication('gitlab.com')->asHttpHeaderString());
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|Environment
+     * @return Environment|PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockObject|PhiveVersion
+     * @return PhiveVersion|PHPUnit_Framework_MockObject_MockObject
      */
     private function getPhiveVersionMock() {
         return $this->createMock(PhiveVersion::class);
     }
 
+    /**
+     * @return AuthConfig|PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getAuthConfigMock() {
+        return $this->createMock(AuthConfig::class);
+    }
 }

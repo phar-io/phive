@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * This file is part of PharIo\Version.
  *
@@ -7,19 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
 
 class GitHubVersion extends Version {
-
-    /**
-     * @param string $versionString
-     */
-    public function __construct($versionString) {
-        $versionString = preg_replace('/^v/i', '', $versionString);
+    public function __construct(string $versionString) {
+        $versionString = \preg_replace('/^v/i', '', $versionString);
         parent::__construct($versionString);
     }
-
 }

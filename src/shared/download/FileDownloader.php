@@ -1,49 +1,36 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
 
 class FileDownloader {
 
-    /**
-     * @var HttpClient
-     */
+    /** @var HttpClient */
     private $httpClient;
 
-    /**
-     * @var CacheBackend
-     */
+    /** @var CacheBackend */
     private $cache;
 
-    /**
-     * @var RateLimit
-     */
+    /** @var null|RateLimit */
     private $rateLimit;
 
-    /**
-     * @param HttpClient   $httpClient
-     * @param CacheBackend $cache
-     */
     public function __construct(HttpClient $httpClient, CacheBackend $cache) {
         $this->httpClient = $httpClient;
-        $this->cache = $cache;
+        $this->cache      = $cache;
     }
 
     /**
-     * @param Url $url
-     *
-     * @return File
      * @throws DownloadFailedException
      */
-    public function download(Url $url) {
+    public function download(Url $url): File {
         $this->rateLimit = null;
-        $cachedETag = $this->cache->hasEntry($url) ? $this->cache->getEtag($url) : null;
+        $cachedETag      = $this->cache->hasEntry($url) ? $this->cache->getEtag($url) : null;
 
         try {
             $response = $this->httpClient->get($url, $cachedETag);
         } catch (HttpException $e) {
             throw new DownloadFailedException(
-                sprintf(
+                \sprintf(
                     'Unexpected HTTP error: %s (Code: %d)',
                     $e->getMessage(),
                     $e->getCode()
@@ -57,11 +44,10 @@ class FileDownloader {
 
         if (!$response->isSuccess()) {
             throw new DownloadFailedException(
-                sprintf('Failed to download load %s: HTTP Code %d', $url, $response->getHttpCode()),
+                \sprintf('Failed to download load %s: HTTP Code %d', (string)$url, $response->getHttpCode()),
                 $response->getHttpCode()
             );
         }
-
 
         if ($response->getHttpCode() === 304) {
             return new File($url->getFilename(), $this->cache->getContent($url));
@@ -74,19 +60,16 @@ class FileDownloader {
         return new File($url->getFilename(), $response->getBody());
     }
 
-    public function hasRateLimit() {
+    /** @psalm-assert !null $this->rateLimit */
+    public function hasRateLimit(): bool {
         return $this->rateLimit !== null;
     }
 
-    /**
-     * @return RateLimit
-     */
-    public function getRateLimit() {
+    public function getRateLimit(): RateLimit {
         if (!$this->hasRateLimit()) {
             throw new FileDownloaderException('No RateLimit available');
         }
+
         return $this->rateLimit;
     }
-
-
 }

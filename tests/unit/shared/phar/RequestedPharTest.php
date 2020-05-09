@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Version\VersionConstraint;
@@ -8,14 +8,19 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\RequestedPhar
  */
 class RequestedPharTest extends TestCase {
+    public static function pharIdentifierProvider() {
+        return [
+            ['identifier' => new PharAlias('foo'), 'isAlias' => true],
+            ['identifier' => new PharUrl('https://example.com'), 'isAlias' => false]
+        ];
+    }
 
     /**
      * @dataProvider pharIdentifierProvider
      *
-     * @param PharIdentifier $identifier
      * @param bool $isAlias
      */
-    public function testHasAliasReturnsExpectedValue(PharIdentifier $identifier, $isAlias) {
+    public function testHasAliasReturnsExpectedValue(PharIdentifier $identifier, $isAlias): void {
         $phar = new RequestedPhar(
             $identifier,
             $this->getVersionConstraintMock(),
@@ -28,10 +33,9 @@ class RequestedPharTest extends TestCase {
     /**
      * @dataProvider pharIdentifierProvider
      *
-     * @param PharIdentifier $identifier
      * @param bool $isAlias
      */
-    public function testHasUrlReturnsExpectedValue(PharIdentifier $identifier, $isAlias) {
+    public function testHasUrlReturnsExpectedValue(PharIdentifier $identifier, $isAlias): void {
         $phar = new RequestedPhar(
             $identifier,
             $this->getVersionConstraintMock(),
@@ -41,7 +45,7 @@ class RequestedPharTest extends TestCase {
         $this->assertNotSame($isAlias, $phar->hasUrl());
     }
 
-    public function testAsStringReturnsExpectedValue() {
+    public function testAsStringReturnsExpectedValue(): void {
         $phar = new RequestedPhar(
             new PharAlias('foo'),
             $this->getVersionConstraintMock(),
@@ -51,18 +55,10 @@ class RequestedPharTest extends TestCase {
         $this->assertSame('foo', $phar->asString());
     }
 
-    public static function pharIdentifierProvider() {
-        return [
-            ['identifier' => new PharAlias('foo'), 'isAlias' => true],
-            ['identifier' => new PharUrl('https://example.com'), 'isAlias' => false]
-        ];
-    }
-
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|VersionConstraint
      */
     private function getVersionConstraintMock() {
         return $this->createMock(VersionConstraint::class);
     }
-
 }

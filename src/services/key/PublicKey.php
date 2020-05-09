@@ -1,130 +1,57 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class PublicKey {
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $id;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $fingerprint;
 
-    /**
-     * @var array
-     */
-    private $uids = [];
+    /** @var array */
+    private $uids;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $public;
 
-    /**
-     * @var \DateTimeImmutable
-     */
+    /** @var \DateTimeImmutable */
     private $created;
 
     /**
-     * @var string
-     */
-    private $bits;
-
-    /**
      * PublicKey constructor.
-     *
-     * @param string $id
-     * @param string $public
-     * @param string $info
-     *
-     * @throws PublicKeyException
      */
-    public function __construct($id, $info, $public) {
-        $this->id = $id;
-        $this->public = $public;
-        $this->parseInfo($info);
+    public function __construct(string $id, string $fingerprint, array $uids, string $public, \DateTimeImmutable $created) {
+        $this->id          = $id;
+        $this->fingerprint = $fingerprint;
+        $this->uids        = $uids;
+        $this->public      = $public;
+        $this->created     = $created;
     }
 
-    /**
-     * @return string
-     */
-    public function getId() {
+    public function getId(): string {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getInfo() {
-        $info = [];
-        $info[] = "\tFingerprint: " . $this->fingerprint;
+    public function getInfo(): string {
+        $info   = [];
+        $info[] = "\tFingerprint: " . \implode(' ', \str_split($this->fingerprint, 4));
         $info[] = '';
-        foreach ($this->uids as $uid => $time) {
-            /** @var $time \DateTimeImmutable */
-            $info[] = sprintf("\t%s (%s)", $uid, $time->format('Y-m-d'));
+
+        foreach ($this->uids as $uid) {
+            $info[] = \sprintf("\t%s", $uid);
         }
         $info[] = '';
         $info[] = "\tCreated: " . $this->created->format('Y-m-d');
 
-        return join("\n", $info);
+        return \implode("\n", $info);
     }
 
-    /**
-     * @return string
-     */
-    public function getKeyData() {
+    public function getKeyData(): string {
         return $this->public;
     }
 
-    /**
-     * @return string
-     */
-    public function getFingerprint() {
-        return str_replace(' ', '', $this->fingerprint);
+    public function getFingerprint(): string {
+        return $this->fingerprint;
     }
-
-    /**
-     * @throws PublicKeyException
-     */
-    private function parseInfo($info) {
-        foreach (explode("\n", $info) as $line) {
-            $parts = explode(':', $line);
-            switch ($parts[0]) {
-                default: {
-                    continue 2;
-                }
-                case 'uid': {
-                    // 0   1                                      2
-                    // uid:Sebastian Bergmann <sebastian@php.net>:1405755775::
-                    $this->uids[$parts[1]] = new \DateTimeImmutable('@' . $parts[2]);
-                    break;
-                }
-                case 'pub': {
-                    // 0   1                                        2 3    4
-                    // pub:D8406D0D82947747293778314AA394086372C20A:1:4096:1405754086::
-                    $this->fingerprint = trim(chunk_split($parts[1], 4, ' '));
-                    $this->bits = $parts[3];
-                    $this->created = new \DateTimeImmutable('@' . $parts[4]);
-                    break;
-                }
-            }
-        }
-
-        if (empty($this->uids) || $this->fingerprint === NULL || $this->bits === NULL || $this->created === NULL) {
-            throw new PublicKeyException(
-                sprintf('Failed to parse provided key info: %s', $info)
-            );
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getBits() {
-        return $this->bits;
-    }
-
 }

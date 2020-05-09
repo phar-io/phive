@@ -1,120 +1,83 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 
 class Url {
-
-    /**
-     * @var string
-     */
+    /** @var string */
     private $uri;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $hostname;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $path;
 
-    /**
-     * @param string $uri
-     */
-    public function __construct($uri) {
-        $components = $this->parseURL($uri);
-        $this->ensureHttps(isset($components['scheme']) ? $components['scheme'] : '');
-        $this->uri = $uri;
-        $this->hostname = $components['host'];
-        $this->path = array_key_exists('path', $components) ? $components['path'] : '/';
+    public static function isUrl(string $string): bool {
+        return \strpos($string, '://') !== false;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString() {
+    public static function isHttpsUrl(string $string): bool {
+        return \stripos($string, 'https://') === 0;
+    }
+
+    public function __construct(string $uri) {
+        $components = $this->parseURL($uri);
+        $this->ensureHttps($components['scheme'] ?? '');
+        $this->uri      = $uri;
+        $this->hostname = $components['host'];
+        $this->path     = \array_key_exists('path', $components) ? $components['path'] : '/';
+    }
+
+    public function __toString(): string {
+        return $this->asString();
+    }
+
+    public function asString(): string {
         return $this->uri;
     }
 
-    /**
-     * @return string
-     */
-    public function getHostname() {
+    public function getHostname(): string {
         return $this->hostname;
     }
 
-    /**
-     * @return string
-     */
-    public function getPath() {
+    public function getPath(): string {
         return $this->path;
     }
 
-    /**
-     * @return Filename
-     */
-    public function getFilename() {
-        return new Filename(basename($this->getPath()));
+    public function getFilename(): Filename {
+        return new Filename(\basename($this->getPath()));
+    }
+
+    public function withParams(array $params): self {
+        if (\count($params) === 0) {
+            return clone $this;
+        }
+        $sep = \strpos($this->uri, '?') !== false ? '&' : '?';
+
+        return new self($this->uri . $sep . \http_build_query($params, '', '&', \PHP_QUERY_RFC3986));
+    }
+
+    public function equals(self $url): bool {
+        return $this->uri === $url->uri;
     }
 
     /**
      * @param string $protocol
      */
-    private function ensureHttps($protocol) {
-        if (strtolower($protocol) !== 'https') {
+    private function ensureHttps($protocol): void {
+        if (\strtolower($protocol) !== 'https') {
             throw new \InvalidArgumentException('Only HTTPS protocol type supported');
         }
     }
 
-    /**
-     * @param string $uri
-     *
-     * @return array
-     */
-    private function parseURL($uri) {
-        $components = parse_url($uri);
+    private function parseURL(string $uri): array {
+        $components = \parse_url($uri);
+
         if ($components === false) {
             throw new \InvalidArgumentException('The provided URL cannot be parsed');
         }
 
         return $components;
-    }
-
-    /**
-     * @param array $params
-     *
-     * @return Url
-     */
-    public function withParams(array $params) {
-        if (count($params) == 0) {
-            return clone($this);
-        }
-        $sep = strpos($this->uri, '?') !== false ? '&' : '?';
-
-        return new self($this->uri . $sep . http_build_query($params, null, '&', PHP_QUERY_RFC3986));
-    }
-
-    /**
-     * @param $string
-     *
-     * @return bool
-     */
-    public static function isUrl($string) {
-        return strpos($string, '://') !== false;
-    }
-
-    public static function isHttpsUrl($string) {
-        return stripos($string, 'https://') === 0;
-    }
-
-    /**
-     * @param Url $url
-     *
-     * @return bool
-     */
-    public function equals(Url $url) {
-        return $this->uri === $url->uri;
     }
 }

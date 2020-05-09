@@ -1,15 +1,6 @@
-os:
-- linux
-
 language: php
 
-before_install:
-- composer self-update
-- if [ ! -d $HOME/.phive ]; then mkdir $HOME/.phive ; fi
-- if [ ! -f $HOME/.phive/phive.phar ]; then ant getphive ; mv phive.phar $HOME/.phive ; fi
-# Travis doesn't support TLSv1.2 on PHP < 7.1.18 - for whatever reasons - so let's download manually
-- if [ ! -f $HOME/.phive/phpunit.phar ]; then curl -o $HOME/.phive/phpunit.phar https://phar.phpunit.de/phpunit-5.7.27.phar ; chmod +x $HOME/.phive/phpunit.phar ; fi
-- sudo cp $HOME/.phive/phive.phar /usr/local/bin/phive
+sudo: false
 
 cache:
   directories:
@@ -19,32 +10,47 @@ cache:
   - "$HOME/.composer/cache"
   - "$HOME/.gnupg"
 
-install:
-- travis_retry composer install --no-interaction --prefer-source
-- phive --no-progress install --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C phpab
-- cp $HOME/.phive/phpunit.phar ./tools/phpunit
+addons:
+  apt:
+    packages:
+    - ant
 
-script: "./tools/phpunit"
+env:
+  global:
+    secure: v4ay9b86o/wwBaW+7k7HdB8M7drF274LEkh2SYmKz/vLauc5gbKsEeaoDTek9xAOfa3V/3FDBYecty/qfhjDeo1gIVmvoE4DEf2XjszwyWUqRJTucqT+C8cKxSkbc0b3C/Xw8KF1oaaJ/HMHr/iVk9Q1TOyjdijnoG/PF1CZeSA=
 
 php:
-- 5.6.38
-- 7.1.24
-- 7.2.12
-- 7.1snapshot
+- 7.2
+- 7.3
+- 7.4
 - 7.2snapshot
+- 7.3snapshot
+- 7.4snapshot
 - master
 
 matrix:
   allow_failures:
-  - php: master
-  - php: 7.1snapshot
   - php: 7.2snapshot
+  - php: 7.3snapshot
+  - php: 7.4snapshot
+  - php: master
   fast_finish: true
+
+before_install:
+- mkdir -p "$HOME/bin"
+- export PATH="$HOME/bin:$PATH"
+- if [ -n "$GITHUB_AUTH_TOKEN" ]; then echo "Github auth token found."; fi
+- if [ ! -d "$HOME/.phive" ]; then mkdir "$HOME/.phive"; fi
+- if [ ! -f "$HOME/.phive/phive.phar" ]; then ant getphive; mv phive.phar "$HOME/.phive/"; fi
+- install --mode=0755 -T "$HOME/.phive/phive.phar" "$HOME/bin/phive"
+
+install:
+- travis_retry composer install --no-interaction --no-suggest --prefer-source
+- ant install-tools
+- if [[ "$(phpenv version-name)" =~ ^7\.1 ]]; then phive --no-progress install "phpunit@^7.5"; fi
+
+script:
+- "./tools/phpunit"
 
 notifications:
   email: false
-
-env:
-  global:
-    env: CACHE_NAME=GENERAL
-    secure: v4ay9b86o/wwBaW+7k7HdB8M7drF274LEkh2SYmKz/vLauc5gbKsEeaoDTek9xAOfa3V/3FDBYecty/qfhjDeo1gIVmvoE4DEf2XjszwyWUqRJTucqT+C8cKxSkbc0b3C/Xw8KF1oaaJ/HMHr/iVk9Q1TOyjdijnoG/PF1CZeSA=

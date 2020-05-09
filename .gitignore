@@ -1,9 +1,6 @@
-/.buildpath
-/.project
-/.settings
 /.idea
-/bin
 /build
+!/build/phar/bootstrap.php.in
 /phpunit.xml
 /tools
 /vendor
@@ -12,3 +9,5 @@
 /tests/regression/fixtures/phive-home/http-cache
 /tests/regression/under-test.phar
 cache.properties
+/.php_cs.cache
+.phpunit.result.cache

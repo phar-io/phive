@@ -1,26 +1,20 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class AbstractResolvingStrategy implements ResolvingStrategy {
-
-    /**
-     * @var RequestedPharResolverFactory
-     */
+    /** @var RequestedPharResolverFactory */
     private $factory;
 
-    /**
-     * @param RequestedPharResolverFactory $factory
-     */
     public function __construct(RequestedPharResolverFactory $factory) {
         $this->factory = $factory;
     }
 
-    /**
-     * @param RequestedPharResolverService $service
-     */
-    public function execute(RequestedPharResolverService $service) {
+    public function execute(RequestedPharResolverService $service): void {
         // github.com
         $service->addResolver($this->factory->getGithubAliasResolver());
+
+        // gitlab.com
+        $service->addResolver($this->factory->getGitlabAliasResolver());
 
         // local repository XML
         $service->addResolver(
@@ -36,11 +30,7 @@ class AbstractResolvingStrategy implements ResolvingStrategy {
         $service->addResolver($this->factory->getUrlResolver());
     }
 
-    /**
-     * @return RequestedPharResolverFactory
-     */
-    protected function getFactory() {
+    protected function getFactory(): RequestedPharResolverFactory {
         return $this->factory;
     }
-
 }

@@ -1,23 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
 
 interface Release {
+    public function isSupported(): bool;
 
-    /**
-     * @return boolean
-     */
-    public function isSupported();
+    public function getVersion(): Version;
 
-    /**
-     * @return Version
-     */
-    public function getVersion();
-
-    /**
-     * @return string
-     */
-    public function getName();
-
+    public function getName(): string;
 }

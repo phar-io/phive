@@ -1,66 +1,42 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
 class XmlFile {
-
-    /**
-     * @var \DOMDocument
-     */
+    /** @var null|\DOMDocument */
     private $dom;
 
-    /**
-     * @var \DOMXPath
-     */
+    /** @var \DOMXPath */
     private $xPath;
 
-    /**
-     * @var Filename
-     */
+    /** @var Filename */
     private $filename;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $namespace;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $rootElementName;
 
     /**
      * XmlFile constructor.
      *
-     * @param Filename $filename
-     * @param string   $namespace
-     * @param string   $root
+     * @param string $namespace
+     * @param string $root
      */
     public function __construct(Filename $filename, $namespace, $root) {
-        $this->filename = $filename;
-        $this->namespace = $namespace;
+        $this->filename        = $filename;
+        $this->namespace       = $namespace;
         $this->rootElementName = $root;
     }
 
-    /**
-     * @param string $name
-     * @param string $text
-     *
-     * @return \DOMElement
-     */
-    public function createElement($name, $text = null) {
+    public function createElement(string $name, string $text = ''): \DOMElement {
         return $this->getDom()->createElementNS($this->namespace, $name, $text);
     }
 
-    /**
-     * @param string   $xpath
-     * @param \DOMNode $ctx
-     *
-     * @return \DOMNodeList
-     */
-    public function query($xpath, \DOMNode $ctx = null) {
+    public function query(string $xpath, \DOMNode $ctx = null): \DOMNodeList {
         if ($ctx === null) {
             $ctx = $this->getDom()->documentElement;
         }
@@ -68,29 +44,33 @@ class XmlFile {
         return $this->getXPath()->query($xpath, $ctx);
     }
 
-    public function addElement(\DOMNode $node) {
+    public function addElement(\DOMNode $node): void {
         $this->getDom()->documentElement->appendChild($node);
     }
 
-    public function save() {
+    public function save(): void {
         $this->getDom()->save($this->filename->asString());
     }
 
-    /**
-     * @return Directory
-     */
-    public function getDirectory() {
-        return new Directory(dirname($this->filename->asString()));
+    public function getDirectory(): Directory {
+        return new Directory(\dirname($this->filename->asString()));
     }
 
-    private function init() {
+    public function getDom(): \DOMDocument {
+        $this->init();
+
+        return $this->dom;
+    }
+
+    /** @psalm-assert \DomDocument $this->dom */
+    private function init(): void {
         if ($this->dom instanceof \DOMDocument) {
             return;
         }
 
-        $this->dom = new \DOMDocument('1.0', 'UTF-8');
+        $this->dom                     = new \DOMDocument('1.0', 'UTF-8');
         $this->dom->preserveWhiteSpace = false;
-        $this->dom->formatOutput = true;
+        $this->dom->formatOutput       = true;
 
         if ($this->filename->exists()) {
             $this->dom->load($this->filename->asString());
@@ -101,22 +81,9 @@ class XmlFile {
         $this->xPath->registerNamespace('phive', $this->namespace);
     }
 
-    /**
-     * @return \DOMDocument
-     */
-    public function getDom() {
-        $this->init();
-
-        return $this->dom;
-    }
-
-    /**
-     * @return \DOMXPath
-     */
-    private function getXPath() {
+    private function getXPath(): \DOMXPath {
         $this->init();
 
         return $this->xPath;
     }
-
 }

@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
-use PharIo\Phive\Cli;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 
@@ -10,8 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\PurgeCommand
  */
 class PurgeCommandTest extends TestCase {
-
-    public function testInvokesRepository() {
+    public function testInvokesRepository(): void {
         $repository = $this->getPharRegistryMock();
 
         $phar1 = $this->getPharMock();
@@ -33,34 +31,9 @@ class PurgeCommandTest extends TestCase {
         $command->execute();
     }
 
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
-     */
-    private function getPharRegistryMock() {
-        return $this->createMock(PharRegistry::class);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Phar
-     */
-    private function getPharMock() {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Version $version */
-        $version = $this->createMock(Version::class);
-        /** @var \PHPUnit_Framework_MockObject_MockObject|File $file */
-        $file = $this->createMock(File::class);
-        return new Phar('foo', $version, $file);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
-     */
-    private function getOutputMock() {
-        return $this->createMock(Cli\Output::class);
-    }
-
-    public function testWritesToOutput() {
+    public function testWritesToOutput(): void {
         $repository = $this->getPharRegistryMock();
-        $output = $this->getOutputMock();
+        $output     = $this->getOutputMock();
 
         $phar1 = $this->getPharMock();
 
@@ -73,5 +46,31 @@ class PurgeCommandTest extends TestCase {
 
         $command = new PurgeCommand($repository, $output);
         $command->execute();
+    }
+
+    /**
+     * @return PharRegistry|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getPharRegistryMock() {
+        return $this->createMock(PharRegistry::class);
+    }
+
+    /**
+     * @return Phar|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getPharMock() {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Version $version */
+        $version = $this->createMock(Version::class);
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $file */
+        $file = $this->createMock(File::class);
+
+        return new Phar('foo', $version, $file);
+    }
+
+    /**
+     * @return Cli\Output|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getOutputMock() {
+        return $this->createMock(Cli\Output::class);
     }
 }

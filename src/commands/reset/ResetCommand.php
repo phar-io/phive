@@ -1,47 +1,33 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class ResetCommand implements Cli\Command {
 
-    /**
-     * @var ResetCommandConfig
-     */
+    /** @var ResetCommandConfig */
     private $config;
 
-    /**
-     * @var PharRegistry
-     */
+    /** @var PharRegistry */
     private $pharRegistry;
 
-    /**
-     * @var Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @var PharInstaller
-     */
+    /** @var PharInstaller */
     private $pharInstaller;
 
-    /**
-     * @param ResetCommandConfig $config
-     * @param PharRegistry       $pharRegistry
-     * @param Environment        $environment
-     * @param PharInstaller      $pharInstaller
-     */
     public function __construct(
         ResetCommandConfig $config,
         PharRegistry $pharRegistry,
         Environment $environment,
         PharInstaller $pharInstaller
     ) {
-        $this->config = $config;
-        $this->pharRegistry = $pharRegistry;
-        $this->environment = $environment;
+        $this->config        = $config;
+        $this->pharRegistry  = $pharRegistry;
+        $this->environment   = $environment;
         $this->pharInstaller = $pharInstaller;
     }
 
-    public function execute() {
+    public function execute(): void {
         $aliasFilter = [];
 
         if ($this->config->hasAliases()) {
@@ -49,11 +35,10 @@ class ResetCommand implements Cli\Command {
         }
 
         foreach ($this->pharRegistry->getUsedPharsByDestination($this->environment->getWorkingDirectory()) as $phar) {
-            if (!empty($aliasFilter) && !in_array($phar->getName(), $aliasFilter)) {
+            if (!empty($aliasFilter) && !\in_array($phar->getName(), $aliasFilter, true)) {
                 continue;
             }
             $this->pharInstaller->install($phar->getFile(), $this->environment->getWorkingDirectory()->file($phar->getName()), false);
         }
     }
-
 }

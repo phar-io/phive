@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\RegressionTests;
 
 use PharIo\FileSystem\Directory;
@@ -13,64 +13,52 @@ use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\TestCase;
 
 class RegressionTestCase extends TestCase {
-
     private $pharSize = 0;
 
-    /**
-     * @var Directory
-     */
+    /** @var Directory */
     private $workingDirectory;
 
-    /**
-     * @var Directory
-     */
+    /** @var Directory */
     private $toolsDirectory;
 
-    /**
-     * @var PharRegistry
-     */
+    /** @var PharRegistry */
     private $registry;
 
-    final protected function setUp() {
+    final protected function setUp(): void {
         $this->workingDirectory = new Directory(__DIR__ . '/tmp');
-        $this->toolsDirectory = new Directory($this->workingDirectory . '/tools');
+        $this->toolsDirectory   = new Directory($this->workingDirectory . '/tools');
         $this->changeWorkingDirectory($this->workingDirectory);
         $this->createCopyOfPharUnderTest();
         $this->createTemporaryDirectory();
         $this->_setUp();
     }
 
-    final protected function tearDown() {
+    final protected function tearDown(): void {
         $this->removeTemporaryDirectory();
         $this->ensurePharIsUnchanged();
-        unlink($this->getTestedPharFilename());
+        \unlink($this->getTestedPharFilename());
         $this->_tearDown();
     }
 
-    protected function _setUp() {
-
+    protected function _setUp(): void {
     }
 
-    protected function _tearDown() {
-
+    protected function _tearDown(): void {
     }
 
-    /**
-     * @param Directory $directory
-     */
-    protected function changeWorkingDirectory(Directory $directory) {
-        chdir((string)$directory);
+    protected function changeWorkingDirectory(Directory $directory): void {
+        \chdir((string)$directory);
     }
 
     /**
-     * @param string        $name
-     * @param string        $version
-     * @param string        $filename
-     * @param Filename|null $usage
+     * @param string $name
+     * @param string $version
+     * @param string $filename
      */
-    protected function addPharToRegistry($name, $version, $filename, Filename $usage = null) {
+    protected function addPharToRegistry($name, $version, $filename, Filename $usage = null): void {
         $phar = new Phar($name, new Version($version), new File(new Filename($filename), 'foo'));
         $this->getPharRegistry()->addPhar($phar);
+
         if (null === $usage) {
             return;
         }
@@ -78,10 +66,7 @@ class RegressionTestCase extends TestCase {
     }
 
     /**
-     * @param       $command
-     * @param array $arguments
-     *
-     * @return mixed
+     * @param $command
      */
     protected function runPhiveCommand($command, array $arguments = []) {
         $call = $this->getTestedPharFilename();
@@ -92,7 +77,7 @@ class RegressionTestCase extends TestCase {
             $call .= ' ' . $argument;
         }
         $call .= ' 2>&1';
-        @exec($call, $outputLines, $resultCode);
+        @\exec($call, $outputLines, $resultCode);
 
         $output = '';
 
@@ -101,38 +86,30 @@ class RegressionTestCase extends TestCase {
         }
 
         if ($resultCode !== 0) {
-            $output = sprintf("PHIVE exited with exit code %d!\nOutput:\n%s", $resultCode, $output);
+            $output = \sprintf("PHIVE exited with exit code %d!\nOutput:\n%s", $resultCode, $output);
+
             throw new \RuntimeException($output, $resultCode);
         }
 
         return $output;
     }
 
-    /**
-     * @return Directory
-     */
-    protected function getWorkingDirectory() {
+    protected function getWorkingDirectory(): Directory {
         return $this->workingDirectory;
     }
 
-    /**
-     * @return Directory
-     */
-    protected function getToolsDirectory() {
+    protected function getToolsDirectory(): Directory {
         return $this->toolsDirectory;
     }
 
     /**
      * @param string $filename
      */
-    protected function usePhiveXmlConfig($filename) {
-        copy($filename, $this->getWorkingDirectory()->file('phive.xml')->asString());
+    protected function usePhiveXmlConfig($filename): void {
+        \copy($filename, $this->getWorkingDirectory()->file('phive.xml')->asString());
     }
 
-    /**
-     * @return LocalPhiveXmlConfig
-     */
-    protected function getPhiveXmlConfig() {
+    protected function getPhiveXmlConfig(): LocalPhiveXmlConfig {
         return new LocalPhiveXmlConfig(
             new XmlFile(
                 $this->getWorkingDirectory()->file('phive.xml'),
@@ -147,21 +124,21 @@ class RegressionTestCase extends TestCase {
      * @param string $filename
      * @param string $target
      */
-    protected function assertSymlinkTargetEquals($filename, $target) {
+    protected function assertSymlinkTargetEquals($filename, $target): void {
         $this->assertTrue(
-            is_link($filename),
-            sprintf('Failed asserting that %s is a symlink.', $filename)
+            \is_link($filename),
+            \sprintf('Failed asserting that %s is a symlink.', $filename)
         );
-        $this->assertEquals($target, readlink($filename));
+        $this->assertEquals($target, \readlink($filename));
     }
 
     /**
      * @param string $filename
      */
-    protected function assertFileIsNotASymlink($filename) {
+    protected function assertFileIsNotASymlink($filename): void {
         $this->assertNotTrue(
-            is_link($filename),
-            sprintf('Failed asserting that %s is not a symlink.', $filename)
+            \is_link($filename),
+            \sprintf('Failed asserting that %s is not a symlink.', $filename)
         );
     }
 
@@ -169,83 +146,72 @@ class RegressionTestCase extends TestCase {
      * @param string $target
      * @param string $link
      */
-    protected function createSymlink($target, $link) {
-        symlink($target, $link);
+    protected function createSymlink($target, $link): void {
+        \symlink($target, $link);
     }
 
-    /**
-     * @return Directory
-     */
-    protected function getPhiveHomeDirectory() {
+    protected function getPhiveHomeDirectory(): Directory {
         return new Directory(__DIR__ . '/fixtures/phive-home');
     }
 
     /**
      * @param $path
      */
-    private function removeDirectory($path) {
-        $files = glob($path . '/*');
-        foreach ($files as $file) {
-            is_dir($file) ? $this->removeDirectory($file) : unlink($file);
-        }
-        rmdir($path);
+    private function removeDirectory($path): void {
+        $files = \glob($path . '/*');
 
-        return;
+        foreach ($files as $file) {
+            \is_dir($file) ? $this->removeDirectory($file) : \unlink($file);
+        }
+        \rmdir($path);
     }
 
-    private function ensurePharIsUnchanged() {
-        if ($this->pharSize !== filesize($this->getTestedPharFilename())) {
+    private function ensurePharIsUnchanged(): void {
+        if ($this->pharSize !== \filesize($this->getTestedPharFilename())) {
             $this->fail('The PHAR under test was changed during the test!');
         }
     }
 
-    /**
-     * @return string
-     */
-    private function getTestedPharFilename() {
+    private function getTestedPharFilename(): string {
         return __DIR__ . '/under-test.php';
     }
 
-    /**
-     * @return string
-     */
-    private function getPharFilename() {
-        return glob(__DIR__ . '/../../build/phar/*.phar')[0];
+    private function getPharFilename(): string {
+        return \glob(__DIR__ . '/../../build/phar/*.phar')[0];
     }
 
-    private function createTemporaryDirectory() {
-        if (!file_exists(__DIR__ . '/tmp')) {
-            mkdir(__DIR__ . '/tmp');
+    private function createTemporaryDirectory(): void {
+        if (!\file_exists(__DIR__ . '/tmp')) {
+            \mkdir(__DIR__ . '/tmp');
         }
     }
 
-    private function removeTemporaryDirectory() {
-        if (file_exists(__DIR__ . '/tmp')) {
+    private function removeTemporaryDirectory(): void {
+        if (\file_exists(__DIR__ . '/tmp')) {
             $this->removeDirectory(__DIR__ . '/tmp');
         }
     }
 
-    private function createCopyOfPharUnderTest() {
+    private function createCopyOfPharUnderTest(): void {
         $testedPharFilename = $this->getTestedPharFilename();
-        copy($this->getPharFilename(), $testedPharFilename);
-        chmod($testedPharFilename, 0777);
-        $this->pharSize = filesize($testedPharFilename);
+        \copy($this->getPharFilename(), $testedPharFilename);
+        \chmod($testedPharFilename, 0777);
+        $this->pharSize = \filesize($testedPharFilename);
     }
 
-    /**
-     * @return PharRegistry
-     */
-    private function getPharRegistry() {
+    private function getPharRegistry(): PharRegistry {
         if (null === $this->registry) {
             $xmlFilename = $this->getPhiveHomeDirectory()->file('phars.xml')->asString();
-            if (file_exists($xmlFilename)) {
-                unlink($xmlFilename);
+
+            if (\file_exists($xmlFilename)) {
+                \unlink($xmlFilename);
             }
             $this->registry = new PharRegistry(
                 new XmlFile(new Filename($xmlFilename), 'https://phar.io/phive/installdb', 'phars'),
                 $this->getPhiveHomeDirectory()->child('phars')
             );
         }
+
         return $this->registry;
     }
 }

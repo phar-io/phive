@@ -1,39 +1,27 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
-
-use PharIo\Phive\Cli;
 
 class PurgeCommand implements Cli\Command {
 
-    /**
-     * @var PharRegistry
-     */
+    /** @var PharRegistry */
     private $repository;
 
-    /**
-     * @var Cli\Output
-     */
+    /** @var Cli\Output */
     private $output;
 
-    /**
-     * @param PharRegistry $repository
-     * @param Cli\Output   $output
-     *
-     * @internal param PurgeCommandConfig $config
-     */
     public function __construct(
-        PharRegistry $repository, Cli\Output $output
+        PharRegistry $repository,
+        Cli\Output $output
     ) {
         $this->repository = $repository;
-        $this->output = $output;
+        $this->output     = $output;
     }
 
-    public function execute() {
-
+    public function execute(): void {
         foreach ($this->repository->getUnusedPhars() as $unusedPhar) {
             $this->repository->removePhar($unusedPhar);
             $this->output->writeInfo(
-                sprintf(
+                \sprintf(
                     'Phar %s %s has been deleted.',
                     $unusedPhar->getName(),
                     $unusedPhar->getVersion()->getVersionString()
@@ -41,5 +29,4 @@ class PurgeCommand implements Cli\Command {
             );
         }
     }
-
 }

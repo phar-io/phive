@@ -1,20 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface VerificationResult {
+    public function getFingerprint(): string;
 
-    /**
-     * @return string
-     */
-    public function getFingerprint();
+    public function isKnownKey(): bool;
 
-    /**
-     * @return bool
-     */
-    public function isKnownKey();
+    public function wasVerificationSuccessful(): bool;
 
-    /**
-     * @return bool
-     */
-    public function wasVerificationSuccessful();
+    public function getStatusMessage(): string;
 }

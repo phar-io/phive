@@ -1,47 +1,32 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class LocalSslCertificate {
 
-    /**
-     * @var string
-     */
-    private $hostname = '';
+    /** @var string */
+    private $hostname;
 
-    /**
-     * @var resource
-     */
+    /** @var resource */
     private $temporaryCertificateFile;
 
-    /**
-     * @param string $hostname
-     * @param string $sourceFile
-     */
-    public function __construct($hostname, $sourceFile) {
+    public function __construct(string $hostname, string $sourceFile) {
         $this->hostname = $hostname;
         $this->createTemporaryCertificateFile($sourceFile);
     }
 
-    /**
-     * @return string
-     */
-    public function getHostname() {
+    public function getHostname(): string {
         return $this->hostname;
     }
 
-    /**
-     * @return string
-     */
-    public function getCertificateFile() {
-        return stream_get_meta_data($this->temporaryCertificateFile)['uri'];
+    public function getCertificateFile(): string {
+        return \stream_get_meta_data($this->temporaryCertificateFile)['uri'];
     }
 
     /**
      * @param string $sourceFile
      */
-    private function createTemporaryCertificateFile($sourceFile) {
-        $this->temporaryCertificateFile = tmpfile();
-        fwrite($this->temporaryCertificateFile, file_get_contents($sourceFile));
+    private function createTemporaryCertificateFile($sourceFile): void {
+        $this->temporaryCertificateFile = \tmpfile();
+        \fwrite($this->temporaryCertificateFile, \file_get_contents($sourceFile));
     }
-
 }

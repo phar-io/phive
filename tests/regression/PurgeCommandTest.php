@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\RegressionTests;
 
 class PurgeCommandTest extends RegressionTestCase {
-
-    public function testDeletesPurgablePhar() {
+    public function testDeletesPurgablePhar(): void {
         $this->addPharToRegistry('phpunit', '5.3.4', 'phpunit-5.3.4.phar');
 
         $this->assertTrue(
@@ -16,5 +15,4 @@ class PurgeCommandTest extends RegressionTestCase {
             $this->getPhiveHomeDirectory()->child('phars')->file('phpunit-5.3.4.phar')->exists()
         );
     }
-
 }

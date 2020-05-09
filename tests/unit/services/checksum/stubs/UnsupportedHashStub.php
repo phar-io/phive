@@ -1,26 +1,16 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class UnsupportedHashStub implements Hash {
-
-    /**
-     * @return string
-     */
-    public function asString() {
-        return 'foo';
-    }
-
-    public static function forContent($content) {
+    public static function forContent(string $content): Hash {
         return new static();
     }
 
-    /**
-     * @param Hash $otherHash
-     *
-     * @return bool
-     */
-    public function equals(Hash $otherHash) {
-        return false;
+    public function asString(): string {
+        return 'foo';
     }
 
+    public function equals(Hash $otherHash): bool {
+        return false;
+    }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -11,8 +11,15 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\PharRegistry
  */
 class PharRegistryTest extends TestCase {
+    protected function setUp(): void {
+        TestStreamWrapper::register('test', __DIR__ . '/fixtures/');
+    }
 
-    public function testReturnsExpectedUnusedPhars() {
+    protected function tearDown(): void {
+        TestStreamWrapper::unregister();
+    }
+
+    public function testReturnsExpectedUnusedPhars(): void {
         $repo = new PharRegistry(
             new XmlFile(
                 new Filename(__DIR__ . '/fixtures/phars.xml'),
@@ -31,7 +38,7 @@ class PharRegistryTest extends TestCase {
         $this->assertEquals($expected, $actual);
     }
 
-    public function testReturnsExpectedUsedPharsByDestination() {
+    public function testReturnsExpectedUsedPharsByDestination(): void {
         $repo = new PharRegistry(
             new XmlFile(
                 new Filename(__DIR__ . '/fixtures/phars.xml'),
@@ -41,7 +48,7 @@ class PharRegistryTest extends TestCase {
             new Directory(__DIR__ . '/fixtures')
         );
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Directory $destination */
+        /** @var Directory|\PHPUnit_Framework_MockObject_MockObject $destination */
         $destination = $this->createMock(Directory::class);
         $destination->method('__toString')
             ->willReturn('/vagrant/phive/tools');
@@ -55,7 +62,7 @@ class PharRegistryTest extends TestCase {
         $this->assertEquals($expected, $actual);
     }
 
-    public function testReturnsExpectedFingerprints() {
+    public function testReturnsExpectedFingerprints(): void {
         $repo = new PharRegistry(
             new XmlFile(
                 new Filename(__DIR__ . '/fixtures/phars.xml'),
@@ -73,13 +80,4 @@ class PharRegistryTest extends TestCase {
 
         $this->assertEquals($expected, $actual);
     }
-
-    protected function setUp() {
-        TestStreamWrapper::register('test', __DIR__ . '/fixtures/');
-    }
-
-    protected function tearDown() {
-        TestStreamWrapper::unregister();
-    }
-
 }

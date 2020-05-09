@@ -1,38 +1,30 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class RequestedPharResolverService {
-
-    /**
-     * @var RequestedPharResolver
-     */
+    /** @var null|RequestedPharResolver */
     private $first;
 
-    /**
-     * @var RequestedPharResolver
-     */
+    /** @var null|RequestedPharResolver */
     private $last;
 
-    /**
-     * @param RequestedPharResolver $resolver
-     */
-    public function addResolver(RequestedPharResolver $resolver) {
+    /** @psalm-assert !null $this->first */
+    public function addResolver(RequestedPharResolver $resolver): void {
         if ($this->first === null) {
             $this->first = $resolver;
         }
+
         if ($this->last !== null) {
             $this->last->setNext($resolver);
         }
         $this->last = $resolver;
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return SourceRepository
-     */
-    public function resolve(RequestedPhar $requestedPhar) {
+    public function resolve(RequestedPhar $requestedPhar): SourceRepository {
+        if ($this->first === null) {
+            throw new ResolveException('Call addResolver before executing resolve');
+        }
+
         return $this->first->resolve($requestedPhar);
     }
-
 }

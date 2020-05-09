@@ -1,45 +1,29 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 class Options {
 
-    /**
-     * @var string[]
-     */
+    /** @var array<string, mixed> */
     private $options = [];
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private $arguments = [];
 
-    /**
-     * @param string $option
-     * @param mixed  $value
-     */
-    public function setOption($option, $value) {
+    public function setOption(string $option, $value): void {
         $this->options[$option] = $value;
     }
 
-    /**
-     * @param $name
-     *
-     * @return bool
-     */
-    public function hasOption($name) {
+    public function hasOption(string $name): bool {
         return isset($this->options[$name]);
     }
 
     /**
-     * @param $name
-     *
-     * @return string
      * @throws CommandOptionsException
      */
-    public function getOption($name) {
+    public function getOption(string $name) {
         if (!$this->hasOption($name)) {
             throw new CommandOptionsException(
-                sprintf('No option with name %s', $name),
+                \sprintf('No option with name %s', $name),
                 CommandOptionsException::NoSuchOption
             );
         }
@@ -47,21 +31,18 @@ class Options {
         return $this->options[$name];
     }
 
-    /**
-     * @param string $argument
-     */
-    public function addArgument($argument) {
+    public function addArgument(string $argument): void {
         $this->arguments[] = $argument;
     }
 
-    public function getArgumentCount() {
-        return count($this->arguments);
+    public function getArgumentCount(): int {
+        return \count($this->arguments);
     }
 
-    public function getArgument($index) {
+    public function getArgument(int $index): string {
         if (!$this->hasArgument($index)) {
             throw new CommandOptionsException(
-                sprintf('No argument at index %s', $index),
+                \sprintf('No argument at index %s', $index),
                 CommandOptionsException::InvalidArgumentIndex
             );
         }
@@ -69,20 +50,19 @@ class Options {
         return $this->arguments[$index];
     }
 
-    public function hasArgument($index) {
+    public function hasArgument(int $index): bool {
         return isset($this->arguments[$index]);
     }
 
-    public function getArguments() {
+    public function getArguments(): array {
         return $this->arguments;
     }
 
-    public function mergeOptions(Options $options) {
-        $result = new Options();
+    public function mergeOptions(self $options): self {
+        $result            = new self();
         $result->arguments = $this->arguments;
-        $result->options = array_merge($this->options, $options->options);
+        $result->options   = \array_merge($this->options, $options->options);
 
         return $result;
     }
-
 }

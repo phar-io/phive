@@ -1,67 +1,44 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class RequestedPharResolverFactory {
-
-    /**
-     * @var Factory
-     */
+    /** @var Factory */
     private $factory;
 
-    /**
-     * @param Factory $factory
-     */
     public function __construct(Factory $factory) {
         $this->factory = $factory;
     }
 
-    /**
-     * @param SourcesListFileLoader $sourcesListFileLoader
-     *
-     * @return PharIoAliasResolver
-     */
-    public function getPharIoAliasResolver(SourcesListFileLoader $sourcesListFileLoader) {
+    public function getPharIoAliasResolver(SourcesListFileLoader $sourcesListFileLoader): PharIoAliasResolver {
         return new PharIoAliasResolver(
             $sourcesListFileLoader,
             $this->factory->getFileDownloader()
         );
     }
 
-    /**
-     * @return DirectUrlResolver
-     */
-    public function getUrlResolver() {
+    public function getUrlResolver(): DirectUrlResolver {
         return new DirectUrlResolver($this->factory->getHttpClient());
     }
 
-    /**
-     * @return LocalAliasResolver
-     */
-    public function getLocalAliasResolver() {
+    public function getLocalAliasResolver(): LocalAliasResolver {
         return new LocalAliasResolver($this->factory->getPharRegistry());
     }
 
-    /**
-     * @return RemoteSourcesListFileLoader
-     */
-    public function getRemoteSourcesListFileLoader() {
+    public function getRemoteSourcesListFileLoader(): RemoteSourcesListFileLoader {
         return $this->factory->getRemoteSourcesListFileLoader();
     }
 
-    /**
-     * @return GithubAliasResolver
-     */
-    public function getGithubAliasResolver() {
+    public function getGithubAliasResolver(): GithubAliasResolver {
         return $this->factory->getGithubAliasResolver();
     }
 
-    /**
-     * @return LocalSourcesListFileLoader
-     */
-    public function getLocalSourcesListFileLoader() {
+    public function getGitlabAliasResolver(): GitlabAliasResolver {
+        return $this->factory->getGitlabAliasResolver();
+    }
+
+    public function getLocalSourcesListFileLoader(): LocalSourcesListFileLoader {
         return new LocalSourcesListFileLoader(
             $this->factory->getConfig()->getHomeDirectory()->file('local.xml')
         );
     }
-
 }

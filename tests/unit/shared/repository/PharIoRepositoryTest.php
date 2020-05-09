@@ -1,6 +1,7 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
+use DOMDocument;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 
@@ -9,7 +10,14 @@ use PHPUnit\Framework\TestCase;
  */
 class PharIoRepositoryTest extends TestCase {
 
-    public function testReturnsExpectedReleases() {
+    /** @var DOMDocument */
+    private $domHelper;
+
+    protected function setUp(): void {
+        $this->domHelper = new DOMDocument();
+    }
+
+    public function testReturnsExpectedReleases(): void {
         $releaseNode1 = $this->getReleaseNodeMock(
             '5.3.0',
             'https://example.com/foo-5.3.0.phar',
@@ -23,16 +31,19 @@ class PharIoRepositoryTest extends TestCase {
             '7a8755061d7ac2bc09f25bf6a867031fb945b4b25a6be1fb41b117893065f76c'
         );
 
-
-
         $pharAlias = $this->getPharAliasMock();
         $pharAlias->method('asString')->willReturn('foo');
 
         $requestedPhar = $this->getRequestedPharMock();
         $requestedPhar->method('getAlias')->willReturn($pharAlias);
 
+        $frag = $this->domHelper->createDocumentFragment();
+        $frag->appendChild($releaseNode1);
+        $frag->appendChild($releaseNode2);
+        $nodeList = $frag->childNodes;
+
         $xmlFile = $this->getXmlFileMock();
-        $xmlFile->method('query')->willReturn([$releaseNode1, $releaseNode2]);
+        $xmlFile->method('query')->willReturn($nodeList);
 
         $expectedReleases = new ReleaseCollection();
         $expectedReleases->add(
@@ -58,7 +69,7 @@ class PharIoRepositoryTest extends TestCase {
         $this->assertEquals($expectedReleases, $repository->getReleasesByRequestedPhar($requestedPhar));
     }
 
-    public function testThrowsExceptionIfReleaseHasUnsupportedHashType() {
+    public function testThrowsExceptionIfReleaseHasUnsupportedHashType(): void {
         $releaseNode = $this->getReleaseNodeMock(
             '5.3.0',
             'https://example.com/foo-5.3.0.phar',
@@ -69,8 +80,11 @@ class PharIoRepositoryTest extends TestCase {
         $requestedPhar = $this->getRequestedPharMock();
         $requestedPhar->method('getAlias')->willReturn($this->getPharAliasMock());
 
+        $frag = $this->domHelper->createDocumentFragment();
+        $frag->appendChild($releaseNode);
+
         $xmlFile = $this->getXmlFileMock();
-        $xmlFile->method('query')->willReturn([$releaseNode]);
+        $xmlFile->method('query')->willReturn($frag->childNodes);
 
         $repository = new PharIoRepository($xmlFile);
 
@@ -88,36 +102,20 @@ class PharIoRepositoryTest extends TestCase {
      * @return \DOMElement|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getReleaseNodeMock($version, $url, $hashType, $hash) {
-        $hashNode = $this->createMock(\DOMElement::class);
-        $hashNode->method('getAttribute')->willReturnMap(
-            [
-                ['type', $hashType],
-                ['value', $hash]
-            ]
-        );
+        $hashNode = $this->domHelper->createElement('hash');
+        $hashNode->setAttribute('type', $hashType);
+        $hashNode->setAttribute('value', $hash);
 
-        $signatureNode = $this->createMock(\DOMElement::class);
-        $signatureNode->method('getAttribute')->with('url')->willReturn($url . '.asc');
+        $signatureNode = $this->domHelper->createElement('signature');
+        $signatureNode->setAttribute('url', $url . '.asc');
 
-        $hashNodeList = $this->createMock(\DOMNodeList::class);
-        $hashNodeList->method('item')->with('0')->willReturn($hashNode);
+        $node = $this->domHelper->createElement('release');
+        $node->setAttribute('version', $version);
+        $node->setAttribute('url', $url);
 
-        $signatureNodeList = $this->createMock(\DOMNodeList::class);
-        $signatureNodeList->method('item')->with('0')->willReturn($signatureNode);
+        $node->appendChild($hashNode);
+        $node->appendChild($signatureNode);
 
-        $node = $this->createMock(\DOMElement::class);
-        $node->method('getAttribute')->willReturnMap(
-            [
-                ['version', $version],
-                ['url', $url]
-            ]
-        );
-        $node->method('getElementsByTagName')->willReturnMap(
-            [
-                ['hash', $hashNodeList],
-                ['signature', $signatureNodeList]
-            ]
-        );
         return $node;
     }
 
@@ -129,7 +127,7 @@ class PharIoRepositoryTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharAlias
+     * @return PharAlias|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharAliasMock() {
         return $this->createMock(PharAlias::class);
@@ -141,5 +139,4 @@ class PharIoRepositoryTest extends TestCase {
     private function getRequestedPharMock() {
         return $this->createMock(RequestedPhar::class);
     }
-
 }

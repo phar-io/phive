@@ -5,13 +5,18 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli;
 use Phar;
 
-if (!defined('HHVM_VERSION') && (version_compare(phpversion(), '5.6', 'lt'))) {
+if (defined('HHVM_VERSION')) {
+    fwrite(STDERR, "HHVM runtime not supported. Please use with PHP 7.1 or later.\n\n");
+    die(99);
+}
+
+if (PHP_VERSION_ID < 70100) {
     fwrite(
         STDERR,
         sprintf(
-            "Phive requires PHP 5.6 or later; " .
+            'Phive requires PHP 7.1 or later; ' .
             "Upgrading to the latest version of PHP is highly recommended. (Version used: %s)\n\n",
-            phpversion()
+            PHP_VERSION
         )
     );
 

@@ -1,20 +1,20 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
-use PharIo\Phive\Cli;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PharIo\Phive\KeyService
  */
 class KeyServiceTest extends TestCase {
-
-    public function testInvokesImporter() {
+    public function testInvokesImporter(): void {
         $input = $this->getInputMock();
         $input->method('confirm')->willReturn(true);
 
-        $importer = $this->getKeyImporterMock();
-        $importer->method('importKey')->willReturn(['keydata']);
+        $resultMock = $this->createMock(KeyImportResult::class);
+        $importer   = $this->getKeyImporterMock();
+        $importer->method('importKey')->willReturn($resultMock);
 
         $key = $this->getPublicKeyMock();
         $key->method('getInfo')->willReturn('keyinfo');
@@ -23,19 +23,20 @@ class KeyServiceTest extends TestCase {
         $downloader = $this->getKeyDownloaderMock();
         $downloader->method('download')->willReturn($key);
 
+        /** @var KeyIdCollection|MockObject $trusted */
         $trusted = $this->createMock(KeyIdCollection::class);
 
         $service = new KeyService($downloader, $importer, $trusted, $this->getOutputMock(), $input);
 
-        $this->assertEquals(['keydata'], $service->importKey('foo', []));
+        $this->assertSame($resultMock, $service->importKey('foo', []));
     }
 
-    public function testOutputsAWarningIfTheKeyChanged() {
+    public function testOutputsAWarningIfTheKeyChanged(): void {
         $input = $this->getInputMock();
         $input->method('confirm')->willReturn(true);
 
         $importer = $this->getKeyImporterMock();
-        $importer->method('importKey')->willReturn(['keydata']);
+        $importer->method('importKey')->willReturn($this->createMock(KeyImportResult::class));
 
         $key = $this->getPublicKeyMock();
         $key->method('getInfo')->willReturn('keyinfo');
@@ -54,7 +55,7 @@ class KeyServiceTest extends TestCase {
         $service->importKey('foo', ['bar']);
     }
 
-    public function testImportKeyWillNotSucceedIfUserDeclinedImport() {
+    public function testImportKeyWillNotSucceedIfUserDeclinedImport(): void {
         $input = $this->getInputMock();
         $input->method('confirm')->willReturn(false);
 
@@ -68,33 +69,33 @@ class KeyServiceTest extends TestCase {
         $trusted = $this->createMock(KeyIdCollection::class);
 
         $service = new KeyService($downloader, $this->getKeyImporterMock(), $trusted, $this->getOutputMock(), $input);
-        $result = $service->importKey('some id', []);
+        $result  = $service->importKey('some id', []);
         $this->assertFalse($result->isSuccess());
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Input
+     * @return Cli\Input|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getInputMock() {
         return $this->createMock(Cli\Input::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Cli\Output
+     * @return Cli\Output|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOutputMock() {
         return $this->createMock(Cli\Output::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|KeyDownloader
+     * @return KeyDownloader|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getKeyDownloaderMock() {
         return $this->createMock(KeyDownloader::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|KeyImporter
+     * @return KeyImporter|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getKeyImporterMock() {
         return $this->createMock(KeyImporter::class);

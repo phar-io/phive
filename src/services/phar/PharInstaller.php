@@ -1,78 +1,58 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
 
 abstract class PharInstaller {
-
-    /**
-     * @var Cli\Output
-     */
+    /** @var Cli\Output */
     private $output;
 
-    /**
-     * @param Cli\Output $output
-     */
     public function __construct(Cli\Output $output) {
         $this->output = $output;
     }
 
     /**
-     * @param File     $phar
-     * @param Filename $destination
-     * @param bool     $copy
+     * @param bool $copy
      */
-    public function install(File $phar, Filename $destination, $copy) {
+    public function install(File $phar, Filename $destination, $copy): void {
         $this->ensureDestinationIsWritable($destination);
 
         if ($destination->exists()) {
-            unlink($destination->asString());
+            \unlink($destination->asString());
         }
 
         if ($copy) {
             $this->copy($phar->getFilename(), $destination);
+
             return;
         }
         $this->link($phar->getFilename(), $destination);
     }
 
-    /**
-     * @return Cli\Output
-     */
-    protected function getOutput() {
+    protected function getOutput(): Cli\Output {
         return $this->output;
     }
 
-    /**
-     * @param Filename $phar
-     * @param Filename $destination
-     */
-    protected function copy(Filename $phar, Filename $destination) {
+    protected function copy(Filename $phar, Filename $destination): void {
         $this->getOutput()->writeInfo(
-            sprintf('Copying %s to %s', basename($phar->asString()), $destination->asString())
+            \sprintf('Copying %s to %s', \basename($phar->asString()), $destination->asString())
         );
-        copy($phar->asString(), $destination->asString());
-        chmod($destination, 0755);
+        \copy($phar->asString(), $destination->asString());
+        \chmod($destination->asString(), 0755);
     }
 
     /**
-     * @param Filename $phar
-     * @param Filename $destination
-     *
      * @throws LinkCreationFailedException
      */
-    abstract protected function link(Filename $phar, Filename $destination);
+    abstract protected function link(Filename $phar, Filename $destination): void;
 
     /**
-     * @param Filename $destination
-     *
      * @throws FileNotWritableException
      */
-    private function ensureDestinationIsWritable(Filename $destination) {
+    private function ensureDestinationIsWritable(Filename $destination): void {
         if (!$destination->isWritable()) {
-            throw new FileNotWritableException(sprintf('File %s is not writable.', $destination->asString()));
+            throw new FileNotWritableException(\sprintf('File %s is not writable.', $destination->asString()));
         }
     }
-
 }

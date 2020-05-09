@@ -1,20 +1,11 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 /**
  * Resolves a requested PHAR to potential Sources
  */
 interface RequestedPharResolver {
+    public function resolve(RequestedPhar $requestedPhar): SourceRepository;
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return SourceRepository
-     */
-    public function resolve(RequestedPhar $requestedPhar);
-
-    /**
-     * @param RequestedPharResolver $resolver
-     */
-    public function setNext(RequestedPharResolver $resolver);
+    public function setNext(self $resolver): void;
 }

@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class InstallCommandConfigException extends \Exception implements Exception {
-
-    const UnsupportedProtocol = 1;
-
+    public const UnsupportedProtocol = 1;
 }

@@ -1,50 +1,36 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
-use PharIo\Phive\Cli;
 
 class InstallCommand implements Cli\Command {
 
-    /**
-     * @var InstallCommandConfig
-     */
+    /** @var InstallCommandConfig */
     private $config;
 
-    /**
-     * @var InstallService
-     */
+    /** @var InstallService */
     private $installService;
 
-    /**
-     * @var RequestedPharResolverService
-     */
+    /** @var RequestedPharResolverService */
     private $pharResolver;
 
-    /**
-     * @var ReleaseSelector
-     */
+    /** @var ReleaseSelector */
     private $selector;
 
-    /**
-     * @param InstallCommandConfig         $config
-     * @param InstallService               $installService
-     * @param RequestedPharResolverService $pharResolver
-     */
     public function __construct(
         InstallCommandConfig $config,
         InstallService $installService,
         RequestedPharResolverService $pharResolver,
         ReleaseSelector $selector
     ) {
-        $this->config = $config;
+        $this->config         = $config;
         $this->installService = $installService;
-        $this->pharResolver = $pharResolver;
-        $this->selector = $selector;
+        $this->pharResolver   = $pharResolver;
+        $this->selector       = $selector;
     }
 
-    public function execute() {
+    public function execute(): void {
         $targetDirectory = $this->getConfig()->getTargetDirectory();
 
         foreach ($this->getConfig()->getRequestedPhars() as $requestedPhar) {
@@ -52,49 +38,29 @@ class InstallCommand implements Cli\Command {
         }
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     * @param Directory     $targetDirectory
-     */
-    protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory) {
-        $release = $this->resolveToRelease($requestedPhar);
+    protected function installRequestedPhar(RequestedPhar $requestedPhar, Directory $targetDirectory): void {
+        $release     = $this->resolveToRelease($requestedPhar);
         $destination = $this->getDestination($release->getUrl()->getPharName(), $requestedPhar, $targetDirectory);
 
-        $this->installService->execute($release, $requestedPhar, $destination);
+        $this->installService->execute($release, $requestedPhar, $destination, !$this->getConfig()->doNotAddToPhiveXml());
     }
 
-    /**
-     * @param RequestedPhar $requestedPhar
-     *
-     * @return SupportedRelease
-     */
-    private function resolveToRelease(RequestedPhar $requestedPhar) {
+    protected function getConfig(): InstallCommandConfig {
+        return $this->config;
+    }
+
+    private function resolveToRelease(RequestedPhar $requestedPhar): SupportedRelease {
         $repository = $this->pharResolver->resolve($requestedPhar);
-        $releases = $repository->getReleasesByRequestedPhar($requestedPhar);
+        $releases   = $repository->getReleasesByRequestedPhar($requestedPhar);
 
         return $this->selector->select($releases, $requestedPhar->getLockedVersion(), $this->config->forceAcceptUnsignedPhars());
     }
 
-    /**
-     * @param string        $pharName
-     * @param RequestedPhar $requestedPhar
-     * @param Directory     $destination
-     *
-     * @return Filename
-     */
-    private function getDestination($pharName, RequestedPhar $requestedPhar, Directory $destination) {
+    private function getDestination(string $pharName, RequestedPhar $requestedPhar, Directory $destination): Filename {
         if ($requestedPhar->hasLocation()) {
             return $requestedPhar->getLocation();
         }
 
         return $destination->file($pharName);
     }
-
-    /**
-     * @return InstallCommandConfig
-     */
-    protected function getConfig() {
-        return $this->config;
-    }
-
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -7,42 +7,28 @@ use PharIo\FileSystem\Directory;
  * @codeCoverageIgnore
  */
 class Git {
-
-    /**
-     * @var Directory;
-     */
+    /** @var Directory */
     private $workingDirectory;
 
-    /**
-     * @param Directory $workingDirectory
-     */
     public function __construct(Directory $workingDirectory) {
         $this->workingDirectory = $workingDirectory;
     }
 
-    /**
-     * @param Directory $directory
-     *
-     * @return bool
-     */
-    public function isRepository(Directory $directory) {
-        return is_dir($directory . '/.git');
+    public function isRepository(Directory $directory): bool {
+        return \is_dir($directory . '/.git');
     }
 
     /**
-     * @param Directory $directory
-     *
      * @throws GitException
-     *
-     * @return string
      */
-    public function getMostRecentTag(Directory $directory) {
+    public function getMostRecentTag(Directory $directory): string {
         if (!$this->isRepository($directory)) {
-            throw new GitException(sprintf('%s is not a git repository', $directory));
+            throw new GitException(\sprintf('%s is not a git repository', (string)$directory));
         }
-        chdir($directory);
-        $tag = @exec('git describe --tags --always --dirty 2>' . $this->getDevNull(), $output, $returnCode);
-        chdir($this->workingDirectory);
+        \chdir($directory->__toString());
+        $tag = @\exec('git describe --tags --always --dirty 2>' . $this->getDevNull(), $output, $returnCode);
+        \chdir($this->workingDirectory->__toString());
+
         if ($returnCode !== 0) {
             throw new GitException('Could not determine most recent tag');
         }
@@ -50,11 +36,7 @@ class Git {
         return $tag;
     }
 
-    /**
-     * @return string
-     */
-    private function getDevNull() {
-        return strtolower(substr(PHP_OS, 0, 3)) == 'win' ? 'nul' : '/dev/null';
+    private function getDevNull(): string {
+        return \strtolower(\substr(\PHP_OS, 0, 3)) === 'win' ? 'nul' : '/dev/null';
     }
-
 }

@@ -1,41 +1,28 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\Phive\Cli\GeneralContext;
 
 class InstallContext extends GeneralContext {
+    public function requiresValue(string $option): bool {
+        return \in_array($option, ['target', 'trust-gpg-keys'], true);
+    }
 
-    /**
-     * @return array
-     */
-    protected function getKnownOptions() {
+    protected function getKnownOptions(): array {
         return [
-            'target'         => 't',
-            'copy'           => 'c',
-            'global'         => 'g',
-            'temporary'      => false,
-            'trust-gpg-keys' => false,
+            'target'                => 't',
+            'copy'                  => 'c',
+            'global'                => 'g',
+            'temporary'             => false,
+            'trust-gpg-keys'        => false,
             'force-accept-unsigned' => false
         ];
     }
 
-    /**
-     * @return array
-     */
-    protected function getConflictingOptions() {
+    protected function getConflictingOptions(): array {
         return [
             ['global' => 'temporary'],
             ['global' => 'target']
         ];
     }
-
-    /**
-     * @param string $option
-     *
-     * @return bool
-     */
-    public function requiresValue($option) {
-        return in_array($option, ['target', 'trust-gpg-keys'], true);
-    }
-
 }

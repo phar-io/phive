@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
@@ -9,73 +9,46 @@ use PharIo\Version\Version;
 
 class Phar {
 
-    /**
-     * @var string
-     */
-    private $name = '';
+    /** @var string */
+    private $name;
 
-    /**
-     * @var Version
-     */
+    /** @var Version */
     private $version;
 
-    /**
-     * @var File
-     */
+    /** @var File */
     private $file;
 
-    /**
-     * @var string|null
-     */
+    /** @var null|string */
     private $signatureFingerprint;
 
-    /**
-     * @param string      $name
-     * @param Version     $version
-     * @param File        $file
-     * @param string|null $signatureFingerprint
-     */
-    public function __construct($name, Version $version, File $file, $signatureFingerprint = null) {
-        $this->name = $name;
-        $this->file = $file;
-        $this->version = $version;
+    public function __construct(string $name, Version $version, File $file, string $signatureFingerprint = null) {
+        $this->name                 = $name;
+        $this->file                 = $file;
+        $this->version              = $version;
         $this->signatureFingerprint = $signatureFingerprint;
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
+    public function getName(): string {
         return $this->name;
     }
 
-    /**
-     * @return Version
-     */
-    public function getVersion() {
+    public function getVersion(): Version {
         return $this->version;
     }
 
-    /**
-     * @return File
-     */
-    public function getFile() {
+    public function getFile(): File {
         return $this->file;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasSignatureFingerprint() {
+    /** @psalm-assert-if-true string $this->signatureFingerprint */
+    public function hasSignatureFingerprint(): bool {
         return $this->signatureFingerprint !== null;
     }
 
     /**
-     * @return string
-     *
      * @throws PharException
      */
-    public function getSignatureFingerprint() {
+    public function getSignatureFingerprint(): string {
         if (!$this->hasSignatureFingerprint()) {
             throw new PharException('No signature fingerprint set');
         }
@@ -83,11 +56,8 @@ class Phar {
         return $this->signatureFingerprint;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasManifest() {
-        return file_exists(
+    public function hasManifest(): bool {
+        return \file_exists(
             'phar://' .
             $this->file->getFilename()->asString() .
             '/manifest.xml'
@@ -95,15 +65,13 @@ class Phar {
     }
 
     /**
-     * @return Manifest
-     *
      * @throws PharException
      */
-    public function getManifest() {
+    public function getManifest(): Manifest {
         try {
-            return ManifestLoader::fromPhar($this->file->getFilename());
+            return ManifestLoader::fromPhar($this->file->getFilename()->asString());
         } catch (ManifestLoaderException $e) {
-            throw new PharException("Loading manifest failed.", 0, $e);
+            throw new PharException('Loading manifest failed.', 0, $e);
         }
     }
 }

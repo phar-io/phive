@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -11,42 +11,22 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\UpdateCommandConfig
  */
 class UpdateCommandConfigTest extends TestCase {
-
     use ScalarTestDataProvider;
 
-    public function testGetTargetDirectory() {
-        $directory = $this->getDirectoryMock();
+    public function testGetTargetDirectory(): void {
+        $directory   = $this->getDirectoryMock();
         $locatorMock = $this->getTargetDirectoryLocatorMock();
         $locatorMock->method('getTargetDirectory')->willReturn($directory);
 
         $commandConfig = new UpdateCommandConfig(
-            $this->getOptionsMock(), $this->getPhiveXmlConfigMock(), $locatorMock
+            $this->getOptionsMock(),
+            $this->getPhiveXmlConfigMock(),
+            $locatorMock
         );
         $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
 
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
-     */
-    private function getDirectoryMock() {
-        return $this->createMock(Directory::class);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Options
-     */
-    private function getOptionsMock() {
-        return $this->createMock(Options::class);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PhiveXmlConfig
-     */
-    private function getPhiveXmlConfigMock() {
-        return $this->createMock(PhiveXmlConfig::class);
-    }
-
-    public function testGetRequestedPharsWithoutFilter() {
+    public function testGetRequestedPharsWithoutFilter(): void {
         $options = $this->getOptionsMock();
         $options->expects($this->once())
             ->method('getArgumentCount')
@@ -65,7 +45,8 @@ class UpdateCommandConfigTest extends TestCase {
         );
         $phpdocPhar = new RequestedPhar(
             new PharAlias('phpdoc'),
-            new AnyVersionConstraint(), new AnyVersionConstraint()
+            new AnyVersionConstraint(),
+            new AnyVersionConstraint()
         );
         $phpunitPhar = new RequestedPhar(
             new PharAlias('phpunit'),
@@ -79,10 +60,10 @@ class UpdateCommandConfigTest extends TestCase {
             ->willReturn($configuredPhars);
 
         $commandConfig = new UpdateCommandConfig($options, $phiveXmlConfig, $this->getTargetDirectoryLocatorMock());
-        $this->assertEquals([$phpabPhar,$phpdocPhar,$phpunitPhar], $commandConfig->getRequestedPhars());
+        $this->assertEquals([$phpabPhar, $phpdocPhar, $phpunitPhar], $commandConfig->getRequestedPhars());
     }
 
-    public function testGetRequestedPharsWithFilter() {
+    public function testGetRequestedPharsWithFilter(): void {
         $options = $this->getOptionsMock();
         $options->expects($this->any())
             ->method('getArgumentCount')
@@ -102,10 +83,14 @@ class UpdateCommandConfigTest extends TestCase {
         ];
 
         $phpunitPhar = new RequestedPhar(
-            new PharAlias('phpunit'), new AnyVersionConstraint(), new AnyVersionConstraint()
+            new PharAlias('phpunit'),
+            new AnyVersionConstraint(),
+            new AnyVersionConstraint()
         );
         $phpabPhar = new RequestedPhar(
-            new PharAlias('phpab'), new ExactVersionConstraint('1.12.0'), new ExactVersionConstraint('1.12.0')
+            new PharAlias('phpab'),
+            new ExactVersionConstraint('1.12.0'),
+            new ExactVersionConstraint('1.12.0')
         );
 
         $phiveXmlConfig = $this->getPhiveXmlConfigMock();
@@ -120,10 +105,30 @@ class UpdateCommandConfigTest extends TestCase {
     }
 
     /**
+     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getDirectoryMock() {
+        return $this->createMock(Directory::class);
+    }
+
+    /**
+     * @return Options|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getOptionsMock() {
+        return $this->createMock(Options::class);
+    }
+
+    /**
+     * @return PhiveXmlConfig|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getPhiveXmlConfigMock() {
+        return $this->createMock(PhiveXmlConfig::class);
+    }
+
+    /**
      * @return \PHPUnit_Framework_MockObject_MockObject|TargetDirectoryLocator
      */
     private function getTargetDirectoryLocatorMock() {
         return $this->createMock(TargetDirectoryLocator::class);
     }
-
 }

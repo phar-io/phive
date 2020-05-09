@@ -1,42 +1,25 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 
 class RemoteSourcesListFileLoader implements SourcesListFileLoader {
 
-    /**
-     * @var Url
-     */
+    /** @var Url */
     private $sourceUrl;
 
-    /**
-     * @var Filename
-     */
+    /** @var Filename */
     private $filename;
 
-    /**
-     * @var FileDownloader
-     */
+    /** @var FileDownloader */
     private $fileDownloader;
 
-    /**
-     * @var Cli\Output
-     */
+    /** @var Cli\Output */
     private $output;
 
-    /**
-     * @var \DateTimeImmutable
-     */
+    /** @var \DateTimeImmutable */
     private $maxAge;
 
-    /**
-     * @param Url                $sourceUrl
-     * @param Filename           $filename
-     * @param FileDownloader     $fileDownloader
-     * @param Cli\Output         $output
-     * @param \DateTimeImmutable $maxAge
-     */
     public function __construct(
         Url $sourceUrl,
         Filename $filename,
@@ -44,17 +27,14 @@ class RemoteSourcesListFileLoader implements SourcesListFileLoader {
         Cli\Output $output,
         \DateTimeImmutable $maxAge
     ) {
-        $this->sourceUrl = $sourceUrl;
-        $this->filename = $filename;
+        $this->sourceUrl      = $sourceUrl;
+        $this->filename       = $filename;
         $this->fileDownloader = $fileDownloader;
-        $this->output = $output;
-        $this->maxAge = $maxAge;
+        $this->output         = $output;
+        $this->maxAge         = $maxAge;
     }
 
-    /**
-     * @return SourcesList
-     */
-    public function load() {
+    public function load(): SourcesList {
         if (!$this->filename->exists() || $this->filename->isOlderThan($this->maxAge)) {
             $this->downloadFromSource();
         }
@@ -71,10 +51,9 @@ class RemoteSourcesListFileLoader implements SourcesListFileLoader {
     /**
      * @throws DownloadFailedException
      */
-    public function downloadFromSource() {
+    public function downloadFromSource(): void {
         $this->output->writeInfo('Fetching repository list');
         $file = $this->fileDownloader->download($this->sourceUrl);
         $file->saveAs($this->filename);
     }
-
 }

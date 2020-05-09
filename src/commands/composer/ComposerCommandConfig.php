@@ -1,24 +1,14 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
-use PharIo\Phive\Cli;
 
 class ComposerCommandConfig extends InstallCommandConfig {
 
-    /**
-     * @var Directory
-     */
+    /** @var Directory */
     private $workingDirectory;
 
-    /**
-     * @param Cli\Options            $options
-     * @param PhiveXmlConfig         $phiveXmlConfig
-     * @param Environment            $environment
-     * @param TargetDirectoryLocator $targetDirectoryLocator
-     * @param Directory              $workingDirectory
-     */
     public function __construct(
         Cli\Options $options,
         PhiveXmlConfig $phiveXmlConfig,
@@ -30,11 +20,7 @@ class ComposerCommandConfig extends InstallCommandConfig {
         $this->workingDirectory = $workingDirectory;
     }
 
-    /**
-     * @return Filename
-     */
-    public function getComposerFilename() {
+    public function getComposerFilename(): Filename {
         return $this->workingDirectory->file('composer.json');
     }
-
 }

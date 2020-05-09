@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -10,11 +10,10 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\ResetCommand
  */
 class ResetCommandTest extends TestCase {
-
-    public function testInstallsExpectedPhars() {
+    public function testInstallsExpectedPhars(): void {
         $pharRegistry = $this->getPharRegistryMock();
-        $environment = $this->getEnvironmentMock();
-        $installer = $this->getPharInstallerMock();
+        $environment  = $this->getEnvironmentMock();
+        $installer    = $this->getPharInstallerMock();
 
         $command = new ResetCommand(
             $this->getConfigMock(),
@@ -43,11 +42,11 @@ class ResetCommandTest extends TestCase {
         $command->execute();
     }
 
-    public function testOnlyInstallsPharsMatchingProvidedAliases() {
-        $config = $this->getConfigMock();
+    public function testOnlyInstallsPharsMatchingProvidedAliases(): void {
+        $config       = $this->getConfigMock();
         $pharRegistry = $this->getPharRegistryMock();
-        $environment = $this->getEnvironmentMock();
-        $installer = $this->getPharInstallerMock();
+        $environment  = $this->getEnvironmentMock();
+        $installer    = $this->getPharInstallerMock();
 
         $command = new ResetCommand(
             $config,
@@ -93,28 +92,28 @@ class ResetCommandTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharRegistry
+     * @return PharRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharRegistryMock() {
         return $this->createMock(PharRegistry::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Environment
+     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PharInstaller
+     * @return PharInstaller|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharInstallerMock() {
         return $this->createMock(PharInstaller::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
@@ -127,7 +126,6 @@ class ResetCommandTest extends TestCase {
      * @return Phar|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharMock($name, $filename) {
-
         $file = $this->createMock(File::class);
         $file->method('getFilename')
             ->willReturn($filename);
@@ -142,5 +140,4 @@ class ResetCommandTest extends TestCase {
 
         return $mock;
     }
-
 }

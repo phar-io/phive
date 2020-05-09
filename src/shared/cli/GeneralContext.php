@@ -1,100 +1,66 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 abstract class GeneralContext implements Context {
 
-    /**
-     * @var Options
-     */
+    /** @var Options */
     private $options;
 
-    /**
-     * InstallContext constructor.
-     */
     public function __construct() {
         $this->options = new Options();
     }
 
-    /**
-     * @param $arg
-     */
-    public function addArgument($arg) {
+    public function addArgument(string $arg): void {
         $this->options->addArgument($arg);
     }
 
     /**
-     * @param string $option
-     * @param mixed  $value
+     * @throws ContextException
      */
-    public function setOption($option, $value) {
+    public function setOption(string $option, $value): void {
         $this->ensureNotConflicting($option);
         $this->options->setOption($option, $value);
     }
 
-    /**
-     * @return Options
-     */
-    public function getOptions() {
+    public function getOptions(): Options {
         return $this->options;
     }
 
-    /**
-     * @return bool
-     */
-    public function canContinue() {
+    public function canContinue(): bool {
         return true;
     }
 
-    /**
-     * @param $option
-     *
-     * @return bool
-     */
-    public function knowsOption($option) {
-        return array_key_exists($option, $this->getKnownOptions());
+    public function knowsOption(string $option): bool {
+        return \array_key_exists($option, $this->getKnownOptions());
     }
 
-    /**
-     * @param string $option
-     *
-     * @return bool
-     */
-    public function requiresValue($option) {
+    public function requiresValue(string $option): bool {
         return false;
     }
 
     /**
-     * @param string $char
-     *
-     * @return bool
      * @throws ContextException
      */
-    public function hasOptionForChar($char) {
-        if (!is_string($char) || strlen($char) !== 1) {
+    public function hasOptionForChar(string $char): bool {
+        if (\strlen($char) !== 1) {
             throw new ContextException('short option must be a string of length 1');
         }
 
-        return in_array($char, $this->getKnownOptions(), true);
+        return \in_array($char, $this->getKnownOptions(), true);
     }
 
     /**
-     * @param string $char
-     *
-     * @return mixed
      * @throws ContextException
      */
-    public function getOptionForChar($char) {
+    public function getOptionForChar(string $char): string {
         if (!$this->hasOptionForChar($char)) {
             throw new ContextException('No short option with this char');
         }
 
-        return array_search($char, $this->getKnownOptions(), true);
+        return \array_search($char, $this->getKnownOptions(), true);
     }
 
-    /**
-     * @return bool
-     */
-    public function acceptsArguments() {
+    public function acceptsArguments(): bool {
         return true;
     }
 
@@ -103,10 +69,8 @@ abstract class GeneralContext implements Context {
      *
      * Format: (key == name, value = short-char or false, e.g. ['long' => 'l', 'other' => false])
      * Return empty array if no options are supported
-     *
-     * @return array
      */
-    protected function getKnownOptions() {
+    protected function getKnownOptions(): array {
         return [];
     }
 
@@ -116,25 +80,25 @@ abstract class GeneralContext implements Context {
      * Format: Array of pairs (e.g. [ ['a' => 'b'], ['a' => 'c'] ])
      * Lookup is performed both ways
      * Return empty array if no options are conflicting
-     *
-     * @return array
      */
-    protected function getConflictingOptions() {
+    protected function getConflictingOptions(): array {
         return [];
     }
 
-    private function ensureNotConflicting($option) {
+    private function ensureNotConflicting(string $option): void {
         $list = $this->getConflictingOptions();
+
         foreach ($list as $pair) {
             foreach ($pair as $opt1 => $opt2) {
                 if ($option !== $opt1 && $option !== $opt2) {
                     continue;
                 }
+
                 if (($option === $opt1 && $this->options->hasOption($opt2)) ||
                     ($option === $opt2 && $this->options->hasOption($opt1))
                 ) {
                     throw new ContextException(
-                        sprintf("Options '%s' and '%s' cannot be combined", $opt1, $opt2),
+                        \sprintf("Options '%s' and '%s' cannot be combined", $opt1, $opt2),
                         ContextException::ConflictingOptions
                     );
                 }

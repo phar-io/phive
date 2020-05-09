@@ -2,6 +2,101 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.14.0] - 2020-04-??
+
+Please note: Version 0.14.x requires PHP 7.2 or later.
+Thanks to [MacFJA](https://github.com/MacFJA) for major contributions to this release!
+
+### Added
+
+* [#40](https://github.com/phar-io/phive/issues/40): Support installing PHARs from locations requiring authentication via [PR #232](https://github.com/phar-io/phive/pull/232) by [MacFJA](https://github.com/MacFJA)
+* [#72](https://github.com/phar-io/phive/issues/72): List of all installed Phars via [PR #229](https://github.com/phar-io/phive/pull/229) by [MacFJA](https://github.com/MacFJA) 
+* via [PR #230](https://github.com/phar-io/phive/pull/230) by [MacFJA](https://github.com/MacFJA): GitLab as an alias resolver
+* [#223](https://github.com/phar-io/phive/issues/223): phive outdated: How to know when packages needs to be updated?
+
+### Fixed
+
+* [#218](https://github.com/phar-io/phive/issues/218): Error when we are unable to read CLI input via [PR #235](https://github.com/phar-io/phive/pull/235) by [MacFJA](https://github.com/MacFJA) 
+* [#226](https://github.com/phar-io/phive/issues/226): Crappy connection results in type error
+* [#228](https://github.com/phar-io/phive/issues/228): [ERROR] No RateLimit present in response
+* [#236](https://github.com/phar-io/phive/issues/236): Temporary option not used via [PR #238](https://github.com/phar-io/phive/pull/238) by [MacFJA](https://github.com/MacFJA)
+
+### Changed
+  
+* [#217](https://github.com/phar-io/phive/issues/217): Hard dependency on `which` command via [PR #231](https://github.com/phar-io/phive/pull/231) by [MacFJA](https://github.com/MacFJA)
+
+
+
+## [0.13.2] - 2019-10-30
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+
+* Removed dangling debug line
+
+
+## [0.13.1] - 2019-10-29
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+
+* [#208](https://github.com/phar-io/phive/issues/208): Parsing key data failed with error code 2: unlink
+* via [PR #207](https://github.com/phar-io/phive/pull/207) by [jan-di](https://github.com/jan-di): Support paths with spaces in the username (on windows)
+* [#153](https://github.com/phar-io/phive/issues/153): via [PR #214](https://github.com/phar-io/phive/pull/214) by [jaapio](https://github.com/jaapio): install --copy flag ignored
+
+## [0.13.0] - 2019-09-19
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+
+* [#206](https://github.com/phar-io/phive/issues/206): Phpstan key produces errors
+
+### Changed
+
+* Since the new openpgp keyserver does not offer the same information on keys
+  as the sks keyservers, the local gpg binary / ext/gnupg is now used to gather
+  information on keys prior to importing them to the phive key ring.
+  Please report any issues this change may cause!
+
+* [#185](https://github.com/phar-io/phive/issues/185): Support 0x prefix in --trust-gpg-keys
+
+
+## [0.12.4] - 2019-08-11
+
+### Fixed
+
+* [#203](https://github.com/phar-io/phive/issues/203): Error installing behat
+
+## [0.12.3] - 2019-07-24
+
+### Fixed
+
+* [#202](https://github.com/phar-io/phive/issues/202): Installing different version of phpstan or php-cs-fixer does not work.
+
+### Changed
+
+* Added `keys.openpgp.org` to keyserver list
+* Changed order of keyservers: new verifing keyserver first, use fedora & ubuntu second, sks as last resort
+  (This will be less of an issue once [#158](https://github.com/phar-io/phive/issues/158) is implemented.)
+
+## [0.12.2] - 2019-06-02
+
+### Fixed
+
+* [#181](https://github.com/phar-io/phive/issues/181): Fixed umlauts in GPG key info
+* Retries of failed key downloads now always use a different key server
+
+### Changed
+
+* PHPStan added to the repository (thanks to @szepeviktor!)
+* Improved error message on failed signature verification
+* Added `keys.fedoraproject.org` and `keyserver.ubuntu.com` to keyservers
+* Dropped support for PHP < 7.0
+* Dropped support for HHVM
+
 ## [0.12.1] - 2018-12-05
 
 ### Fixed
@@ -261,7 +356,14 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.12.1...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.14.0...HEAD
+[0.14.0]: https://github.com/phar-io/phive/compare/0.13.2...0.14.0
+[0.13.2]: https://github.com/phar-io/phive/compare/0.13.0...0.13.2
+[0.13.1]: https://github.com/phar-io/phive/compare/0.13.0...0.13.1
+[0.13.0]: https://github.com/phar-io/phive/compare/0.12.4...0.13.0
+[0.12.4]: https://github.com/phar-io/phive/compare/0.12.3...0.12.4
+[0.12.3]: https://github.com/phar-io/phive/compare/0.12.2...0.12.3
+[0.12.2]: https://github.com/phar-io/phive/compare/0.12.1...0.12.2
 [0.12.1]: https://github.com/phar-io/phive/compare/0.12.0...0.12.1
 [0.12.0]: https://github.com/phar-io/phive/compare/0.11.0...0.12.0
 [0.11.0]: https://github.com/phar-io/phive/compare/0.10.0...0.11.0

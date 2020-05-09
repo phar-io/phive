@@ -1,74 +1,52 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class HttpResponse {
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $responseBody;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $httpCode;
 
-    /**
-     * @var ETag|null
-     */
+    /** @var null|ETag */
     private $etag;
 
-    /**
-     * @var RateLimit
-     */
+    /** @var null|RateLimit */
     private $rateLimit;
 
-    /**
-     * @param integer   $httpCode
-     * @param string    $responseBody
-     * @param ETag|null $etag
-     */
-    public function __construct($httpCode, $responseBody, ETag $etag = null, RateLimit $rateLimit = null) {
+    public function __construct(int $httpCode, string $responseBody, ETag $etag = null, RateLimit $rateLimit = null) {
         $this->responseBody = $responseBody;
-        $this->httpCode = $httpCode;
-        $this->etag = $etag;
-        $this->rateLimit = $rateLimit;
+        $this->httpCode     = $httpCode;
+        $this->etag         = $etag;
+        $this->rateLimit    = $rateLimit;
     }
 
-    public function isSuccess() {
+    public function isSuccess(): bool {
         return $this->httpCode < 400;
     }
 
-    public function isNotFound() {
+    public function isNotFound(): bool {
         return $this->httpCode === 404;
     }
 
-    /**
-     * @return int
-     */
-    public function getHttpCode() {
+    public function getHttpCode(): int {
         return $this->httpCode;
     }
 
-    /**
-     * @return string
-     */
-    public function getBody() {
+    public function getBody(): string {
         return $this->responseBody;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasETag() {
+    /** @psalm-assert !null $this->etag */
+    public function hasETag(): bool {
         return $this->etag !== null;
     }
 
     /**
-     * @return ETag
      * @throws HttpResponseException
      */
-    public function getETag() {
+    public function getETag(): ETag {
         if (!$this->hasETag()) {
             throw new HttpResponseException('No ETag present in response');
         }
@@ -76,23 +54,19 @@ class HttpResponse {
         return $this->etag;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasRateLimit() {
+    /** @psalm-assert-if-true RateLimit $this->rateLimit */
+    public function hasRateLimit(): bool {
         return $this->rateLimit !== null;
     }
 
     /**
-     * @return RateLimit
-     *
      * @throws HttpResponseException
      */
-    public function getRateLimit() {
+    public function getRateLimit(): RateLimit {
         if (!$this->hasRateLimit()) {
             throw new HttpResponseException('No RateLimit present in response');
         }
+
         return $this->rateLimit;
     }
-
 }

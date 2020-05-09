@@ -1,13 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 interface KeyDownloader {
-
-    /**
-     * @param $keyId
-     *
-     * @return PublicKey
-     */
-    public function download($keyId);
-
+    public function download(string $keyId): PublicKey;
 }

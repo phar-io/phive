@@ -1,59 +1,42 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class ComposerAlias {
-
-    /**
-     * @var string
-     */
+    /** @var string */
     private $vendor;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $name;
 
-    /**
-     * @param string $alias
-     */
-    public function __construct($alias) {
+    public function __construct(string $alias) {
         $this->ensureValidFormat($alias);
-        list($this->vendor, $this->name) = explode('/', $alias);
+        [$this->vendor, $this->name] = \explode('/', $alias);
     }
 
-    /**
-     * @return string
-     */
-    public function __toString() {
+    public function __toString(): string {
         return $this->vendor . '/' . $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getVendor() {
+    public function getVendor(): string {
         return $this->vendor;
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
+    public function getName(): string {
         return $this->name;
     }
 
     /**
-     * @param $alias
+     * @param string $alias
      *
      * @throws \InvalidArgumentException
      */
-    private function ensureValidFormat($alias) {
-        $check = strpos($alias, '/');
+    private function ensureValidFormat($alias): void {
+        $check = \strpos($alias, '/');
+
         if ($check === false || $check === 0) {
             throw new \InvalidArgumentException(
-                sprintf('Invalid composer alias, must be of format "vendor/name", "%s" given', $alias)
+                \sprintf('Invalid composer alias, must be of format "vendor/name", "%s" given', $alias)
             );
         }
     }
-
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive\Cli;
 
 use PharIo\Phive\Environment;
@@ -9,61 +9,51 @@ use PharIo\Phive\PhiveContext;
 use PharIo\Phive\PhiveVersion;
 
 class Runner {
+    public const RC_OK = 0;
 
-    const RC_OK = 0;
     // OUTDATED PHP VERSION = 1
-    const RC_EXT_MISSING = 2;
-    const RC_UNKNOWN_COMMAND = 3;
-    const RC_ERROR = 4;
-    const RC_PARAM_ERROR = 5;
-    const RC_BUG_FOUND = 10;
+    public const RC_EXT_MISSING = 2;
 
-    /**
-     * @var CommandLocator
-     */
+    public const RC_UNKNOWN_COMMAND = 3;
+
+    public const RC_ERROR = 4;
+
+    public const RC_PARAM_ERROR = 5;
+
+    public const RC_BUG_FOUND = 10;
+
+    // HHVM_RUNTIME = 99
+
+    /** @var CommandLocator */
     private $locator;
 
-    /**
-     * @var Output
-     */
+    /** @var Output */
     private $output;
 
-    /**
-     * @var PhiveVersion
-     */
+    /** @var PhiveVersion */
     private $version;
 
-    /**
-     * @var Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     private $request;
 
-    /**
-     * @param CommandLocator $locator
-     * @param Output         $output
-     * @param PhiveVersion   $version
-     * @param Environment    $env
-     * @param Request        $request
-     */
     public function __construct(
-        CommandLocator $locator, Output $output, PhiveVersion $version, Environment $env, Request $request
+        CommandLocator $locator,
+        Output $output,
+        PhiveVersion $version,
+        Environment $env,
+        Request $request
     ) {
-        $this->locator = $locator;
-        $this->output = $output;
-        $this->version = $version;
+        $this->locator     = $locator;
+        $this->output      = $output;
+        $this->version     = $version;
         $this->environment = $env;
-        $this->request = $request;
+        $this->request     = $request;
     }
 
-    /**
-     * @return int
-     */
-    public function run() {
+    public function run(): int {
         try {
             $this->ensureFitness();
             $this->setupRuntime();
@@ -73,7 +63,7 @@ class Runner {
         } catch (RunnerException $e) {
             $this->showException($e);
 
-            return $e->getCode();
+            return (int)$e->getCode();
         } catch (ErrorException $e) {
             $this->showErrorWithTrace($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
 
@@ -94,103 +84,97 @@ class Runner {
     }
 
     /**
-     * @param string     $error
-     * @param string     $file
-     * @param int        $line
-     * @param array|null $trace
+     * @throws ErrorException
      */
-    private function showErrorWithTrace($error, $file, $line, array $trace = null) {
+    public function errorHandler(int $code, string $message, string $file, int $line, array $context): bool {
+        throw new ErrorException($message, $code, 1, $file, $line, $context);
+    }
 
-        $baseLen = strlen(realpath(__DIR__ . '/../../..')) + 1;
+    public function shutdownHandler(): void {
+        $error = \error_get_last();
 
-        $message = [$error];
+        if ($error === null || $error['file'] === 'Unknown') {
+            return;
+        }
+        $this->showErrorWithTrace($error['message'], $error['file'], $error['line'], \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
+    }
+
+    /**
+     * @param array<int, array<string, string>> $trace
+     */
+    private function showErrorWithTrace(string $error, string $file, int $line, array $trace = null): void {
+        $baseLen = \strlen(\dirname(__DIR__, 3) . '') + 1;
+
+        $message   = [$error];
         $message[] = '';
-        $message[] = sprintf(
+        $message[] = \sprintf(
             '#0 %s(%d)',
-            substr($file, $baseLen),
+            \substr($file, $baseLen),
             $line
         );
-        if (is_array($trace)) {
+
+        if (\is_array($trace)) {
             foreach ($trace as $pos => $step) {
                 $file = 'unknown file';
+
                 if (isset($step['file'])) {
-                    $file = substr($step['file'], $baseLen);
+                    $file = \substr($step['file'], $baseLen);
                 }
-                $message[] = sprintf(
+                $message[] = \sprintf(
                     '#%d %s(%d): %s%s%s()',
                     $pos + 1,
                     $file,
-                    isset($step['line']) ? $step['line'] : 0,
-                    isset($step['class']) ? $step['class'] : '',
-                    isset($step['type']) ? $step['type'] : '',
+                    $step['line'] ?? 0,
+                    $step['class'] ?? '',
+                    $step['type'] ?? '',
                     $step['function']
                 );
             }
-            $message[] = sprintf('#%d {main}', count($trace) + 1);
+            $message[] = \sprintf('#%d {main}', \count($trace) + 1);
         }
         $this->output->writeError(
-            sprintf(
-                file_get_contents(__DIR__ . '/error.txt'),
-                join("\n          ", $message),
+            \sprintf(
+                \file_get_contents(__DIR__ . '/error.txt'),
+                \implode("\n          ", $message),
                 $this->environment->getRuntimeString(),
                 $this->version->getVersion()
             )
         );
     }
 
-    /**
-     * @param int    $code
-     * @param string $message
-     * @param string $file
-     * @param string $line
-     * @param array  $context
-     *
-     * @throws ErrorException
-     */
-    public function errorHandler($code, $message, $file, $line, array $context) {
-        throw new ErrorException($message, $code, 1, $file, $line, $context);
+    private function setupRuntime(): void {
+        \error_reporting(-1);
+        \ini_set('display_errors', 'off');
+        \set_error_handler([$this, 'errorHandler']);
+        \register_shutdown_function([$this, 'shutdownHandler']);
     }
 
-    public function shutdownHandler() {
-        $error = error_get_last();
-        if ($error === null) {
-            return;
-        }
-        $this->showErrorWithTrace($error['message'], $error['file'], $error['line'], debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
-    }
-
-    private function setupRuntime() {
-        error_reporting(0);
-        ini_set('display_errors', false);
-        set_error_handler([$this, 'errorHandler']);
-        register_shutdown_function([$this, 'shutdownHandler']);
-    }
-
-    private function showHeader() {
+    private function showHeader(): void {
         $this->output->writeText($this->version->getVersionString() . "\n");
     }
 
-    private function showFooter() {
+    private function showFooter(): void {
         $this->output->writeText("\n");
     }
 
-    private function ensureFitness() {
+    private function ensureFitness(): void {
         try {
             $this->environment->ensureFitness();
         } catch (ExtensionsMissingException $e) {
             throw new RunnerException(
-                sprintf(
+                \sprintf(
                     "Your environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
-                    join("\n          ", $e->getMissing())
+                    \implode("\n          ", $e->getMissing())
                 ),
                 self::RC_EXT_MISSING
             );
         }
     }
 
-    private function parseRequest() {
+    private function parseRequest(): string {
         try {
             $options = $this->request->parse(new PhiveContext());
+
             if ($options->hasArgument(0)) {
                 return $options->getArgument(0);
             }
@@ -204,23 +188,25 @@ class Runner {
         }
     }
 
-    private function execute() {
+    private function execute(): void {
         $command = $this->parseRequest();
+
         try {
             $this->showHeader();
             $this->locator->getCommand($command)->execute();
             $this->showFooter();
         } catch (CommandLocatorException $e) {
-            if ($e->getCode() == CommandLocatorException::UnknownCommand) {
+            if ($e->getCode() === CommandLocatorException::UnknownCommand) {
                 throw new RunnerException(
-                    sprintf("Unknown command '%s'", $command),
+                    \sprintf("Unknown command '%s'", $command),
                     self::RC_UNKNOWN_COMMAND
                 );
             }
+
             throw $e;
         } catch (RequestException $e) {
             throw new RunnerException(
-                sprintf(
+                \sprintf(
                     "Error while processing arguments to command '%s':\n%s",
                     $command,
                     $e->getMessage()
@@ -230,11 +216,8 @@ class Runner {
         }
     }
 
-    /**
-     * @param \Exception $e
-     */
-    private function showException(\Exception $e) {
-        foreach (explode("\n", $e->getMessage()) as $line) {
+    private function showException(\Throwable $e): void {
+        foreach (\explode("\n", $e->getMessage()) as $line) {
             $this->output->writeError($line);
         }
         $this->showFooter();

@@ -1,12 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class PharAlias implements PharIdentifier {
 
-    /**
-     * @var string
-     */
-    private $alias = '';
+    /** @var string */
+    private $alias;
 
     /**
      * @param string $alias
@@ -15,11 +13,7 @@ class PharAlias implements PharIdentifier {
         $this->alias = $alias;
     }
 
-    /**
-     * @return string
-     */
-    public function asString() {
+    public function asString(): string {
         return $this->alias;
     }
-
 }

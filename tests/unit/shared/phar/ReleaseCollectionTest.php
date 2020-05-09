@@ -1,7 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
-use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\TestCase;
 
@@ -9,15 +8,14 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\ReleaseCollection
  */
 class ReleaseCollectionTest extends TestCase {
-
-    public function testAdd() {
+    public function testAdd(): void {
         $releases = new ReleaseCollection();
-        $this->assertAttributeEmpty('releases', $releases);
+        $this->assertCount(0, $releases);
 
         $release = $this->getReleaseMock();
         $releases->add($release);
 
-        $this->assertAttributeContains($release, 'releases', $releases);
+        $this->assertCount(1, $releases);
     }
 
     /**
@@ -33,5 +31,4 @@ class ReleaseCollectionTest extends TestCase {
     private function getVersionConstraintMock() {
         return $this->createMock(VersionConstraint::class);
     }
-
 }

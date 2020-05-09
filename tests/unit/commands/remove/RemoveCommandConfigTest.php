@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -9,10 +9,9 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\RemoveCommandConfig
  */
 class RemoveCommandConfigTest extends TestCase {
-
-    public function testGetTargetDirectory() {
+    public function testGetTargetDirectory(): void {
         $directory = $this->getDirectoryMock();
-        $locator = $this->getTargetDirectoryLocatorMock();
+        $locator   = $this->getTargetDirectoryLocatorMock();
         $locator->method('getTargetDirectory')->willReturn($directory);
 
         $commandConfig = new RemoveCommandConfig($this->getOptionsMock(), $locator);
@@ -20,7 +19,7 @@ class RemoveCommandConfigTest extends TestCase {
         $this->assertSame($directory, $commandConfig->getTargetDirectory());
     }
 
-    public function testGetPharName() {
+    public function testGetPharName(): void {
         $options = $this->getOptionsMock();
         $options->method('getArgument')->with(0)->willReturn('foo');
 
@@ -37,17 +36,16 @@ class RemoveCommandConfigTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Directory
+     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Options
+     * @return Options|\PHPUnit_Framework_MockObject_MockObject
      */
     private function getOptionsMock() {
         return $this->createMock(Options::class);
     }
-
 }

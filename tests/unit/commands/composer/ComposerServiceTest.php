@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
@@ -10,14 +10,13 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\ComposerService
  */
 class ComposerServiceTest extends TestCase {
-
-    public function testFindCandidatesReturnsExpectedPhars() {
+    public function testFindCandidatesReturnsExpectedPhars(): void {
         $filename = new Filename(__DIR__ . '/fixtures/composer.json');
 
         $sourcesList = $this->getSourcesListMock();
         $sourcesList->method('getAliasForComposerAlias')
             ->willReturnCallback(
-                function(ComposerAlias $composerAlias) {
+                function (ComposerAlias $composerAlias) {
                     switch ($composerAlias) {
                         case new ComposerAlias('theseer/autoload'):
                             return 'phpab';
@@ -38,7 +37,7 @@ class ComposerServiceTest extends TestCase {
         $this->assertEquals($expectedList, $service->findCandidates($filename));
     }
 
-    public function testThrowsExceptionIfComposerFileDoesNotExist() {
+    public function testThrowsExceptionIfComposerFileDoesNotExist(): void {
         $filename = new Filename(__DIR__ . '/fixtures/foo.json');
 
         $service = new ComposerService($this->getSourcesListMock());

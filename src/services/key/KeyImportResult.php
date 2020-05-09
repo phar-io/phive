@@ -1,46 +1,28 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class KeyImportResult {
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $count;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $fingerprint;
 
-    /**
-     * @param int    $count
-     * @param string $fingerprint
-     */
-    public function __construct($count, $fingerprint = '') {
-        $this->count = $count;
+    public function __construct(int $count, string $fingerprint = '') {
+        $this->count       = $count;
         $this->fingerprint = $fingerprint;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSuccess() {
+    public function isSuccess(): bool {
         return $this->getCount() !== 0;
     }
 
-    /**
-     * @return int
-     */
-    public function getCount() {
+    public function getCount(): int {
         return $this->count;
     }
 
-    /**
-     * @return string
-     */
-    public function getFingerprint() {
+    public function getFingerprint(): string {
         return $this->fingerprint;
     }
-
 }

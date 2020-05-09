@@ -1,155 +1,114 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 class CurlConfig {
 
-    /**
-     * @var string optional proxy URL
-     */
+    /** @var string optional proxy URL */
     private $proxyUrl;
 
-    /**
-     * @var string optional proxy credentials
-     */
+    /** @var string optional proxy credentials */
     private $proxyCredentials;
 
-    /**
-     * @var string
-     */
-    private $userAgent = '';
+    /** @var string */
+    private $userAgent;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $localSslCertificates = [];
 
-    /**
-     * @var array
-     */
-    private $authenticationTokens = [];
+    /** @var AuthConfig */
+    private $authConfig;
 
-    /**
-     * @param string $userAgent
-     */
-    public function __construct($userAgent) {
+    /** @var array<string,string> */
+    private $hostMap = [];
+
+    public function __construct(string $userAgent) {
         $this->userAgent = $userAgent;
     }
 
-    /**
-     * @param string $url
-     * @param string $username
-     * @param string $password
-     */
-    public function setProxy($url, $username = '', $password = '') {
+    public function setProxy(string $url, string $username = '', string $password = ''): void {
         $this->proxyUrl = $url;
+
         if ('' !== $username && '' !== $password) {
-            $this->proxyCredentials = sprintf('%s:%s', $username, $password);
+            $this->proxyCredentials = \sprintf('%s:%s', $username, $password);
         }
     }
 
-    /**
-     * @param LocalSslCertificate $certificate
-     */
-    public function addLocalSslCertificate(LocalSslCertificate $certificate) {
+    public function addLocalSslCertificate(LocalSslCertificate $certificate): void {
         $this->localSslCertificates[$certificate->getHostname()] = $certificate;
     }
 
     /**
-     * @param string $hostname
-     *
-     * @return LocalSslCertificate
      * @throws CurlConfigException
      */
-    public function getLocalSslCertificate($hostname) {
+    public function getLocalSslCertificate(string $hostname): LocalSslCertificate {
         if (!$this->hasLocalSslCertificate($hostname)) {
-            throw new CurlConfigException(sprintf('No local certificate for hostname %s found', $hostname));
+            throw new CurlConfigException(\sprintf('No local certificate for hostname %s found', $hostname));
         }
 
         return $this->localSslCertificates[$hostname];
     }
 
-    /**
-     * @param string $hostname
-     *
-     * @return bool
-     *
-     */
-    public function hasLocalSslCertificate($hostname) {
-        return array_key_exists($hostname, $this->localSslCertificates);
+    public function hasLocalSslCertificate(string $hostname): bool {
+        return \array_key_exists($hostname, $this->localSslCertificates);
     }
 
-    /**
-     * @return array
-     */
-    public function asCurlOptArray() {
+    public function asCurlOptArray(): array {
         $options = [
-            CURLOPT_MAXREDIRS       => 5,
-            CURLOPT_CONNECTTIMEOUT  => 60,
-            CURLOPT_SSL_VERIFYHOST  => 2,
-            CURLOPT_SSL_VERIFYPEER  => true,
-            CURLOPT_FAILONERROR     => false,
-            CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_FOLLOWLOCATION  => true,
-            CURLOPT_USERAGENT       => $this->userAgent,
-            CURLOPT_PROXY           => $this->proxyUrl,
-            CURLOPT_PROXYUSERPWD    => $this->proxyCredentials,
-            CURLOPT_LOW_SPEED_TIME  => 90,
-            CURLOPT_LOW_SPEED_LIMIT => 128
+            \CURLOPT_MAXREDIRS       => 5,
+            \CURLOPT_CONNECTTIMEOUT  => 60,
+            \CURLOPT_SSL_VERIFYHOST  => 2,
+            \CURLOPT_SSL_VERIFYPEER  => true,
+            \CURLOPT_FAILONERROR     => false,
+            \CURLOPT_RETURNTRANSFER  => true,
+            \CURLOPT_FOLLOWLOCATION  => true,
+            \CURLOPT_USERAGENT       => $this->userAgent,
+            \CURLOPT_PROXY           => $this->proxyUrl,
+            \CURLOPT_PROXYUSERPWD    => $this->proxyCredentials,
+            \CURLOPT_LOW_SPEED_TIME  => 90,
+            \CURLOPT_LOW_SPEED_LIMIT => 128,
+            \CURLOPT_PROTOCOLS       => \CURLPROTO_HTTPS
         ];
 
-        /*
-         * CURLOPT_PROTOCOLS is not available in older versions of HHVM,
-         * so we explicitly have to check if it is defined.
-         * See https://github.com/facebook/hhvm/issues/3702
-         */
-        if (defined('CURLOPT_PROTOCOLS')) {
-            $options[CURLOPT_PROTOCOLS] = CURLPROTO_HTTPS;
-        }
-
         /* Added in PHP 7.0.7 and requires Curl 7.49+ */
-        if (defined('CURLOPT_TCP_FASTOPEN')) {
-            $options[CURLOPT_TCP_FASTOPEN] = true;
+        if (\defined('CURLOPT_TCP_FASTOPEN')) {
+            $options[\CURLOPT_TCP_FASTOPEN] = true;
         }
 
         return $options;
     }
 
+    public function setAuthConfig(AuthConfig $authConfig): void {
+        $this->authConfig = $authConfig;
+    }
+
+    public function hasAuthentication(string $hostname): bool {
+        return $this->authConfig->hasAuthentication($hostname);
+    }
+
     /**
-     * @param string $hostname
-     * @param string $token
-     *
      * @throws CurlConfigException
      */
-    public function addAuthenticationToken($hostname, $token) {
-        if ($this->hasAuthenticationToken($hostname)) {
-            throw new CurlConfigException(sprintf('Authentication token for hostname %s already set', $hostname));
+    public function getAuthentication(string $hostname): Authentication {
+        if (!$this->hasAuthentication($hostname)) {
+            throw new CurlConfigException(\sprintf('No authentication for hostname %s found', $hostname));
         }
 
-        $this->authenticationTokens[$hostname] = $token;
+        return $this->authConfig->getAuthentication($hostname);
     }
 
-    /**
-     * @param string $hostname
-     *
-     * @return bool
-     */
-    public function hasAuthenticationToken($hostname) {
-        return array_key_exists($hostname, $this->authenticationTokens);
+    public function setResolvedIp(string $hostname, string $ip): void {
+        $this->hostMap[$hostname] = $ip;
     }
 
-    /**
-     * @param string $hostname
-     *
-     * @return string
-     *
-     * @throws CurlConfigException
-     */
-    public function getAuthenticationToken($hostname) {
-        if (!$this->hasAuthenticationToken($hostname)) {
-            throw new CurlConfigException(sprintf('No authentication for hostname %s found', $hostname));
+    public function hasResolvedIp(string $hostname): bool {
+        return isset($this->hostMap[$hostname]);
+    }
+
+    public function getResolvedIp(string $hostname): string {
+        if (!$this->hasResolvedIp($hostname)) {
+            throw new CurlConfigException(\sprintf('No resolved IP for hostname %s found', $hostname));
         }
 
-        return $this->authenticationTokens[$hostname];
+        return $this->hostMap[$hostname];
     }
-
 }

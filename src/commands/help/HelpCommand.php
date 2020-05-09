@@ -1,37 +1,26 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
-
-use PharIo\Phive\Cli;
 
 class HelpCommand implements Cli\Command {
 
-    /**
-     * @var Environment
-     */
+    /** @var Environment */
     private $environment;
 
-    /**
-     * @var Cli\Output
-     */
+    /** @var Cli\Output */
     private $output;
 
-    /**
-     * @param Environment $environment
-     * @param Cli\Output  $output
-     */
     public function __construct(Environment $environment, Cli\Output $output) {
         $this->environment = $environment;
-        $this->output = $output;
+        $this->output      = $output;
     }
 
-    public function execute() {
+    public function execute(): void {
         $this->output->writeMarkdown(
-            str_replace(
+            \str_replace(
                 '%phive',
                 $this->environment->getPhiveCommandPath(),
-                file_get_contents(__DIR__ . '/help.md')
+                \file_get_contents(__DIR__ . '/help.md')
             ) . "\n\n"
         );
     }
-
 }
