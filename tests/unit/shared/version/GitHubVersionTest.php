@@ -16,17 +16,17 @@ class GitHubVersionTest extends TestCase {
     public function testRemovesVersionPrefix($prefix): void {
         $version = new GitHubVersion($prefix . '2.9.0');
         $this->assertSame('2.9.0', $version->getVersionString());
-        $this->assertEquals(new VersionNumber('2'), $version->getMajor());
-        $this->assertEquals(new VersionNumber('9'), $version->getMinor());
-        $this->assertEquals(new VersionNumber('0'), $version->getPatch());
+        $this->assertEquals(new VersionNumber(2), $version->getMajor());
+        $this->assertEquals(new VersionNumber(9), $version->getMinor());
+        $this->assertEquals(new VersionNumber(0), $version->getPatch());
     }
 
     public function testWorksWithNonPrefixedVersion(): void {
         $version = new GitHubVersion('2.9.0');
         $this->assertSame('2.9.0', $version->getVersionString());
-        $this->assertEquals(new VersionNumber('2'), $version->getMajor());
-        $this->assertEquals(new VersionNumber('9'), $version->getMinor());
-        $this->assertEquals(new VersionNumber('0'), $version->getPatch());
+        $this->assertEquals(new VersionNumber(2), $version->getMajor());
+        $this->assertEquals(new VersionNumber(9), $version->getMinor());
+        $this->assertEquals(new VersionNumber(0), $version->getPatch());
     }
 
     public function versionPrefixProvider() {

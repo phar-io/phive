@@ -128,7 +128,7 @@ class ResetCommandTest extends TestCase {
     private function getPharMock($name, $filename) {
         $file = $this->createMock(File::class);
         $file->method('getFilename')
-            ->willReturn($filename);
+            ->willReturn(new Filename($filename));
 
         $mock = $this->createMock(Phar::class);
 

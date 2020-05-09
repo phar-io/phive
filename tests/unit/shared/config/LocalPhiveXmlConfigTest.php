@@ -105,7 +105,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $installedPhar->method('getLocation')->willReturn($filename);
 
         $targetDirectory = $this->getDirectoryMock();
-        $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock());
+        $targetDirectory->method('getRelativePathTo')->willReturn($this->getDirectoryMock()->asString());
 
         $phar = $this->getRequestedPharMock();
         $phar->method('getAlias')->willReturn($alias);
