@@ -83,7 +83,6 @@ spl_autoload_register(
                 'phario\\phive\\githubaliasresolver' => '/services/resolver/GithubAliasResolver.php',
                 'phario\\phive\\githubaliasresolverexception' => '/GithubAliasResolverException.php',
                 'phario\\phive\\githubrepository' => '/shared/repository/GithubRepository.php',
-                'phario\\phive\\githubversion' => '/shared/version/GitHubVersion.php',
                 'phario\\phive\\gitlabaliasresolver' => '/services/resolver/GitlabAliasResolver.php',
                 'phario\\phive\\gitlabrepository' => '/shared/repository/GitlabRepository.php',
                 'phario\\phive\\globalphivexmlconfig' => '/shared/config/GlobalPhiveXmlConfig.php',

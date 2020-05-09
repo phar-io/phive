@@ -2,6 +2,7 @@
 namespace PharIo\Phive;
 
 use PharIo\Version\InvalidVersionException;
+use PharIo\Version\Version;
 
 class GithubRepository implements SourceRepository {
 
@@ -18,7 +19,7 @@ class GithubRepository implements SourceRepository {
 
         foreach ($this->jsonData->getParsed() as $entry) {
             try {
-                $version = new GitHubVersion($entry->tag_name);
+                $version = new Version($entry->tag_name);
             } catch (InvalidVersionException $exception) {
                 // we silently ignore invalid version identifiers for now as they are
                 // likely to be an arbitrary tag that erroneously got promoted to release

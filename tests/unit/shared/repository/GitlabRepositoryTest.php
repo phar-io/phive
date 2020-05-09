@@ -1,6 +1,7 @@
 <?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
+use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,7 +27,7 @@ class GitlabRepositoryTest extends TestCase {
         $expectedReleases->add(
             new SupportedRelease(
                 'foo',
-                new GitHubVersion('5.3.0'),
+                new Version('5.3.0'),
                 new PharUrl('https://example.com/foo-5.3.0.phar'),
                 new Url('https://example.com/foo-5.3.0.phar.asc')
             )
@@ -34,14 +35,14 @@ class GitlabRepositoryTest extends TestCase {
         $expectedReleases->add(
             new UnSupportedRelease(
                 'foo',
-                new GitHubVersion('5.2.11'),
+                new Version('5.2.11'),
                 'No downloadable PHAR'
             )
         );
         $expectedReleases->add(
             new SupportedRelease(
                 'foo',
-                new GitHubVersion('5.2.12'),
+                new Version('5.2.12'),
                 new PharUrl('https://example.com/foo-5.2.12.phar'),
                 new Url('https://example.com/foo-5.2.12.phar.asc')
             )
