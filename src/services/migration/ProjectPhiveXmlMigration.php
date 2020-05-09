@@ -4,16 +4,25 @@ namespace PharIo\Phive;
 class ProjectPhiveXmlMigration implements Migration {
     /** @var Environment */
     private $environment;
+    /** @var Cli\Output */
+    private $output;
+    /** @var Cli\Input */
+    private $input;
+    /** @var Config */
+    private $config;
 
-    public function __construct(Environment $environment) {
+    public function __construct(Environment $environment, Config $config, Cli\Output $output, Cli\Input $input) {
         $this->environment = $environment;
+        $this->output      = $output;
+        $this->input       = $input;
+        $this->config      = $config;
     }
 
     public function canMigrate(): bool {
         return $this->environment->getWorkingDirectory()->file('phive.xml')->exists()
             && (
                 !$this->environment->getWorkingDirectory()->hasChild('.phive')
-                || !$this->environment->getWorkingDirectory()->child('.phive')->file('phars.xml')->exists()
+                || !$this->config->getProjectAuth()->exists()
             );
     }
 
@@ -27,10 +36,17 @@ class ProjectPhiveXmlMigration implements Migration {
         }
 
         $old = $this->environment->getWorkingDirectory()->file('phive.xml');
-        $new = $this->environment->getWorkingDirectory()->child('.phive')->file('phars.xml');
+        $new = $this->config->getProjectInstallation();
 
         $new->putContent($old->read()->getContent());
-        $old->delete();
+
+        $this->output->writeText('Migration of project Phive configuration almost finish.');
+
+        if ($this->input->confirm('Do you want to keep the old file?', true)) {
+            $old->renameTo('phive.xml.backup');
+        } else {
+            $old->delete();
+        }
     }
 
     public function getDescription(): string {
@@ -40,6 +56,6 @@ class ProjectPhiveXmlMigration implements Migration {
     public function inError(): bool {
         return $this->environment->getWorkingDirectory()->file('phive.xml')->exists()
             && $this->environment->getWorkingDirectory()->hasChild('.phive')
-            && $this->environment->getWorkingDirectory()->child('.phive')->file('phars.xml')->exists();
+            && $this->config->getProjectInstallation()->exists();
     }
 }
