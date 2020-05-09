@@ -13,7 +13,6 @@ class MigrationService {
     }
 
     public function ensureFitness(): void {
-        $this->runMigrations(true);
         $failed = [];
 
         foreach ($this->factory->getMigrations() as $migration) {
@@ -35,6 +34,9 @@ class MigrationService {
     }
     public function runAll(): int {
         return $this->runMigrations(false);
+    }
+    public function runMandatory(): int {
+        return $this->runMigrations(true);
     }
     private function runMigrations(bool $mustOnly): int {
         $migrationDone = 0;

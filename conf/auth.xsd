@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://phar.io/phive-auth" xmlns:phive-auth="https://phar.io/phive-auth">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://phar.io/auth" xmlns:auth="https://phar.io/auth">
     <xs:element name="auth">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" ref="phive-auth:domain"/>
+                <xs:element maxOccurs="unbounded" ref="auth:domain"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -12,7 +12,7 @@
             <xs:attribute name="credentials" type="xs:string"/>
             <xs:attribute name="host" use="required" type="xs:NCName"/>
             <xs:attribute name="password" type="xs:string"/>
-            <xs:attribute name="type" use="required" type="phive-auth:type"/>
+            <xs:attribute name="type" use="required" type="auth:type"/>
             <xs:attribute name="user" type="xs:string"/>
         </xs:complexType>
     </xs:element>
