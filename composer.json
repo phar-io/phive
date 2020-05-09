@@ -21,10 +21,10 @@
     "php" : "^7.2",
     "ext-dom" : "*",
     "ext-curl" : "*",
-    "phar-io/version": "^2.0",
-    "phar-io/filesystem": "1.0.x-dev",
+    "phar-io/version": "^3.0",
+    "phar-io/filesystem": "^1.0.1",
     "phar-io/gnupg": "^1.0",
-    "phar-io/manifest": "^1.0"
+    "phar-io/manifest": "^2.0"
   },
   "require-dev": {
     "mikey179/vfsstream": "^1.6.4"

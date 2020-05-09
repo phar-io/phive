@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8730d9f19fcb2cb742229c74dcb7daa4",
+    "content-hash": "6975d50dbd1ce99bdf175583a7c59d17",
     "packages": [
         {
             "name": "phar-io/executor",
@@ -59,16 +59,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/filesystem.git",
-                "reference": "4fc0abed6a29526613eea01df89439c8b2d3188b"
+                "reference": "5691b052daba3d179e6aef064a02ebfa5e8c7d1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/4fc0abed6a29526613eea01df89439c8b2d3188b",
-                "reference": "4fc0abed6a29526613eea01df89439c8b2d3188b",
+                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/5691b052daba3d179e6aef064a02ebfa5e8c7d1e",
+                "reference": "5691b052daba3d179e6aef064a02ebfa5e8c7d1e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": "^7.2"
             },
             "type": "library",
             "extra": {
@@ -97,7 +97,7 @@
                     "role": "Developer"
                 }
             ],
-            "time": "2019-09-19T16:48:39+00:00"
+            "time": "2020-05-09T22:26:02+00:00"
         },
         {
             "name": "phar-io/gnupg",
@@ -150,28 +150,29 @@
         },
         {
             "name": "phar-io/manifest",
-            "version": "1.0.3",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/manifest.git",
-                "reference": "7761fcacf03b4d4f16e7ccb606d4879ca431fcf4"
+                "reference": "549a9ec52cf97f20d375fca417a9eefd25f05fd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/manifest/zipball/7761fcacf03b4d4f16e7ccb606d4879ca431fcf4",
-                "reference": "7761fcacf03b4d4f16e7ccb606d4879ca431fcf4",
+                "url": "https://api.github.com/repos/phar-io/manifest/zipball/549a9ec52cf97f20d375fca417a9eefd25f05fd5",
+                "reference": "549a9ec52cf97f20d375fca417a9eefd25f05fd5",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-phar": "*",
-                "phar-io/version": "^2.0",
-                "php": "^5.6 || ^7.0"
+                "ext-xmlwriter": "*",
+                "phar-io/version": "^3.0.1",
+                "php": "^7.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -201,24 +202,24 @@
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
-            "time": "2018-07-08T19:23:20+00:00"
+            "time": "2020-05-09T22:05:33+00:00"
         },
         {
             "name": "phar-io/version",
-            "version": "2.0.1",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/version.git",
-                "reference": "45a2ec53a73c70ce41d55cedef9063630abaf1b6"
+                "reference": "d06a5000ac1a258a7d035295f0bd4ae7c859bc4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/version/zipball/45a2ec53a73c70ce41d55cedef9063630abaf1b6",
-                "reference": "45a2ec53a73c70ce41d55cedef9063630abaf1b6",
+                "url": "https://api.github.com/repos/phar-io/version/zipball/d06a5000ac1a258a7d035295f0bd4ae7c859bc4f",
+                "reference": "d06a5000ac1a258a7d035295f0bd4ae7c859bc4f",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": "^7.2"
             },
             "type": "library",
             "autoload": {
@@ -248,7 +249,7 @@
                 }
             ],
             "description": "Library for handling version information and constraints",
-            "time": "2018-07-08T19:19:57+00:00"
+            "time": "2020-05-09T21:27:55+00:00"
         }
     ],
     "packages-dev": [
@@ -301,9 +302,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "phar-io/filesystem": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
