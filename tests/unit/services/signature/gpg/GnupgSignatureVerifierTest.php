@@ -15,7 +15,7 @@ class GnupgSignatureVerifierTest extends TestCase {
     private $keyservice;
 
     public function setUp(): void {
-        $this->gnupg      = $this->prophesize(\Gnupg::class);
+        $this->gnupg      = $this->prophesize(Gnupg::class);
         $this->keyservice = $this->prophesize(KeyService::class);
     }
 
