@@ -17,70 +17,32 @@ class HomePharsXmlMigrationTest extends TestCase {
         parent::tearDown();
     }
 
-    /**
-     * phars.xml exists, and database.xml exists
-     */
-    public function testInError(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phars.xml', 'registry.xml']));
-
-        $migration = new HomePharsXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testInErrorBecauseBothOldAndNewExists(): void {
+        $migration = $this->createMigration(['phars.xml', 'registry.xml']);
 
         $this->assertTrue($migration->inError());
     }
 
-    /**
-     * No phars.xml, and database.xml exists
-     */
-    public function testNotInError1(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['registry.xml']));
-
-        $migration = new HomePharsXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithOldMissing(): void {
+        $migration = $this->createMigration(['registry.xml']);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * phars.xml exists, and no database.xml
-     */
-    public function testNotInError2(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phars.xml']));
-
-        $migration = new HomePharsXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithNewMissing(): void {
+        $migration = $this->createMigration(['phars.xml']);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * No phars.xml, and no database.xml
-     */
-    public function testNotInError3(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, []));
-
-        $migration = new HomePharsXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithBothMissing(): void {
+        $migration = $this->createMigration([]);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * phars.xml exists, and no database.xml
-     */
     public function testCanMigrate(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phars.xml']));
-
-        $migration = new HomePharsXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+        $migration = $this->createMigration(['phars.xml']);
 
         $this->assertTrue($migration->canMigrate());
     }
@@ -88,24 +50,20 @@ class HomePharsXmlMigrationTest extends TestCase {
     /**
      * Missing phars.xml
      */
-    public function testCannotMigrate(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, []));
-
-        $migration = new HomePharsXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testCannotMigrateBecauseMissingOld(): void {
+        $migration = $this->createMigration([]);
 
         $this->assertFalse($migration->canMigrate());
     }
 
     public function testMigrate(): void {
-        // Create context
         $directory = new Directory(__DIR__ . '/tmp');
         $directory->file('phars.xml')->putContent('<?xml><root>Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($directory);
 
-        $migration = new HomePharsXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, false));
+        $migration = new HomePharsXmlMigration($config, $this->getInputMock($this, false));
 
         $migration->migrate();
 
@@ -120,14 +78,13 @@ class HomePharsXmlMigrationTest extends TestCase {
     }
 
     public function testMigrateRename(): void {
-        // Create context
         $directory = new Directory(__DIR__ . '/tmp');
         $directory->file('phars.xml')->putContent('<?xml><root>Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($directory);
 
-        $migration = new HomePharsXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+        $migration = new HomePharsXmlMigration($config, $this->getInputMock($this, true));
 
         $migration->migrate();
 
@@ -140,5 +97,12 @@ class HomePharsXmlMigrationTest extends TestCase {
             $this->assertFileNotExists(__DIR__ . '/tmp/phars.xml');
         }
         $this->assertStringEqualsFile(__DIR__ . '/tmp/registry.xml', '<?xml><root>Foobar</root>');
+    }
+
+    private function createMigration(array $existingFiles): HomePharsXmlMigration {
+        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
+        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, $existingFiles));
+
+        return new HomePharsXmlMigration($config, $this->getInputMock($this, true));
     }
 }

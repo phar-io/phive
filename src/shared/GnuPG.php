@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -12,7 +12,7 @@ class GnuPG {
     private $homeDir;
 
     public function __construct(\GnuPG $gnupg, Directory $homeDir) {
-        $this->gnupg = $gnupg;
+        $this->gnupg   = $gnupg;
         $this->homeDir = $homeDir;
     }
 
@@ -21,11 +21,13 @@ class GnuPG {
      */
     public function import(string $key) {
         \putenv('GNUPGHOME=' . $this->homeDir->asString());
+
         return $this->gnupg->import($key);
     }
 
     public function keyinfo(string $search): array {
         \putenv('GNUPGHOME=' . $this->homeDir->asString());
+
         return $this->gnupg->keyinfo($search);
     }
 
@@ -34,6 +36,7 @@ class GnuPG {
      */
     public function verify(string $message, string $signature) {
         \putenv('GNUPGHOME=' . $this->homeDir->asString());
+
         return $this->gnupg->verify($message, $signature);
     }
 
@@ -43,5 +46,4 @@ class GnuPG {
     public function geterror() {
         return $this->gnupg->geterror();
     }
-
 }
