@@ -83,7 +83,7 @@ class PharDownloaderTest extends TestCase {
         $httpClient->get($sigUrl)->willReturn($sigResponse->reveal());
 
         $this->verificationResult->getFingerprint()->willReturn('fooFingerprint');
-        $this->verificationResult->getStatusMessage()->willReturn('Some Message');
+        $this->verificationResult->getErrorMessage()->willReturn('Some Message');
         $this->verificationResult->wasVerificationSuccessful()->willReturn(false);
         $this->signatureVerifier->method('verify')->with('phar-content', 'phar-signature', [])
             ->willReturn($this->verificationResult->reveal());

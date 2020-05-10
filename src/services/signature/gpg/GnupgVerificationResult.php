@@ -1,6 +1,8 @@
 <?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
+use PharIo\GnuPG\ErrorStrings;
+
 class GnupgVerificationResult implements VerificationResult {
 
     /** @var array */
@@ -23,8 +25,8 @@ class GnupgVerificationResult implements VerificationResult {
         return ($this->verificationData['summary'] === 0);
     }
 
-    public function getStatusMessage(): string {
-        return \implode("\n", $this->verificationData['status']);
+    public function getErrorMessage(): string {
+        return ErrorStrings::fromCode($this->verificationData['status']);
     }
 
     private function validate(array $keyinfo): void {

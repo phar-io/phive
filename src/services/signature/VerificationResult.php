@@ -8,5 +8,5 @@ interface VerificationResult {
 
     public function wasVerificationSuccessful(): bool;
 
-    public function getStatusMessage(): string;
+    public function getErrorMessage(): string;
 }
