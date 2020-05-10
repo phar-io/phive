@@ -20,79 +20,55 @@ class ProjectAuthXmlMigrationTest extends TestCase {
         parent::tearDown();
     }
 
-    /**
-     * phive-auth.xml exists, and .phive/auth.xml exists
-     */
-    public function testInError(): void {
+    public function testInErrorBecauseBothOldAndNewExists(): void {
         $migration = $this->createMigration(true, true, true, true);
 
         $this->assertTrue($migration->inError());
     }
 
-    /**
-     * No phive-auth.xml, and .phive/auth.xml exists
-     */
-    public function testNotInError1(): void {
+    public function testNotInErrorWithMissingOld(): void {
         $migration = $this->createMigration(false, true, true, true);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * phive-auth.xml exists, and no .phive/auth.xml
-     */
-    public function testNotInError2(): void {
+    public function testNotInErrorWithMissingNew(): void {
         $migration = $this->createMigration(true, false, false, true);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * phive-auth.xml exists, and no .phive/auth.xml
-     */
-    public function testNotInError2_2(): void {
+    public function testNotInErrorWithMissingNewButExistingDirectory(): void {
         $migration = $this->createMigration(true, true, false, true);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * No phive-auth.xml, and no .phive/auth.xml
-     */
-    public function testNotInError3(): void {
+    public function testNotInErrorWithBothOldAndNewMissing(): void {
         $migration = $this->createMigration(false, false, false, true);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * phive-auth.xml exists, and no .phive/auth.xml
-     */
     public function testCanMigrate(): void {
         $migration = $this->createMigration(true, false, false, true);
 
         $this->assertTrue($migration->canMigrate());
     }
-    /**
-     * phive-auth.xml exists, and no .phive/auth.xml
-     */
-    public function testCanMigrate2(): void {
+
+    public function testCanMigrateWithNewDirectoryExisting(): void {
         $migration = $this->createMigration(true, true, false, true);
 
         $this->assertTrue($migration->canMigrate());
     }
 
-    /**
-     * Missing phive-auth.xml
-     */
-    public function testCannotMigrate(): void {
+    public function testCannotMigrateBecauseMissingOld(): void {
         $migration = $this->createMigration(false, true, true, true);
 
         $this->assertFalse($migration->canMigrate());
     }
 
     public function testMigrate(): void {
-        // Create context
         $directory = new Directory(__DIR__ . '/tmp');
         $directory->file('phive-auth.xml')->putContent('<?xml><root xmlns="https://phar.io/phive-auth">Foobar</root>');
 
@@ -102,7 +78,6 @@ class ProjectAuthXmlMigrationTest extends TestCase {
         $migration = new ProjectAuthXmlMigration(
             $environment,
             new Config($environment, $this->getOptionsMock($this)),
-            $this->getOutputMock($this),
             $this->getInputMock($this, false)
         );
 
@@ -119,7 +94,6 @@ class ProjectAuthXmlMigrationTest extends TestCase {
     }
 
     public function testMigrateRename(): void {
-        // Create context
         $directory = new Directory(__DIR__ . '/tmp');
         $directory->file('phive-auth.xml')->putContent('<?xml><root xmlns="https://phar.io/phive-auth">Foobar</root>');
 
@@ -129,7 +103,6 @@ class ProjectAuthXmlMigrationTest extends TestCase {
         $migration = new ProjectAuthXmlMigration(
             $environment,
             new Config($environment, $this->getOptionsMock($this)),
-            $this->getOutputMock($this),
             $this->getInputMock($this, true)
         );
 
@@ -156,7 +129,6 @@ class ProjectAuthXmlMigrationTest extends TestCase {
             );
         } else {
             $workingDirectory->method('hasChild')->with('.phive')->willReturn(false);
-            $workingDirectory->expects($this->never())->method('child');
         }
 
         $environment = $this->createMock(Environment::class);
@@ -167,7 +139,6 @@ class ProjectAuthXmlMigrationTest extends TestCase {
         return new ProjectAuthXmlMigration(
             $environment,
             new Config($environment, $this->getOptionsMock($this)),
-            $this->getOutputMock($this),
             $this->getInputMock($this, $accepted)
         );
     }

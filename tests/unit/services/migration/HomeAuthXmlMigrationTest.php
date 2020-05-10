@@ -17,95 +17,50 @@ class HomeAuthXmlMigrationTest extends TestCase {
         parent::tearDown();
     }
 
-    /**
-     * phive-auth.xml exists, and auth.xml exists
-     */
-    public function testInError(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phive-auth.xml', 'auth.xml']));
-
-        $migration = new HomeAuthXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testInErrorBecauseBothNewAndOldExists(): void {
+        $migration = $this->createMigration(['phive-auth.xml', 'auth.xml']);
 
         $this->assertTrue($migration->inError());
     }
 
-    /**
-     * No phive-auth.xml, and auth.xml exists
-     */
-    public function testNotInError1(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['auth.xml']));
-
-        $migration = new HomeAuthXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithMissingOld(): void {
+        $migration = $this->createMigration(['auth.xml']);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * phive-auth.xml exists, and no auth.xml
-     */
-    public function testNotInError2(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phive-auth.xml']));
-
-        $migration = new HomeAuthXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithMissingNew(): void {
+        $migration = $this->createMigration(['phive-auth.xml']);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * No phive-auth.xml, and no auth.xml
-     */
-    public function testNotInError3(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, []));
-
-        $migration = new HomeAuthXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithBothOldAndNewMissing(): void {
+        $migration = $this->createMigration([]);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * phive-auth.xml exists, and no auth.xml
-     */
     public function testCanMigrate(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phive-auth.xml']));
-
-        $migration = new HomeAuthXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+        $migration = $this->createMigration(['phive-auth.xml']);
 
         $this->assertTrue($migration->canMigrate());
     }
 
-    /**
-     * Missing phive-auth.xml
-     */
-    public function testCannotMigrate(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, []));
-
-        $migration = new HomeAuthXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testCannotMigrateBecauseMissingOld(): void {
+        $migration = $this->createMigration([]);
 
         $this->assertFalse($migration->canMigrate());
     }
 
     public function testMigrate(): void {
-        // Create context
         $directory = new Directory(__DIR__ . '/tmp');
         $directory->file('phive-auth.xml')->putContent('<?xml><root xmlns="https://phar.io/phive-auth">Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($directory);
 
-        $migration = new HomeAuthXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, false));
+        $migration = new HomeAuthXmlMigration($config, $this->getInputMock($this, false));
 
         $migration->migrate();
 
@@ -120,14 +75,13 @@ class HomeAuthXmlMigrationTest extends TestCase {
     }
 
     public function testMigrateRename(): void {
-        // Create context
         $directory = new Directory(__DIR__ . '/tmp');
         $directory->file('phive-auth.xml')->putContent('<?xml><root xmlns="https://phar.io/phive-auth">Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($directory);
 
-        $migration = new HomeAuthXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+        $migration = new HomeAuthXmlMigration($config, $this->getInputMock($this, true));
 
         $migration->migrate();
 
@@ -140,5 +94,12 @@ class HomeAuthXmlMigrationTest extends TestCase {
             $this->assertFileNotExists(__DIR__ . '/tmp/phive-auth.xml');
         }
         $this->assertStringEqualsFile(__DIR__ . '/tmp/auth.xml', '<?xml><root xmlns="https://phar.io/auth">Foobar</root>');
+    }
+
+    private function createMigration(array $existingFiles): HomeAuthXmlMigration {
+        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
+        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, $existingFiles));
+
+        return new HomeAuthXmlMigration($config, $this->getInputMock($this, true));
     }
 }

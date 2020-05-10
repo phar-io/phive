@@ -17,30 +17,14 @@ class HomePhiveXmlMigrationTest extends TestCase {
         parent::tearDown();
     }
 
-    /**
-     * phive.xml exists, and global.xml exists
-     */
-    public function testInError(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phive.xml', 'global.xml']));
-
-        $migration = new HomePhiveXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testInErrorBecauseBothOldAndNewExists(): void {
+        $migration = $this->createMigration(['phive.xml', 'global.xml']);
 
         $this->assertTrue($migration->inError());
     }
 
-    /**
-     * No phive.xml, and global.xml exists
-     */
-    public function testNotInError1(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['global.xml']));
-
-        $migration = new HomePhiveXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithMissingOld(): void {
+        $migration = $this->createMigration(['global.xml']);
 
         $this->assertFalse($migration->inError());
     }
@@ -48,13 +32,8 @@ class HomePhiveXmlMigrationTest extends TestCase {
     /**
      * phive.xml exists, and no global.xml
      */
-    public function testNotInError2(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phive.xml']));
-
-        $migration = new HomePhiveXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithMissingNew(): void {
+        $migration = $this->createMigration(['phive.xml']);
 
         $this->assertFalse($migration->inError());
     }
@@ -62,50 +41,32 @@ class HomePhiveXmlMigrationTest extends TestCase {
     /**
      * No phive.xml, and no global.xml
      */
-    public function testNotInError3(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, []));
-
-        $migration = new HomePhiveXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testNotInErrorWithBothOldANdNewMissing(): void {
+        $migration = $this->createMigration([]);
 
         $this->assertFalse($migration->inError());
     }
 
-    /**
-     * phive.xml exists, and no global.xml
-     */
     public function testCanMigrate(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config
-            ->method('getHomeDirectory')
-            ->willReturn($this->getDirectoryWithFileMock($this, ['phive.xml']));
-
-        $migration = new HomePhiveXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+        $migration = $this->createMigration(['phive.xml']);
 
         $this->assertTrue($migration->canMigrate());
     }
 
-    /**
-     * Missing phive.xml
-     */
-    public function testCannotMigrate(): void {
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, []));
-
-        $migration = new HomePhiveXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+    public function testCannotMigrateBecauseMissingOld(): void {
+        $migration = $this->createMigration([]);
 
         $this->assertFalse($migration->canMigrate());
     }
 
     public function testMigrate(): void {
-        // Create context
         $directory = new Directory(__DIR__ . '/tmp');
         $directory->file('phive.xml')->putContent('<?xml><root>Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($directory);
 
-        $migration = new HomePhiveXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, false));
+        $migration = new HomePhiveXmlMigration($config, $this->getInputMock($this, false));
 
         $migration->migrate();
 
@@ -120,14 +81,13 @@ class HomePhiveXmlMigrationTest extends TestCase {
     }
 
     public function testMigrateRename(): void {
-        // Create context
         $directory = new Directory(__DIR__ . '/tmp');
         $directory->file('phive.xml')->putContent('<?xml><root>Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($directory);
 
-        $migration = new HomePhiveXmlMigration($config, $this->getOutputMock($this), $this->getInputMock($this, true));
+        $migration = new HomePhiveXmlMigration($config, $this->getInputMock($this, true));
 
         $migration->migrate();
 
@@ -140,5 +100,12 @@ class HomePhiveXmlMigrationTest extends TestCase {
             $this->assertFileNotExists(__DIR__ . '/tmp/phive.xml');
         }
         $this->assertStringEqualsFile(__DIR__ . '/tmp/global.xml', '<?xml><root>Foobar</root>');
+    }
+
+    private function createMigration(array $existingFiles): HomePhiveXmlMigration {
+        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
+        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, $existingFiles));
+
+        return new HomePhiveXmlMigration($config, $this->getInputMock($this, true));
     }
 }
