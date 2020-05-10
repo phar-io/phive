@@ -2,13 +2,12 @@
 namespace PharIo\Phive;
 
 use DateTimeImmutable;
-use Gnupg;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
 class PublicKeyReader {
 
-    /** @var Gnupg */
+    /** @var GnuPG */
     private $gnupg;
 
     /** @var Directory */

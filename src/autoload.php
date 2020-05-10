@@ -86,6 +86,7 @@ spl_autoload_register(
                 'phario\\phive\\gitlabaliasresolver' => '/services/resolver/GitlabAliasResolver.php',
                 'phario\\phive\\gitlabrepository' => '/shared/repository/GitlabRepository.php',
                 'phario\\phive\\globalphivexmlconfig' => '/shared/config/GlobalPhiveXmlConfig.php',
+                'phario\\phive\\gnupg' => '/shared/GnuPG.php',
                 'phario\\phive\\gnupgkeydownloader' => '/services/key/gpg/GnupgKeyDownloader.php',
                 'phario\\phive\\gnupgkeydownloaderexception' => '/shared/exceptions/GnupgKeyDownloaderException.php',
                 'phario\\phive\\gnupgkeyimporter' => '/services/key/gpg/GnupgKeyImporter.php',

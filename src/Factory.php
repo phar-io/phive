@@ -353,11 +353,14 @@ class Factory {
         return new GnupgSignatureVerifier($this->getGnupg(), $this->getKeyService());
     }
 
-    private function getGnupg(): \Gnupg {
+    private function getGnupg(): GnuPG {
         $home = $this->getConfig()->getHomeDirectory()->child('gpg');
         $bin  = $this->getConfig()->getGPGBinaryPath();
 
-        return (new GnuPGFactory($bin))->createGnuPG($home);
+        return new GnuPG(
+            (new GnuPGFactory($bin))->createGnuPG($home),
+            $home
+        );
     }
 
     private function getKeyService(): KeyService {
@@ -495,11 +498,14 @@ class Factory {
         );
     }
 
-    private function getTemporaryGnupg(): \Gnupg {
+    private function getTemporaryGnupg(): Gnupg {
         $home = $this->getConfig()->getHomeDirectory()->child('_tmp_wrk');
         $bin  = $this->getConfig()->getGPGBinaryPath();
 
-        return (new GnuPGFactory($bin))->createGnuPG($home);
+        return new GnuPG(
+            (new GnuPGFactory($bin))->createGnuPG($home),
+            $home
+        );
     }
 
     private function getPublicKeyReader(): PublicKeyReader {
