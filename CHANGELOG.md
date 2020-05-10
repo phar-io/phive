@@ -2,10 +2,13 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [0.14.0] - 2020-04-??
+## [0.14.0] - 2020-05-??
 
 Please note: Version 0.14.x requires PHP 7.2 or later.
 Thanks to [MacFJA](https://github.com/MacFJA) for major contributions to this release!
+
+This release uses `phar-io/version` 3.0. As a result, semantic version strings are now normalized.
+That means strings like `v1.2.0` or `1.2` will turn into `1.2.0`.  
 
 ### Added
 
@@ -21,10 +24,16 @@ Thanks to [MacFJA](https://github.com/MacFJA) for major contributions to this re
 * [#228](https://github.com/phar-io/phive/issues/228): [ERROR] No RateLimit present in response
 * [#236](https://github.com/phar-io/phive/issues/236): Temporary option not used via [PR #238](https://github.com/phar-io/phive/pull/238) by [MacFJA](https://github.com/MacFJA)
 
+
 ### Changed
   
 * [#217](https://github.com/phar-io/phive/issues/217): Hard dependency on `which` command via [PR #231](https://github.com/phar-io/phive/pull/231) by [MacFJA](https://github.com/MacFJA)
+* Updated dependencies
+* `ext/gnupg` should work again
 
+### Removed
+
+* Keyserver `keys.fedoraproject.org` removed from keyserver list as it ceased service
 
 
 ## [0.13.2] - 2019-10-30
