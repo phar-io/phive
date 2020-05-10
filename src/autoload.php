@@ -94,6 +94,8 @@ spl_autoload_register(
                 'phario\\phive\\gnupgverificationresult' => '/services/signature/gpg/GnupgVerificationResult.php',
                 'phario\\phive\\hash' => '/shared/hash/Hash.php',
                 'phario\\phive\\helpcommand' => '/commands/help/HelpCommand.php',
+                'phario\\phive\\helpcommandconfig' => '/commands/help/HelpCommandConfig.php',
+                'phario\\phive\\helpcontext' => '/commands/help/HelpContext.php',
                 'phario\\phive\\httpclient' => '/shared/http/HttpClient.php',
                 'phario\\phive\\httpexception' => '/shared/http/HttpException.php',
                 'phario\\phive\\httpprogresshandler' => '/shared/http/HttpProgressHandler.php',

@@ -43,7 +43,8 @@ class Factory {
     public function getHelpCommand(): HelpCommand {
         return new HelpCommand(
             $this->getEnvironment(),
-            $this->getOutput()
+            $this->getOutput(),
+            new HelpCommandConfig($this->request->parse(new HelpContext()))
         );
     }
 

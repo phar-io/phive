@@ -193,6 +193,11 @@ class Runner {
 
         try {
             $this->showHeader();
+
+            if ($this->request->getOptions()->hasOption('help')) {
+                $this->request->getOptions()->setOption('help', $command);
+                $command = 'help';
+            }
             $this->locator->getCommand($command)->execute();
             $this->showFooter();
         } catch (CommandLocatorException $e) {

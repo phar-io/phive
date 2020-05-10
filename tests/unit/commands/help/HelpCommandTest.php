@@ -14,9 +14,13 @@ class HelpCommandTest extends TestCase {
             ->method('writeMarkdown')
             ->with($this->stringContains('help'));
 
+        $config = $this->createMock(HelpCommandConfig::class);
+        $config->method('generic')->willReturn(true);
+
         $command = new HelpCommand(
             $this->getEnvironmentMock(),
-            $output
+            $output,
+            $config
         );
 
         $command->execute();

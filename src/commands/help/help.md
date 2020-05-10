@@ -7,8 +7,10 @@
 
 **Commands:**
 
-**help**
+**help [<command> ...]**
     Show this help output and exit
+    
+    _command_  Get help of a specific command
 
 **version**
     Show release version and exit
