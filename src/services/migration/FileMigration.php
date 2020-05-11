@@ -32,7 +32,11 @@ abstract class FileMigration implements Migration {
 
         $this->doMigrate($this->legacy, $this->new);
 
-        $this->handleOldFile($this->getFileDescription(), $this->legacy);
+        if ($this->mustMigrate()) {
+            $this->legacy->delete();
+        } else {
+            $this->handleOldFile($this->getFileDescription(), $this->legacy);
+        }
     }
 
     abstract protected function doMigrate(Filename $legacy, Filename $new): void;

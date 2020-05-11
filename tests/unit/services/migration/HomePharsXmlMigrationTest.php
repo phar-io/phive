@@ -77,28 +77,6 @@ class HomePharsXmlMigrationTest extends TestCase {
         $this->assertStringEqualsFile(__DIR__ . '/tmp/registry.xml', '<?xml><root>Foobar</root>');
     }
 
-    public function testMigrateRename(): void {
-        $directory = new Directory(__DIR__ . '/tmp');
-        $directory->file('phars.xml')->putContent('<?xml><root>Foobar</root>');
-
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($directory);
-
-        $migration = new HomePharsXmlMigration($config, $this->getInputMock($this, true));
-
-        $migration->migrate();
-
-        $this->assertFileExists(__DIR__ . '/tmp/registry.xml');
-        $this->assertFileExists(__DIR__ . '/tmp/phars.xml.backup');
-
-        if (\method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist(__DIR__ . '/tmp/phars.xml');
-        } else {
-            $this->assertFileNotExists(__DIR__ . '/tmp/phars.xml');
-        }
-        $this->assertStringEqualsFile(__DIR__ . '/tmp/registry.xml', '<?xml><root>Foobar</root>');
-    }
-
     private function createMigration(array $existingFiles): HomePharsXmlMigration {
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, $existingFiles));

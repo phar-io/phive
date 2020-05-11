@@ -21,11 +21,9 @@ class MigrationFactory {
      */
     public function getMigrations(): array {
         return [
-            new HomeAuthXmlMigration($this->factory->getConfig(), $this->input),
             new HomePharsXmlMigration($this->factory->getConfig(), $this->input),
             new HomePhiveXmlMigration($this->factory->getConfig(), $this->input),
             new ProjectPhiveXmlMigration($this->environment, $this->factory->getConfig(), $this->input),
-            new ProjectAuthXmlMigration($this->environment, $this->factory->getConfig(), $this->input)
         ];
     }
 }
