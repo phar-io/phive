@@ -8,14 +8,9 @@ class MigrateCommand implements Cli\Command {
     /** @var MigrateCommandConfig */
     private $config;
 
-    /** @var PharRegistry */
-    private $pharRegistry;
-
     /** @var Cli\Output */
     private $output;
 
-    /** @var PhiveXmlConfig */
-    private $phiveXmlConfig;
     /** @var MigrationService */
     private $migrationService;
 
@@ -34,26 +29,20 @@ class MigrateCommand implements Cli\Command {
 
     public function execute(): void {
         if ($this->config->showStatus()) {
-            $migrations = $this->migrationService->getAllMigration();
-            $table      = new ConsoleTable(['Status', 'Mandatory', 'Description']);
+            $migrations = $this->migrationService->getUserMigrations();
+            $table      = new ConsoleTable(['Status', 'Description']);
 
             foreach ($migrations as $migration) {
-                switch (true) {
-                    case $migration->canMigrate():
-                        $status = 'Not applied';
-
-                        break;
-                    case $migration->inError():
-                        $status = 'Can\'t migrate';
-
-                        break;
-                    default:
-                        $status = 'Migrated';
+                if ($migration->canMigrate()) {
+                    $status = 'Not applied';
+                } elseif ($migration->inError()) {
+                    $status = 'Can\'t migrate';
+                } else {
+                    continue;
                 }
 
                 $table->addRow([
                     $status,
-                    $migration->mustMigrate() ? 'Yes' : 'No',
                     $migration->getDescription()
                 ]);
             }

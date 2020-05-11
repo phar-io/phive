@@ -20,10 +20,6 @@ trait MigrationMocks {
         return $file;
     }
 
-    private function getOutputMock(TestCase $testCase): Cli\Output {
-        return $testCase->createMock(Cli\Output::class);
-    }
-
     private function getDirectoryWithFileMock(TestCase $testCase, array $files): Directory {
         $directory = $testCase->createMock(Directory::class);
         $directory->method('file')->willReturnCallback(function ($file) use ($files, $testCase) {

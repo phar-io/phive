@@ -29,8 +29,10 @@ class MigrationService {
     /**
      * @return Migration[]
      */
-    public function getAllMigration(): array {
-        return $this->factory->getMigrations();
+    public function getUserMigrations(): array {
+        return \array_filter($this->factory->getMigrations(), function (Migration $migration) {
+            return !$migration->mustMigrate();
+        });
     }
     public function runAll(): int {
         return $this->runMigrations(false);

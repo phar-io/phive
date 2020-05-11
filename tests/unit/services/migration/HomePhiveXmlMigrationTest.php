@@ -80,28 +80,6 @@ class HomePhiveXmlMigrationTest extends TestCase {
         $this->assertStringEqualsFile(__DIR__ . '/tmp/global.xml', '<?xml><root>Foobar</root>');
     }
 
-    public function testMigrateRename(): void {
-        $directory = new Directory(__DIR__ . '/tmp');
-        $directory->file('phive.xml')->putContent('<?xml><root>Foobar</root>');
-
-        $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($directory);
-
-        $migration = new HomePhiveXmlMigration($config, $this->getInputMock($this, true));
-
-        $migration->migrate();
-
-        $this->assertFileExists(__DIR__ . '/tmp/global.xml');
-        $this->assertFileExists(__DIR__ . '/tmp/phive.xml.backup');
-
-        if (\method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist(__DIR__ . '/tmp/phive.xml');
-        } else {
-            $this->assertFileNotExists(__DIR__ . '/tmp/phive.xml');
-        }
-        $this->assertStringEqualsFile(__DIR__ . '/tmp/global.xml', '<?xml><root>Foobar</root>');
-    }
-
     private function createMigration(array $existingFiles): HomePhiveXmlMigration {
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, $existingFiles));

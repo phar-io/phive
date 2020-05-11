@@ -21,49 +21,37 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
     }
 
     public function testInErrorBecauseBothOldAndNewExists(): void {
-        $migration = $this->createMigration(true, true, true, true);
+        $migration = $this->createMigration(true, true, true);
 
         $this->assertTrue($migration->inError());
     }
 
     public function testNotInErrorWithMissingOld(): void {
-        $migration = $this->createMigration(false, true, true, true);
+        $migration = $this->createMigration(false, true, true);
 
         $this->assertFalse($migration->inError());
     }
 
     public function testNotInErrorWithMissingNew(): void {
-        $migration = $this->createMigration(true, false, false, true);
-
-        $this->assertFalse($migration->inError());
-    }
-
-    public function testNotInErrorWithMissingNewButExistingDirectory(): void {
-        $migration = $this->createMigration(true, true, false, true);
+        $migration = $this->createMigration(true, false, true);
 
         $this->assertFalse($migration->inError());
     }
 
     public function testNotInErrorWithBothOldAndNewMissing(): void {
-        $migration = $this->createMigration(false, false, false, true);
+        $migration = $this->createMigration(false, false, true);
 
         $this->assertFalse($migration->inError());
     }
 
     public function testCanMigrate(): void {
-        $migration = $this->createMigration(true, false, false, true);
-
-        $this->assertTrue($migration->canMigrate());
-    }
-
-    public function testCanMigrateWithNewDirectoryExisting(): void {
-        $migration = $this->createMigration(true, true, false, true);
+        $migration = $this->createMigration(true, false, true);
 
         $this->assertTrue($migration->canMigrate());
     }
 
     public function testCannotMigrateBecauseMissingOld(): void {
-        $migration = $this->createMigration(false, true, true, true);
+        $migration = $this->createMigration(false, true, true);
 
         $this->assertFalse($migration->canMigrate());
     }
@@ -119,17 +107,13 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
         $this->assertStringEqualsFile(__DIR__ . '/tmp/.phive/phars.xml', '<?xml><root>Foobar</root>');
     }
 
-    private function createMigration(bool $haveLegacy, bool $haveNewDirectory, bool $haveNewFile, bool $accepted): ProjectPhiveXmlMigration {
+    private function createMigration(bool $haveLegacy, bool $haveNewFile, bool $accepted): ProjectPhiveXmlMigration {
         $workingDirectory = $this->traitGetDirectoryWithFileMock($this, [$haveLegacy ? 'phive.xml' : null]);
 
-        if ($haveNewDirectory) {
-            $workingDirectory->method('hasChild')->with('.phive')->willReturn(true);
-            $workingDirectory->method('child')->with('.phive')->willReturn(
-                $this->traitGetDirectoryWithFileMock($this, [$haveNewFile ? 'phars.xml' : null])
-            );
-        } else {
-            $workingDirectory->method('hasChild')->with('.phive')->willReturn(false);
-        }
+        $workingDirectory->method('hasChild')->with('.phive')->willReturn(true);
+        $workingDirectory->method('child')->with('.phive')->willReturn(
+            $this->traitGetDirectoryWithFileMock($this, [$haveNewFile ? 'phars.xml' : null])
+        );
 
         $environment = $this->createMock(Environment::class);
         $environment
