@@ -64,7 +64,6 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
         $environment->method('getWorkingDirectory')->willReturn($directory);
 
         $migration = new ProjectPhiveXmlMigration(
-            $environment,
             new Config($environment, $this->getOptionsMock($this)),
             $this->getInputMock($this, false)
         );
@@ -89,7 +88,6 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
         $environment->method('getWorkingDirectory')->willReturn($directory);
 
         $migration = new ProjectPhiveXmlMigration(
-            $environment,
             new Config($environment, $this->getOptionsMock($this)),
             $this->getInputMock($this, true)
         );
@@ -121,7 +119,6 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
             ->willReturn($workingDirectory);
 
         return new ProjectPhiveXmlMigration(
-            $environment,
             new Config($environment, $this->getOptionsMock($this)),
             $this->getInputMock($this, $accepted)
         );

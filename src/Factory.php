@@ -491,7 +491,7 @@ class Factory {
 
     private function getMigrationService(): MigrationService {
         return new MigrationService(
-            new MigrationFactory($this, $this->getEnvironment(), $this->getConsoleInput())
+            new MigrationFactory($this, $this->getConsoleInput())
         );
     }
 

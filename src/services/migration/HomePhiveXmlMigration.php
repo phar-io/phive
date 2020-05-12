@@ -3,10 +3,9 @@ namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 
-class HomePhiveXmlMigration extends FileMigration {
-    public function __construct(Config $config, Cli\Input $input) {
+class HomePhiveXmlMigration extends InternalFileMigration {
+    public function __construct(Config $config) {
         parent::__construct(
-            $input,
             $config->getHomeDirectory()->file('phive.xml'),
             $config->getGlobalInstallation()
         );
@@ -18,6 +17,10 @@ class HomePhiveXmlMigration extends FileMigration {
 
     public function getDescription(): string {
         return 'Change the name of globally installed Phars configuration file.';
+    }
+
+    public function isUserMigration(): bool {
+        return false;
     }
 
     protected function doMigrate(Filename $legacy, Filename $new): void {
