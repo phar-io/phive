@@ -19,10 +19,6 @@ class HomePharsXmlMigration extends InternalFileMigration {
         return 'Change the name of the list of all installed Phars file.';
     }
 
-    public function isUserMigration(): bool {
-        return false;
-    }
-
     protected function doMigrate(Filename $legacy, Filename $new): void {
         $new->putContent($legacy->read()->getContent());
     }

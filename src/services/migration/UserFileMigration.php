@@ -12,6 +12,10 @@ abstract class UserFileMigration extends FileMigration {
         parent::__construct($legacy, $new);
     }
 
+    public function isUserMigration(): bool {
+        return true;
+    }
+
     abstract protected function getFileDescription(): string;
 
     protected function handleOldFile(Filename $old): void {

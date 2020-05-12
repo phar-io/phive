@@ -19,10 +19,6 @@ class HomePhiveXmlMigration extends InternalFileMigration {
         return 'Change the name of globally installed Phars configuration file.';
     }
 
-    public function isUserMigration(): bool {
-        return false;
-    }
-
     protected function doMigrate(Filename $legacy, Filename $new): void {
         $new->putContent($legacy->read()->getContent());
     }

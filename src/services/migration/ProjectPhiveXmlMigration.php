@@ -20,10 +20,6 @@ class ProjectPhiveXmlMigration extends UserFileMigration {
         return 'Move the \'phive.xml\' inside the new \'.phive/\' configuration directory.';
     }
 
-    public function isUserMigration(): bool {
-        return true;
-    }
-
     protected function doMigrate(Filename $legacy, Filename $new): void {
         $new->putContent($legacy->read()->getContent());
     }
