@@ -63,7 +63,7 @@ class HomePharsXmlMigrationTest extends TestCase {
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($directory);
 
-        $migration = new HomePharsXmlMigration($config, $this->getInputMock($this, false));
+        $migration = new HomePharsXmlMigration($config);
 
         $migration->migrate();
 
@@ -81,6 +81,6 @@ class HomePharsXmlMigrationTest extends TestCase {
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, $existingFiles));
 
-        return new HomePharsXmlMigration($config, $this->getInputMock($this, true));
+        return new HomePharsXmlMigration($config);
     }
 }

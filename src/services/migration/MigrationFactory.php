@@ -5,15 +5,12 @@ class MigrationFactory {
 
     /** @var Factory */
     private $factory;
-    /** @var Environment */
-    private $environment;
     /** @var Cli\Input */
     private $input;
 
-    public function __construct(Factory $factory, Environment $environment, Cli\Input $input) {
-        $this->factory     = $factory;
-        $this->environment = $environment;
-        $this->input       = $input;
+    public function __construct(Factory $factory, Cli\Input $input) {
+        $this->factory = $factory;
+        $this->input   = $input;
     }
 
     /**
@@ -21,9 +18,9 @@ class MigrationFactory {
      */
     public function getMigrations(): array {
         return [
-            new HomePharsXmlMigration($this->factory->getConfig(), $this->input),
-            new HomePhiveXmlMigration($this->factory->getConfig(), $this->input),
-            new ProjectPhiveXmlMigration($this->environment, $this->factory->getConfig(), $this->input),
+            new HomePharsXmlMigration($this->factory->getConfig()),
+            new HomePhiveXmlMigration($this->factory->getConfig()),
+            new ProjectPhiveXmlMigration($this->factory->getConfig(), $this->input),
         ];
     }
 }

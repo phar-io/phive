@@ -3,11 +3,11 @@ namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 
-class ProjectPhiveXmlMigration extends FileMigration {
-    public function __construct(Environment $environment, Config $config, Cli\Input $input) {
+class ProjectPhiveXmlMigration extends UserFileMigration {
+    public function __construct(Config $config, Cli\Input $input) {
         parent::__construct(
             $input,
-            $environment->getWorkingDirectory()->file('phive.xml'),
+            $config->getWorkingDirectory()->file('phive.xml'),
             $config->getProjectInstallation()
         );
     }
@@ -18,6 +18,10 @@ class ProjectPhiveXmlMigration extends FileMigration {
 
     public function getDescription(): string {
         return 'Move the \'phive.xml\' inside the new \'.phive/\' configuration directory.';
+    }
+
+    public function isUserMigration(): bool {
+        return true;
     }
 
     protected function doMigrate(Filename $legacy, Filename $new): void {

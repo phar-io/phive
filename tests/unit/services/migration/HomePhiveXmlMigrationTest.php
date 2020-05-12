@@ -66,7 +66,7 @@ class HomePhiveXmlMigrationTest extends TestCase {
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($directory);
 
-        $migration = new HomePhiveXmlMigration($config, $this->getInputMock($this, false));
+        $migration = new HomePhiveXmlMigration($config);
 
         $migration->migrate();
 
@@ -84,6 +84,6 @@ class HomePhiveXmlMigrationTest extends TestCase {
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
         $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, $existingFiles));
 
-        return new HomePhiveXmlMigration($config, $this->getInputMock($this, true));
+        return new HomePhiveXmlMigration($config);
     }
 }

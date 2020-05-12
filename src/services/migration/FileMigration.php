@@ -4,15 +4,12 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Filename;
 
 abstract class FileMigration implements Migration {
-    /** @var Cli\Input */
-    private $input;
     /** @var Filename */
     private $legacy;
     /** @var Filename */
     private $new;
 
-    public function __construct(Cli\Input $input, Filename $legacy, Filename $new) {
-        $this->input       = $input;
+    public function __construct(Filename $legacy, Filename $new) {
         $this->legacy      = $legacy;
         $this->new         = $new;
     }
@@ -32,25 +29,10 @@ abstract class FileMigration implements Migration {
 
         $this->doMigrate($this->legacy, $this->new);
 
-        if ($this->mustMigrate()) {
-            $this->legacy->delete();
-        } else {
-            $this->handleOldFile($this->getFileDescription(), $this->legacy);
-        }
+        $this->handleOldFile($this->legacy);
     }
 
     abstract protected function doMigrate(Filename $legacy, Filename $new): void;
 
-    abstract protected function getFileDescription(): string;
-
-    protected function handleOldFile(string $description, Filename $old): void {
-        $message = \sprintf('Migration of %s is almost finished. Do you want to keep the old file?', $description);
-
-        if ($this->input->confirm($message, true)) {
-            $newName = \basename($old->asString()) . '.backup';
-            $old->renameTo($newName);
-        } else {
-            $old->delete();
-        }
-    }
+    abstract protected function handleOldFile(Filename $old): void;
 }

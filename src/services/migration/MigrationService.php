@@ -31,7 +31,7 @@ class MigrationService {
      */
     public function getUserMigrations(): array {
         return \array_filter($this->factory->getMigrations(), function (Migration $migration) {
-            return !$migration->mustMigrate();
+            return $migration->isUserMigration();
         });
     }
     public function runAll(): int {

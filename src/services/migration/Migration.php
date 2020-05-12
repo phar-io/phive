@@ -13,6 +13,12 @@ interface Migration {
      * Return true if only the new state is allowed
      */
     public function mustMigrate(): bool;
+
+    /**
+     * Indicate if the migration is a user/project related migration or
+     * an Phive/internal migration.
+     */
+    public function isUserMigration(): bool;
     public function inError(): bool;
     public function getDescription(): string;
     public function migrate(): void;
