@@ -101,10 +101,14 @@ class PharRegistry {
      * @throws PharRegistryException
      */
     public function getByUsage(Filename $filename): Phar {
-        $pharNode = $this->dbFile->query(\sprintf('//phive:phar[phive:usage/@destination="%s"]', (string)$filename))->item(0);
+        $pharNode = $this->dbFile->query(
+            \sprintf('//phive:phar[phive:usage/@destination="%s"]', $filename->asString())
+        )->item(0);
 
         if ($pharNode === null) {
-            throw new PharRegistryException(\sprintf('No phar with usage %s found', (string)$filename));
+            throw new PharRegistryException(
+                \sprintf('No phar with usage %s found', $filename->asString())
+            );
         }
 
         /* @var DOMElement $pharNode */
@@ -113,10 +117,15 @@ class PharRegistry {
 
     public function removeUsage(Phar $phar, Filename $destination): void {
         $pharNode  = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
-        $usageNode = $this->dbFile->query(\sprintf('//phive:usage[@destination="%s"]', (string)$destination), $pharNode)->item(0);
+        $usageNode = $this->dbFile->query(
+            \sprintf('//phive:usage[@destination="%s"]', $destination->asString()),
+            $pharNode
+        )->item(0);
 
         if ($usageNode === null) {
-            throw new PharRegistryException(\sprintf('No phar with usage %s found', (string)$destination));
+            throw new PharRegistryException(
+                \sprintf('No phar with usage %s found', $destination->asString())
+            );
         }
 
         $pharNode->removeChild($usageNode);
@@ -167,7 +176,7 @@ class PharRegistry {
      */
     public function getUsedPharsByDestination(Directory $destination): array {
         $usedPhars = [];
-        $query     = \sprintf('//phive:phar[contains(phive:usage/@destination, "%s")]', (string)$destination);
+        $query     = \sprintf('//phive:phar[contains(phive:usage/@destination, "%s")]', $destination->asString());
 
         foreach ($this->dbFile->query($query) as $pharNode) {
             $usedPhars[] = $this->nodetoPhar($pharNode);
@@ -197,7 +206,7 @@ class PharRegistry {
 
         if (!$targetDir->isWritable()) {
             throw new FileNotWritableException(
-                \sprintf('Cannot write phar to %s', (string)$targetDir)
+                \sprintf('Cannot write phar to %s', $targetDir->asString())
             );
         }
 
@@ -210,7 +219,7 @@ class PharRegistry {
     private function getPharDestination(Phar $phar): string {
         return \sprintf(
             '%s/%s-%s.phar',
-            (string)$this->pharDirectory,
+            $this->pharDirectory->asString(),
             $phar->getName(),
             $phar->getVersion()->getVersionString()
         );

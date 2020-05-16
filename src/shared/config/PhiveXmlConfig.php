@@ -196,7 +196,7 @@ abstract class PhiveXmlConfig {
 
         if ($pharNode->hasAttribute('url')) {
             $url               = new PharUrl($pharNode->getAttribute('url'));
-            $pharName          = (string)$url;
+            $pharName          = $url->asString();
             $versionConstraint = $url->getPharVersion()->getVersionString();
         } else {
             $pharName          = $pharNode->getAttribute('name');

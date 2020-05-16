@@ -41,12 +41,12 @@ class SourcesList {
      * @throws SourcesListException
      */
     public function getAliasForComposerAlias(ComposerAlias $alias): string {
-        $query  = \sprintf('//phive:phar[@composer="%s"]', (string)$alias);
+        $query  = \sprintf('//phive:phar[@composer="%s"]', $alias->asString());
         $result = $this->sourcesFile->query($query);
 
         if ($result->length === 0) {
             throw new SourcesListException(
-                \sprintf('No such composer alias "%s"', (string)$alias),
+                \sprintf('No such composer alias "%s"', $alias->asString()),
                 SourcesListException::ComposerAliasNotFound
             );
         }

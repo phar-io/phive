@@ -23,7 +23,7 @@ class Git {
      */
     public function getMostRecentTag(Directory $directory): string {
         if (!$this->isRepository($directory)) {
-            throw new GitException(\sprintf('%s is not a git repository', (string)$directory));
+            throw new GitException(\sprintf('%s is not a git repository', $directory->asString()));
         }
         \chdir($directory->__toString());
         $tag = @\exec('git describe --tags --always --dirty 2>' . $this->getDevNull(), $output, $returnCode);

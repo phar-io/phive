@@ -55,10 +55,10 @@ class CompatibilityService {
                 }
 
                 case $requirement instanceof PhpExtensionRequirement: {
-                    if (!\extension_loaded((string)$requirement)) {
+                    if (!\extension_loaded($requirement->asString())) {
                         $issues[] = \sprintf(
                             'Extension %s is required, but not installed or activated',
-                            (string)$requirement
+                            $requirement->asString()
                         );
                     }
                 }

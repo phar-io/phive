@@ -35,7 +35,7 @@ class HttpProgressRenderer implements HttpProgressHandler {
         }
 
         if ($this->first) {
-            $this->output->writeInfo(\sprintf('Downloading %s', (string)$this->url));
+            $this->output->writeInfo(\sprintf('Downloading %s', $this->url->asString()));
             $this->first = false;
         }
 

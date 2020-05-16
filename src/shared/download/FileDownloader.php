@@ -44,7 +44,7 @@ class FileDownloader {
 
         if (!$response->isSuccess()) {
             throw new DownloadFailedException(
-                \sprintf('Failed to download load %s: HTTP Code %d', (string)$url, $response->getHttpCode()),
+                \sprintf('Failed to download load %s: HTTP Code %d', $url->asString(), $response->getHttpCode()),
                 $response->getHttpCode()
             );
         }

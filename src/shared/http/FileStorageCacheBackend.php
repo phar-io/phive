@@ -39,7 +39,7 @@ class FileStorageCacheBackend implements CacheBackend {
     }
 
     private function translateUrlToName(Url $url): string {
-        return \str_replace('/', '_', $url->getPath()) . '-' . \sha1((string)$url);
+        return \str_replace('/', '_', $url->getPath()) . '-' . \sha1($url->asString());
     }
 
     private function getStorageDirectory(Url $url): Directory {

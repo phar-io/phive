@@ -57,7 +57,7 @@ class PharDownloader {
 
             if (!$response->isSuccess()) {
                 throw new DownloadFailedException(
-                    \sprintf('Failed to download load %s: HTTP Code %d', (string)$url, $response->getHttpCode()),
+                    \sprintf('Failed to download load %s: HTTP Code %d', $url->asString(), $response->getHttpCode()),
                     $response->getHttpCode()
                 );
             }
@@ -65,7 +65,7 @@ class PharDownloader {
             return new File($url->getFilename(), $response->getBody());
         } catch (HttpException $e) {
             throw new DownloadFailedException(
-                \sprintf('Unexpected HTTP error when requesting %s: %s', (string)$url, $e->getMessage()),
+                \sprintf('Unexpected HTTP error when requesting %s: %s', $url->asString(), $e->getMessage()),
                 (int)$e->getCode(),
                 $e
             );

@@ -22,7 +22,7 @@ class WindowsPharInstaller extends PharInstaller {
     protected function link(Filename $phar, Filename $destination): void {
         $linkFilename = new Filename($destination->withoutExtension()->asString() . '.bat');
 
-        if ((string)$phar->getDirectory() === (string)$linkFilename->getDirectory()) {
+        if ($phar->getDirectory()->asString() === $linkFilename->getDirectory()->asString()) {
             $pathToPhar = '%~dp0' . $phar->getRelativePathTo($linkFilename->getDirectory())->asString();
         } else {
             $pathToPhar = $phar->asString();

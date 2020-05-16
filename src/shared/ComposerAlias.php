@@ -13,7 +13,7 @@ class ComposerAlias {
         [$this->vendor, $this->name] = \explode('/', $alias);
     }
 
-    public function __toString(): string {
+    public function asString(): string {
         return $this->vendor . '/' . $this->name;
     }
 

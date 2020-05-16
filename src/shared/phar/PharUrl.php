@@ -5,7 +5,7 @@ use PharIo\Version\Version;
 
 class PharUrl extends Url implements PharIdentifier {
     public function getPharName(): string {
-        $filename = \pathinfo((string)$this, \PATHINFO_FILENAME);
+        $filename = \pathinfo($this->asString(), \PATHINFO_FILENAME);
         \preg_match('/(.*)-[\d]+.[\d]+.[\d]+.*/', $filename, $matches);
 
         if (\count($matches) !== 2) {
@@ -19,15 +19,15 @@ class PharUrl extends Url implements PharIdentifier {
      * @throws UnsupportedVersionConstraintException
      */
     public function getPharVersion(): Version {
-        $filename = \pathinfo((string)$this, \PATHINFO_FILENAME);
+        $filename = \pathinfo($this->asString(), \PATHINFO_FILENAME);
         \preg_match('/-([\d]+.[\d]+.[\d]+.*)/', $filename, $matches);
 
         if (\count($matches) !== 2) {
-            \preg_match('/\/([\d]+.[\d]+.[\d]+.*)\//', (string)$this, $matches);
+            \preg_match('/\/([\d]+.[\d]+.[\d]+.*)\//', $this->asString(), $matches);
         }
 
         if (\count($matches) !== 2) {
-            throw new UnsupportedVersionConstraintException(\sprintf('Could not extract PHAR version from %s', (string)$this));
+            throw new UnsupportedVersionConstraintException(\sprintf('Could not extract PHAR version from %s', $this->asString()));
         }
 
         return new Version($matches[1]);

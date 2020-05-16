@@ -153,7 +153,7 @@ class CurlHttpClient implements HttpClient {
 
         if ($httpCode > 0) {
             throw new HttpException(
-                \sprintf('Unexpected Response Code %d while requesting %s', $httpCode, (string)$this->url),
+                \sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url->asString()),
                 $httpCode
             );
         }
