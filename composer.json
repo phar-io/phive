@@ -22,7 +22,7 @@
     "ext-dom" : "*",
     "ext-curl" : "*",
     "phar-io/version": "^3.0",
-    "phar-io/filesystem": "^1.0.1",
+    "phar-io/filesystem": "^2.0",
     "phar-io/gnupg": "^1.0",
     "phar-io/manifest": "^2.0"
   },

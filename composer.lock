@@ -4,126 +4,111 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6975d50dbd1ce99bdf175583a7c59d17",
+    "content-hash": "578a90d65a0e224bc7573787581a1910",
     "packages": [
         {
             "name": "phar-io/executor",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phar-io/executor.git",
-                "reference": "73ee06f202bf07acc6d2da9bb383bda3e91784ba"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/executor/zipball/73ee06f202bf07acc6d2da9bb383bda3e91784ba",
-                "reference": "73ee06f202bf07acc6d2da9bb383bda3e91784ba",
-                "shasum": ""
-            },
-            "require": {
-                "phar-io/filesystem": "1.0.x-dev",
-                "php": ">=5.6.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Heuer",
-                    "email": "sebastian@phpeople.de",
-                    "role": "Developer"
-                }
-            ],
-            "time": "2017-03-19T16:06:49+00:00"
-        },
-        {
-            "name": "phar-io/filesystem",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phar-io/filesystem.git",
-                "reference": "5691b052daba3d179e6aef064a02ebfa5e8c7d1e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/5691b052daba3d179e6aef064a02ebfa5e8c7d1e",
-                "reference": "5691b052daba3d179e6aef064a02ebfa5e8c7d1e",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Sebastian Heuer",
-                    "email": "sebastian@phpeople.de",
-                    "role": "Developer"
-                }
-            ],
-            "time": "2020-05-09T22:26:02+00:00"
-        },
-        {
-            "name": "phar-io/gnupg",
             "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phar-io/gnupg.git",
-                "reference": "16e19abb2414ba9ea1e6b72b0adde483058f8fdc"
+                "url": "https://github.com/phar-io/executor.git",
+                "reference": "ddf26baf35ab96d3b596b8abe9cc809c42283af5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/16e19abb2414ba9ea1e6b72b0adde483058f8fdc",
-                "reference": "16e19abb2414ba9ea1e6b72b0adde483058f8fdc",
+                "url": "https://api.github.com/repos/phar-io/executor/zipball/ddf26baf35ab96d3b596b8abe9cc809c42283af5",
+                "reference": "ddf26baf35ab96d3b596b8abe9cc809c42283af5",
                 "shasum": ""
             },
             "require": {
-                "phar-io/executor": "1.0.x-dev",
-                "phar-io/filesystem": "^1.0",
+                "phar-io/filesystem": "^2.0",
                 "php": "^7.2"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
             },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Heuer",
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
+                }
+            ],
+            "time": "2020-05-16T23:16:39+00:00"
+        },
+        {
+            "name": "phar-io/filesystem",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phar-io/filesystem.git",
+                "reference": "f8ce9a46dddcca9da74d0ef2ba5e47ae457716c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phar-io/filesystem/zipball/f8ce9a46dddcca9da74d0ef2ba5e47ae457716c8",
+                "reference": "f8ce9a46dddcca9da74d0ef2ba5e47ae457716c8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Heuer",
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
+                }
+            ],
+            "time": "2020-05-16T22:55:30+00:00"
+        },
+        {
+            "name": "phar-io/gnupg",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phar-io/gnupg.git",
+                "reference": "1fb6c9950dbd9d52f080b547edacc2e5479dff3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phar-io/gnupg/zipball/1fb6c9950dbd9d52f080b547edacc2e5479dff3d",
+                "reference": "1fb6c9950dbd9d52f080b547edacc2e5479dff3d",
+                "shasum": ""
+            },
+            "require": {
+                "phar-io/executor": "^1.0",
+                "phar-io/filesystem": "^2.0",
+                "php": "^7.2"
+            },
+            "type": "library",
             "autoload": {
                 "classmap": [
                     "src/"
@@ -146,7 +131,7 @@
                 }
             ],
             "description": "Thin GnuPG wrapper class around the gnupg binary, mimicking the pecl/gnupg api",
-            "time": "2020-05-10T14:10:57+00:00"
+            "time": "2020-05-16T23:31:59+00:00"
         },
         {
             "name": "phar-io/manifest",

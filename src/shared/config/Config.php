@@ -32,10 +32,16 @@ class Config {
 
     public function getHomeDirectory(): Directory {
         if ($this->cliOptions->hasOption('home')) {
-            return new Directory($this->cliOptions->getOption('home'));
+            $dir = new Directory($this->cliOptions->getOption('home'));
+            $dir->ensureExists();
+
+            return $dir;
         }
 
-        return $this->environment->getHomeDirectory()->child('.phive');
+        $dir = $this->environment->getHomeDirectory()->child('.phive');
+        $dir->ensureExists();
+
+        return $dir;
     }
 
     public function getRegistry(): Filename {

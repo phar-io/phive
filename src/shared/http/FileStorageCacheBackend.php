@@ -9,6 +9,7 @@ class FileStorageCacheBackend implements CacheBackend {
     private $basedir;
 
     public function __construct(Directory $basedir) {
+        $basedir->ensureExists(0700);
         $this->basedir = $basedir;
     }
 
@@ -43,8 +44,11 @@ class FileStorageCacheBackend implements CacheBackend {
     }
 
     private function getStorageDirectory(Url $url): Directory {
-        return $this->basedir->child($url->getHostname())->child(
+        $dir = $this->basedir->child($url->getHostname())->child(
             $this->translateUrlToName($url)
         );
+        $dir->ensureExists(0700);
+
+        return $dir;
     }
 }

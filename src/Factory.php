@@ -364,6 +364,8 @@ class Factory {
 
     private function getGnupg(): GnuPG {
         $home = $this->getConfig()->getGPGDirectory();
+        $home->ensureExists(0700);
+
         $bin  = $this->getConfig()->getGPGBinaryPath();
 
         return new GnuPG(
@@ -518,6 +520,8 @@ class Factory {
 
     private function getTemporaryGnupg(): GnuPG {
         $home = $this->getConfig()->getTemporaryWorkingDirectory();
+        $home->ensureExists(0700);
+
         $bin  = $this->getConfig()->getGPGBinaryPath();
 
         return new GnuPG(
