@@ -25,15 +25,16 @@ class TargetDirectoryLocator {
      * @throws ConfigException
      */
     public function getTargetDirectory(): Directory {
-
         switch (true) {
             case $this->cliOptions->hasOption('target'): {
                 $directory = new Directory($this->cliOptions->getOption('target'));
+
                 break;
             }
 
             case $this->phiveXmlConfig->hasTargetDirectory(): {
                 $directory = $this->phiveXmlConfig->getTargetDirectory();
+
                 break;
             }
 
@@ -43,6 +44,7 @@ class TargetDirectoryLocator {
         }
 
         $directory->ensureExists();
+
         return $directory;
     }
 }
