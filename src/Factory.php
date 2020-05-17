@@ -51,6 +51,7 @@ class Factory {
     public function getSkelCommand(): SkelCommand {
         return new SkelCommand(
             new SkelCommandConfig($this->request->parse(new SkelContext()), \getcwd()),
+            $this->getOutput(),
             $this->getPhiveVersion()
         );
     }

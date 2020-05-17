@@ -2,6 +2,7 @@
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
+use PharIo\Phive\Cli\Output;
 
 class SkelCommand implements Cli\Command {
 
@@ -14,7 +15,10 @@ class SkelCommand implements Cli\Command {
     /** @var \DateTimeImmutable */
     private $now;
 
-    public function __construct(SkelCommandConfig $config, PhiveVersion $version, \DateTimeImmutable $now = null) {
+    /** @var Output */
+    private $output;
+
+    public function __construct(SkelCommandConfig $config, Cli\Output $output, PhiveVersion $version, \DateTimeImmutable $now = null) {
         $this->config  = $config;
         $this->version = $version;
 
@@ -22,13 +26,18 @@ class SkelCommand implements Cli\Command {
             $now = new \DateTimeImmutable();
         }
         $this->now = $now;
+        $this->output = $output;
     }
 
     public function execute(): void {
         $skeleton = \file_get_contents($this->config->getTemplateFilename());
         $skeleton = $this->replacePlaceholder($skeleton, '%%VERSION%%', $this->version->getVersion());
         $skeleton = $this->replacePlaceholder($skeleton, '%%DATE%%', $this->now->format('Y-m-d H:i:sO'));
-        $this->writeSkeletonFile($skeleton);
+        $target = $this->writeSkeletonFile($skeleton);
+
+        $this->output->writeInfo(
+            sprintf('Skeleton file created in %s.', $target->asString())
+        );
     }
 
     private function replacePlaceholder(string $content, string $placeholder, string $replacement): string {
@@ -38,7 +47,7 @@ class SkelCommand implements Cli\Command {
     /**
      * @throws IOException
      */
-    private function writeSkeletonFile(string $skeleton): void {
+    private function writeSkeletonFile(string $skeleton): Filename {
         $destination = new Filename($this->config->getDestination());
 
         if ($destination->exists() && !$this->config->allowOverwrite()) {
@@ -50,5 +59,7 @@ class SkelCommand implements Cli\Command {
         $destination->getDirectory()->ensureExists();
 
         \file_put_contents($destination->asString(), $skeleton);
+
+        return $destination;
     }
 }
