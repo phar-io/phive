@@ -2,6 +2,15 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.14.1] - 2020-05-18
+
+Please note: Version 0.14.x requires PHP 7.2 or later.
+
+### Fixed
+
+* [#257](https://github.com/phar-io/phive/issues/257): Error running phive install on 0.14.0
+
+
 ## [0.14.0] - 2020-05-17
 
 Please note: Version 0.14.x requires PHP 7.2 or later.
