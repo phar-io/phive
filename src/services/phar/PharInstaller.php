@@ -1,6 +1,7 @@
 <?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\DirectoryException;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
 
@@ -51,6 +52,17 @@ abstract class PharInstaller {
      * @throws FileNotWritableException
      */
     private function ensureDestinationIsWritable(Filename $destination): void {
+        $dir = $destination->getDirectory();
+        if ($dir->exists() && !$dir->isWritable()) {
+            throw new FileNotWritableException(\sprintf('Directory %s is not writable.', $dir->asString()));
+        }
+
+        try {
+            $dir->ensureExists();
+        } catch (DirectoryException $e) {
+            throw new FileNotWritableException($e->getMessage(), 0, $e);
+        }
+
         if (!$destination->isWritable()) {
             throw new FileNotWritableException(\sprintf('File %s is not writable.', $destination->asString()));
         }
