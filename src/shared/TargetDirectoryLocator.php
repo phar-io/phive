@@ -27,7 +27,13 @@ class TargetDirectoryLocator {
     public function getTargetDirectory(): Directory {
         switch (true) {
             case $this->cliOptions->hasOption('target'): {
-                $directory = new Directory($this->cliOptions->getOption('target'));
+                $path = $this->cliOptions->getOption('target');
+                if ($path[0] === '/')  {
+                     $directory = new Directory($path);
+                     break;
+                }
+
+                $directory = $this->config->getWorkingDirectory()->child($path);
 
                 break;
             }

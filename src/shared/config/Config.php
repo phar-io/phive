@@ -97,7 +97,7 @@ class Config {
     }
 
     public function getToolsDirectory(): Directory {
-        return new Directory('tools');
+        return $this->getWorkingDirectory()->child('tools');
     }
 
     /**
