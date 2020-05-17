@@ -25,32 +25,20 @@ class TargetDirectoryLocator {
      * @throws ConfigException
      */
     public function getTargetDirectory(): Directory {
-        switch (true) {
-            case $this->cliOptions->hasOption('target'): {
-                $path = $this->cliOptions->getOption('target');
-                if ($path[0] === '/')  {
-                     $directory = new Directory($path);
-                     break;
-                }
+        if ($this->cliOptions->hasOption('target')) {
+            $path = $this->cliOptions->getOption('target');
+            if ($path[0] === '/')  {
 
-                $directory = $this->config->getWorkingDirectory()->child($path);
-
-                break;
+                 return new Directory($path);
             }
 
-            case $this->phiveXmlConfig->hasTargetDirectory(): {
-                $directory = $this->phiveXmlConfig->getTargetDirectory();
-
-                break;
-            }
-
-            default: {
-               $directory = $this->config->getToolsDirectory();
-            }
+            return $this->config->getWorkingDirectory()->child($path);
         }
 
-        $directory->ensureExists();
+        if ($this->phiveXmlConfig->hasTargetDirectory()) {
+            return $this->phiveXmlConfig->getTargetDirectory();
+        }
 
-        return $directory;
+       return $this->config->getToolsDirectory();
     }
 }
