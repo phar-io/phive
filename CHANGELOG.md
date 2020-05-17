@@ -2,7 +2,7 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [0.14.0] - 2020-05-??
+## [0.14.0] - 2020-05-17
 
 Please note: Version 0.14.x requires PHP 7.2 or later.
 Thanks to [MacFJA](https://github.com/MacFJA) for major contributions to this release!
@@ -19,11 +19,11 @@ That means strings like `v1.2.0` or `1.2` will turn into `1.2.0`.
 
 ### Fixed
 
+* [#179](https://github.com/phar-io/phive/issues/179): tools dir is created even when not needed
 * [#218](https://github.com/phar-io/phive/issues/218): Error when we are unable to read CLI input via [PR #235](https://github.com/phar-io/phive/pull/235) by [MacFJA](https://github.com/MacFJA) 
 * [#226](https://github.com/phar-io/phive/issues/226): Crappy connection results in type error
 * [#228](https://github.com/phar-io/phive/issues/228): [ERROR] No RateLimit present in response
 * [#236](https://github.com/phar-io/phive/issues/236): Temporary option not used via [PR #238](https://github.com/phar-io/phive/pull/238) by [MacFJA](https://github.com/MacFJA)
-
 
 ### Changed
   
@@ -33,7 +33,7 @@ That means strings like `v1.2.0` or `1.2` will turn into `1.2.0`.
 
 ### Removed
 
-* Keyserver `keys.fedoraproject.org` removed from keyserver list as it ceased service
+* Keyserver `keys.fedoraproject.org` removed from keyserver list as it ceased operation
 
 
 ## [0.13.2] - 2019-10-30
