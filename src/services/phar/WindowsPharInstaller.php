@@ -31,6 +31,8 @@ class WindowsPharInstaller extends PharInstaller {
         $this->getOutput()->writeInfo(
             \sprintf('Linking %s to %s', $phar->asString(), $linkFilename->asString())
         );
+
+        $linkFilename->getDirectory()->ensureExists();
         \file_put_contents($linkFilename->asString(), $template);
     }
 }

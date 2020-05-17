@@ -153,9 +153,8 @@ class OutdatedCommand implements Cli\Command {
     }
 
     private function writeToFile(string $output): void {
-        \file_put_contents(
-            $this->outdatedConfig->outputFilename()->asString(),
-            $output . "\n"
-        );
+        $destionation = $this->outdatedConfig->outputFilename();
+        $destionation->getDirectory()->ensureExists();
+        \file_put_contents($destionation->asString(), $output . "\n");
     }
 }

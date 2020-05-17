@@ -1,6 +1,8 @@
 <?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Filename;
+
 class SkelCommand implements Cli\Command {
 
     /** @var SkelCommandConfig */
@@ -37,13 +39,16 @@ class SkelCommand implements Cli\Command {
      * @throws IOException
      */
     private function writeSkeletonFile(string $skeleton): void {
-        $destination = $this->config->getDestination();
+        $destination = new Filename($this->config->getDestination());
 
-        if (\file_exists($destination) && !$this->config->allowOverwrite()) {
+        if ($destination->exists() && !$this->config->allowOverwrite()) {
             throw new IOException(
                 'A PHIVE configuration file already exists. Use the "--force" switch to overwrite it.'
             );
         }
-        \file_put_contents($this->config->getDestination(), $skeleton);
+
+        $destination->getDirectory()->ensureExists();
+
+        \file_put_contents($destination->asString(), $skeleton);
     }
 }

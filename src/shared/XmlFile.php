@@ -49,11 +49,12 @@ class XmlFile {
     }
 
     public function save(): void {
+        $this->getDirectory()->ensureExists();
         $this->getDom()->save($this->filename->asString());
     }
 
     public function getDirectory(): Directory {
-        return new Directory(\dirname($this->filename->asString()));
+        return $this->filename->getDirectory();
     }
 
     public function getDom(): \DOMDocument {
