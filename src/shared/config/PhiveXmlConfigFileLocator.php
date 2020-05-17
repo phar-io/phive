@@ -17,16 +17,12 @@ class PhiveXmlConfigFileLocator {
         $this->output      = $output;
     }
 
-    public function getFile(bool $global): \PharIo\FileSystem\Filename {
-        if ($global) {
-            return $this->config->getGlobalInstallation();
-        }
-
+    public function getFile(): \PharIo\FileSystem\Filename {
         $primary  = $this->config->getProjectInstallation();
         $fallback = $this->environment->getWorkingDirectory()->file('phive.xml');
 
         if ($primary->exists() && $fallback->exists()) {
-            $this->output->writeWarning('Both .phive/phars.xml and phive.xml shouldn\'t be defined. Please prefer using .phive/phars.xml');
+            $this->output->writeWarning('Both .phive/phars.xml and phive.xml shouldn\'t be defined at the same time. Please prefer using .phive/phars.xml');
         }
 
         if (!$primary->exists() && $fallback->exists()) {

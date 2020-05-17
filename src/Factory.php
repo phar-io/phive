@@ -413,7 +413,7 @@ class Factory {
         if ($global) {
             return new GlobalPhiveXmlConfig(
                 new XmlFile(
-                    $this->getPhiveXmlConfigFileLocator()->getFile($global),
+                    $this->getConfig()->getGlobalInstallation(),
                     'https://phar.io/phive',
                     'phive'
                 ),
@@ -423,7 +423,7 @@ class Factory {
 
         return new LocalPhiveXmlConfig(
             new XmlFile(
-                $this->getPhiveXmlConfigFileLocator()->getFile($global),
+                $this->getPhiveXmlConfigFileLocator()->getFile(),
                 'https://phar.io/phive',
                 'phive'
             ),
