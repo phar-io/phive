@@ -50,7 +50,7 @@ class PharRegistryTest extends TestCase {
 
         /** @var Directory|\PHPUnit_Framework_MockObject_MockObject $destination */
         $destination = $this->createMock(Directory::class);
-        $destination->method('__toString')
+        $destination->method('asString')
             ->willReturn('/vagrant/phive/tools');
 
         $expected = [

@@ -61,7 +61,7 @@ class UnixoidEnvironmentTest extends TestCase {
 
     public function testGetHomeDirectory(): void {
         $env = new UnixoidEnvironment(['HOME' => __DIR__], $this->getExecutorMock());
-        $this->assertSame(__DIR__, (string)$env->getHomeDirectory());
+        $this->assertSame(__DIR__, $env->getHomeDirectory()->asString());
     }
 
     public function testGetProxyThrowsExceptionIfProxyIsNotSet(): void {

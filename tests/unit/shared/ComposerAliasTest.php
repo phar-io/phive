@@ -19,7 +19,7 @@ class ComposerAliasTest extends TestCase {
 
     public function testToString(): void {
         $alias = new ComposerAlias('some/alias');
-        $this->assertSame('some/alias', $alias->__toString());
+        $this->assertSame('some/alias', $alias->asString());
     }
 
     public function testGetVendorReturnsExpectedValue(): void {

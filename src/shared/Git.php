@@ -15,7 +15,7 @@ class Git {
     }
 
     public function isRepository(Directory $directory): bool {
-        return \is_dir($directory . '/.git');
+        return \is_dir($directory->asString() . '/.git');
     }
 
     /**
@@ -25,9 +25,9 @@ class Git {
         if (!$this->isRepository($directory)) {
             throw new GitException(\sprintf('%s is not a git repository', $directory->asString()));
         }
-        \chdir($directory->__toString());
+        \chdir($directory->asString());
         $tag = @\exec('git describe --tags --always --dirty 2>' . $this->getDevNull(), $output, $returnCode);
-        \chdir($this->workingDirectory->__toString());
+        \chdir($this->workingDirectory->asString());
 
         if ($returnCode !== 0) {
             throw new GitException('Could not determine most recent tag');

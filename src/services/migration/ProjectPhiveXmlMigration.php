@@ -21,6 +21,7 @@ class ProjectPhiveXmlMigration extends UserFileMigration {
     }
 
     protected function doMigrate(Filename $legacy, Filename $new): void {
+        $new->getDirectory()->ensureExists();
         $new->putContent($legacy->read()->getContent());
     }
 
