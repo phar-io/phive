@@ -2,6 +2,16 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.14.2] - 2020-05-19
+
+Please note: Version 0.14.x requires PHP 7.2 or later.
+
+### Fixed
+
+* [#259](https://github.com/phar-io/phive/issues/259): "../.." is prepended to the path in the xml file after installation
+
+
+
 ## [0.14.1] - 2020-05-18
 
 Please note: Version 0.14.x requires PHP 7.2 or later.
@@ -374,7 +384,9 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.14.0...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.14.2...HEAD
+[0.14.2]: https://github.com/phar-io/phive/compare/0.14.1...0.14.2
+[0.14.1]: https://github.com/phar-io/phive/compare/0.14.0...0.14.1
 [0.14.0]: https://github.com/phar-io/phive/compare/0.13.2...0.14.0
 [0.13.2]: https://github.com/phar-io/phive/compare/0.13.0...0.13.2
 [0.13.1]: https://github.com/phar-io/phive/compare/0.13.0...0.13.1
