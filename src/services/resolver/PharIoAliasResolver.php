@@ -46,13 +46,16 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
                 $filename = new Filename(\tempnam(\sys_get_temp_dir(), 'repo_'));
                 $file->saveAs($filename);
 
-                return new PharIoRepository(
+                $repo = new PharIoRepository(
                     new XmlFile(
                         $filename,
                         'https://phar.io/repository',
                         'repository'
                     )
                 );
+
+                $file->getFilename()->delete();
+                return $repo;
         }
 
         return $this->tryNext($requestedPhar);
