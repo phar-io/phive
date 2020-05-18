@@ -16,7 +16,7 @@ class PhiveXmlConfigFileLocatorTest extends TestCase {
         $outputMock
             ->expects($this->once())
             ->method('writeWarning')
-            ->with('Both .phive/phars.xml and phive.xml shouldn\'t be defined. Please prefer using .phive/phars.xml');
+            ->with('Both .phive/phars.xml and phive.xml shouldn\'t be defined at the same time. Please prefer using .phive/phars.xml');
 
         $locator = new PhiveXmlConfigFileLocator(
             $environmentMock,

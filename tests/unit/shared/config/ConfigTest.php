@@ -66,7 +66,7 @@ class ConfigTest extends TestCase {
 
     public function testGetToolsDirectory(): void {
         $config            = new Config($this->getEnvironmentMock(), $this->getOptionsMock());
-        $expectedDirectory = new Directory('tools');
+        $expectedDirectory = $this->getEnvironmentMock()->getWorkingDirectory()->child('tools');
         $this->assertEquals($expectedDirectory, $config->getToolsDirectory());
     }
 
