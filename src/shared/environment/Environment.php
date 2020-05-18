@@ -87,13 +87,21 @@ abstract class Environment {
 
     public function getRuntimeString(): string {
         return \sprintf(
-            'PHP %s',
-            $this->getRuntimeVersion()
+            'PHP %s (on %s)',
+            $this->getRuntimeVersion(),
+            $this->getOperatingSystem()
         );
     }
 
     public function getRuntimeVersion(): string {
         return \PHP_VERSION;
+    }
+
+    public function getOperatingSystem() {
+        return sprintf('%s %s',
+            \php_uname('s'),
+            \php_uname('r')
+        );
     }
 
     public function isInteractive(): bool {
