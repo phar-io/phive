@@ -42,6 +42,7 @@ class Runner {
 
     /** @var Request */
     private $request;
+
     /** @var MigrationService */
     private $migrationService;
 
