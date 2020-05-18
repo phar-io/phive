@@ -210,9 +210,9 @@ abstract class PhiveXmlConfig {
         $location = null;
 
         if ($pharNode->hasAttribute('location') && !empty($pharNode->getAttribute('location'))) {
-            $location = new Filename($pharNode->getAttribute('location'));
-            // workaround to make sure the directory gets created
-            $location->getDirectory();
+            $filename = new Filename($pharNode->getAttribute('location'));
+            $filename->getDirectory()->ensureExists();
+            $location = $filename->withAbsolutePath();
         }
 
         $isCopy = $pharNode->hasAttribute('copy') && $pharNode->getAttribute('copy') === 'true';
