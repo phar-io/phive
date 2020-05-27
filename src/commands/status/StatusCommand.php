@@ -41,12 +41,12 @@ class StatusCommand implements Cli\Command {
         $phars = $this->statusCommandConfig->getPhars();
 
         if (\count($phars) === 0) {
-            $this->output->writeText("\nNo PHARs configured in phive.xml.\n\n");
+            $this->output->writeText("\nNo PHARs configured for this project.\n\n");
 
             return;
         }
 
-        $this->output->writeText('PHARs configured in phive.xml:' . "\n\n");
+        $this->output->writeText('PHARs configured in project:' . "\n\n");
 
         $table = new ConsoleTable(['Alias/URL', 'Version Constraint', 'Installed', 'Location', 'Key Ids']);
 
