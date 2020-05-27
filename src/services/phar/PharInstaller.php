@@ -53,6 +53,7 @@ abstract class PharInstaller {
      */
     private function ensureDestinationIsWritable(Filename $destination): void {
         $dir = $destination->getDirectory();
+
         if ($dir->exists() && !$dir->isWritable()) {
             throw new FileNotWritableException(\sprintf('Directory %s is not writable.', $dir->asString()));
         }

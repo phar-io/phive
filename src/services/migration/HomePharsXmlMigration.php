@@ -22,5 +22,4 @@ class HomePharsXmlMigration extends InternalFileMigration {
     protected function doMigrate(Filename $legacy, Filename $new): void {
         $new->putContent($legacy->read()->getContent());
     }
-
 }

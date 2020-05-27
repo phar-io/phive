@@ -98,7 +98,8 @@ abstract class Environment {
     }
 
     public function getOperatingSystem() {
-        return sprintf('%s %s',
+        return \sprintf(
+            '%s %s',
             \php_uname('s'),
             \php_uname('r')
         );

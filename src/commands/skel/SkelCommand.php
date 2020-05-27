@@ -25,7 +25,7 @@ class SkelCommand implements Cli\Command {
         if ($now === null) {
             $now = new \DateTimeImmutable();
         }
-        $this->now = $now;
+        $this->now    = $now;
         $this->output = $output;
     }
 
@@ -33,10 +33,10 @@ class SkelCommand implements Cli\Command {
         $skeleton = \file_get_contents($this->config->getTemplateFilename());
         $skeleton = $this->replacePlaceholder($skeleton, '%%VERSION%%', $this->version->getVersion());
         $skeleton = $this->replacePlaceholder($skeleton, '%%DATE%%', $this->now->format('Y-m-d H:i:sO'));
-        $target = $this->writeSkeletonFile($skeleton);
+        $target   = $this->writeSkeletonFile($skeleton);
 
         $this->output->writeInfo(
-            sprintf('Skeleton file created in %s.', $target->asString())
+            \sprintf('Skeleton file created in %s.', $target->asString())
         );
     }
 

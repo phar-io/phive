@@ -27,9 +27,9 @@ class TargetDirectoryLocator {
     public function getTargetDirectory(): Directory {
         if ($this->cliOptions->hasOption('target')) {
             $path = $this->cliOptions->getOption('target');
-            if ($path[0] === '/')  {
 
-                 return new Directory($path);
+            if ($path[0] === '/') {
+                return new Directory($path);
             }
 
             return $this->config->getWorkingDirectory()->child($path);
@@ -39,6 +39,6 @@ class TargetDirectoryLocator {
             return $this->phiveXmlConfig->getTargetDirectory();
         }
 
-       return $this->config->getToolsDirectory();
+        return $this->config->getToolsDirectory();
     }
 }
