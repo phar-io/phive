@@ -11,9 +11,9 @@ class HomePhiveXmlMigrationTest extends TestCase {
     use MigrationMocks;
 
     protected function tearDown(): void {
-        @\unlink(__DIR__ . '/tmp/phive.xml');
-        @\unlink(__DIR__ . '/tmp/phive.xml.backup');
-        @\unlink(__DIR__ . '/tmp/global.xml');
+        @\unlink('/tmp/phive.xml');
+        @\unlink('/tmp/phive.xml.backup');
+        @\unlink('/tmp/global.xml');
         parent::tearDown();
     }
 
@@ -60,7 +60,7 @@ class HomePhiveXmlMigrationTest extends TestCase {
     }
 
     public function testMigrate(): void {
-        $directory = new Directory(__DIR__ . '/tmp');
+        $directory = new Directory('/tmp');
         $directory->file('phive.xml')->putContent('<?xml><root>Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
@@ -70,14 +70,14 @@ class HomePhiveXmlMigrationTest extends TestCase {
 
         $migration->migrate();
 
-        $this->assertFileExists(__DIR__ . '/tmp/global.xml');
+        $this->assertFileExists('/tmp/global.xml');
 
         if (\method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist(__DIR__ . '/tmp/phive.xml');
+            $this->assertFileDoesNotExist('/tmp/phive.xml');
         } else {
-            $this->assertFileNotExists(__DIR__ . '/tmp/phive.xml');
+            $this->assertFileNotExists('/tmp/phive.xml');
         }
-        $this->assertStringEqualsFile(__DIR__ . '/tmp/global.xml', '<?xml><root>Foobar</root>');
+        $this->assertStringEqualsFile('/tmp/global.xml', '<?xml><root>Foobar</root>');
     }
 
     private function createMigration(array $existingFiles): HomePhiveXmlMigration {
