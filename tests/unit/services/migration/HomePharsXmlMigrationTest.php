@@ -11,9 +11,9 @@ class HomePharsXmlMigrationTest extends TestCase {
     use MigrationMocks;
 
     protected function tearDown(): void {
-        @\unlink(__DIR__ . '/tmp/registry.xml');
-        @\unlink(__DIR__ . '/tmp/phars.xml');
-        @\unlink(__DIR__ . '/tmp/phars.xml.backup');
+        @\unlink( '/tmp/registry.xml');
+        @\unlink( '/tmp/phars.xml');
+        @\unlink( '/tmp/phars.xml.backup');
         parent::tearDown();
     }
 
@@ -57,7 +57,7 @@ class HomePharsXmlMigrationTest extends TestCase {
     }
 
     public function testMigrate(): void {
-        $directory = new Directory(__DIR__ . '/tmp');
+        $directory = new Directory( '/tmp');
         $directory->file('phars.xml')->putContent('<?xml><root>Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
@@ -67,14 +67,14 @@ class HomePharsXmlMigrationTest extends TestCase {
 
         $migration->migrate();
 
-        $this->assertFileExists(__DIR__ . '/tmp/registry.xml');
+        $this->assertFileExists(  '/tmp/registry.xml');
 
         if (\method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist(__DIR__ . '/tmp/phars.xml');
+            $this->assertFileDoesNotExist( '/tmp/phars.xml');
         } else {
-            $this->assertFileNotExists(__DIR__ . '/tmp/phars.xml');
+            $this->assertFileNotExists( '/tmp/phars.xml');
         }
-        $this->assertStringEqualsFile(__DIR__ . '/tmp/registry.xml', '<?xml><root>Foobar</root>');
+        $this->assertStringEqualsFile( '/tmp/registry.xml', '<?xml><root>Foobar</root>');
     }
 
     private function createMigration(array $existingFiles): HomePharsXmlMigration {
