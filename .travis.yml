@@ -1,7 +1,5 @@
 language: php
 
-sudo: false
-
 cache:
   directories:
   - "$HOME/.phive"
@@ -28,7 +26,7 @@ php:
 - 7.4snapshot
 - master
 
-matrix:
+jobs:
   allow_failures:
   - php: 7.2snapshot
   - php: 7.3snapshot
