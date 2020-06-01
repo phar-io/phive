@@ -47,7 +47,6 @@ before_install:
 install:
 - travis_retry composer install --no-interaction --no-suggest --prefer-source
 - ant install-tools
-- if [[ "$(phpenv version-name)" =~ ^7\.1 ]]; then phive --no-progress install "phpunit@^7.5"; fi
 
 script:
 - "./tools/phpunit"
