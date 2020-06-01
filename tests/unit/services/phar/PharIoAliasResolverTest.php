@@ -2,6 +2,7 @@
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
+use PharIo\FileSystem\Filename;
 use PharIo\Version\AnyVersionConstraint;
 use PHPUnit\Framework\TestCase;
 
@@ -9,14 +10,6 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\PharIoAliasResolver
  */
 class PharIoAliasResolverTest extends TestCase {
-    /** @var SourcesList */
-    private $sourcesList;
-
-    /** @var RemoteSourcesListFileLoader */
-    private $sourcesListFileLoader;
-
-    /** @var FileDownloader */
-    private $fileDownloader;
 
     public function testReturnsRepository(): void {
         $alias         = new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint());
@@ -28,20 +21,25 @@ class PharIoAliasResolverTest extends TestCase {
         $url    = new Url('https://example.com/bar');
         $source = new Source('phar.io', $url);
 
-        $this->sourcesList = $this->prophesize(SourcesList::class);
-        $this->sourcesList->getSourceForAlias($alias)->willReturn($source);
+        $sourcesList = $this->createMock(SourcesList::class);
+        $sourcesList->method('getSourceForAlias')->with($alias)->willReturn($source);
 
-        $this->sourcesListFileLoader = $this->prophesize(RemoteSourcesListFileLoader::class);
-        $this->sourcesListFileLoader->load()->shouldBeCalled()->willReturn($this->sourcesList);
+        $sourcesListFileLoader = $this->createMock(RemoteSourcesListFileLoader::class);
+        $sourcesListFileLoader->expects($this->once())->method('load')->willReturn($sourcesList);
 
-        $file = $this->prophesize(File::class);
+        $filename = $this->createMock(Filename::class);
+        $filename->method('delete')->willReturn(true);
 
-        $this->fileDownloader = $this->prophesize(FileDownloader::class);
-        $this->fileDownloader->download($url)->willReturn($file);
+        $file = $this->createMock(File::class);
+        $file->method('getFilename')->willReturn($filename);
+        $file->expects($this->once())->method('saveAs');
+
+        $fileDownloader = $this->createMock(FileDownloader::class);
+        $fileDownloader->method('download')->with($url)->willReturn($file);
 
         $resolver = new PharIoAliasResolver(
-            $this->sourcesListFileLoader->reveal(),
-            $this->fileDownloader->reveal()
+            $sourcesListFileLoader,
+            $fileDownloader
         );
 
         $this->assertInstanceOf(SourceRepository::class, $resolver->resolve($requestedPhar));
