@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\PharIoAliasResolver
  */
 class PharIoAliasResolverTest extends TestCase {
-
     public function testReturnsRepository(): void {
         $alias         = new PharAlias('phpunit', new AnyVersionConstraint(), new AnyVersionConstraint());
         $requestedPhar = new RequestedPhar(
