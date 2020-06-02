@@ -206,11 +206,13 @@ class PharRegistry {
         $destination = new Filename($this->getPharDestination($phar));
 
         $targetDir = $destination->getDirectory();
+
         try {
             $targetDir->ensureExists();
         } catch (DirectoryException $e) {
             throw new FileNotWritableException(
-                \sprintf("Cannot write phar to %s:\n%s",
+                \sprintf(
+                    "Cannot write phar to %s:\n%s",
                     $targetDir->asString(),
                     $e->getMessage()
                 )
