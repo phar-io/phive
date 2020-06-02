@@ -8,6 +8,10 @@ class UnixoidPharInstaller extends PharInstaller {
         $this->getOutput()->writeInfo(
             \sprintf('Linking %s to %s', $phar->asString(), $destination->asString())
         );
-        \symlink($phar->asString(), $destination->asString());
+
+        \symlink(
+            $phar->withAbsolutePath()->asString(),
+            $destination->withAbsolutePath()->asString()
+        );
     }
 }
