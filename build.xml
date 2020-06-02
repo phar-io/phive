@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Phive" default="build" basedir=".">
-    <property name="source" value="src"/>
     <property name="phive.bin" value="phive"/>
 
     <target name="setup" depends="clean,composer,install-tools,generate-autoloader"/>
