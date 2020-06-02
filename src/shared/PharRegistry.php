@@ -3,6 +3,7 @@ namespace PharIo\Phive;
 
 use DOMElement;
 use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\DirectoryException;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
 use PharIo\Version\Version;
@@ -205,6 +206,16 @@ class PharRegistry {
         $destination = new Filename($this->getPharDestination($phar));
 
         $targetDir = $destination->getDirectory();
+        try {
+            $targetDir->ensureExists();
+        } catch (DirectoryException $e) {
+            throw new FileNotWritableException(
+                \sprintf("Cannot write phar to %s:\n%s",
+                    $targetDir->asString(),
+                    $e->getMessage()
+                )
+            );
+        }
 
         if (!$targetDir->isWritable()) {
             throw new FileNotWritableException(
