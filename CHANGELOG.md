@@ -2,6 +2,22 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.14.3] - 2020-06-03
+
+Please note: Version 0.14.x requires PHP 7.2 or later.
+
+### Fixed
+
+* [#262](https://github.com/phar-io/phive/issues/262): "Cannot write phar to ..." error
+* [#261](https://github.com/phar-io/phive/issues/261): "phive status" prints wrong path to XML file
+
+### Changed
+
+* Phive should now properly clean up after itself, no more dangeling repo files in `/tmp`
+* Broken symlinks no longer break installation of phars 
+* Phive's phar build as well as cli wrapper now actually enforce use of PHP 7.2+
+
+
 ## [0.14.2] - 2020-05-19
 
 Please note: Version 0.14.x requires PHP 7.2 or later.
@@ -9,7 +25,6 @@ Please note: Version 0.14.x requires PHP 7.2 or later.
 ### Fixed
 
 * [#259](https://github.com/phar-io/phive/issues/259): "../.." is prepended to the path in the xml file after installation
-
 
 
 ## [0.14.1] - 2020-05-18
@@ -384,7 +399,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.14.2...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.14.3...HEAD
+[0.14.3]: https://github.com/phar-io/phive/compare/0.14.2...0.14.3
 [0.14.2]: https://github.com/phar-io/phive/compare/0.14.1...0.14.2
 [0.14.1]: https://github.com/phar-io/phive/compare/0.14.0...0.14.1
 [0.14.0]: https://github.com/phar-io/phive/compare/0.13.2...0.14.0
