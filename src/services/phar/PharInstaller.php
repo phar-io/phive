@@ -1,6 +1,7 @@
 <?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\DirectoryException;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
@@ -9,26 +10,36 @@ abstract class PharInstaller {
     /** @var Cli\Output */
     private $output;
 
+    /** @var mixed */
+    private $originalHandler;
+
     public function __construct(Cli\Output $output) {
         $this->output = $output;
     }
 
-    /**
-     * @param bool $copy
-     */
-    public function install(File $phar, Filename $destination, $copy): void {
-        $this->ensureDestinationIsWritable($destination);
+    public function install(File $phar, Filename $destination, bool $copy): void {
+        try {
+            $this->registerLocalErrorHandler();
 
-        if ($destination->exists()) {
-            \unlink($destination->asString());
+            $this->cleanupExisting($destination);
+            $this->prepareDestinationDirectory($destination->getDirectory());
+
+            if ($copy) {
+                $this->copy($phar->getFilename(), $destination);
+            } else {
+                $this->link($phar->getFilename(), $destination);
+            }
+
+            $this->restoreErrorHandler();
+        } catch (PharInstallerException $e) {
+            throw new InstallationFailedException(
+                \sprintf('Installation failed: %s', $e->getMessage())
+            );
         }
+    }
 
-        if ($copy) {
-            $this->copy($phar->getFilename(), $destination);
-
-            return;
-        }
-        $this->link($phar->getFilename(), $destination);
+    public function localErrorHandler(int $errno, string $errstr): void {
+        throw new PharInstallerException($errstr, $errno);
     }
 
     protected function getOutput(): Cli\Output {
@@ -48,24 +59,51 @@ abstract class PharInstaller {
      */
     abstract protected function link(Filename $phar, Filename $destination): void;
 
-    /**
-     * @throws FileNotWritableException
-     */
-    private function ensureDestinationIsWritable(Filename $destination): void {
-        $dir = $destination->getDirectory();
-
+    private function prepareDestinationDirectory(Directory $dir): void {
         if ($dir->exists() && !$dir->isWritable()) {
-            throw new FileNotWritableException(\sprintf('Directory %s is not writable.', $dir->asString()));
+            throw new PharInstallerException(
+                \sprintf('Directory %s is not writable.', $dir->asString())
+            );
         }
 
         try {
             $dir->ensureExists();
         } catch (DirectoryException $e) {
-            throw new FileNotWritableException($e->getMessage(), 0, $e);
+            throw new PharInstallerException(
+                \sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
+                $e->getCode(),
+                $e
+            );
+        } catch (PharInstallerException $e) {
+            throw new PharInstallerException(
+                \sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
+                $e->getCode(),
+                $e
+            );
         }
+    }
 
-        if (!$destination->isWritable()) {
-            throw new FileNotWritableException(\sprintf('File %s is not writable.', $destination->asString()));
+    private function cleanupExisting(Filename $destination): void {
+        try {
+            $destination->delete();
+        } catch (PharInstallerException $e) {
         }
+        \clearstatcache(true, $destination->asString());
+
+        if ($destination->exists()) {
+            throw new PharInstallerException(
+                \sprintf('Existing file %s could not be removed', $destination->asString())
+            );
+        }
+    }
+
+    private function registerLocalErrorHandler(): void {
+        $this->originalHandler = \set_error_handler(
+            [$this, 'localErrorHandler']
+        );
+    }
+
+    private function restoreErrorHandler(): void {
+        \set_error_handler($this->originalHandler);
     }
 }

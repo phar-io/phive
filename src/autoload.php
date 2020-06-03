@@ -148,6 +148,7 @@ spl_autoload_register(
                 'phario\\phive\\pharexception' => '/shared/exceptions/PharException.php',
                 'phario\\phive\\pharidentifier' => '/shared/phar/PharIdentifier.php',
                 'phario\\phive\\pharinstaller' => '/services/phar/PharInstaller.php',
+                'phario\\phive\\pharinstallerexception' => '/shared/exceptions/PharInstallerException.php',
                 'phario\\phive\\pharinstallerfactory' => '/services/phar/PharInstallerFactory.php',
                 'phario\\phive\\pharinstallerlocator' => '/services/phar/PharInstallerLocator.php',
                 'phario\\phive\\pharioaliasresolver' => '/services/resolver/PharIoAliasResolver.php',
