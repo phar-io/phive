@@ -4,7 +4,7 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Filename;
 
 class WindowsPharInstaller extends PharInstaller {
-    public const PHAR_PLACEHOLDER = '##PHAR_FILENAME##';
+    private const PHAR_PLACEHOLDER = '##PHAR_FILENAME##';
 
     /** @var string */
     private $template;
