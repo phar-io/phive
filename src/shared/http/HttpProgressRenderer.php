@@ -46,7 +46,8 @@ class HttpProgressRenderer implements HttpProgressHandler {
         }
         $this->prevProgress = (string)$progressString;
 
-        $template = ' ╰|%s| %s / %s - %3d%%';
+        // U+2570 BOX DRAWINGS LIGHT ARC UP AND RIGHT character
+        $template = ' \xE2\x95\xB0|%s| %s / %s - %3d%%';
 
         $this->output->writeProgress(
             \sprintf(
