@@ -1,12 +1,15 @@
 <?php declare(strict_types = 1);
 
-class Gnupg {
-    public function import($p): array {
-    }
-    public function verify($p, $p2): array {
-    }
+if (!class_exists('Gnupg')) {
+    class Gnupg {
+        public function import($p): array {
+        }
 
-    public function keyinfo(string $id): array {
+        public function verify($p, $p2): array {
+        }
+
+        public function keyinfo(string $id): array {
+        }
     }
 }
 

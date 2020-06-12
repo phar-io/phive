@@ -3,9 +3,6 @@ parameters:
     paths:
         - %currentWorkingDirectory%/phive
         - %currentWorkingDirectory%/src/
-    autoload_files:
-        - %currentWorkingDirectory%/src/autoload.php
-        - %currentWorkingDirectory%/build/phpstan/bootstrap.php
     ignoreErrors:
         # Level 2
         - '#^Method PharIo\\Phive\\PharRegistry::getFirstMatchingPharNode\(\) should return DOMElement\|null but returns DOMNode\|null\.$#'
