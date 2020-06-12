@@ -1,8 +1,6 @@
 <?php declare(strict_types = 1);
 namespace PharIo\Phive;
 
-use PharIo\FileSystem\Filename;
-
 /**
  * Resolves an alias to a list of Phar.io repository URLs
  */

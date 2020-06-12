@@ -8,7 +8,7 @@ abstract class UserFileMigration extends FileMigration {
     private $input;
 
     public function __construct(Cli\Input $input, Filename $legacy, Filename $new) {
-        $this->input       = $input;
+        $this->input = $input;
         parent::__construct($legacy, $new);
     }
 

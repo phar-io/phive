@@ -367,7 +367,7 @@ class Factory {
         $home = $this->getConfig()->getGPGDirectory();
         $home->ensureExists(0700);
 
-        $bin  = $this->getConfig()->getGPGBinaryPath();
+        $bin = $this->getConfig()->getGPGBinaryPath();
 
         return new GnuPG(
             (new GnuPGFactory($bin))->createGnuPG($home),
@@ -523,7 +523,7 @@ class Factory {
         $home = $this->getConfig()->getTemporaryWorkingDirectory();
         $home->ensureExists(0700);
 
-        $bin  = $this->getConfig()->getGPGBinaryPath();
+        $bin = $this->getConfig()->getGPGBinaryPath();
 
         return new GnuPG(
             (new GnuPGFactory($bin))->createGnuPG($home),

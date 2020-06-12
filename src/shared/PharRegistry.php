@@ -17,7 +17,7 @@ class PharRegistry {
     private $dbFile;
 
     public function __construct(XmlFile $xmlFile, Directory $pharDirectory) {
-        $this->dbFile        = $xmlFile;
+        $this->dbFile = $xmlFile;
 
         $pharDirectory->ensureExists(0755);
         $this->pharDirectory = $pharDirectory;

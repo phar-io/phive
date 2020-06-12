@@ -21,12 +21,6 @@ class XmlFile {
     /** @var string */
     private $rootElementName;
 
-    public function __construct(Filename $filename, string $namespace, string $root) {
-        $this->filename        = $filename;
-        $this->namespace       = $namespace;
-        $this->rootElementName = $root;
-    }
-
     public static function fromFile(File $file): self {
         $dom = self::createDomDocument();
         $dom->loadXML($file->getContent());
@@ -39,6 +33,12 @@ class XmlFile {
         $xmlFile->dom = $dom;
 
         return $xmlFile;
+    }
+
+    public function __construct(Filename $filename, string $namespace, string $root) {
+        $this->filename        = $filename;
+        $this->namespace       = $namespace;
+        $this->rootElementName = $root;
     }
 
     public function createElement(string $name, string $text = ''): \DOMElement {
@@ -101,9 +101,9 @@ class XmlFile {
     }
 
     private static function createDomDocument(): \DOMDocument {
-        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom                     = new \DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
+        $dom->formatOutput       = true;
 
         return $dom;
     }

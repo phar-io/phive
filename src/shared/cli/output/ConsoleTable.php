@@ -19,8 +19,8 @@ class ConsoleTable {
     }
 
     public function asString(): string {
-        $output     = '';
-        $mask       = '';
+        $output = '';
+        $mask   = '';
 
         foreach ($this->headers as $index => $header) {
             $columnWidth = $this->getColWidth($index);

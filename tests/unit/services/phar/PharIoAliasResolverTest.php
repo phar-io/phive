@@ -2,7 +2,6 @@
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
-use PharIo\FileSystem\Filename;
 use PharIo\Version\AnyVersionConstraint;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +24,6 @@ class PharIoAliasResolverTest extends TestCase {
 
         $sourcesListFileLoader = $this->createMock(RemoteSourcesListFileLoader::class);
         $sourcesListFileLoader->expects($this->once())->method('load')->willReturn($sourcesList);
-
 
         $file = $this->createMock(File::class);
         $file->method('getContent')->willReturn('<?xml version="1.0"?><root xmlns="a:b" />');

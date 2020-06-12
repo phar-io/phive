@@ -60,7 +60,7 @@ class OutdatedCommand implements Cli\Command {
             return 'Congrats, no outdated phars found';
         }
 
-        $table    = new ConsoleTable(['Name', 'Version Constraint', 'Installed', 'Available']);
+        $table = new ConsoleTable(['Name', 'Version Constraint', 'Installed', 'Available']);
 
         foreach ($outdated as $entry) {
             $table->addRow([

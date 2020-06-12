@@ -10,8 +10,8 @@ abstract class FileMigration implements Migration {
     private $new;
 
     public function __construct(Filename $legacy, Filename $new) {
-        $this->legacy      = $legacy;
-        $this->new         = $new;
+        $this->legacy = $legacy;
+        $this->new    = $new;
     }
 
     public function canMigrate(): bool {
