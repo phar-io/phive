@@ -26,12 +26,9 @@ class PharIoAliasResolverTest extends TestCase {
         $sourcesListFileLoader = $this->createMock(RemoteSourcesListFileLoader::class);
         $sourcesListFileLoader->expects($this->once())->method('load')->willReturn($sourcesList);
 
-        $filename = $this->createMock(Filename::class);
-        $filename->method('delete')->willReturn(true);
 
         $file = $this->createMock(File::class);
-        $file->method('getFilename')->willReturn($filename);
-        $file->expects($this->once())->method('saveAs');
+        $file->method('getContent')->willReturn('<?xml version="1.0"?><root xmlns="a:b" />');
 
         $fileDownloader = $this->createMock(FileDownloader::class);
         $fileDownloader->method('download')->with($url)->willReturn($file);
