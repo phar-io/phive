@@ -73,7 +73,7 @@ class OutdatedCommand implements Cli\Command {
 
         return \sprintf(
             "Found %d outdated PHARs in phive.xml:\n\n%s",
-            $outdated,
+            \count($outdated),
             $table->asString()
         );
     }
@@ -127,11 +127,11 @@ class OutdatedCommand implements Cli\Command {
         return $this->selector->select($releases, $requestedPhar->getVersionConstraint(), true);
     }
 
-    private function renderJsonOutput(array $outdated) {
+    private function renderJsonOutput(array $outdated): string {
         return \json_encode(['outdated' => $outdated], \JSON_PRETTY_PRINT);
     }
 
-    private function renderXmlOutput(array $outdated) {
+    private function renderXmlOutput(array $outdated): string {
         $dom = new DOMDocument();
         $dom->loadXML('<?xml version="1.0" encoding="UTF-8" ?><outdated xmlns="https://phar.io/outdated" />');
 

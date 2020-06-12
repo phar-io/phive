@@ -2,6 +2,7 @@
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\DirectoryException;
 
 class UnixoidEnvironment extends Environment {
 

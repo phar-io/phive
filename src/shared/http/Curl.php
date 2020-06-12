@@ -49,6 +49,10 @@ class Curl {
         \curl_setopt_array($this->curlHandle, $options);
     }
 
+    /**
+     * @throws CurlException
+     * @psalm-suppress InvalidReturnType
+     */
     public function exec(): string {
         $result = \curl_exec($this->curlHandle);
 

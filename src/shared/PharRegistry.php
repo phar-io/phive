@@ -262,6 +262,7 @@ class PharRegistry {
         $path  = [];
 
         foreach ($nodes as $node) {
+            /** @var $node DOMElement */
             $path[] = $node->getAttribute('destination');
         }
 

@@ -97,7 +97,7 @@ abstract class Environment {
         return \PHP_VERSION;
     }
 
-    public function getOperatingSystem() {
+    public function getOperatingSystem(): string {
         return \sprintf(
             '%s %s',
             \php_uname('s'),

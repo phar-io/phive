@@ -2,10 +2,10 @@
 namespace PharIo\Phive;
 
 class GnupgKeyImporter implements KeyImporter {
-    /** @var Gnupg */
+    /** @var GnuPG */
     private $gnupg;
 
-    public function __construct(Gnupg $gnupg) {
+    public function __construct(GnuPG $gnupg) {
         $this->gnupg = $gnupg;
     }
 

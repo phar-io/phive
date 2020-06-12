@@ -27,7 +27,7 @@ class XmlFile {
 
         $xmlFile = new self(
             $file->getFilename(),
-            $dom->documentElement->namespaceURI,
+            $dom->documentElement->namespaceURI ?? '',
             $dom->documentElement->localName
         );
         $xmlFile->dom = $dom;

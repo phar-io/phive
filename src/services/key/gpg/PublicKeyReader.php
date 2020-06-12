@@ -16,7 +16,7 @@ class PublicKeyReader {
     /**
      * PublicKeyReader constructor.
      */
-    public function __construct(Gnupg $gnupg, Directory $workDir) {
+    public function __construct(GnuPG $gnupg, Directory $workDir) {
         $this->gnupg   = $gnupg;
         $this->workDir = $workDir;
     }

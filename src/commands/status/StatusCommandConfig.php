@@ -49,7 +49,7 @@ class StatusCommandConfig {
             }, $phar->getUsages());
         }, $this->pharRegistry->getAllPhars());
 
-        $usedPhar = \array_reduce($usedPhar, static function ($accumulator, array $items) {
+        $usedPhar = \array_reduce($usedPhar, static function (array $accumulator, array $items) {
             return \array_merge($accumulator, $items);
         }, []);
 
