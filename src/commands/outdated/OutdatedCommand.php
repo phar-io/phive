@@ -73,7 +73,7 @@ class OutdatedCommand implements Cli\Command {
 
         return \sprintf(
             "Found %d outdated PHARs in phive.xml:\n\n%s",
-            $outdated,
+            count($outdated),
             $table->asString()
         );
     }

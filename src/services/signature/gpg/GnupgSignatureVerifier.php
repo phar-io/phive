@@ -5,13 +5,13 @@ namespace PharIo\Phive;
  * GPG Signature Verification using the GnuPG PECL Extension.
  */
 class GnupgSignatureVerifier implements SignatureVerifier {
-    /** @var Gnupg */
+    /** @var GnuPG */
     private $gpg;
 
     /** @var KeyService */
     private $keyService;
 
-    public function __construct(Gnupg $gpg, KeyService $keyService) {
+    public function __construct(GnuPG $gpg, KeyService $keyService) {
         $this->gpg        = $gpg;
         $this->keyService = $keyService;
     }

@@ -25,7 +25,7 @@ class UnixoidEnvironment extends Environment {
     }
 
     /**
-     * @throws DirectoryException
+     * @throws \PharIo\FileSystem\DirectoryException
      * @throws \BadMethodCallException
      */
     public function getHomeDirectory(): Directory {
