@@ -2,6 +2,15 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.14.4] - 2020-06-12
+
+Please note: Version 0.14.x requires PHP 7.2 or later.
+
+### Fixed
+
+* [#266](https://github.com/phar-io/phive/issues/266): "Ubuntu 20.04 & PHP7.4: phive install phploc" errors
+
+
 ## [0.14.3] - 2020-06-03
 
 Please note: Version 0.14.x requires PHP 7.2 or later.
