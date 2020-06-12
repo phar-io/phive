@@ -20,16 +20,11 @@ class XmlFile {
     /** @var string */
     private $rootElementName;
 
-    /**
-     * XmlFile constructor.
-     *
-     * @param string $namespace
-     * @param string $root
-     */
-    public function __construct(Filename $filename, $namespace, $root) {
+    public function __construct(Filename $filename, string $namespace, string $root) {
         $this->filename        = $filename;
         $this->namespace       = $namespace;
         $this->rootElementName = $root;
+        $this->init();
     }
 
     public function createElement(string $name, string $text = ''): \DOMElement {
@@ -58,8 +53,6 @@ class XmlFile {
     }
 
     public function getDom(): \DOMDocument {
-        $this->init();
-
         return $this->dom;
     }
 
@@ -83,8 +76,6 @@ class XmlFile {
     }
 
     private function getXPath(): \DOMXPath {
-        $this->init();
-
         return $this->xPath;
     }
 }
