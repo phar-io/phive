@@ -71,13 +71,13 @@ abstract class PharInstaller {
         } catch (DirectoryException $e) {
             throw new PharInstallerException(
                 \sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
-                $e->getCode(),
+                (int)$e->getCode(),
                 $e
             );
         } catch (PharInstallerException $e) {
             throw new PharInstallerException(
                 \sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
-                $e->getCode(),
+                (int)$e->getCode(),
                 $e
             );
         }
@@ -98,6 +98,7 @@ abstract class PharInstaller {
     }
 
     private function registerLocalErrorHandler(): void {
+        /** @psalm-suppress InvalidArgument */
         $this->originalHandler = \set_error_handler(
             [$this, 'localErrorHandler']
         );
