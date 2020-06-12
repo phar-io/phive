@@ -41,9 +41,11 @@ class GnupgSignatureVerifier implements SignatureVerifier {
 
     private function attemptVerification(string $message, string $signature): GnupgVerificationResult {
         $res = $this->gpg->verify($message, $signature);
+
         if (!$res) {
             throw new VerificationFailedException('GnuPG verify call returned false');
         }
+
         return new GnupgVerificationResult($res[0]);
     }
 }
