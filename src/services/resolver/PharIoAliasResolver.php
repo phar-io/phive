@@ -54,7 +54,7 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
                     )
                 );
 
-                $file->getFilename()->delete();
+                $filename->delete();
 
                 return $repo;
         }
