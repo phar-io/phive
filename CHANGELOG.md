@@ -2,6 +2,22 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.13.4] - 2020-09-18
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+* Add missing case fix to previous backported RateLimit parsing fix
+
+
+## [0.13.3] - 2020-05-27
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+* Backport RateLimit parsing
+
+
 ## [0.13.2] - 2019-10-30
 
 Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
