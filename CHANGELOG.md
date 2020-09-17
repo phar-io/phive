@@ -79,6 +79,21 @@ That means strings like `v1.2.0` or `1.2` will turn into `1.2.0`.
 * Keyserver `keys.fedoraproject.org` removed from keyserver list as it ceased operation
 
 
+## [0.13.4] - 2020-09-18
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+* Add missing case fix to previous backported RateLimit parsing fix
+
+
+## [0.13.3] - 2020-05-27
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+* Backport RateLimit parsing
+
 ## [0.13.2] - 2019-10-30
 
 Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
@@ -409,10 +424,13 @@ any changed PHARs
 ## [Unreleased]
 
 [Unreleased]: https://github.com/phar-io/phive/compare/0.14.3...HEAD
+[0.14.4]: https://github.com/phar-io/phive/compare/0.14.3...0.14.4
 [0.14.3]: https://github.com/phar-io/phive/compare/0.14.2...0.14.3
 [0.14.2]: https://github.com/phar-io/phive/compare/0.14.1...0.14.2
 [0.14.1]: https://github.com/phar-io/phive/compare/0.14.0...0.14.1
 [0.14.0]: https://github.com/phar-io/phive/compare/0.13.2...0.14.0
+[0.13.4]: https://github.com/phar-io/phive/compare/0.13.3...0.13.4
+[0.13.3]: https://github.com/phar-io/phive/compare/0.13.2...0.13.3
 [0.13.2]: https://github.com/phar-io/phive/compare/0.13.0...0.13.2
 [0.13.1]: https://github.com/phar-io/phive/compare/0.13.0...0.13.1
 [0.13.0]: https://github.com/phar-io/phive/compare/0.12.4...0.13.0
