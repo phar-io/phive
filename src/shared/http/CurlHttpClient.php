@@ -85,7 +85,7 @@ class CurlHttpClient implements HttpClient {
         if ($header === 'Etag') {
             $this->etag = new ETag($value);
         } else if (preg_match('/^(X-)?RateLimit-(.*)$/i', $header, $matches) === 1) {
-            $this->rateLimitHeaders[$matches[2]] = $value;
+            $this->rateLimitHeaders[\ucfirst(\strtolower($matches[2]))] = $value;
         }
 
         return \mb_strlen($line);
