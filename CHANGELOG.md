@@ -2,6 +2,14 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.13.5] - 2020-09-21
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+* Github blocks HEAD requests to thei API Rate Limit endpoint, use GET
+
+
 ## [0.13.4] - 2020-09-18
 
 Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
@@ -348,6 +356,10 @@ any changed PHARs
 ## [Unreleased]
 
 [Unreleased]: https://github.com/phar-io/phive/compare/0.13.1...HEAD
+[0.13.5]: https://github.com/phar-io/phive/compare/0.13.4...0.13.5
+[0.13.4]: https://github.com/phar-io/phive/compare/0.13.3...0.13.4
+[0.13.3]: https://github.com/phar-io/phive/compare/0.13.2...0.13.3
+[0.13.2]: https://github.com/phar-io/phive/compare/0.13.1...0.13.2
 [0.13.1]: https://github.com/phar-io/phive/compare/0.13.0...0.13.1
 [0.13.0]: https://github.com/phar-io/phive/compare/0.12.4...0.13.0
 [0.12.4]: https://github.com/phar-io/phive/compare/0.12.3...0.12.4
