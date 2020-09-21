@@ -79,6 +79,14 @@ That means strings like `v1.2.0` or `1.2` will turn into `1.2.0`.
 * Keyserver `keys.fedoraproject.org` removed from keyserver list as it ceased operation
 
 
+## [0.13.5] - 2020-09-21
+
+Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+
+### Fixed
+* Github blocks HEAD requests to thei API Rate Limit endpoint, use GET
+
+
 ## [0.13.4] - 2020-09-18
 
 Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
@@ -429,6 +437,7 @@ any changed PHARs
 [0.14.2]: https://github.com/phar-io/phive/compare/0.14.1...0.14.2
 [0.14.1]: https://github.com/phar-io/phive/compare/0.14.0...0.14.1
 [0.14.0]: https://github.com/phar-io/phive/compare/0.13.2...0.14.0
+[0.13.5]: https://github.com/phar-io/phive/compare/0.13.4...0.13.5
 [0.13.4]: https://github.com/phar-io/phive/compare/0.13.3...0.13.4
 [0.13.3]: https://github.com/phar-io/phive/compare/0.13.2...0.13.3
 [0.13.2]: https://github.com/phar-io/phive/compare/0.13.0...0.13.2
