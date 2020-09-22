@@ -84,7 +84,7 @@ That means strings like `v1.2.0` or `1.2` will turn into `1.2.0`.
 Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
 
 ### Fixed
-* Github blocks HEAD requests to thei API Rate Limit endpoint, use GET
+* Github blocks HEAD requests to their API Rate Limit endpoint, use GET
 
 
 ## [0.13.4] - 2020-09-18
