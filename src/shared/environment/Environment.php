@@ -124,7 +124,10 @@ abstract class Environment {
         \ini_set('xdebug.scream', 'off');
         \ini_set('xdebug.max_nesting_level', '8192');
         \ini_set('xdebug.show_exception_trace', 'off');
-        xdebug_disable();
+        // since `xdebug_disable` got removed in Xdebug 3 we have to check for its existance
+        if (function_exists('xdebug_disable')) {
+            xdebug_disable();
+        }
     }
 
     private function ensureTimezoneSet(): void {
