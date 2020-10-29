@@ -38,6 +38,13 @@ class Config {
             return $dir;
         }
 
+        if(false !== getenv('PHIVE_HOME')) {
+            $dir = new Directory(getenv('PHIVE_HOME'));
+            $dir->ensureExists();
+
+            return $dir;
+        }
+
         $dir = $this->environment->getHomeDirectory()->child('.phive');
         $dir->ensureExists();
 

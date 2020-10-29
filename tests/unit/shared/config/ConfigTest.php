@@ -10,6 +10,12 @@ use PHPUnit\Framework\TestCase;
  * @covers \PharIo\Phive\Config
  */
 class ConfigTest extends TestCase {
+    protected function tearDown(): void {
+        // Unset environmet after each test
+        putenv('PHIVE_HOME');
+        parent::tearDown();
+    }
+
     public function testGetHomeDirectory(): void {
         $homeDirectory = $this->getDirectoryMock();
 
@@ -35,11 +41,24 @@ class ConfigTest extends TestCase {
             ->willReturn(__DIR__);
 
         $expectedDirectory = new Directory(__DIR__);
+        // make sure CLI option wins over potential environment variable
+        putenv('PHIVE_HOME=' . dirname(__DIR__));
 
         $environment = $this->getEnvironmentMock();
         $environment->expects($this->never())->method('getHomeDirectory');
 
         $config = new Config($environment, $options);
+        $this->assertEquals($expectedDirectory, $config->getHomeDirectory());
+    }
+
+    public function testGetHomeDirectoryOverriddenByEnvironmentVariable(): void {
+        $environment = $this->getEnvironmentMock();
+        $environment->expects($this->never())->method('getHomeDirectory');
+
+        $expectedDirectory = new Directory(__DIR__);
+        putenv('PHIVE_HOME=' . __DIR__);
+
+        $config = new Config($environment, $this->getOptionsMock());
         $this->assertEquals($expectedDirectory, $config->getHomeDirectory());
     }
 
