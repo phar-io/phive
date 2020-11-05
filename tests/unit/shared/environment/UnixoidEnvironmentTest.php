@@ -64,6 +64,11 @@ class UnixoidEnvironmentTest extends TestCase {
         $this->assertSame(__DIR__, $env->getHomeDirectory()->asString());
     }
 
+    public function testGetPhiveHomeVariable(): void {
+        $env = new UnixoidEnvironment(['PHIVE_HOME' => __DIR__], $this->getExecutorMock());
+        $this->assertSame(__DIR__, $env->getPhiveHomeVariable());
+    }
+
     public function testGetProxyThrowsExceptionIfProxyIsNotSet(): void {
         $env = new UnixoidEnvironment([], $this->getExecutorMock());
         $this->expectException(\BadMethodCallException::class);

@@ -38,6 +38,14 @@ abstract class Environment {
 
     abstract public function hasHomeDirectory(): bool;
 
+    public function getPhiveHomeVariable(): string {
+        return $this->getVariable('PHIVE_HOME');
+    }
+
+    public function hasPhiveHomeVariable(): bool {
+        return $this->hasVariable('PHIVE_HOME');
+    }
+
     abstract public function supportsColoredOutput(): bool;
 
     public function getWorkingDirectory(): Directory {
@@ -125,7 +133,7 @@ abstract class Environment {
         \ini_set('xdebug.max_nesting_level', '8192');
         \ini_set('xdebug.show_exception_trace', 'off');
         // since `xdebug_disable` got removed in Xdebug 3 we have to check for its existance
-        if (function_exists('xdebug_disable')) {
+        if (\function_exists('xdebug_disable')) {
             xdebug_disable();
         }
     }
