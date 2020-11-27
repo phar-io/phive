@@ -47,7 +47,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
     private function localResolve(string $name): GithubRepository {
         [$username, $project] = \explode('/', $name);
         $url                  = new Url(
-            \sprintf('https://api.github.com/repos/%s/%s/releases', $username, $project)
+            \sprintf('https://api.github.com/repos/%s/%s/releases?per_page=100', $username, $project)
         );
 
         $this->ensureWithinRateLimit();
