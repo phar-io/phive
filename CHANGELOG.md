@@ -81,7 +81,7 @@ That means strings like `v1.2.0` or `1.2` will turn into `1.2.0`.
 
 ## [0.13.5] - 2020-09-21
 
-Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+Please note: Version 0.13.x is the last to support PHP 7.1. Users are encouraged to upgrade to PHP 7.2 or later.
 
 ### Fixed
 * Github blocks HEAD requests to their API Rate Limit endpoint, use GET
@@ -89,7 +89,7 @@ Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged 
 
 ## [0.13.4] - 2020-09-18
 
-Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+Please note: Version 0.13.x is the last to support PHP 7.1. Users are encouraged to upgrade to PHP 7.2 or later.
 
 ### Fixed
 * Add missing case fix to previous backported RateLimit parsing fix
@@ -97,14 +97,14 @@ Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged 
 
 ## [0.13.3] - 2020-05-27
 
-Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+Please note: Version 0.13.x is the last to support PHP 7.1. Users are encouraged to upgrade to PHP 7.2 or later.
 
 ### Fixed
 * Backport RateLimit parsing
 
 ## [0.13.2] - 2019-10-30
 
-Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+Please note: Version 0.13.x is the last to support PHP 7.1. Users are encouraged to upgrade to PHP 7.2 or later.
 
 ### Fixed
 
@@ -113,7 +113,7 @@ Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged 
 
 ## [0.13.1] - 2019-10-29
 
-Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged to upgrade to PHP 7.2 or later.
+Please note: Version 0.13.x is the last to support PHP 7.1. Users are encouraged to upgrade to PHP 7.2 or later.
 
 ### Fixed
 
