@@ -134,7 +134,7 @@ abstract class Environment {
         \ini_set('xdebug.show_exception_trace', 'off');
         // since `xdebug_disable` got removed in Xdebug 3 we have to check for its existance
         if (\function_exists('xdebug_disable')) {
-            xdebug_disable();
+            \xdebug_disable();
         }
     }
 
