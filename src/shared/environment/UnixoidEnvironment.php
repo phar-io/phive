@@ -49,8 +49,12 @@ class UnixoidEnvironment extends Environment {
             return false;
         }
 
-        $tput          = $this->getPathToCommand('tput');
-        $commandResult = $this->executor->execute($tput, 'colors');
+        try {
+            $tput = $this->getPathToCommand('tput');
+            $commandResult = $this->executor->execute($tput, 'colors');
+        } catch(\Throwable $t) {
+            return false;
+        }
 
         if (!$commandResult->isSuccess()) {
             return false;
