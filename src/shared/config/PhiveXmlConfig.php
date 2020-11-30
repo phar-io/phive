@@ -29,6 +29,7 @@ abstract class PhiveXmlConfig {
 
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
+
             if ($this->isIdentical($pharNode, $installedPhar)) {
                 return;
             }
@@ -240,6 +241,5 @@ abstract class PhiveXmlConfig {
             $pharNode->getAttribute('installed') === $installedPhar->getInstalledVersion()->getVersionString() &&
             $pharNode->getAttribute('location') === $this->getLocation($installedPhar)->asString() &&
             $pharNode->getAttribute('copy') == ($installedPhar->isCopy() ? 'true' : 'false');
-
     }
 }
