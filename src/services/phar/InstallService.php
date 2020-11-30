@@ -51,16 +51,6 @@ class InstallService {
         $this->installer->install($phar->getFile(), $destination, $makeCopy);
         $this->registry->addUsage($phar, $destination);
 
-        if ($this->phiveXml->hasConfiguredPhar($release->getName(), $release->getVersion())) {
-            $configuredPhar = $this->phiveXml->getConfiguredPhar($release->getName(), $release->getVersion());
-
-            if ($configuredPhar->getVersionConstraint()->asString() === $versionConstraint->asString() &&
-                $release->getVersion()->equals($configuredPhar->getInstalledVersion())
-            ) {
-                return;
-            }
-        }
-
         if ($updatePhiveXml) {
             $this->phiveXml->addPhar(
                 new InstalledPhar(

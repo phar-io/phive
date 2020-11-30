@@ -29,6 +29,9 @@ abstract class PhiveXmlConfig {
 
         if ($this->hasPharNode($name)) {
             $pharNode = $this->getPharNode($name);
+            if ($this->isIdentical($pharNode, $installedPhar)) {
+                return;
+            }
         } else {
             $pharNode = $this->configFile->createElement('phar');
             $pharNode->setAttribute('name', $name);
@@ -229,5 +232,14 @@ abstract class PhiveXmlConfig {
 
     private function getTargetDirectoryNode(): ?DOMNode {
         return $this->configFile->query('//phive:configuration/phive:targetDirectory[1]')->item(0);
+    }
+
+    private function isIdentical(DOMElement $pharNode, InstalledPhar $installedPhar) {
+        return
+            $pharNode->getAttribute('version') === $installedPhar->getVersionConstraint()->asString() &&
+            $pharNode->getAttribute('installed') === $installedPhar->getInstalledVersion()->getVersionString() &&
+            $pharNode->getAttribute('location') === $this->getLocation($installedPhar)->asString() &&
+            $pharNode->getAttribute('copy') == ($installedPhar->isCopy() ? 'true' : 'false');
+
     }
 }
