@@ -2,6 +2,20 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.14.5] - 2020-11-30
+
+Please note: Version 0.14.x requires PHP 7.2 or later.
+
+### Fixed
+* [#273](https://github.com/phar-io/phive/issues/273): Exception when `tput` not found
+* [#284](https://github.com/phar-io/phive/issues/284): Make phive compatible with Xdebug 3.0
+* [#287](https://github.com/phar-io/phive/issues/287): "installed" attribute in .phive/phars.xml is not updated after tool downgrade
+* [#291](https://github.com/phar-io/phive/issues/291): Ensure Migrations are aware of configuration options like `--home`
+
+### Added
+* [#286](https://github.com/phar-io/phive/issues/286): Allow to set phive home directory via environment variable `PHIVE_HOME`
+
+
 ## [0.14.4] - 2020-06-12
 
 Please note: Version 0.14.x requires PHP 7.2 or later.
@@ -431,7 +445,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.14.3...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.14.5...HEAD
+[0.14.5]: https://github.com/phar-io/phive/compare/0.14.4...0.14.5
 [0.14.4]: https://github.com/phar-io/phive/compare/0.14.3...0.14.4
 [0.14.3]: https://github.com/phar-io/phive/compare/0.14.2...0.14.3
 [0.14.2]: https://github.com/phar-io/phive/compare/0.14.1...0.14.2
