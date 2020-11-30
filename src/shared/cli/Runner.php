@@ -66,7 +66,6 @@ class Runner {
         try {
             $this->ensureFitness();
             $this->setupRuntime();
-            $this->migrationService->runMandatory();
             $this->execute();
 
             return self::RC_OK;
@@ -212,6 +211,7 @@ class Runner {
 
         try {
             $this->showHeader();
+            $this->migrationService->runMandatory();
             $this->locator->getCommand($command)->execute();
             $this->showFooter();
         } catch (CommandLocatorException $e) {
