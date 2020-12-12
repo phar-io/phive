@@ -1,6 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -144,7 +154,7 @@ class CurlHttpClientTest extends TestCase {
         $this->curl->method('getHttpCode')
             ->willReturn(200);
 
-        $expectedRateLimit = new RateLimit(25, 10, new \DateTimeImmutable('@1514645901'));
+        $expectedRateLimit = new RateLimit(25, 10, new DateTimeImmutable('@1514645901'));
 
         $this->curl->method('exec')
             ->willReturnCallback(function (): string {

@@ -1,5 +1,31 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use const STREAM_URL_STAT_QUIET;
+use function array_keys;
+use function array_pop;
+use function explode;
+use function file_exists;
+use function filesize;
+use function fopen;
+use function fread;
+use function get_called_class;
+use function implode;
+use function is_readable;
+use function stat;
+use function stream_wrapper_register;
+use function stream_wrapper_unregister;
+use function strlen;
+use function substr;
 
 class TestStreamWrapper {
     public static $proto = 'test';
@@ -38,12 +64,12 @@ class TestStreamWrapper {
 
         static::$basedir = $dir;
 
-        \stream_wrapper_register($protocol, \get_called_class());
+        stream_wrapper_register($protocol, get_called_class());
     }
 
     public static function unregister(): void {
-        foreach (\array_keys(static::$protocolMaps) as $protocol) {
-            \stream_wrapper_unregister($protocol);
+        foreach (array_keys(static::$protocolMaps) as $protocol) {
+            stream_wrapper_unregister($protocol);
         }
 
         static::$protocolMaps = [];
@@ -54,7 +80,7 @@ class TestStreamWrapper {
      * @param int $count
      */
     public function stream_read($count): string {
-        $result = \substr($this->_data, $this->_position, $count);
+        $result = substr($this->_data, $this->_position, $count);
         $this->_position += $count;
 
         if (!$result) {
@@ -86,18 +112,18 @@ class TestStreamWrapper {
      */
     public function stream_open($path, $mode, $options, &$opened_path): bool {
         $this->_path        = $this->_translate($path, static::$basedir);
-        [$foo, $this->_key] = \explode('://', $path);
+        [$foo, $this->_key] = explode('://', $path);
 
         if ($mode == 'r' || $mode == 'rb') {
-            if (!\is_readable($this->_path)) {
+            if (!is_readable($this->_path)) {
                 return false;
             }
-            $fp = \fopen($this->_path, $mode);
+            $fp = fopen($this->_path, $mode);
 
             if (!$fp) {
                 return false;
             }
-            $this->_data = \fread($fp, \filesize($this->_path));
+            $this->_data = fread($fp, filesize($this->_path));
             $this->_setDataSize($this->_data);
 
             return true;
@@ -117,11 +143,11 @@ class TestStreamWrapper {
         $translatedPath = $this->_translate($path, static::$basedir);
         // Suppress warnings if requested or if the file or directory does not
         // exist. This is consistent with PHP's plain filesystem stream wrapper.
-        if ($flags & \STREAM_URL_STAT_QUIET || !\file_exists($translatedPath)) {
-            return @\stat($translatedPath);
+        if ($flags & STREAM_URL_STAT_QUIET || !file_exists($translatedPath)) {
+            return @stat($translatedPath);
         }
 
-        return \stat($translatedPath);
+        return stat($translatedPath);
     }
 
     /**
@@ -129,9 +155,9 @@ class TestStreamWrapper {
      * @param string $baseDir
      */
     protected function _translate($uri, $baseDir): string {
-        $parts = \explode('://', $uri);
+        $parts = explode('://', $uri);
 
-        $dirs = \explode('/', $parts[1]);
+        $dirs = explode('/', $parts[1]);
         $sane = [];
 
         foreach ($dirs as $dir) {
@@ -140,18 +166,18 @@ class TestStreamWrapper {
             }
 
             if ($dir == '..') {
-                \array_pop($sane);
+                array_pop($sane);
             }
             $sane[] = $dir;
         }
 
-        return $baseDir . '/' . \implode('/', $sane);
+        return $baseDir . '/' . implode('/', $sane);
     }
 
     /**
      * @param $data
      */
     protected function _setDataSize($data): void {
-        $this->_dataSize = \strlen($data);
+        $this->_dataSize = strlen($data);
     }
 }

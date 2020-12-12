@@ -1,8 +1,22 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use const STDOUT;
+use function function_exists;
+use function posix_isatty;
+use BadMethodCallException;
 use PharIo\FileSystem\Directory;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\UnixoidEnvironment
@@ -71,13 +85,13 @@ class UnixoidEnvironmentTest extends TestCase {
 
     public function testGetProxyThrowsExceptionIfProxyIsNotSet(): void {
         $env = new UnixoidEnvironment([], $this->getExecutorMock());
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $env->getProxy();
     }
 
     public function testGetHomeDirectoryThrowsExceptionIfHomeIsNotSet(): void {
         $env = new UnixoidEnvironment([], $this->getExecutorMock());
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
         $env->getHomeDirectory();
     }
 
@@ -89,7 +103,7 @@ class UnixoidEnvironmentTest extends TestCase {
      * @param bool   $expectedResult
      */
     public function testSupportsColoredOutput($commandExitCode, $commandOutput, $expectedResult): void {
-        if (!\function_exists('posix_isatty') || !\posix_isatty(\STDOUT)) {
+        if (!function_exists('posix_isatty') || !posix_isatty(STDOUT)) {
             $this->markTestSkipped('requires tty');
         }
 
@@ -117,7 +131,7 @@ class UnixoidEnvironmentTest extends TestCase {
     }
 
     /**
-     * @return Executor|\PHPUnit_Framework_MockObject_MockObject
+     * @return Executor|PHPUnit_Framework_MockObject_MockObject
      */
     private function getExecutorMock() {
         return $this->createMock(Executor::class);

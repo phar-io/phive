@@ -1,8 +1,21 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function array_key_exists;
+use function exec;
+use BadMethodCallException;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\DirectoryException;
+use Throwable;
 
 class UnixoidEnvironment extends Environment {
 
@@ -22,16 +35,16 @@ class UnixoidEnvironment extends Environment {
     }
 
     public function hasHomeDirectory(): bool {
-        return \array_key_exists('HOME', $this->server);
+        return array_key_exists('HOME', $this->server);
     }
 
     /**
      * @throws DirectoryException
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function getHomeDirectory(): Directory {
         if (!$this->hasHomeDirectory()) {
-            throw new \BadMethodCallException('No home directory set in environment');
+            throw new BadMethodCallException('No home directory set in environment');
         }
 
         return new Directory($this->server['HOME']);
@@ -45,14 +58,14 @@ class UnixoidEnvironment extends Environment {
             return false;
         }
 
-        if (!\array_key_exists('TERM', $this->server)) {
+        if (!array_key_exists('TERM', $this->server)) {
             return false;
         }
 
         try {
             $tput          = $this->getPathToCommand('tput');
             $commandResult = $this->executor->execute($tput, 'colors');
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             return false;
         }
 
@@ -73,7 +86,7 @@ class UnixoidEnvironment extends Environment {
         }
 
         foreach (['which', 'type -Pa', 'command -a'] as $tool) {
-            \exec($tool . ' ls 2>/dev/null', $output, $exitCode);
+            exec($tool . ' ls 2>/dev/null', $output, $exitCode);
 
             if ($exitCode === 0) {
                 $this->whichCommand = $tool;

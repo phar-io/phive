@@ -1,15 +1,29 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMNodeList;
+use DOMXPath;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
 
 class XmlFile {
-    /** @var null|\DOMDocument */
+    /** @var null|DOMDocument */
     private $dom;
 
-    /** @var \DOMXPath */
+    /** @var DOMXPath */
     private $xPath;
 
     /** @var Filename */
@@ -41,11 +55,11 @@ class XmlFile {
         $this->rootElementName = $root;
     }
 
-    public function createElement(string $name, string $text = ''): \DOMElement {
+    public function createElement(string $name, string $text = ''): DOMElement {
         return $this->getDom()->createElementNS($this->namespace, $name, $text);
     }
 
-    public function query(string $xpath, \DOMNode $ctx = null): \DOMNodeList {
+    public function query(string $xpath, DOMNode $ctx = null): DOMNodeList {
         if ($ctx === null) {
             $ctx = $this->getDom()->documentElement;
         }
@@ -53,7 +67,7 @@ class XmlFile {
         return $this->getXPath()->query($xpath, $ctx);
     }
 
-    public function addElement(\DOMNode $node): void {
+    public function addElement(DOMNode $node): void {
         $this->getDom()->documentElement->appendChild($node);
     }
 
@@ -66,13 +80,13 @@ class XmlFile {
         return $this->filename->getDirectory();
     }
 
-    public function getDom(): \DOMDocument {
+    public function getDom(): DOMDocument {
         $this->initDom();
 
         return $this->dom;
     }
 
-    private function getXPath(): \DOMXPath {
+    private function getXPath(): DOMXPath {
         $this->initXPath();
 
         return $this->xPath;
@@ -80,7 +94,7 @@ class XmlFile {
 
     /** @psalm-assert \DomDocument $this->dom */
     private function initDom(): void {
-        if ($this->dom instanceof \DOMDocument) {
+        if ($this->dom instanceof DOMDocument) {
             return;
         }
 
@@ -96,12 +110,12 @@ class XmlFile {
     private function initXPath(): void {
         $this->initDom();
 
-        $this->xPath = new \DOMXPath($this->dom);
+        $this->xPath = new DOMXPath($this->dom);
         $this->xPath->registerNamespace('phive', $this->namespace);
     }
 
-    private static function createDomDocument(): \DOMDocument {
-        $dom                     = new \DOMDocument('1.0', 'UTF-8');
+    private static function createDomDocument(): DOMDocument {
+        $dom                     = new DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput       = true;
 

@@ -1,7 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
 use DOMDocument;
+use DOMElement;
+use DOMNodeList;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 use PharIo\Version\AnyVersionConstraint;
@@ -9,6 +20,7 @@ use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\PhiveXmlConfig
@@ -38,7 +50,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $items = $this->getDomNodeListMock();
         $items->method('item')->with(0)->willReturn($node);
 
-        $nodeListMock = $this->createMock(\DOMNodeList::class);
+        $nodeListMock = $this->createMock(DOMNodeList::class);
         $nodeListMock->method('item')->with(0)->willReturn($node);
 
         $configFile = $this->getXmlFileMock();
@@ -82,7 +94,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
         //    ->method('setAttribute')
         //    ->with('name', 'phpunit');
 
-        $nodeListMock = $this->createMock(\DOMNodeList::class);
+        $nodeListMock = $this->createMock(DOMNodeList::class);
         $nodeListMock->method('item')->with(0)->willReturn($node);
 
         $configFile = $this->getXmlFileMock();
@@ -156,63 +168,63 @@ class LocalPhiveXmlConfigTest extends TestCase {
     }
 
     /**
-     * @return \DOMElement|\PHPUnit_Framework_MockObject_MockObject
+     * @return DOMElement|PHPUnit_Framework_MockObject_MockObject
      */
     private function getDomElementMock() {
-        return $this->createMock(\DOMElement::class);
+        return $this->createMock(DOMElement::class);
     }
 
     /**
-     * @return \DOMNodeList|\PHPUnit_Framework_MockObject_MockObject
+     * @return DOMNodeList|PHPUnit_Framework_MockObject_MockObject
      */
     private function getDomNodeListMock() {
-        return $this->createMock(\DOMNodeList::class);
+        return $this->createMock(DOMNodeList::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
+     * @return PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
         return $this->createMock(RequestedPhar::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|XmlFile
+     * @return PHPUnit_Framework_MockObject_MockObject|XmlFile
      */
     private function getXmlFileMock() {
         return $this->createMock(XmlFile::class);
     }
 
     /**
-     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
+     * @return Directory|PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|VersionConstraintParser
+     * @return PHPUnit_Framework_MockObject_MockObject|VersionConstraintParser
      */
     private function getVersionConstraintParserMock() {
         return $this->createMock(VersionConstraintParser::class);
     }
 
     /**
-     * @return InstalledPhar|\PHPUnit_Framework_MockObject_MockObject
+     * @return InstalledPhar|PHPUnit_Framework_MockObject_MockObject
      */
     private function getInstalledPharMock() {
         return $this->createMock(InstalledPhar::class);
     }
 
     /**
-     * @return Filename|\PHPUnit_Framework_MockObject_MockObject
+     * @return Filename|PHPUnit_Framework_MockObject_MockObject
      */
     private function getFilenameMock() {
         return $this->createMock(Filename::class);
     }
 
     /**
-     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
+     * @return Environment|PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);

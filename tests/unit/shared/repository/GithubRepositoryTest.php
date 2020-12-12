@@ -1,8 +1,19 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
+use stdClass;
 
 /**
  * @covers \PharIo\Phive\GithubRepository
@@ -59,14 +70,14 @@ class GithubRepositoryTest extends TestCase {
      * @param string $version
      * @param string $url
      */
-    private function getGithubEntry($version, $url): \stdClass {
-        $asset                       = new \stdClass();
+    private function getGithubEntry($version, $url): stdClass {
+        $asset                       = new stdClass();
         $asset->browser_download_url = $url;
 
-        $sig                       = new \stdClass();
+        $sig                       = new stdClass();
         $sig->browser_download_url = $url . '.asc';
 
-        $entry           = new \stdClass();
+        $entry           = new stdClass();
         $entry->tag_name = $version;
         $entry->assets   = [
             $asset, $sig
@@ -76,21 +87,21 @@ class GithubRepositoryTest extends TestCase {
     }
 
     /**
-     * @return JsonData|\PHPUnit_Framework_MockObject_MockObject
+     * @return JsonData|PHPUnit_Framework_MockObject_MockObject
      */
     private function getJsonDataMock() {
         return $this->createMock(JsonData::class);
     }
 
     /**
-     * @return PharAlias|\PHPUnit_Framework_MockObject_MockObject
+     * @return PharAlias|PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharAliasMock() {
         return $this->createMock(PharAlias::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
+     * @return PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
         return $this->createMock(RequestedPhar::class);

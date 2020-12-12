@@ -1,6 +1,27 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use const CURLOPT_CONNECTTIMEOUT;
+use const CURLOPT_FAILONERROR;
+use const CURLOPT_FOLLOWLOCATION;
+use const CURLOPT_LOW_SPEED_LIMIT;
+use const CURLOPT_LOW_SPEED_TIME;
+use const CURLOPT_MAXREDIRS;
+use const CURLOPT_PROXY;
+use const CURLOPT_PROXYUSERPWD;
+use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_SSL_VERIFYHOST;
+use const CURLOPT_SSL_VERIFYPEER;
+use const CURLOPT_USERAGENT;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,22 +31,22 @@ class CurlConfigTest extends TestCase {
     public function testPutsUserAgentInCurlOptArray(): void {
         $config = new CurlConfig('Some Agent');
         $actual = $config->asCurlOptArray();
-        $this->assertArrayHasKey(\CURLOPT_USERAGENT, $actual);
-        $this->assertSame('Some Agent', $actual[\CURLOPT_USERAGENT]);
+        $this->assertArrayHasKey(CURLOPT_USERAGENT, $actual);
+        $this->assertSame('Some Agent', $actual[CURLOPT_USERAGENT]);
     }
 
     public function testSetsExpectedDefaultsInCurlOptArray(): void {
         $config           = new CurlConfig('foo');
         $expectedDefaults = [
-            \CURLOPT_MAXREDIRS       => 5,
-            \CURLOPT_CONNECTTIMEOUT  => 60,
-            \CURLOPT_SSL_VERIFYHOST  => 2,
-            \CURLOPT_SSL_VERIFYPEER  => true,
-            \CURLOPT_FAILONERROR     => false,
-            \CURLOPT_RETURNTRANSFER  => true,
-            \CURLOPT_FOLLOWLOCATION  => true,
-            \CURLOPT_LOW_SPEED_TIME  => 90,
-            \CURLOPT_LOW_SPEED_LIMIT => 128
+            CURLOPT_MAXREDIRS       => 5,
+            CURLOPT_CONNECTTIMEOUT  => 60,
+            CURLOPT_SSL_VERIFYHOST  => 2,
+            CURLOPT_SSL_VERIFYPEER  => true,
+            CURLOPT_FAILONERROR     => false,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_FOLLOWLOCATION  => true,
+            CURLOPT_LOW_SPEED_TIME  => 90,
+            CURLOPT_LOW_SPEED_LIMIT => 128
         ];
         $actual = $config->asCurlOptArray();
 
@@ -39,15 +60,15 @@ class CurlConfigTest extends TestCase {
         $config    = new CurlConfig('foo');
         $config->setProxy($proxyHost);
         $actual = $config->asCurlOptArray();
-        $this->assertEquals($proxyHost, $actual[\CURLOPT_PROXY]);
+        $this->assertEquals($proxyHost, $actual[CURLOPT_PROXY]);
     }
 
     public function testPutsProxyWithCredentialsInCurlOptArray(): void {
         $config = new CurlConfig('foo');
         $config->setProxy('proxy.example.com', 'someuser', 'somepassword');
         $expected = [
-            \CURLOPT_PROXY        => 'proxy.example.com',
-            \CURLOPT_PROXYUSERPWD => 'someuser:somepassword'
+            CURLOPT_PROXY        => 'proxy.example.com',
+            CURLOPT_PROXYUSERPWD => 'someuser:somepassword'
         ];
         $actual = $config->asCurlOptArray();
 

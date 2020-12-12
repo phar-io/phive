@@ -1,5 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use const STR_PAD_RIGHT;
+use function floor;
+use function number_format;
+use function sprintf;
+use function str_pad;
 
 class HttpProgressRenderer implements HttpProgressHandler {
 
@@ -35,7 +50,7 @@ class HttpProgressRenderer implements HttpProgressHandler {
         }
 
         if ($this->first) {
-            $this->output->writeInfo(\sprintf('Downloading %s', $this->url->asString()));
+            $this->output->writeInfo(sprintf('Downloading %s', $this->url->asString()));
             $this->first = false;
         }
 
@@ -49,7 +64,7 @@ class HttpProgressRenderer implements HttpProgressHandler {
         $template = ' ╰|%s| %s / %s - %3d%%';
 
         $this->output->writeProgress(
-            \sprintf(
+            sprintf(
                 $template,
                 $this->getProgressBar($progressString),
                 $this->formatSize(
@@ -69,20 +84,20 @@ class HttpProgressRenderer implements HttpProgressHandler {
 
     private function formatSize(int $expected, int $current): string {
         if ($expected >= 1048576) { // MB
-            return \number_format($current / 1048576, 2) . ' MB';
+            return number_format($current / 1048576, 2) . ' MB';
         }
 
         if ($expected >= 1024) { // KB
-            return \number_format($current / 1024, 2) . ' KB';
+            return number_format($current / 1024, 2) . ' KB';
         }
 
         return $current . ' B';
     }
 
     private function getProgressBar(float $downloadPercent): string {
-        $barCount  = \floor($downloadPercent / 2.5);
-        $barString = \str_pad('', (int)$barCount, '=') . '>';
+        $barCount  = floor($downloadPercent / 2.5);
+        $barString = str_pad('', (int)$barCount, '=') . '>';
 
-        return \str_pad($barString, 40, ' ', \STR_PAD_RIGHT);
+        return str_pad($barString, 40, ' ', STR_PAD_RIGHT);
     }
 }

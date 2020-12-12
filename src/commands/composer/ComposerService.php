@@ -1,6 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function sprintf;
+use Exception;
+use InvalidArgumentException;
 use PharIo\FileSystem\Filename;
 use PharIo\Version\VersionConstraintParser;
 
@@ -25,7 +37,7 @@ class ComposerService {
                 $aliasName         = $this->sourcesList->getAliasForComposerAlias(new ComposerAlias($required));
                 $versionConstraint = $parser->parse($constraint);
                 $list[]            = new RequestedPhar(new PharAlias($aliasName), $versionConstraint, $versionConstraint);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 continue;
             }
         }
@@ -35,8 +47,8 @@ class ComposerService {
 
     private function getRequires(Filename $composerFilename): array {
         if (!$composerFilename->exists()) {
-            throw new \InvalidArgumentException(
-                \sprintf('Specified file %s does not exist', $composerFilename->asString())
+            throw new InvalidArgumentException(
+                sprintf('Specified file %s does not exist', $composerFilename->asString())
             );
         }
 

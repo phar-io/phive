@@ -1,10 +1,21 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use InvalidArgumentException;
 use PharIo\FileSystem\Filename;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\ComposerService
@@ -42,12 +53,12 @@ class ComposerServiceTest extends TestCase {
 
         $service = new ComposerService($this->getSourcesListMock());
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $service->findCandidates($filename);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|SourcesList
+     * @return PHPUnit_Framework_MockObject_MockObject|SourcesList
      */
     private function getSourcesListMock() {
         return $this->createMock(SourcesList::class);

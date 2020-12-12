@@ -1,6 +1,17 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use const PHP_OS;
+use function getcwd;
 use PharIo\GnuPG\Factory as GnuPGFactory;
 use PharIo\Version\VersionConstraintParser;
 
@@ -50,7 +61,7 @@ class Factory {
 
     public function getSkelCommand(): SkelCommand {
         return new SkelCommand(
-            new SkelCommandConfig($this->request->parse(new SkelContext()), \getcwd()),
+            new SkelCommandConfig($this->request->parse(new SkelContext()), getcwd()),
             $this->getOutput(),
             $this->getPhiveVersion()
         );
@@ -325,7 +336,7 @@ class Factory {
 
     private function getEnvironment(): Environment {
         if (null === $this->environment) {
-            $this->environment = (new EnvironmentLocator())->getEnvironment(\PHP_OS);
+            $this->environment = (new EnvironmentLocator())->getEnvironment(PHP_OS);
         }
 
         return $this->environment;

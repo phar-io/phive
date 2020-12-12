@@ -1,6 +1,17 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use const CURLOPT_PROXY;
+use const CURLOPT_USERAGENT;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
@@ -34,7 +45,7 @@ class CurlConfigBuilderTest extends TestCase {
             ->willReturn('PHP 7.1.11');
 
         $config = $this->builder->build();
-        $this->assertSame('Phive 0.8.3 on PHP 7.1.11', $config->asCurlOptArray()[\CURLOPT_USERAGENT]);
+        $this->assertSame('Phive 0.8.3 on PHP 7.1.11', $config->asCurlOptArray()[CURLOPT_USERAGENT]);
     }
 
     public function testSetsProxyIfConfiguredInEnvironment(): void {
@@ -45,7 +56,7 @@ class CurlConfigBuilderTest extends TestCase {
 
         $config = $this->builder->build();
 
-        $this->assertSame('proxy.example.com', $config->asCurlOptArray()[\CURLOPT_PROXY]);
+        $this->assertSame('proxy.example.com', $config->asCurlOptArray()[CURLOPT_PROXY]);
     }
 
     public function testAddsGitHubAuthToken(): void {

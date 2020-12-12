@@ -1,10 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\ConfiguredPhar
@@ -119,21 +129,21 @@ class ConfiguredPharTest  extends TestCase {
     }
 
     /**
-     * @return Filename|\PHPUnit_Framework_MockObject_MockObject
+     * @return Filename|PHPUnit_Framework_MockObject_MockObject
      */
     private function getFilenameMock() {
         return $this->createMock(Filename::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|VersionConstraint
+     * @return PHPUnit_Framework_MockObject_MockObject|VersionConstraint
      */
     private function getVersionConstraintMock() {
         return $this->createMock(VersionConstraint::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Version
+     * @return PHPUnit_Framework_MockObject_MockObject|Version
      */
     private function getVersionMock() {
         return $this->createMock(Version::class);

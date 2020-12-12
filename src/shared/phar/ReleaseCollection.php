@@ -1,7 +1,21 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
-class ReleaseCollection implements \Countable, \IteratorAggregate {
+use function count;
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
+
+class ReleaseCollection implements Countable, IteratorAggregate {
     /** @var Release[] */
     private $releases = [];
 
@@ -10,10 +24,10 @@ class ReleaseCollection implements \Countable, \IteratorAggregate {
     }
 
     public function count(): int {
-        return \count($this->releases);
+        return count($this->releases);
     }
 
     public function getIterator() {
-        return new \ArrayIterator($this->releases);
+        return new ArrayIterator($this->releases);
     }
 }

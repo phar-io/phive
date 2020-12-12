@@ -1,6 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function escapeshellarg;
+use function exec;
+use function sprintf;
 use PharIo\FileSystem\Filename;
 
 class Executor {
@@ -8,12 +20,12 @@ class Executor {
         $this->ensureFileExists($commandFilename);
         $this->ensureExecutable($commandFilename);
 
-        $executable = \sprintf(
+        $executable = sprintf(
             '%s %s',
-            \escapeshellarg($commandFilename->asString()),
+            escapeshellarg($commandFilename->asString()),
             $argLine
         );
-        \exec($executable, $output, $rc);
+        exec($executable, $output, $rc);
 
         return new ExecutorResult(
             $executable,
@@ -28,7 +40,7 @@ class Executor {
     private function ensureFileExists(Filename $executable): void {
         if (!$executable->exists()) {
             throw new ExecutorException(
-                \sprintf(
+                sprintf(
                     'Given executable "%s" does not exist',
                     $executable->asString()
                 ),
@@ -43,7 +55,7 @@ class Executor {
     private function ensureExecutable(Filename $executable): void {
         if (!$executable->isExecutable()) {
             throw new ExecutorException(
-                \sprintf(
+                sprintf(
                     'Given executable "%s" is not executable',
                     $executable->asString()
                 ),

@@ -1,6 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function method_exists;
+use function rmdir;
+use function unlink;
 use PharIo\FileSystem\Directory;
 use PHPUnit\Framework\TestCase;
 
@@ -13,10 +25,10 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
     }
 
     protected function tearDown(): void {
-        @\unlink('/tmp/phive.xml');
-        @\unlink('/tmp/phive.xml.backup');
-        @\unlink('/tmp/.phive/phars.xml');
-        @\rmdir('/tmp/.phive');
+        @unlink('/tmp/phive.xml');
+        @unlink('/tmp/phive.xml.backup');
+        @unlink('/tmp/.phive/phars.xml');
+        @rmdir('/tmp/.phive');
         parent::tearDown();
     }
 
@@ -72,7 +84,7 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
 
         $this->assertFileExists('/tmp/.phive/phars.xml');
 
-        if (\method_exists($this, 'assertFileDoesNotExist')) {
+        if (method_exists($this, 'assertFileDoesNotExist')) {
             $this->assertFileDoesNotExist('/tmp/phive.xml');
         } else {
             $this->assertFileNotExists('/tmp/phive.xml');
@@ -97,7 +109,7 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
         $this->assertFileExists('/tmp/.phive/phars.xml');
         $this->assertFileExists('/tmp/phive.xml.backup');
 
-        if (\method_exists($this, 'assertFileDoesNotExist')) {
+        if (method_exists($this, 'assertFileDoesNotExist')) {
             $this->assertFileDoesNotExist('/tmp/phive.xml');
         } else {
             $this->assertFileNotExists('/tmp/phive.xml');

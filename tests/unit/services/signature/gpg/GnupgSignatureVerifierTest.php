@@ -1,6 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -20,7 +30,7 @@ class GnupgSignatureVerifierTest extends TestCase {
     }
 
     public function testThrowsVerificationFailedExceptionIfGnuPgThrowsException(): void {
-        $this->gnupg->verify('foo', 'bar')->willThrow(new \Exception());
+        $this->gnupg->verify('foo', 'bar')->willThrow(new Exception());
         $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
 
         $this->expectException(\PharIo\Phive\VerificationFailedException::class);

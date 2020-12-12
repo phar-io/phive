@@ -1,9 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
 use DOMDocument;
+use DOMElement;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\PharIoRepository
@@ -99,7 +110,7 @@ class PharIoRepositoryTest extends TestCase {
      * @param string $hashType
      * @param string $hash
      *
-     * @return \DOMElement|\PHPUnit_Framework_MockObject_MockObject
+     * @return DOMElement|PHPUnit_Framework_MockObject_MockObject
      */
     private function getReleaseNodeMock($version, $url, $hashType, $hash) {
         $hashNode = $this->domHelper->createElement('hash');
@@ -120,21 +131,21 @@ class PharIoRepositoryTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|XmlFile
+     * @return PHPUnit_Framework_MockObject_MockObject|XmlFile
      */
     private function getXmlFileMock() {
         return $this->createMock(XmlFile::class);
     }
 
     /**
-     * @return PharAlias|\PHPUnit_Framework_MockObject_MockObject
+     * @return PharAlias|PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharAliasMock() {
         return $this->createMock(PharAlias::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|RequestedPhar
+     * @return PHPUnit_Framework_MockObject_MockObject|RequestedPhar
      */
     private function getRequestedPharMock() {
         return $this->createMock(RequestedPhar::class);

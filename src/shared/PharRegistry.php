@@ -1,6 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function array_unique;
+use function chmod;
+use function file_get_contents;
+use function in_array;
+use function sprintf;
 use DOMElement;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\DirectoryException;
@@ -58,7 +72,7 @@ class PharRegistry {
     public function getPhars($name): array {
         $phars = [];
 
-        foreach ($this->dbFile->query(\sprintf('//phive:phar[@name="%s"]', $name)) as $pharNode) {
+        foreach ($this->dbFile->query(sprintf('//phive:phar[@name="%s"]', $name)) as $pharNode) {
             $phars[] = $this->nodetoPhar($pharNode);
         }
 
@@ -70,7 +84,7 @@ class PharRegistry {
 
         $absolutePath = $destination->withAbsolutePath()->asString();
 
-        if ($this->dbFile->query(\sprintf('//phive:usage[@destination="%s"]', $absolutePath), $pharNode)->length
+        if ($this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $absolutePath), $pharNode)->length
             !== 0
         ) {
             return;
@@ -86,7 +100,7 @@ class PharRegistry {
      */
     public function getPhar(string $name, Version $version): Phar {
         if (!$this->hasPhar($name, $version)) {
-            throw new PharRegistryException(\sprintf(
+            throw new PharRegistryException(sprintf(
                 'Phar %s %s not found in database.',
                 $name,
                 $version->getVersionString()
@@ -105,12 +119,12 @@ class PharRegistry {
      */
     public function getByUsage(Filename $filename): Phar {
         $pharNode = $this->dbFile->query(
-            \sprintf('//phive:phar[phive:usage/@destination="%s"]', $filename->asString())
+            sprintf('//phive:phar[phive:usage/@destination="%s"]', $filename->asString())
         )->item(0);
 
         if ($pharNode === null) {
             throw new PharRegistryException(
-                \sprintf('No phar with usage %s found', $filename->asString())
+                sprintf('No phar with usage %s found', $filename->asString())
             );
         }
 
@@ -121,13 +135,13 @@ class PharRegistry {
     public function removeUsage(Phar $phar, Filename $destination): void {
         $pharNode  = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
         $usageNode = $this->dbFile->query(
-            \sprintf('//phive:usage[@destination="%s"]', $destination->asString()),
+            sprintf('//phive:usage[@destination="%s"]', $destination->asString()),
             $pharNode
         )->item(0);
 
         if ($usageNode === null) {
             throw new PharRegistryException(
-                \sprintf('No phar with usage %s found', $destination->asString())
+                sprintf('No phar with usage %s found', $destination->asString())
             );
         }
 
@@ -179,7 +193,7 @@ class PharRegistry {
      */
     public function getUsedPharsByDestination(Directory $destination): array {
         $usedPhars = [];
-        $query     = \sprintf('//phive:phar[contains(phive:usage/@destination, "%s")]', $destination->asString());
+        $query     = sprintf('//phive:phar[contains(phive:usage/@destination, "%s")]', $destination->asString());
 
         foreach ($this->dbFile->query($query) as $pharNode) {
             $usedPhars[] = $this->nodetoPhar($pharNode);
@@ -190,16 +204,16 @@ class PharRegistry {
 
     public function getKnownSignatureFingerprints(string $alias): array {
         $fingerprints = [];
-        $query        = \sprintf('//phive:phar[@name="%s"]/phive:signature/@fingerprint', $alias);
+        $query        = sprintf('//phive:phar[@name="%s"]/phive:signature/@fingerprint', $alias);
 
         foreach ($this->dbFile->query($query) as $fingerprintNode) {
-            if (\in_array($fingerprintNode->nodeValue, $fingerprints, true)) {
+            if (in_array($fingerprintNode->nodeValue, $fingerprints, true)) {
                 continue;
             }
             $fingerprints[] = $fingerprintNode->nodeValue;
         }
 
-        return \array_unique($fingerprints);
+        return array_unique($fingerprints);
     }
 
     private function savePhar(Phar $phar): Filename {
@@ -211,7 +225,7 @@ class PharRegistry {
             $targetDir->ensureExists();
         } catch (DirectoryException $e) {
             throw new FileNotWritableException(
-                \sprintf(
+                sprintf(
                     "Cannot write phar to %s:\n%s",
                     $targetDir->asString(),
                     $e->getMessage()
@@ -221,18 +235,18 @@ class PharRegistry {
 
         if (!$targetDir->isWritable()) {
             throw new FileNotWritableException(
-                \sprintf('Cannot write phar to %s', $targetDir->asString())
+                sprintf('Cannot write phar to %s', $targetDir->asString())
             );
         }
 
         $phar->getFile()->saveAs($destination);
-        \chmod($destination->asString(), 0755);
+        chmod($destination->asString(), 0755);
 
         return $destination;
     }
 
     private function getPharDestination(Phar $phar): string {
-        return \sprintf(
+        return sprintf(
             '%s/%s-%s.phar',
             $this->pharDirectory->asString(),
             $phar->getName(),
@@ -244,7 +258,7 @@ class PharRegistry {
      * @psalm-ignore-nullable-return
      */
     private function getFirstMatchingPharNode(string $name, Version $version): ?DOMElement {
-        $query = \sprintf('//phive:phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
+        $query = sprintf('//phive:phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
 
         return $this->dbFile->query($query)->item(0);
     }
@@ -275,6 +289,6 @@ class PharRegistry {
     }
 
     private function loadPharFile(string $filename): File {
-        return new File(new Filename($filename), \file_get_contents($filename));
+        return new File(new Filename($filename), file_get_contents($filename));
     }
 }

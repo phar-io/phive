@@ -1,5 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function sprintf;
 
 class ComposerCommand extends InstallCommand {
 
@@ -26,7 +37,7 @@ class ComposerCommand extends InstallCommand {
         $targetDirectory = $this->getConfig()->getTargetDirectory();
 
         foreach ($this->composerService->findCandidates($this->getConfig()->getComposerFilename()) as $candidate) {
-            if (!$this->input->confirm(\sprintf('Install %s ?', $candidate->asString()))) {
+            if (!$this->input->confirm(sprintf('Install %s ?', $candidate->asString()))) {
                 continue;
             }
             $this->installRequestedPhar($candidate, $targetDirectory);

@@ -1,6 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function array_map;
+use function array_values;
+use function count;
+use function implode;
+use function substr;
 use PharIo\Phive\Cli\ConsoleTable;
 
 class StatusCommand implements Cli\Command {
@@ -40,7 +54,7 @@ class StatusCommand implements Cli\Command {
     private function showForProject(): void {
         $phars = $this->statusCommandConfig->getPhars();
 
-        if (\count($phars) === 0) {
+        if (count($phars) === 0) {
             $this->output->writeText("\nNo PHARs configured for this project.\n\n");
 
             return;
@@ -60,7 +74,7 @@ class StatusCommand implements Cli\Command {
     private function showForSystem(): void {
         $phars = $this->statusCommandConfig->getPhars();
 
-        if (\count($phars) === 0) {
+        if (count($phars) === 0) {
             $this->output->writeText("\nNo PHARs configured in your system.\n");
 
             return;
@@ -73,7 +87,7 @@ class StatusCommand implements Cli\Command {
         foreach ($phars as $phar) {
             $row = $this->buildRow($phar);
             unset($row[1]);
-            $table->addRow(\array_values($row));
+            $table->addRow(array_values($row));
         }
 
         $this->output->writeText($table->asString());
@@ -86,11 +100,11 @@ class StatusCommand implements Cli\Command {
             $installed = $phar->getInstalledVersion()->getVersionString();
         }
         $location = $phar->hasLocation() ? $phar->getLocation()->asString() : '-';
-        $keys     = \implode(
+        $keys     = implode(
             ', ',
-            \array_map(
+            array_map(
                 static function ($key) {
-                    return \substr($key, -16);
+                    return substr($key, -16);
                 },
                 $this->pharRegistry->getKnownSignatureFingerprints($phar->getName())
             )

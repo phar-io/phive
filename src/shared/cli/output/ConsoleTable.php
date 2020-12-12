@@ -1,5 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive\Cli;
+
+use function max;
+use function strlen;
+use function vsprintf;
 
 class ConsoleTable {
     public const COLUMN_PADDING = 4;
@@ -28,20 +41,20 @@ class ConsoleTable {
         }
         $mask .= "\n";
 
-        $output .= \vsprintf($mask, $this->headers) . "\n";
+        $output .= vsprintf($mask, $this->headers) . "\n";
 
         foreach ($this->rows as $row) {
-            $output .= \vsprintf($mask, $row);
+            $output .= vsprintf($mask, $row);
         }
 
         return $output;
     }
 
     private function getColWidth(int $index): int {
-        $colWidth = \strlen($this->headers[$index]);
+        $colWidth = strlen($this->headers[$index]);
 
         foreach ($this->rows as $row) {
-            $colWidth = \max($colWidth, \strlen($row[$index]));
+            $colWidth = max($colWidth, strlen($row[$index]));
         }
 
         return $colWidth + self::COLUMN_PADDING;

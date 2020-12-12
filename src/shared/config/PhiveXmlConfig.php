@@ -1,8 +1,21 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function is_dir;
+use function mb_strtolower;
+use function sprintf;
 use DOMElement;
 use DOMNode;
+use Exception;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 use PharIo\Version\Version;
@@ -22,7 +35,7 @@ abstract class PhiveXmlConfig {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function addPhar(InstalledPhar $installedPhar, RequestedPhar $requestedPhar): void {
         $name = $installedPhar->getName();
@@ -62,7 +75,7 @@ abstract class PhiveXmlConfig {
     public function getPharLocation(string $name): Filename {
         $locationAttribute = $this->getPharNode($name)->getAttribute('location');
 
-        if (\is_dir($locationAttribute)) {
+        if (is_dir($locationAttribute)) {
             return (new Directory($locationAttribute))->file($name)->withAbsolutePath();
         }
 
@@ -85,12 +98,12 @@ abstract class PhiveXmlConfig {
         $name = $phar->asString();
 
         if (!$this->hasPharNode($name)) {
-            throw new ConfigException(\sprintf('PHAR %s not found in phive.xml', $name));
+            throw new ConfigException(sprintf('PHAR %s not found in phive.xml', $name));
         }
         $pharNode = $this->getPharNode($name);
 
         if (!$pharNode->hasAttribute('installed')) {
-            throw new ConfigException(\sprintf('PHAR %s has no installed version', $name));
+            throw new ConfigException(sprintf('PHAR %s has no installed version', $name));
         }
 
         return new Version($pharNode->getAttribute('installed'));
@@ -130,7 +143,7 @@ abstract class PhiveXmlConfig {
             return $this->nodeToConfiguredPhar($pharNode);
         }
 
-        throw new ConfigException(\sprintf('PHAR %s not found in phive.xml', $name));
+        throw new ConfigException(sprintf('PHAR %s not found in phive.xml', $name));
     }
 
     public function hasTargetDirectory(): bool {
@@ -175,7 +188,7 @@ abstract class PhiveXmlConfig {
     private function getPharNode(string $name): ?DOMElement {
         /** @var DOMElement $pharItemNode */
         foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {
-            if (\mb_strtolower($pharItemNode->getAttribute('name')) === \mb_strtolower($name)) {
+            if (mb_strtolower($pharItemNode->getAttribute('name')) === mb_strtolower($name)) {
                 return $pharItemNode;
             }
         }
@@ -186,7 +199,7 @@ abstract class PhiveXmlConfig {
     private function getPharNodeWithSpecificInstalledVersion(string $name, Version $version): ?DOMElement {
         /** @var DOMElement $pharItemNode */
         foreach ($this->configFile->query('//phive:phar') as $pharItemNode) {
-            if (\mb_strtolower($pharItemNode->getAttribute('name')) === \mb_strtolower($name) &&
+            if (mb_strtolower($pharItemNode->getAttribute('name')) === mb_strtolower($name) &&
                 $pharItemNode->getAttribute('version') === $version->getVersionString()) {
                 return $pharItemNode;
             }

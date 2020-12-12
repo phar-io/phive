@@ -1,7 +1,21 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function in_array;
+use function sprintf;
+use DOMElement;
+use DOMNodeList;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\AuthXmlConfig
@@ -143,7 +157,7 @@ class AuthXmlConfigTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|XmlFile
+     * @return PHPUnit_Framework_MockObject_MockObject|XmlFile
      */
     private function getAuthXmlFileMock(string $domain, array $hasAttributeList, array $getAttributeList) {
         $node = $this->getDomElementMock();
@@ -155,7 +169,7 @@ class AuthXmlConfigTest extends TestCase {
         $node
             ->method('hasAttribute')
             ->willReturnCallback(function ($name) use ($hasAttributeList) {
-                return \in_array($name, $hasAttributeList, true);
+                return in_array($name, $hasAttributeList, true);
             });
 
         $nodeList = $this->getDomNodeListMock();
@@ -168,23 +182,23 @@ class AuthXmlConfigTest extends TestCase {
         $xmlFile = $this->createMock(XmlFile::class);
         $xmlFile
             ->method('query')
-            ->with(\sprintf('//phive:domain[@host="%s"]', $domain))
+            ->with(sprintf('//phive:domain[@host="%s"]', $domain))
             ->willReturn($nodeList);
 
         return $xmlFile;
     }
 
     /**
-     * @return \DOMElement|\PHPUnit_Framework_MockObject_MockObject
+     * @return DOMElement|PHPUnit_Framework_MockObject_MockObject
      */
     private function getDomElementMock() {
-        return $this->createMock(\DOMElement::class);
+        return $this->createMock(DOMElement::class);
     }
 
     /**
-     * @return \DOMNodeList|\PHPUnit_Framework_MockObject_MockObject
+     * @return DOMNodeList|PHPUnit_Framework_MockObject_MockObject
      */
     private function getDomNodeListMock() {
-        return $this->createMock(\DOMNodeList::class);
+        return $this->createMock(DOMNodeList::class);
     }
 }

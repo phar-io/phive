@@ -1,10 +1,21 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use DateTimeImmutable;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Options;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\Config
@@ -107,9 +118,9 @@ class ConfigTest extends TestCase {
     }
 
     public function testReturnsExpectedMaxAgeForSourcesList(): void {
-        $now      = new \DateTimeImmutable('25.04.2017 12:23:12');
+        $now      = new DateTimeImmutable('25.04.2017 12:23:12');
         $config   = new Config($this->getEnvironmentMock(), $this->getOptionsMock(), $now);
-        $expected = new \DateTimeImmutable('18.04.2017 12:23:12');
+        $expected = new DateTimeImmutable('18.04.2017 12:23:12');
 
         $this->assertEquals($expected, $config->getMaxAgeForSourcesList());
     }
@@ -130,21 +141,21 @@ class ConfigTest extends TestCase {
     }
 
     /**
-     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
+     * @return Environment|PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);
     }
 
     /**
-     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
+     * @return Directory|PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
     }
 
     /**
-     * @return Options|\PHPUnit_Framework_MockObject_MockObject
+     * @return Options|PHPUnit_Framework_MockObject_MockObject
      */
     private function getOptionsMock() {
         return $this->createMock(Options::class);

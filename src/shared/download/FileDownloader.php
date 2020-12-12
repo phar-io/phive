@@ -1,6 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function sprintf;
 use PharIo\FileSystem\File;
 
 class FileDownloader {
@@ -30,7 +40,7 @@ class FileDownloader {
             $response = $this->httpClient->get($url, $cachedETag);
         } catch (HttpException $e) {
             throw new DownloadFailedException(
-                \sprintf(
+                sprintf(
                     'Unexpected HTTP error: %s (Code: %d)',
                     $e->getMessage(),
                     $e->getCode()
@@ -44,7 +54,7 @@ class FileDownloader {
 
         if (!$response->isSuccess()) {
             throw new DownloadFailedException(
-                \sprintf('Failed to download load %s: HTTP Code %d', $url->asString(), $response->getHttpCode()),
+                sprintf('Failed to download load %s: HTTP Code %d', $url->asString(), $response->getHttpCode()),
                 $response->getHttpCode()
             );
         }

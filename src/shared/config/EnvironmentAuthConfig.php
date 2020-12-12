@@ -1,5 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function array_key_exists;
+use function sprintf;
+use BadMethodCallException;
 
 class EnvironmentAuthConfig implements AuthConfig {
     private const KNOWN_TOKEN = [
@@ -15,7 +28,7 @@ class EnvironmentAuthConfig implements AuthConfig {
     }
 
     public function hasAuthentication(string $domain): bool {
-        if (!\array_key_exists($domain, self::KNOWN_TOKEN)) {
+        if (!array_key_exists($domain, self::KNOWN_TOKEN)) {
             return false;
         }
 
@@ -24,11 +37,11 @@ class EnvironmentAuthConfig implements AuthConfig {
 
     /**
      * @throws AuthException
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      */
     public function getAuthentication(string $domain): Authentication {
         if (!$this->hasAuthentication($domain)) {
-            throw new AuthException(\sprintf('No authentication data for %s', $domain));
+            throw new AuthException(sprintf('No authentication data for %s', $domain));
         }
 
         $token = $this->environment->getVariable(self::KNOWN_TOKEN[$domain]);
@@ -40,8 +53,9 @@ class EnvironmentAuthConfig implements AuthConfig {
             // "Bearer" Authorizations
             case 'gitlab.com':
                 return new BearerAuthentication($domain, $token);
+
             default:
-                throw new \BadMethodCallException('Unknown authentication');
+                throw new BadMethodCallException('Unknown authentication');
         }
     }
 }

@@ -1,6 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use Exception;
 use PharIo\FileSystem\Filename;
 use PharIo\Version\VersionConstraint;
 
@@ -39,25 +49,25 @@ class RequestedPhar {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getAlias(): PharAlias {
         if ($this->identifier instanceof PharAlias) {
             return $this->identifier;
         }
 
-        throw new \Exception('Requested PHAR has no alias');
+        throw new Exception('Requested PHAR has no alias');
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getUrl(): PharUrl {
         if ($this->identifier instanceof PharUrl) {
             return $this->identifier;
         }
 
-        throw new \Exception('Requested PHAR has no URL');
+        throw new Exception('Requested PHAR has no URL');
     }
 
     public function hasAlias(): bool {

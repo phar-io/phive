@@ -1,6 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function hash;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +47,7 @@ class ChecksumServiceTest extends TestCase {
      * @throws InvalidHashException
      */
     public function testVerifiesSha1Checksum($expectedHash, $actualHash, $expected): void {
-        $expectedHash = new Sha1Hash(\hash('sha1', $expectedHash));
+        $expectedHash = new Sha1Hash(hash('sha1', $expectedHash));
 
         /** @var File|ObjectProphecy $file */
         $file = $this->getFileProphecy();
@@ -57,7 +67,7 @@ class ChecksumServiceTest extends TestCase {
      * @throws InvalidHashException
      */
     public function testVerifiesSha256Checksum($expectedHash, $actualHash, $expected): void {
-        $expectedHash = new Sha256Hash(\hash('sha256', $expectedHash));
+        $expectedHash = new Sha256Hash(hash('sha256', $expectedHash));
 
         $file = $this->getFileProphecy();
         $file->getContent()->willReturn($actualHash);

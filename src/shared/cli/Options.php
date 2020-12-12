@@ -1,5 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive\Cli;
+
+use function array_merge;
+use function count;
+use function sprintf;
 
 class Options {
 
@@ -23,7 +36,7 @@ class Options {
     public function getOption(string $name) {
         if (!$this->hasOption($name)) {
             throw new CommandOptionsException(
-                \sprintf('No option with name %s', $name),
+                sprintf('No option with name %s', $name),
                 CommandOptionsException::NoSuchOption
             );
         }
@@ -36,13 +49,13 @@ class Options {
     }
 
     public function getArgumentCount(): int {
-        return \count($this->arguments);
+        return count($this->arguments);
     }
 
     public function getArgument(int $index): string {
         if (!$this->hasArgument($index)) {
             throw new CommandOptionsException(
-                \sprintf('No argument at index %s', $index),
+                sprintf('No argument at index %s', $index),
                 CommandOptionsException::InvalidArgumentIndex
             );
         }
@@ -61,7 +74,7 @@ class Options {
     public function mergeOptions(self $options): self {
         $result            = new self();
         $result->arguments = $this->arguments;
-        $result->options   = \array_merge($this->options, $options->options);
+        $result->options   = array_merge($this->options, $options->options);
 
         return $result;
     }

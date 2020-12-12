@@ -1,5 +1,17 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function sleep;
+use function sprintf;
 
 class RetryingHttpClient implements HttpClient {
     private const retryCodes = [
@@ -50,13 +62,13 @@ class RetryingHttpClient implements HttpClient {
         try {
             $this->triesPerformed++;
 
-            return $this->client->$method($url, $etag);
+            return $this->client->{$method}($url, $etag);
         } catch (HttpException $e) {
             if ($this->triesPerformed < $this->maxTries && isset(self::retryCodes[$e->getCode()])) {
                 $this->output->writeInfo(
-                    \sprintf('HTTP Request failed (%s) - retrying in 2 seconds', $e->getCode())
+                    sprintf('HTTP Request failed (%s) - retrying in 2 seconds', $e->getCode())
                 );
-                \sleep(2);
+                sleep(2);
 
                 return $this->doTry($method, $url, $etag);
             }

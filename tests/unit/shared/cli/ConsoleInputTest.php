@@ -1,10 +1,23 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function fopen;
+use function fwrite;
+use function rewind;
 use PharIo\Phive\Cli\ConsoleInput;
 use PharIo\Phive\Cli\Output;
 use PharIo\Phive\Cli\RunnerException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\Cli\ConsoleInput
@@ -41,9 +54,9 @@ class ConsoleInputTest extends TestCase {
         $output->expects($this->once())
             ->method('writeText')
             ->with('foo? [Y|n] ');
-        $inputStream = \fopen('php://memory', 'w+');
-        \fwrite($inputStream, $inputString);
-        \rewind($inputStream);
+        $inputStream = fopen('php://memory', 'w+');
+        fwrite($inputStream, $inputString);
+        rewind($inputStream);
 
         $input = new ConsoleInput($output, $inputStream);
 
@@ -63,9 +76,9 @@ class ConsoleInputTest extends TestCase {
             ->method('writeText')
             ->with($this->stringContains($expectedString));
 
-        $inputStream = \fopen('php://memory', 'w+');
-        \fwrite($inputStream, 'y');
-        \rewind($inputStream);
+        $inputStream = fopen('php://memory', 'w+');
+        fwrite($inputStream, 'y');
+        rewind($inputStream);
 
         $input = new ConsoleInput($output, $inputStream);
         $input->confirm('foo?', $default);
@@ -79,9 +92,9 @@ class ConsoleInputTest extends TestCase {
     public function testReturnsDefaultOnEnter($default): void {
         $output = $this->getOutputMock();
 
-        $inputStream = \fopen('php://memory', 'w+');
-        \fwrite($inputStream, "\n");
-        \rewind($inputStream);
+        $inputStream = fopen('php://memory', 'w+');
+        fwrite($inputStream, "\n");
+        rewind($inputStream);
 
         $input = new ConsoleInput($output, $inputStream);
         $this->assertSame($default, $input->confirm('foo?', $default));
@@ -98,7 +111,7 @@ class ConsoleInputTest extends TestCase {
          *
          * In a real shell it can be emulate with `echo -n | phive install ...`
          */
-        $inputStream = \fopen('php://memory', 'r');
+        $inputStream = fopen('php://memory', 'r');
 
         $input = new ConsoleInput($output, $inputStream);
 
@@ -109,7 +122,7 @@ class ConsoleInputTest extends TestCase {
     }
 
     /**
-     * @return Output|\PHPUnit_Framework_MockObject_MockObject
+     * @return Output|PHPUnit_Framework_MockObject_MockObject
      */
     private function getOutputMock() {
         return $this->createMock(Output::class);

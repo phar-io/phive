@@ -1,5 +1,17 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function sprintf;
+use DOMElement;
 
 class SourcesList {
 
@@ -17,18 +29,18 @@ class SourcesList {
      * @throws SourcesListException
      */
     public function getSourceForAlias(PharAlias $alias): Source {
-        $query           = \sprintf('//phive:phar[@alias="%s"]/phive:repository', $alias->asString());
+        $query           = sprintf('//phive:phar[@alias="%s"]/phive:repository', $alias->asString());
         $repositoryNodes = $this->sourcesFile->query($query);
 
         if ($repositoryNodes->length === 0) {
-            throw new SourcesListException(\sprintf('No repository found for alias %s', $alias->asString()));
+            throw new SourcesListException(sprintf('No repository found for alias %s', $alias->asString()));
         }
 
         if ($repositoryNodes->length > 1) {
-            throw new SourcesListException(\sprintf('Multiple repositories found for alias %s', $alias->asString()));
+            throw new SourcesListException(sprintf('Multiple repositories found for alias %s', $alias->asString()));
         }
 
-        /** @var \DOMElement $repositoryNode */
+        /** @var DOMElement $repositoryNode */
         $repositoryNode = $repositoryNodes->item(0);
 
         return new Source(
@@ -41,17 +53,17 @@ class SourcesList {
      * @throws SourcesListException
      */
     public function getAliasForComposerAlias(ComposerAlias $alias): string {
-        $query  = \sprintf('//phive:phar[@composer="%s"]', $alias->asString());
+        $query  = sprintf('//phive:phar[@composer="%s"]', $alias->asString());
         $result = $this->sourcesFile->query($query);
 
         if ($result->length === 0) {
             throw new SourcesListException(
-                \sprintf('No such composer alias "%s"', $alias->asString()),
+                sprintf('No such composer alias "%s"', $alias->asString()),
                 SourcesListException::ComposerAliasNotFound
             );
         }
 
-        /** @var \DOMElement $pharNode */
+        /** @var DOMElement $pharNode */
         $pharNode = $result->item(0);
 
         return $pharNode->getAttribute('alias');

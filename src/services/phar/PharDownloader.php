@@ -1,6 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function sprintf;
 use PharIo\FileSystem\File;
 
 class PharDownloader {
@@ -57,7 +67,7 @@ class PharDownloader {
 
             if (!$response->isSuccess()) {
                 throw new DownloadFailedException(
-                    \sprintf('Failed to download load %s: HTTP Code %d', $url->asString(), $response->getHttpCode()),
+                    sprintf('Failed to download load %s: HTTP Code %d', $url->asString(), $response->getHttpCode()),
                     $response->getHttpCode()
                 );
             }
@@ -65,7 +75,7 @@ class PharDownloader {
             return new File($url->getFilename(), $response->getBody());
         } catch (HttpException $e) {
             throw new DownloadFailedException(
-                \sprintf('Unexpected HTTP error when requesting %s: %s', $url->asString(), $e->getMessage()),
+                sprintf('Unexpected HTTP error when requesting %s: %s', $url->asString(), $e->getMessage()),
                 (int)$e->getCode(),
                 $e
             );
@@ -86,7 +96,7 @@ class PharDownloader {
 
         if (!$signatureVerificationResult->wasVerificationSuccessful()) {
             throw new VerificationFailedException(
-                \sprintf(
+                sprintf(
                     "Signature could not be verified\n%s",
                     $signatureVerificationResult->getErrorMessage()
                 )
@@ -96,7 +106,7 @@ class PharDownloader {
         /* @psalm-suppress PossiblyNullArgument */
         if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $phar)) {
             throw new VerificationFailedException(
-                \sprintf(
+                sprintf(
                     'Wrong checksum! Expected %s',
                     /* @psalm-suppress PossiblyNullReference */
                     $release->getExpectedHash()->asString()

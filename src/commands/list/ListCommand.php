@@ -1,5 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function count;
 
 class ListCommand implements Cli\Command {
 
@@ -21,7 +32,7 @@ class ListCommand implements Cli\Command {
     public function execute(): void {
         $localAliases = $this->localSources->getAliases();
 
-        if (\count($localAliases) > 0) {
+        if (count($localAliases) > 0) {
             $this->output->writeText("\nList of local aliases known to your system:\n");
             $this->printAliases($localAliases);
         }

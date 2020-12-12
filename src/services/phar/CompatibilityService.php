@@ -1,6 +1,23 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use const PHP_MAJOR_VERSION;
+use const PHP_MINOR_VERSION;
+use const PHP_RELEASE_VERSION;
+use const PHP_VERSION;
+use function count;
+use function extension_loaded;
+use function implode;
+use function sprintf;
 use PharIo\Manifest\PhpExtensionRequirement;
 use PharIo\Manifest\PhpVersionRequirement;
 use PharIo\Phive\Cli\Input;
@@ -38,16 +55,16 @@ class CompatibilityService {
                     $php = $requirement->getVersionConstraint();
 
                     try {
-                        $phpversion = new Version(\PHP_VERSION);
+                        $phpversion = new Version(PHP_VERSION);
                     } catch (InvalidVersionException $ex) {
-                        $phpversion = new Version(\PHP_MAJOR_VERSION . '.' . \PHP_MINOR_VERSION . '.' . \PHP_RELEASE_VERSION);
+                        $phpversion = new Version(PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION);
                     }
 
                     if (!$php->complies($phpversion)) {
-                        $issues[] = \sprintf(
+                        $issues[] = sprintf(
                             'PHP Version %s required, but %s in use',
                             $php->asString(),
-                            \PHP_VERSION
+                            PHP_VERSION
                         );
                     }
 
@@ -55,8 +72,8 @@ class CompatibilityService {
                 }
 
                 case $requirement instanceof PhpExtensionRequirement: {
-                    if (!\extension_loaded($requirement->asString())) {
-                        $issues[] = \sprintf(
+                    if (!extension_loaded($requirement->asString())) {
+                        $issues[] = sprintf(
                             'Extension %s is required, but not installed or activated',
                             $requirement->asString()
                         );
@@ -65,7 +82,7 @@ class CompatibilityService {
             }
         }
 
-        if (!\count($issues)) {
+        if (!count($issues)) {
             return true;
         }
 
@@ -73,9 +90,9 @@ class CompatibilityService {
     }
 
     private function confirmInstallation(array $issues): bool {
-        $warning = \sprintf(
+        $warning = sprintf(
             "Your environment does not seem to satisfy the needs this phar has:\n\n           %s\n",
-            \implode("\n           ", $issues)
+            implode("\n           ", $issues)
         );
 
         $this->output->writeWarning($warning);

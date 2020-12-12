@@ -1,6 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use DateTimeImmutable;
 use PharIo\FileSystem\Filename;
 
 class RemoteSourcesListFileLoader implements SourcesListFileLoader {
@@ -17,7 +27,7 @@ class RemoteSourcesListFileLoader implements SourcesListFileLoader {
     /** @var Cli\Output */
     private $output;
 
-    /** @var \DateTimeImmutable */
+    /** @var DateTimeImmutable */
     private $maxAge;
 
     public function __construct(
@@ -25,7 +35,7 @@ class RemoteSourcesListFileLoader implements SourcesListFileLoader {
         Filename $filename,
         FileDownloader $fileDownloader,
         Cli\Output $output,
-        \DateTimeImmutable $maxAge
+        DateTimeImmutable $maxAge
     ) {
         $this->sourceUrl      = $sourceUrl;
         $this->filename       = $filename;

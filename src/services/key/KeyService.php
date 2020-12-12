@@ -1,5 +1,17 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function in_array;
+use function sprintf;
 
 class KeyService {
 
@@ -35,7 +47,7 @@ class KeyService {
     public function importKey(string $keyId, array $knownFingerprints): KeyImportResult {
         $key = $this->downloadKey($keyId);
 
-        if (!empty($knownFingerprints) && !\in_array($key->getFingerprint(), $knownFingerprints, true)) {
+        if (!empty($knownFingerprints) && !in_array($key->getFingerprint(), $knownFingerprints, true)) {
             $this->output->writeWarning(
                 "This is NOT a key that has been used to install previous versions of this PHAR.\n"
                 . "           While this can be perfectly valid (maybe the maintainer switched to a new key),\n"
@@ -46,7 +58,7 @@ class KeyService {
         $this->output->writeText("\n" . $key->getInfo() . "\n\n");
 
         if (!$this->allowedToImport($key)) {
-            $this->output->writeError(\sprintf('User declined import of key %s', $key->getId()));
+            $this->output->writeError(sprintf('User declined import of key %s', $key->getId()));
 
             return new KeyImportResult(0);
         }
@@ -55,7 +67,7 @@ class KeyService {
     }
 
     private function downloadKey(string $keyId): PublicKey {
-        $this->output->writeInfo(\sprintf('Downloading key %s', $keyId));
+        $this->output->writeInfo(sprintf('Downloading key %s', $keyId));
 
         return $this->keyDownloader->download($keyId);
     }

@@ -1,5 +1,19 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function implode;
+use function sprintf;
+use function str_split;
+use DateTimeImmutable;
 
 class PublicKey {
 
@@ -15,13 +29,13 @@ class PublicKey {
     /** @var string */
     private $public;
 
-    /** @var \DateTimeImmutable */
+    /** @var DateTimeImmutable */
     private $created;
 
     /**
      * PublicKey constructor.
      */
-    public function __construct(string $id, string $fingerprint, array $uids, string $public, \DateTimeImmutable $created) {
+    public function __construct(string $id, string $fingerprint, array $uids, string $public, DateTimeImmutable $created) {
         $this->id          = $id;
         $this->fingerprint = $fingerprint;
         $this->uids        = $uids;
@@ -35,16 +49,16 @@ class PublicKey {
 
     public function getInfo(): string {
         $info   = [];
-        $info[] = "\tFingerprint: " . \implode(' ', \str_split($this->fingerprint, 4));
+        $info[] = "\tFingerprint: " . implode(' ', str_split($this->fingerprint, 4));
         $info[] = '';
 
         foreach ($this->uids as $uid) {
-            $info[] = \sprintf("\t%s", $uid);
+            $info[] = sprintf("\t%s", $uid);
         }
         $info[] = '';
         $info[] = "\tCreated: " . $this->created->format('Y-m-d');
 
-        return \implode("\n", $info);
+        return implode("\n", $info);
     }
 
     public function getKeyData(): string {

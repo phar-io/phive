@@ -1,9 +1,19 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\File;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\PurgeCommand
@@ -49,26 +59,26 @@ class PurgeCommandTest extends TestCase {
     }
 
     /**
-     * @return PharRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @return PharRegistry|PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharRegistryMock() {
         return $this->createMock(PharRegistry::class);
     }
 
     /**
-     * @return Phar|\PHPUnit_Framework_MockObject_MockObject
+     * @return Phar|PHPUnit_Framework_MockObject_MockObject
      */
     private function getPharMock() {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Version $version */
+        /** @var PHPUnit_Framework_MockObject_MockObject|Version $version */
         $version = $this->createMock(Version::class);
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $file */
+        /** @var File|PHPUnit_Framework_MockObject_MockObject $file */
         $file = $this->createMock(File::class);
 
         return new Phar('foo', $version, $file);
     }
 
     /**
-     * @return Cli\Output|\PHPUnit_Framework_MockObject_MockObject
+     * @return Cli\Output|PHPUnit_Framework_MockObject_MockObject
      */
     private function getOutputMock() {
         return $this->createMock(Cli\Output::class);

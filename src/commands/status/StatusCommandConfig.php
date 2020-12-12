@@ -1,6 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function array_map;
+use function array_merge;
+use function array_reduce;
+use function count;
+use function usort;
 use PharIo\FileSystem\Filename;
 use PharIo\Version\AnyVersionConstraint;
 
@@ -30,8 +44,8 @@ class StatusCommandConfig {
             return $this->phiveXmlConfig->getPhars();
         }
 
-        $usedPhar = \array_map(static function (UsedPhar $phar) {
-            if (\count($phar->getUsages()) === 0) {
+        $usedPhar = array_map(static function (UsedPhar $phar) {
+            if (count($phar->getUsages()) === 0) {
                 return [new ConfiguredPhar(
                     $phar->getName(),
                     new AnyVersionConstraint(),
@@ -39,7 +53,7 @@ class StatusCommandConfig {
                 )];
             }
 
-            return \array_map(static function (string $path) use ($phar) {
+            return array_map(static function (string $path) use ($phar) {
                 return new ConfiguredPhar(
                     $phar->getName(),
                     new AnyVersionConstraint(),
@@ -49,11 +63,11 @@ class StatusCommandConfig {
             }, $phar->getUsages());
         }, $this->pharRegistry->getAllPhars());
 
-        $usedPhar = \array_reduce($usedPhar, static function (array $accumulator, array $items) {
-            return \array_merge($accumulator, $items);
+        $usedPhar = array_reduce($usedPhar, static function (array $accumulator, array $items) {
+            return array_merge($accumulator, $items);
         }, []);
 
-        \usort($usedPhar, static function (ConfiguredPhar $pharA, ConfiguredPhar $pharB) {
+        usort($usedPhar, static function (ConfiguredPhar $pharA, ConfiguredPhar $pharB) {
             return [$pharA->getName(), $pharA->getInstalledVersion()]
                 <=> [$pharB->getName(), $pharB->getInstalledVersion()];
         });

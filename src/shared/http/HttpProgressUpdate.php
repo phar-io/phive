@@ -1,5 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function round;
 
 class HttpProgressUpdate {
 
@@ -51,7 +62,7 @@ class HttpProgressUpdate {
             return 0;
         }
 
-        return \round($this->received / ($this->expectedDown / 100));
+        return round($this->received / ($this->expectedDown / 100));
     }
 
     public function getUploadPercent(): float {
@@ -59,6 +70,6 @@ class HttpProgressUpdate {
             return 0;
         }
 
-        return \round($this->sent / ($this->expectedUp / 100));
+        return round($this->sent / ($this->expectedUp / 100));
     }
 }

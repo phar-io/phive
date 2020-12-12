@@ -1,5 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function explode;
+use function sprintf;
+use function strpos;
 
 class GithubAliasResolver extends AbstractRequestedPharResolver {
     /** @var FileDownloader */
@@ -27,7 +40,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
 
         $name = $requestedPhar->getAlias()->asString();
 
-        if (\strpos($name, '/') === false) {
+        if (strpos($name, '/') === false) {
             return $this->tryNext($requestedPhar);
         }
 
@@ -37,7 +50,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
             return $this->tryNext($requestedPhar);
         } catch (GithubAliasResolverException $e) {
             $this->output->writeWarning(
-                \sprintf('Github API Rate Limit exceeded - cannot resolve "%s"', $name)
+                sprintf('Github API Rate Limit exceeded - cannot resolve "%s"', $name)
             );
 
             return $this->tryNext($requestedPhar);
@@ -45,9 +58,9 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
     }
 
     private function localResolve(string $name): GithubRepository {
-        [$username, $project] = \explode('/', $name);
+        [$username, $project] = explode('/', $name);
         $url                  = new Url(
-            \sprintf('https://api.github.com/repos/%s/%s/releases?per_page=100', $username, $project)
+            sprintf('https://api.github.com/repos/%s/%s/releases?per_page=100', $username, $project)
         );
 
         $this->ensureWithinRateLimit();

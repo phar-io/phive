@@ -1,6 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function file_put_contents;
+use function sha1;
+use function str_replace;
 use PharIo\FileSystem\Directory;
 
 class FileStorageCacheBackend implements CacheBackend {
@@ -35,12 +47,12 @@ class FileStorageCacheBackend implements CacheBackend {
 
     public function storeEntry(Url $url, ETag $etag, string $content): void {
         $dir = $this->getStorageDirectory($url);
-        \file_put_contents($dir->file('content')->asString(), $content);
-        \file_put_contents($dir->file('etag')->asString(), $etag->asString());
+        file_put_contents($dir->file('content')->asString(), $content);
+        file_put_contents($dir->file('etag')->asString(), $etag->asString());
     }
 
     private function translateUrlToName(Url $url): string {
-        return \str_replace('/', '_', $url->getPath()) . '-' . \sha1($url->asString());
+        return str_replace('/', '_', $url->getPath()) . '-' . sha1($url->asString());
     }
 
     private function getStorageDirectory(Url $url): Directory {

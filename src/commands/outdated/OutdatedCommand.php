@@ -1,6 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use const JSON_PRETTY_PRINT;
+use function count;
+use function file_put_contents;
+use function json_encode;
+use function sprintf;
 use DOMDocument;
 use PharIo\Phive\Cli\ConsoleTable;
 
@@ -56,7 +70,7 @@ class OutdatedCommand implements Cli\Command {
     }
 
     private function renderCliOutput(array $outdated): string {
-        if (\count($outdated) === 0) {
+        if (count($outdated) === 0) {
             return 'Congrats, no outdated phars found';
         }
 
@@ -71,9 +85,9 @@ class OutdatedCommand implements Cli\Command {
             ]);
         }
 
-        return \sprintf(
+        return sprintf(
             "Found %d outdated PHARs in phive.xml:\n\n%s",
-            \count($outdated),
+            count($outdated),
             $table->asString()
         );
     }
@@ -88,7 +102,7 @@ class OutdatedCommand implements Cli\Command {
 
             if ($phar->hasUrl() || Url::isUrl($phar->getName())) {
                 $this->output->writeWarning(
-                    \sprintf(
+                    sprintf(
                         'Phar "%s" installed via URL - cannot check for newer versions',
                         $phar->getName()
                     )
@@ -128,7 +142,7 @@ class OutdatedCommand implements Cli\Command {
     }
 
     private function renderJsonOutput(array $outdated): string {
-        return \json_encode(['outdated' => $outdated], \JSON_PRETTY_PRINT);
+        return json_encode(['outdated' => $outdated], JSON_PRETTY_PRINT);
     }
 
     private function renderXmlOutput(array $outdated): string {
@@ -155,6 +169,6 @@ class OutdatedCommand implements Cli\Command {
     private function writeToFile(string $output): void {
         $destionation = $this->outdatedConfig->outputFilename();
         $destionation->getDirectory()->ensureExists();
-        \file_put_contents($destionation->asString(), $output . "\n");
+        file_put_contents($destionation->asString(), $output . "\n");
     }
 }

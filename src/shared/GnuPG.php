@@ -1,6 +1,16 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function putenv;
 use PharIo\FileSystem\Directory;
 
 class GnuPG {
@@ -20,13 +30,13 @@ class GnuPG {
      * @return array|false
      */
     public function import(string $key) {
-        \putenv('GNUPGHOME=' . $this->homeDir->asString());
+        putenv('GNUPGHOME=' . $this->homeDir->asString());
 
         return $this->gnupg->import($key);
     }
 
     public function keyinfo(string $search): array {
-        \putenv('GNUPGHOME=' . $this->homeDir->asString());
+        putenv('GNUPGHOME=' . $this->homeDir->asString());
 
         return $this->gnupg->keyinfo($search);
     }
@@ -35,7 +45,7 @@ class GnuPG {
      * @return array|false
      */
     public function verify(string $message, string $signature) {
-        \putenv('GNUPGHOME=' . $this->homeDir->asString());
+        putenv('GNUPGHOME=' . $this->homeDir->asString());
 
         return $this->gnupg->verify($message, $signature);
     }

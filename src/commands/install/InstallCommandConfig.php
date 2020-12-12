@@ -1,6 +1,19 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use const PREG_SPLIT_NO_EMPTY;
+use function count;
+use function mb_strtolower;
+use function preg_split;
 use PharIo\FileSystem\Directory;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
@@ -118,10 +131,10 @@ class InstallCommandConfig {
                     $identifier->getPharVersion()->getVersionString()
                 );
             } else {
-                $argumentParts = \preg_split('/[@:=]/', $argument, 2, \PREG_SPLIT_NO_EMPTY);
-                $identifier    = new PharAlias(\mb_strtolower($argumentParts[0]));
+                $argumentParts = preg_split('/[@:=]/', $argument, 2, PREG_SPLIT_NO_EMPTY);
+                $identifier    = new PharAlias(mb_strtolower($argumentParts[0]));
 
-                if (\count($argumentParts) === 2) {
+                if (count($argumentParts) === 2) {
                     $versionConstraint = (new VersionConstraintParser())->parse($argumentParts[1]);
                 } else {
                     $versionConstraint = new AnyVersionConstraint();

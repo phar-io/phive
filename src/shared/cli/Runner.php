@@ -1,6 +1,31 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive\Cli;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use function count;
+use function debug_backtrace;
+use function dirname;
+use function error_get_last;
+use function error_reporting;
+use function explode;
+use function file_get_contents;
+use function implode;
+use function ini_set;
+use function is_array;
+use function register_shutdown_function;
+use function set_error_handler;
+use function sprintf;
+use function strlen;
+use function substr;
 use PharIo\Phive\Environment;
 use PharIo\Phive\ErrorException;
 use PharIo\Phive\Exception;
@@ -9,6 +34,7 @@ use PharIo\Phive\MigrationService;
 use PharIo\Phive\MigrationsFailedException;
 use PharIo\Phive\PhiveContext;
 use PharIo\Phive\PhiveVersion;
+use Throwable;
 
 class Runner {
     public const RC_OK = 0;
@@ -85,7 +111,7 @@ class Runner {
             $this->showErrorWithTrace($e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
 
             return self::RC_BUG_FOUND;
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             $this->showErrorWithTrace($t->getMessage(), $t->getFile(), $t->getLine(), $t->getTrace());
 
             return self::RC_BUG_FOUND;
@@ -100,36 +126,36 @@ class Runner {
     }
 
     public function shutdownHandler(): void {
-        $error = \error_get_last();
+        $error = error_get_last();
 
         if ($error === null || $error['file'] === 'Unknown') {
             return;
         }
-        $this->showErrorWithTrace($error['message'], $error['file'], $error['line'], \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
+        $this->showErrorWithTrace($error['message'], $error['file'], $error['line'], debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
     }
 
     /**
      * @param array<int, array<string, string>> $trace
      */
     private function showErrorWithTrace(string $error, string $file, int $line, array $trace = null): void {
-        $baseLen = \strlen(\dirname(__DIR__, 3) . '') + 1;
+        $baseLen = strlen(dirname(__DIR__, 3) . '') + 1;
 
         $message   = [$error];
         $message[] = '';
-        $message[] = \sprintf(
+        $message[] = sprintf(
             '#0 %s(%d)',
-            \substr($file, $baseLen),
+            substr($file, $baseLen),
             $line
         );
 
-        if (\is_array($trace)) {
+        if (is_array($trace)) {
             foreach ($trace as $pos => $step) {
                 $file = 'unknown file';
 
                 if (isset($step['file'])) {
-                    $file = \substr($step['file'], $baseLen);
+                    $file = substr($step['file'], $baseLen);
                 }
-                $message[] = \sprintf(
+                $message[] = sprintf(
                     '#%d %s(%d): %s%s%s()',
                     $pos + 1,
                     $file,
@@ -139,12 +165,12 @@ class Runner {
                     $step['function']
                 );
             }
-            $message[] = \sprintf('#%d {main}', \count($trace) + 1);
+            $message[] = sprintf('#%d {main}', count($trace) + 1);
         }
         $this->output->writeError(
-            \sprintf(
-                \file_get_contents(__DIR__ . '/error.txt'),
-                \implode("\n          ", $message),
+            sprintf(
+                file_get_contents(__DIR__ . '/error.txt'),
+                implode("\n          ", $message),
                 $this->environment->getRuntimeString(),
                 $this->version->getVersion()
             )
@@ -152,10 +178,10 @@ class Runner {
     }
 
     private function setupRuntime(): void {
-        \error_reporting(-1);
-        \ini_set('display_errors', 'off');
-        \set_error_handler([$this, 'errorHandler']);
-        \register_shutdown_function([$this, 'shutdownHandler']);
+        error_reporting(-1);
+        ini_set('display_errors', 'off');
+        set_error_handler([$this, 'errorHandler']);
+        register_shutdown_function([$this, 'shutdownHandler']);
     }
 
     private function showHeader(): void {
@@ -172,17 +198,17 @@ class Runner {
             $this->migrationService->ensureFitness();
         } catch (ExtensionsMissingException $e) {
             throw new RunnerException(
-                \sprintf(
+                sprintf(
                     "Your environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
-                    \implode("\n          ", $e->getMissing())
+                    implode("\n          ", $e->getMissing())
                 ),
                 self::RC_EXT_MISSING
             );
         } catch (MigrationsFailedException $failedException) {
             throw new RunnerException(
-                \sprintf(
+                sprintf(
                     "Phive is not ready to run due to the following failed migration(s):\n\n          %s\n",
-                    \implode("\n          ", $failedException->getFailed())
+                    implode("\n          ", $failedException->getFailed())
                 ),
                 self::RC_MIGRATION_FAILED
             );
@@ -217,7 +243,7 @@ class Runner {
         } catch (CommandLocatorException $e) {
             if ($e->getCode() === CommandLocatorException::UnknownCommand) {
                 throw new RunnerException(
-                    \sprintf("Unknown command '%s'", $command),
+                    sprintf("Unknown command '%s'", $command),
                     self::RC_UNKNOWN_COMMAND
                 );
             }
@@ -225,7 +251,7 @@ class Runner {
             throw $e;
         } catch (RequestException $e) {
             throw new RunnerException(
-                \sprintf(
+                sprintf(
                     "Error while processing arguments to command '%s':\n%s",
                     $command,
                     $e->getMessage()
@@ -235,8 +261,8 @@ class Runner {
         }
     }
 
-    private function showException(\Throwable $e): void {
-        foreach (\explode("\n", $e->getMessage()) as $line) {
+    private function showException(Throwable $e): void {
+        foreach (explode("\n", $e->getMessage()) as $line) {
             $this->output->writeError($line);
         }
         $this->showFooter();

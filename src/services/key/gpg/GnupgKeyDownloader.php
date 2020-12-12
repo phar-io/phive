@@ -1,5 +1,17 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function sprintf;
+use Throwable;
 
 class GnupgKeyDownloader implements KeyDownloader {
     public const PATH = '/pks/lookup';
@@ -42,7 +54,7 @@ class GnupgKeyDownloader implements KeyDownloader {
                 $this->ensureSuccess($publicKey);
             } catch (HttpException $e) {
                 $this->output->writeWarning(
-                    \sprintf('Failed with error code %s: %s', $e->getCode(), $e->getMessage())
+                    sprintf('Failed with error code %s: %s', $e->getCode(), $e->getMessage())
                 );
 
                 continue;
@@ -52,14 +64,14 @@ class GnupgKeyDownloader implements KeyDownloader {
 
             try {
                 return $this->reader->parse($keyId, $publicKey->getBody());
-            } catch (\Throwable $t) {
+            } catch (Throwable $t) {
                 $this->output->writeWarning(
-                    \sprintf('Parsing key data failed with error code %s: %s', $t->getCode(), $t->getMessage())
+                    sprintf('Parsing key data failed with error code %s: %s', $t->getCode(), $t->getMessage())
                 );
             }
         }
 
-        throw new DownloadFailedException(\sprintf('PublicKey %s not found on key servers', $keyId));
+        throw new DownloadFailedException(sprintf('PublicKey %s not found on key servers', $keyId));
     }
 
     /**

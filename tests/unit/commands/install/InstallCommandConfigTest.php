@@ -1,4 +1,13 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
 use PharIo\FileSystem\Directory;
@@ -7,6 +16,7 @@ use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\InstallCommandConfig
@@ -166,35 +176,35 @@ class InstallCommandConfigTest extends TestCase {
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|TargetDirectoryLocator
+     * @return PHPUnit_Framework_MockObject_MockObject|TargetDirectoryLocator
      */
     private function getTargetDirectoryLocatorMock() {
         return $this->createMock(TargetDirectoryLocator::class);
     }
 
     /**
-     * @return Directory|\PHPUnit_Framework_MockObject_MockObject
+     * @return Directory|PHPUnit_Framework_MockObject_MockObject
      */
     private function getDirectoryMock() {
         return $this->createMock(Directory::class);
     }
 
     /**
-     * @return Options|\PHPUnit_Framework_MockObject_MockObject
+     * @return Options|PHPUnit_Framework_MockObject_MockObject
      */
     private function getOptionsMock() {
         return $this->createMock(Options::class);
     }
 
     /**
-     * @return PhiveXmlConfig|\PHPUnit_Framework_MockObject_MockObject
+     * @return PhiveXmlConfig|PHPUnit_Framework_MockObject_MockObject
      */
     private function getPhiveXmlConfigMock() {
         return $this->createMock(PhiveXmlConfig::class);
     }
 
     /**
-     * @return Environment|\PHPUnit_Framework_MockObject_MockObject
+     * @return Environment|PHPUnit_Framework_MockObject_MockObject
      */
     private function getEnvironmentMock() {
         return $this->createMock(Environment::class);

@@ -1,4 +1,13 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive\RegressionTests;
 
 use PharIo\FileSystem\Filename;
@@ -11,6 +20,7 @@ use PharIo\Phive\RequestedPhar;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\Version;
+use RuntimeException;
 
 class InstallCommandTest extends RegressionTestCase {
     public function testInstallsPhar(): void {
@@ -58,7 +68,7 @@ class InstallCommandTest extends RegressionTestCase {
     }
 
     public function testThrowsErrorIfGlobalAndTargetOptionsAreCombined(): void {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionCode(Runner::RC_PARAM_ERROR);
 
         $this->runPhiveCommand('install', ['--global', '--target tools', 'phpunit']);

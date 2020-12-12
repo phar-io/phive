@@ -1,5 +1,17 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function array_filter;
+use function count;
 
 class MigrationService {
 
@@ -19,7 +31,7 @@ class MigrationService {
             }
         }
 
-        if (\count($failed) > 0) {
+        if (count($failed) > 0) {
             throw new MigrationsFailedException($failed);
         }
     }
@@ -28,7 +40,7 @@ class MigrationService {
      * @return Migration[]
      */
     public function getUserMigrations(): array {
-        return \array_filter($this->factory->getMigrations(), function (Migration $migration) {
+        return array_filter($this->factory->getMigrations(), function (Migration $migration) {
             return $migration->isUserMigration();
         });
     }

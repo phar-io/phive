@@ -1,5 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive\Cli;
+
+use function count;
+use function sprintf;
+use function strlen;
+use function substr;
+use OutOfBoundsException;
 
 class Request {
 
@@ -17,7 +32,7 @@ class Request {
 
     public function __construct(array $argv) {
         $this->argv    = $argv;
-        $this->count   = \count($argv) - 1;
+        $this->count   = count($argv) - 1;
         $this->options = new Options();
     }
 
@@ -27,9 +42,9 @@ class Request {
 
             if ($arg[0] === '-') {
                 if ($arg[1] === '-') {
-                    $this->handleLongOption($context, \substr($arg, 2));
+                    $this->handleLongOption($context, substr($arg, 2));
                 } else {
-                    $len = \strlen($arg) - 1;
+                    $len = strlen($arg) - 1;
 
                     for ($t = 1; $t <= $len; $t++) {
                         $this->handleShortOption($context, $arg[$t], ($t === $len));
@@ -55,7 +70,7 @@ class Request {
 
     private function getNext(): string {
         if (!$this->hasNext()) {
-            throw new \OutOfBoundsException('No more parameters');
+            throw new OutOfBoundsException('No more parameters');
         }
         $this->pos++;
 
@@ -69,7 +84,7 @@ class Request {
     private function handleLongOption(Context $context, string $option): void {
         if (!$context->knowsOption($option)) {
             throw new RequestException(
-                \sprintf('Unknown option: %s', $option),
+                sprintf('Unknown option: %s', $option),
                 RequestException::InvalidOption
             );
         }
@@ -77,7 +92,7 @@ class Request {
         if ($context->requiresValue($option)) {
             if (!$this->hasNext()) {
                 throw new RequestException(
-                    \sprintf('Option %s requires a value - none given', $option),
+                    sprintf('Option %s requires a value - none given', $option),
                     RequestException::ValueRequired
                 );
             }
@@ -85,7 +100,7 @@ class Request {
 
             if ($value[0] === '-') {
                 throw new RequestException(
-                    \sprintf('Option %s requires a value - none given', $option),
+                    sprintf('Option %s requires a value - none given', $option),
                     RequestException::ValueRequired
                 );
             }
@@ -99,7 +114,7 @@ class Request {
     private function handleShortOption(Context $context, string $char, bool $isLast): void {
         if (!$context->hasOptionForChar($char)) {
             throw new RequestException(
-                \sprintf('Unknown option: %s', $char),
+                sprintf('Unknown option: %s', $char),
                 RequestException::InvalidOption
             );
         }
@@ -108,7 +123,7 @@ class Request {
         if ($context->requiresValue($option)) {
             if (!$isLast || !$this->hasNext()) {
                 throw new RequestException(
-                    \sprintf('Option %s requires a value - none given', $option),
+                    sprintf('Option %s requires a value - none given', $option),
                     RequestException::ValueRequired
                 );
             }
@@ -116,7 +131,7 @@ class Request {
 
             if ($value[0] === '-') {
                 throw new RequestException(
-                    \sprintf('Option %s requires a value - none given', $option),
+                    sprintf('Option %s requires a value - none given', $option),
                     RequestException::ValueRequired
                 );
             }

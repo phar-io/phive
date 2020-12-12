@@ -1,5 +1,20 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive\Cli;
+
+use function array_key_exists;
+use function array_search;
+use function in_array;
+use function sprintf;
+use function strlen;
 
 abstract class GeneralContext implements Context {
 
@@ -31,7 +46,7 @@ abstract class GeneralContext implements Context {
     }
 
     public function knowsOption(string $option): bool {
-        return \array_key_exists($option, $this->getKnownOptions());
+        return array_key_exists($option, $this->getKnownOptions());
     }
 
     public function requiresValue(string $option): bool {
@@ -42,11 +57,11 @@ abstract class GeneralContext implements Context {
      * @throws ContextException
      */
     public function hasOptionForChar(string $char): bool {
-        if (\strlen($char) !== 1) {
+        if (strlen($char) !== 1) {
             throw new ContextException('short option must be a string of length 1');
         }
 
-        return \in_array($char, $this->getKnownOptions(), true);
+        return in_array($char, $this->getKnownOptions(), true);
     }
 
     /**
@@ -57,7 +72,7 @@ abstract class GeneralContext implements Context {
             throw new ContextException('No short option with this char');
         }
 
-        return \array_search($char, $this->getKnownOptions(), true);
+        return array_search($char, $this->getKnownOptions(), true);
     }
 
     public function acceptsArguments(): bool {
@@ -98,7 +113,7 @@ abstract class GeneralContext implements Context {
                     ($option === $opt2 && $this->options->hasOption($opt1))
                 ) {
                     throw new ContextException(
-                        \sprintf("Options '%s' and '%s' cannot be combined", $opt1, $opt2),
+                        sprintf("Options '%s' and '%s' cannot be combined", $opt1, $opt2),
                         ContextException::ConflictingOptions
                     );
                 }

@@ -1,6 +1,21 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function basename;
+use function chmod;
+use function clearstatcache;
+use function copy;
+use function set_error_handler;
+use function sprintf;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\DirectoryException;
 use PharIo\FileSystem\File;
@@ -33,7 +48,7 @@ abstract class PharInstaller {
             $this->restoreErrorHandler();
         } catch (PharInstallerException $e) {
             throw new InstallationFailedException(
-                \sprintf('Installation failed: %s', $e->getMessage())
+                sprintf('Installation failed: %s', $e->getMessage())
             );
         }
     }
@@ -48,10 +63,10 @@ abstract class PharInstaller {
 
     protected function copy(Filename $phar, Filename $destination): void {
         $this->getOutput()->writeInfo(
-            \sprintf('Copying %s to %s', \basename($phar->asString()), $destination->asString())
+            sprintf('Copying %s to %s', basename($phar->asString()), $destination->asString())
         );
-        \copy($phar->asString(), $destination->asString());
-        \chmod($destination->asString(), 0755);
+        copy($phar->asString(), $destination->asString());
+        chmod($destination->asString(), 0755);
     }
 
     /**
@@ -62,7 +77,7 @@ abstract class PharInstaller {
     private function prepareDestinationDirectory(Directory $dir): void {
         if ($dir->exists() && !$dir->isWritable()) {
             throw new PharInstallerException(
-                \sprintf('Directory %s is not writable.', $dir->asString())
+                sprintf('Directory %s is not writable.', $dir->asString())
             );
         }
 
@@ -70,13 +85,13 @@ abstract class PharInstaller {
             $dir->ensureExists();
         } catch (DirectoryException $e) {
             throw new PharInstallerException(
-                \sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
+                sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
                 (int)$e->getCode(),
                 $e
             );
         } catch (PharInstallerException $e) {
             throw new PharInstallerException(
-                \sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
+                sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
                 (int)$e->getCode(),
                 $e
             );
@@ -88,23 +103,23 @@ abstract class PharInstaller {
             $destination->delete();
         } catch (PharInstallerException $e) {
         }
-        \clearstatcache(true, $destination->asString());
+        clearstatcache(true, $destination->asString());
 
         if ($destination->exists()) {
             throw new PharInstallerException(
-                \sprintf('Existing file %s could not be removed', $destination->asString())
+                sprintf('Existing file %s could not be removed', $destination->asString())
             );
         }
     }
 
     private function registerLocalErrorHandler(): void {
         /** @psalm-suppress InvalidArgument */
-        $this->originalHandler = \set_error_handler(
+        $this->originalHandler = set_error_handler(
             [$this, 'localErrorHandler']
         );
     }
 
     private function restoreErrorHandler(): void {
-        \set_error_handler($this->originalHandler);
+        set_error_handler($this->originalHandler);
     }
 }

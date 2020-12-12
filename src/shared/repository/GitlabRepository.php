@@ -1,6 +1,17 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use function in_array;
+use function substr;
 use PharIo\Version\InvalidVersionException;
 use PharIo\Version\Version;
 
@@ -32,13 +43,13 @@ class GitlabRepository implements SourceRepository {
                 $assetName = $asset->name;
                 $url       = $asset->url;
 
-                if (\substr($assetName, -5, 5) === '.phar') {
+                if (substr($assetName, -5, 5) === '.phar') {
                     $pharUrl = new PharUrl($url);
 
                     continue;
                 }
 
-                if (\in_array(\substr($assetName, -4, 4), ['.asc', '.sig'], true)) {
+                if (in_array(substr($assetName, -4, 4), ['.asc', '.sig'], true)) {
                     $signatureUrl = new Url($url);
                 }
             }

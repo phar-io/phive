@@ -1,6 +1,24 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
+use const CURLE_COULDNT_RESOLVE_HOST;
+use const DNS_A;
+use const DNS_AAAA;
+use function array_merge;
+use function array_shift;
+use function count;
+use function dns_get_record;
+use function sprintf;
+use Exception;
 use PharIo\Phive\Cli\Output;
 
 class RingdownCurlHttpClient implements HttpClient {
@@ -37,16 +55,16 @@ class RingdownCurlHttpClient implements HttpClient {
 
         foreach ($this->resolveHostname($hostname) as $ip) {
             $this->config->setResolvedIp($hostname, $ip);
-            $this->output->writeInfo(\sprintf('Trying to connect to %s (%s)', $hostname, $ip));
+            $this->output->writeInfo(sprintf('Trying to connect to %s (%s)', $hostname, $ip));
 
             try {
-                $response = $this->client->$method($url, $etag);
+                $response = $this->client->{$method}($url, $etag);
                 /** @var $response HttpResponse */
                 if ($response->isSuccess()) {
                     return $response;
                 }
             } catch (HttpException $e) {
-                $this->output->writeError(\sprintf('Request failed: %s', $e->getMessage()));
+                $this->output->writeError(sprintf('Request failed: %s', $e->getMessage()));
             }
             $this->removeUnavailable($hostname);
         }
@@ -60,15 +78,15 @@ class RingdownCurlHttpClient implements HttpClient {
 
     private function resolveHostname(string $hostname): array {
         if (!isset($this->resolved[$hostname])) {
-            $ipList = \array_merge(
-                $this->queryDNS($hostname, \DNS_A),
-                $this->queryDNS($hostname, \DNS_AAAA)
+            $ipList = array_merge(
+                $this->queryDNS($hostname, DNS_A),
+                $this->queryDNS($hostname, DNS_AAAA)
             );
 
-            if (!\count($ipList)) {
+            if (!count($ipList)) {
                 throw new HttpException(
-                    \sprintf('DNS Problem: Did not find any IP for hostname "%s"', $hostname),
-                    \CURLE_COULDNT_RESOLVE_HOST
+                    sprintf('DNS Problem: Did not find any IP for hostname "%s"', $hostname),
+                    CURLE_COULDNT_RESOLVE_HOST
                 );
             }
 
@@ -82,16 +100,16 @@ class RingdownCurlHttpClient implements HttpClient {
         $ipList = [];
 
         try {
-            foreach (\dns_get_record($hostname, $type) as $result) {
-                $ipList[] = $result[ $type === \DNS_A ? 'ip' : 'ipv6' ];
+            foreach (dns_get_record($hostname, $type) as $result) {
+                $ipList[] = $result[$type === DNS_A ? 'ip' : 'ipv6'];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         return $ipList;
     }
 
     private function removeUnavailable(string $hostname): void {
-        \array_shift($this->resolved[$hostname]);
+        array_shift($this->resolved[$hostname]);
     }
 }

@@ -1,5 +1,27 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
+
+use function array_intersect;
+use function array_keys;
+use function count;
+use function explode;
+use function in_array;
+use function mb_strlen;
+use function preg_match;
+use function sprintf;
+use function strtolower;
+use function trim;
+use function ucfirst;
+use DateTimeImmutable;
 
 class CurlHttpClient implements HttpClient {
 
@@ -79,23 +101,23 @@ class CurlHttpClient implements HttpClient {
      * @param resource $ch
      */
     public function handleHeaderInput($ch, string $line): int {
-        $parts = \explode(':', \trim($line));
+        $parts = explode(':', trim($line));
 
         if (!isset($parts[1])) {
-            return \mb_strlen($line);
+            return mb_strlen($line);
         }
 
         [$header, $value] = $parts;
-        $header           = \ucfirst(\strtolower($header));
-        $value            = \trim($value);
+        $header           = ucfirst(strtolower($header));
+        $value            = trim($value);
 
         if ($header === 'Etag') {
             $this->etag = new ETag($value);
-        } elseif (\preg_match('/^(X-)?RateLimit-(.*)$/i', $header, $matches) === 1) {
-            $this->rateLimitHeaders[\ucfirst(\strtolower($matches[2]))] = $value;
+        } elseif (preg_match('/^(X-)?RateLimit-(.*)$/i', $header, $matches) === 1) {
+            $this->rateLimitHeaders[ucfirst(strtolower($matches[2]))] = $value;
         }
 
-        return \mb_strlen($line);
+        return mb_strlen($line);
     }
 
     private function setupCurlInstance(): void {
@@ -125,7 +147,7 @@ class CurlHttpClient implements HttpClient {
             $headers[] = $this->config->getAuthentication($hostname)->asHttpHeaderString();
         }
 
-        if (\count($headers) > 0) {
+        if (count($headers) > 0) {
             $this->curl->addHttpHeaders($headers);
         }
     }
@@ -147,13 +169,13 @@ class CurlHttpClient implements HttpClient {
 
         $httpCode = $this->curl->getHttpCode();
 
-        if ($httpCode >= 400 || \in_array($httpCode, [200, 304], true)) {
+        if ($httpCode >= 400 || in_array($httpCode, [200, 304], true)) {
             return new HttpResponse($httpCode, $result ?: '', $this->etag, $this->parseRateLimitHeaders());
         }
 
         if ($httpCode > 0) {
             throw new HttpException(
-                \sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url->asString()),
+                sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url->asString()),
                 $httpCode
             );
         }
@@ -175,16 +197,16 @@ class CurlHttpClient implements HttpClient {
 
     private function parseRateLimitHeaders(): ?RateLimit {
         $required = ['Limit', 'Remaining', 'Reset'];
-        $existing = \array_keys($this->rateLimitHeaders);
+        $existing = array_keys($this->rateLimitHeaders);
 
-        if (\count(\array_intersect($required, $existing)) < 3) {
+        if (count(array_intersect($required, $existing)) < 3) {
             return null;
         }
 
         return new RateLimit(
             (int)$this->rateLimitHeaders['Limit'],
             (int)$this->rateLimitHeaders['Remaining'],
-            new \DateTimeImmutable('@' . $this->rateLimitHeaders['Reset'])
+            new DateTimeImmutable('@' . $this->rateLimitHeaders['Reset'])
         );
     }
 }

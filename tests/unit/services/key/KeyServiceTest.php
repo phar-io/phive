@@ -1,8 +1,18 @@
 <?php declare(strict_types = 1);
+/*
+ * This file is part of Phive.
+ *
+ * Copyright (c) Arne Blankerts <arne@blankerts.de>, Sebastian Heuer <sebastian@phpeople.de> and contributors
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace PharIo\Phive;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * @covers \PharIo\Phive\KeyService
@@ -74,35 +84,35 @@ class KeyServiceTest extends TestCase {
     }
 
     /**
-     * @return Cli\Input|\PHPUnit_Framework_MockObject_MockObject
+     * @return Cli\Input|PHPUnit_Framework_MockObject_MockObject
      */
     private function getInputMock() {
         return $this->createMock(Cli\Input::class);
     }
 
     /**
-     * @return Cli\Output|\PHPUnit_Framework_MockObject_MockObject
+     * @return Cli\Output|PHPUnit_Framework_MockObject_MockObject
      */
     private function getOutputMock() {
         return $this->createMock(Cli\Output::class);
     }
 
     /**
-     * @return KeyDownloader|\PHPUnit_Framework_MockObject_MockObject
+     * @return KeyDownloader|PHPUnit_Framework_MockObject_MockObject
      */
     private function getKeyDownloaderMock() {
         return $this->createMock(KeyDownloader::class);
     }
 
     /**
-     * @return KeyImporter|\PHPUnit_Framework_MockObject_MockObject
+     * @return KeyImporter|PHPUnit_Framework_MockObject_MockObject
      */
     private function getKeyImporterMock() {
         return $this->createMock(KeyImporter::class);
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|PublicKey
+     * @return PHPUnit_Framework_MockObject_MockObject|PublicKey
      */
     private function getPublicKeyMock() {
         return $this->createMock(PublicKey::class);
