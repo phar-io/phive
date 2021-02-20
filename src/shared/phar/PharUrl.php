@@ -34,10 +34,10 @@ class PharUrl extends Url implements PharIdentifier {
      */
     public function getPharVersion(): Version {
         $filename = pathinfo($this->asString(), PATHINFO_FILENAME);
-        preg_match('/-([\d]+.[\d]+.[\d]+.*)/', $filename, $matches);
+        preg_match('/-[vVrR]?([\d]+.[\d]+.[\d]+.*)/', $filename, $matches);
 
         if (count($matches) !== 2) {
-            preg_match('/\/([\d]+.[\d]+.[\d]+.*)\//', $this->asString(), $matches);
+            preg_match('/\/[vVrR]?([\d]+.[\d]+.[\d]+.*)\//', $this->asString(), $matches);
         }
 
         if (count($matches) !== 2) {
