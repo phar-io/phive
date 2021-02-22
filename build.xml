@@ -3,7 +3,7 @@
     <property name="phive.bin" value="phive"/>
 
     <target name="setup" depends="clean,composer,install-tools,generate-autoloader"/>
-    <target name="build" depends="setup,lint,test"/>
+    <target name="build" depends="setup,php-cs-fixer,test"/>
 
     <target name="clean" unless="clean.done" description="Clean up and create artifact directories">
         <delete dir="${basedir}/build/docs"/>
@@ -20,23 +20,6 @@
 
         <property name="clean.done" value="true"/>
     </target>
-
-    <target name="lint">
-        <apply executable="php" failonerror="true">
-            <arg value="-l" />
-
-            <fileset dir="${basedir}/src">
-                <include name="**/*.php" />
-                <modified />
-            </fileset>
-
-            <fileset dir="${basedir}/tests/unit">
-                <include name="**/*.php" />
-                <modified />
-            </fileset>
-        </apply>
-    </target>
-
 
     <target name="getphive" description="Get phive on travis-ci">
         <exec executable="wget" taskname="wget">
