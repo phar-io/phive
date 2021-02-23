@@ -33,6 +33,10 @@ class PhiveContextTest extends TestCase {
         $context = new PhiveContext();
         $this->assertTrue($context->knowsOption('home'));
     }
+    public function testKnowsNoInteractionOption(): void {
+        $context = new PhiveContext();
+        $this->assertTrue($context->knowsOption('no-interaction'));
+    }
 
     /**
      * @dataProvider requiresValueTestDataProvider
@@ -49,7 +53,8 @@ class PhiveContextTest extends TestCase {
         return [
             ['home', true],
             ['foo', false],
-            ['home2', false]
+            ['home2', false],
+            ['no-interaction', false],
         ];
     }
 }

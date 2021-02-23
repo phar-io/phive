@@ -2,8 +2,9 @@
 **Usage**: %phive [global-options] <command> [arguments]
 
 **Global options:**
-    _--home_         Set a custom Phive home directory (default: ~/.phive)
-    _--no-progress_  Do not print progress updates during file downloads
+    _--home_            Set a custom Phive home directory (default: ~/.phive)
+    _--no-interaction_  Do not ask any interactive question
+    _--no-progress_     Do not print progress updates during file downloads
 
 **Commands:**
 

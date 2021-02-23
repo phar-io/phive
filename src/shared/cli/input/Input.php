@@ -12,4 +12,6 @@ namespace PharIo\Phive\Cli;
 
 interface Input {
     public function confirm(string $message, bool $default = true): bool;
+
+    public function isNoInteraction(): bool;
 }

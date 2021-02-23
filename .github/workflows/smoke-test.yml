@@ -53,5 +53,5 @@ jobs:
       - name: Run phive
         env:
           GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: php ./phive --no-progress install --trust-gpg-keys 504BDA9ED151B16FDBED832A2A8299CE842DD38C phpab
+        run: php ./phive --no-interaction --no-progress install --trust-gpg-keys 504BDA9ED151B16FDBED832A2A8299CE842DD38C phpab
 

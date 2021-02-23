@@ -58,7 +58,7 @@ class ConsoleInputTest extends TestCase {
         fwrite($inputStream, $inputString);
         rewind($inputStream);
 
-        $input = new ConsoleInput($output, $inputStream);
+        $input = new ConsoleInput($output, false, $inputStream);
 
         $this->assertSame($expectedResult, $input->confirm('foo?'));
     }
@@ -80,7 +80,7 @@ class ConsoleInputTest extends TestCase {
         fwrite($inputStream, 'y');
         rewind($inputStream);
 
-        $input = new ConsoleInput($output, $inputStream);
+        $input = new ConsoleInput($output, false, $inputStream);
         $input->confirm('foo?', $default);
     }
 
@@ -96,15 +96,17 @@ class ConsoleInputTest extends TestCase {
         fwrite($inputStream, "\n");
         rewind($inputStream);
 
-        $input = new ConsoleInput($output, $inputStream);
+        $input = new ConsoleInput($output, false, $inputStream);
         $this->assertSame($default, $input->confirm('foo?', $default));
     }
 
-    public function testOnNonInteractive(): void {
+    public function testConfirmFailsOnNonInteractiveWhenNoInteractionIsDisabled(): void {
         $output = $this->getOutputMock();
         $output->expects($this->once())
             ->method('writeText')
             ->with('foo? [Y|n] ');
+
+        $noInteraction = false;
 
         /*
          * Emulate a non-interactive shell by not writing anything
@@ -113,12 +115,36 @@ class ConsoleInputTest extends TestCase {
          */
         $inputStream = fopen('php://memory', 'r');
 
-        $input = new ConsoleInput($output, $inputStream);
+        $input = new ConsoleInput($output, $noInteraction, $inputStream);
 
         $this->expectException(RunnerException::class);
         $this->expectExceptionMessage('Needs tty to be able to confirm');
 
         $input->confirm('foo?');
+    }
+
+    /**
+     * @dataProvider boolProvider
+     */
+    public function testConfirmSucceedsOnNonInteractiveWhenNoInteractionIsEnabled(bool $default): void {
+        $output        = $this->getOutputMock();
+        $noInteraction = true;
+        $inputStream   = fopen('php://memory', 'r');
+
+        $input = new ConsoleInput($output, $noInteraction, $inputStream);
+
+        $this->assertSame($default, $input->confirm('foo?', $default));
+    }
+
+    /**
+     * @dataProvider boolProvider
+     */
+    public function testIsNoInteractionReturnsNoInteraction(bool $noInteraction): void {
+        $output = $this->getOutputMock();
+
+        $input = new ConsoleInput($output, $noInteraction);
+
+        $this->assertSame($noInteraction, $input->isNoInteraction());
     }
 
     /**

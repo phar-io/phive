@@ -410,7 +410,10 @@ class Factory {
     }
 
     private function getConsoleInput(): Cli\ConsoleInput {
-        return new Cli\ConsoleInput($this->getOutput());
+        return new Cli\ConsoleInput(
+            $this->getOutput(),
+            $this->request->getOptions()->hasOption('no-interaction')
+        );
     }
 
     private function getChecksumService(): ChecksumService {

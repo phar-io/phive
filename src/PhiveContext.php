@@ -27,10 +27,11 @@ class PhiveContext extends GeneralContext {
 
     protected function getKnownOptions(): array {
         return [
-            'version'     => false,
-            'help'        => false,
-            'home'        => false,
-            'no-progress' => false
+            'version'        => false,
+            'help'           => false,
+            'home'           => false,
+            'no-interaction' => false,
+            'no-progress'    => false
         ];
     }
 }

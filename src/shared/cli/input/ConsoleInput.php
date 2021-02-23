@@ -22,18 +22,26 @@ class ConsoleInput implements Input {
     /** @var Output */
     private $output;
 
+    /** @var bool */
+    private $noInteraction;
+
     /** @var false|resource */
     private $inputStream;
 
     /**
      * @param false|resource $inputStreamHandle
      */
-    public function __construct(Output $output, $inputStreamHandle = STDIN) {
-        $this->output      = $output;
-        $this->inputStream = $inputStreamHandle;
+    public function __construct(Output $output, bool $noInteraction, $inputStreamHandle = STDIN) {
+        $this->output        = $output;
+        $this->noInteraction = $noInteraction;
+        $this->inputStream   = $inputStreamHandle;
     }
 
     public function confirm(string $message, bool $default = true): bool {
+        if ($this->noInteraction === true) {
+            return $default;
+        }
+
         $yesOption = $default === true ? 'Y' : 'y';
         $noOption  = $default === false ? 'N' : 'n';
 
@@ -57,5 +65,9 @@ class ConsoleInput implements Input {
         }
 
         return ($response === 'y');
+    }
+
+    public function isNoInteraction(): bool {
+        return $this->noInteraction;
     }
 }

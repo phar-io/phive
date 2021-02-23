@@ -73,6 +73,6 @@ class KeyService {
     }
 
     private function allowedToImport(PublicKey $key): bool {
-        return $this->trusted->has($key->getId()) || $this->input->confirm('Import this key?', false);
+        return $this->trusted->has($key->getId()) || $this->input->isNoInteraction() || $this->input->confirm('Import this key?', false);
     }
 }
