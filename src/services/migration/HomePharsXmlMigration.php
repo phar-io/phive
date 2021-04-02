@@ -12,23 +12,54 @@ namespace PharIo\Phive;
 
 use PharIo\FileSystem\Filename;
 
-class HomePharsXmlMigration extends InternalFileMigration {
+class HomePharsXmlMigration implements Migration {
+
+    /** @var Filename */
+    private $legacy;
+
+    /** @var Filename */
+    private $registry;
+
     public function __construct(Config $config) {
-        parent::__construct(
-            $config->getHomeDirectory()->file('phars.xml'),
-            $config->getRegistry()
-        );
+        $this->legacy = $config->getHomeDirectory()->file('phars.xml');
+        $this->registry = $config->getRegistry();
+    }
+
+    public function canMigrate(): bool {
+        if (!$this->mustMigrate()) {
+            return false;
+        }
+
+        return $this->mustMigrate() && !$this->inError();
     }
 
     public function mustMigrate(): bool {
-        return true;
+        if (!$this->legacy->exists()) {
+            return false;
+        }
+
+        // if this is really our installdb file, we want to migrate it - otherwise we ignore it
+        return strpos($this->legacy->read()->getContent(), 'xmlns="https://phar.io/phive/installdb"') !== false;
+    }
+
+    public function isUserMigration(): bool {
+        return false;
+    }
+
+    public function inError(): bool {
+        return $this->legacy->exists() && $this->registry->exists();
     }
 
     public function getDescription(): string {
         return 'Rename internal storage file from `phars.xml` to `registry.xml`.';
     }
 
-    protected function doMigrate(Filename $legacy, Filename $new): void {
-        $new->putContent($legacy->read()->getContent());
+    public function migrate(): void {
+        $this->registry->putContent(
+            $this->legacy->read()->getContent()
+        );
+
+        $this->legacy->delete();
     }
+
 }
