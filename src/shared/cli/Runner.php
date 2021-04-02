@@ -121,8 +121,8 @@ class Runner {
     /**
      * @throws ErrorException
      */
-    public function errorHandler(int $code, string $message, string $file, int $line, array $context): bool {
-        throw new ErrorException($message, $code, 1, $file, $line, $context);
+    public function errorHandler(int $code, string $message, string $file, int $line): bool {
+        throw new ErrorException($message, $code, 1, $file, $line);
     }
 
     public function shutdownHandler(): void {
