@@ -21,7 +21,7 @@ class HomePharsXmlMigration implements Migration {
     private $registry;
 
     public function __construct(Config $config) {
-        $this->legacy = $config->getHomeDirectory()->file('phars.xml');
+        $this->legacy   = $config->getHomeDirectory()->file('phars.xml');
         $this->registry = $config->getRegistry();
     }
 
@@ -61,5 +61,4 @@ class HomePharsXmlMigration implements Migration {
 
         $this->legacy->delete();
     }
-
 }
