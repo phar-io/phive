@@ -2,8 +2,9 @@
 
 Installation and verification of [phar](http://php.net/phar) distributed PHP applications has never been this easy!
 
-![Code quality checks](https://github.com/phar-io/phive/workflows/Code%20quality%20checks/badge.svg)
-[![Build Status](https://travis-ci.org/phar-io/phive.svg?branch=master)](https://travis-ci.org/phar-io/phive)
+[![Code quality checks](https://github.com/phar-io/phive/actions/workflows/ci.yml/badge.svg)](https://github.com/phar-io/phive/actions/workflows/ci.yml)
+[![Smoke test](https://github.com/phar-io/phive/actions/workflows/smoke-test.yml/badge.svg)](https://github.com/phar-io/phive/actions/workflows/smoke-test.yml)
+
 
 Adding all the required tools like PHPUnit, PHPMD and phpDox in their matching versions to a project used to be a lot of
 repetitive work: Started by finding the download URL, figuring out what the actually correct and matching version is
