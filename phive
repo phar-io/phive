@@ -40,11 +40,11 @@ if (defined('HHVM_VERSION')) {
     die(99);
 }
 
-if (PHP_VERSION_ID < 70200) {
+if (PHP_VERSION_ID < 70300) {
     fwrite(
         STDERR,
         sprintf(
-            'Phive requires PHP 7.2 or later; ' .
+            'Phive requires PHP 7.3 or later; ' .
             "Upgrading to the latest version of PHP is highly recommended. (Version used: %s)\n\n",
             PHP_VERSION
         )

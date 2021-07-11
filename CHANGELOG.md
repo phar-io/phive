@@ -5,8 +5,13 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ## [0.15.0] - unreleased
 
+Please note: Version 0.15.x requires PHP 7.3 or later.
+
+### Fixed
 * [#312](https://github.com/phar-io/phive/issues/312): phive install does not silently import keys
 
+### Removed
+* All Code dealing with the SKS keyserver pools has been removed
 
 
 
