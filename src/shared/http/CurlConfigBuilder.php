@@ -37,12 +37,6 @@ class CurlConfigBuilder {
                 $this->environment->getRuntimeString()
             )
         );
-        $curlConfig->addLocalSslCertificate(
-            new LocalSslCertificate(
-                'hkps.pool.sks-keyservers.net',
-                __DIR__ . '/../../../conf/ssl/ca_certs/sks-keyservers.netCA.pem'
-            )
-        );
 
         if ($this->environment->hasProxy()) {
             $curlConfig->setProxy($this->environment->getProxy());
