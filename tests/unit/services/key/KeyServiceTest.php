@@ -33,7 +33,7 @@ class KeyServiceTest extends TestCase {
         $downloader = $this->getKeyDownloaderMock();
         $downloader->method('download')->willReturn($key);
 
-        /** @var TrustedCollection|MockObject $trusted */
+        /** @var MockObject|TrustedCollection $trusted */
         $trusted = $this->createMock(TrustedCollection::class);
 
         $service = new KeyService($downloader, $importer, $trusted, $this->getOutputMock(), $input);

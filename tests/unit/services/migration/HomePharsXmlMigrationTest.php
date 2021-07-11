@@ -10,10 +10,10 @@
  */
 namespace PharIo\Phive;
 
-use PharIo\FileSystem\File;
 use function method_exists;
 use function unlink;
 use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\File;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -55,7 +55,6 @@ class HomePharsXmlMigrationTest extends TestCase {
 
     public function testCanMigrate(): void {
         $migration = $this->createMigration(['phars.xml']);
-
 
         $this->assertTrue($migration->canMigrate());
     }
@@ -104,7 +103,7 @@ class HomePharsXmlMigrationTest extends TestCase {
         $directory->method('file')->willReturnCallback(function ($file) use ($files, $testCase) {
             $fileMock = in_array($file, $files, true) ? $this->getFileExistsMock($testCase) : $this->getFileMissingMock($testCase);
 
-            if($file === 'phars.xml') {
+            if ($file === 'phars.xml') {
                 $file = $this->createMock(File::class);
                 $file->method('getContent')->willReturn('... xmlns="https://phar.io/phive/installdb" ...');
                 $fileMock->method('read')->willReturn($file);
@@ -115,5 +114,4 @@ class HomePharsXmlMigrationTest extends TestCase {
 
         return $directory;
     }
-
 }
