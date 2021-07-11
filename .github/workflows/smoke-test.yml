@@ -18,10 +18,10 @@ jobs:
           - windows-latest
           - macOS-latest
         php-versions:
-          - '7.2'
           - '7.3'
           - '7.4'
           - '8.0'
+          - '8.1'
     name: Run install on [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
     steps:
       - uses: actions/checkout@v2
