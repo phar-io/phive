@@ -27,13 +27,13 @@ class KeyService {
     /** @var Cli\Input */
     private $input;
 
-    /** @var KeyIdCollection */
+    /** @var TrustedCollection */
     private $trusted;
 
     public function __construct(
         KeyDownloader $keyDownloader,
         KeyImporter $keyImporter,
-        KeyIdCollection $trusted,
+        TrustedCollection $trusted,
         Cli\Output $output,
         Cli\Input $input
     ) {
@@ -73,6 +73,6 @@ class KeyService {
     }
 
     private function allowedToImport(PublicKey $key): bool {
-        return $this->trusted->has($key->getId()) || $this->input->confirm('Import this key?', false);
+        return $this->trusted->has($key) || $this->input->confirm('Import this key?', false);
     }
 }

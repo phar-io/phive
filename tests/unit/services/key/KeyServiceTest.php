@@ -33,8 +33,8 @@ class KeyServiceTest extends TestCase {
         $downloader = $this->getKeyDownloaderMock();
         $downloader->method('download')->willReturn($key);
 
-        /** @var KeyIdCollection|MockObject $trusted */
-        $trusted = $this->createMock(KeyIdCollection::class);
+        /** @var TrustedCollection|MockObject $trusted */
+        $trusted = $this->createMock(TrustedCollection::class);
 
         $service = new KeyService($downloader, $importer, $trusted, $this->getOutputMock(), $input);
 
@@ -58,7 +58,7 @@ class KeyServiceTest extends TestCase {
         $output = $this->getOutputMock();
         $output->expects($this->once())->method('writeWarning');
 
-        $trusted = $this->createMock(KeyIdCollection::class);
+        $trusted = $this->createMock(TrustedCollection::class);
 
         $service = new KeyService($downloader, $importer, $trusted, $output, $input);
 
@@ -76,7 +76,7 @@ class KeyServiceTest extends TestCase {
         $downloader = $this->getKeyDownloaderMock();
         $downloader->method('download')->willReturn($key);
 
-        $trusted = $this->createMock(KeyIdCollection::class);
+        $trusted = $this->createMock(TrustedCollection::class);
 
         $service = new KeyService($downloader, $this->getKeyImporterMock(), $trusted, $this->getOutputMock(), $input);
         $result  = $service->importKey('some id', []);

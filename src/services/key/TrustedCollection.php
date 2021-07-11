@@ -12,16 +12,17 @@ namespace PharIo\Phive;
 
 use function in_array;
 
-class KeyIdCollection {
+class TrustedCollection {
 
     /** @var string[] */
     private $keyIds = [];
 
-    public function addKeyId(string $keyId): void {
+    public function add(string $keyId): void {
         $this->keyIds[] = $keyId;
     }
 
-    public function has(string $keyId): bool {
-        return in_array($keyId, $this->keyIds, true);
+    public function has(PublicKey $key): bool {
+        return in_array($key->getId(), $this->keyIds, true) ||
+               in_array($key->getFingerprint(), $this->keyIds, true);
     }
 }

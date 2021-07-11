@@ -126,16 +126,16 @@ class ConfigTest extends TestCase {
     }
 
     public function testGetTrustedKeyIds(): void {
-        $expected = new KeyIdCollection();
-        $expected->addKeyId('id1');
-        $expected->addKeyId('id2');
+        $expected = new TrustedCollection();
+        $expected->add('id1');
+        $expected->add('id2');
 
         $options = $this->getOptionsMock();
         $options->method('hasOption')->with('trust-gpg-keys')->willReturn(true);
         $options->method('getOption')->with('trust-gpg-keys')->willReturn('id1,id2');
 
         $config = new Config($this->getEnvironmentMock(), $options);
-        $actual = $config->getTrustedKeyIds();
+        $actual = $config->getTrusted();
 
         $this->assertEquals($expected, $actual);
     }

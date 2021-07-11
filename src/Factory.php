@@ -390,7 +390,7 @@ class Factory {
         return new KeyService(
             $this->getPgpKeyDownloader(),
             $this->getGnupgKeyImporter(),
-            $this->getConfig()->getTrustedKeyIds(),
+            $this->getConfig()->getTrusted(),
             $this->getOutput(),
             $this->getConsoleInput()
         );

@@ -139,19 +139,19 @@ class Config {
         return new Url('https://phar.io/data/repositories.xml');
     }
 
-    public function getTrustedKeyIds(): KeyIdCollection {
-        $idList = new KeyIdCollection();
+    public function getTrusted(): TrustedCollection {
+        $trusted = new TrustedCollection();
 
         if ($this->cliOptions->hasOption('trust-gpg-keys')) {
             foreach (explode(',', $this->cliOptions->getOption('trust-gpg-keys')) as $id) {
                 $id = trim($id);
-                $idList->addKeyId(
+                $trusted->add(
                     strpos($id, '0x') === 0 ? substr($id, 2) : $id
                 );
             }
         }
 
-        return $idList;
+        return $trusted;
     }
 
     public function getMaxAgeForSourcesList(): DateTimeImmutable {
