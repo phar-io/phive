@@ -2,6 +2,15 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+
+## [0.15.0] - unreleased
+
+* [#312](https://github.com/phar-io/phive/issues/312): phive install does not silently import keys
+
+
+
+
+
 ## [0.14.5] - 2020-11-30
 
 Please note: Version 0.14.x requires PHP 7.2 or later.
