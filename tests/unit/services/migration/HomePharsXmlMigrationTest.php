@@ -10,6 +10,7 @@
  */
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\File;
 use function method_exists;
 use function unlink;
 use PharIo\FileSystem\Directory;
@@ -55,6 +56,7 @@ class HomePharsXmlMigrationTest extends TestCase {
     public function testCanMigrate(): void {
         $migration = $this->createMigration(['phars.xml']);
 
+
         $this->assertTrue($migration->canMigrate());
     }
 
@@ -90,8 +92,28 @@ class HomePharsXmlMigrationTest extends TestCase {
 
     private function createMigration(array $existingFiles): HomePharsXmlMigration {
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
-        $config->method('getHomeDirectory')->willReturn($this->getDirectoryWithFileMock($this, $existingFiles));
+        $config->method('getHomeDirectory')->willReturn(
+            $this->getHomeDirectoryWithFileMock($this, $existingFiles)
+        );
 
         return new HomePharsXmlMigration($config);
     }
+
+    private function getHomeDirectoryWithFileMock(TestCase $testCase, array $files): Directory {
+        $directory = $testCase->createMock(Directory::class);
+        $directory->method('file')->willReturnCallback(function ($file) use ($files, $testCase) {
+            $fileMock = in_array($file, $files, true) ? $this->getFileExistsMock($testCase) : $this->getFileMissingMock($testCase);
+
+            if($file === 'phars.xml') {
+                $file = $this->createMock(File::class);
+                $file->method('getContent')->willReturn('... xmlns="https://phar.io/phive/installdb" ...');
+                $fileMock->method('read')->willReturn($file);
+            }
+
+            return $fileMock;
+        });
+
+        return $directory;
+    }
+
 }
