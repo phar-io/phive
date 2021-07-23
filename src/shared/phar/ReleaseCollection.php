@@ -27,7 +27,7 @@ class ReleaseCollection implements Countable, IteratorAggregate {
         return count($this->releases);
     }
 
-    public function getIterator() {
+    public function getIterator(): Traversable {
         return new ArrayIterator($this->releases);
     }
 }
