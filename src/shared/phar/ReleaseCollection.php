@@ -14,6 +14,7 @@ use function count;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Traversable;
 
 class ReleaseCollection implements Countable, IteratorAggregate {
     /** @var Release[] */
