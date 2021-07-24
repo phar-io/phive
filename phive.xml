@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
-  <phar name="phpab" version="^1.25" installed="1.26.1" location="./tools/phpab" copy="false"/>
+  <phar name="phpab" version="^1.25" installed="1.26.3" location="./tools/phpab" copy="false"/>
   <phar name="phpunit" version="^8.5" installed="8.5.18" location="./tools/phpunit" copy="false"/>
   <phar name="phpstan" version="^0.12" installed="0.12.93" location="./tools/phpstan" copy="false"/>
   <phar name="psalm" version="^3.11" installed="3.18.2" location="./tools/psalm" copy="false"/>
