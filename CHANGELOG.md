@@ -3,17 +3,23 @@
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 
-## [0.15.0] - unreleased
+## [0.15.0] - 2021-07-24
 
 Please note: Version 0.15.x requires PHP 7.3 or later.
 
+Please also note: As the SKS keyserver pool finally ceased operation, keys only hosted on their infrastructure
+                  will no longer be available to phive and installations might fail if the respective maintainer
+                  did not (re)publish their keys on still active servers. If not already done so, please tell them
+                  to use `keys.openpgp.org` as their preferred key server.  
+
+As of this version, `--trust-gpg-keys` accepts *fingerprint* as well as *key id* strings 
+
 ### Fixed
 * [#312](https://github.com/phar-io/phive/issues/312): phive install does not silently import keys
+* [#319](https://github.com/phar-io/phive/issues/319): Fatal error on PHP 8.1 (thanks @jrfnl)
 
 ### Removed
 * All Code dealing with the SKS keyserver pools has been removed
-
-
 
 
 ## [0.14.5] - 2020-11-30
