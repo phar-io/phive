@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use stdClass;
 
 /**
  * @covers \PharIo\Phive\GithubRepository
@@ -70,20 +69,14 @@ class GithubRepositoryTest extends TestCase {
      * @param string $version
      * @param string $url
      */
-    private function getGithubEntry($version, $url): stdClass {
-        $asset                       = new stdClass();
-        $asset->browser_download_url = $url;
+    private function getGithubEntry($version, $url): array {
+        $asset = ['browser_download_url' => $url];
+        $sig   = ['browser_download_url' => $url . '.asc'];
 
-        $sig                       = new stdClass();
-        $sig->browser_download_url = $url . '.asc';
-
-        $entry           = new stdClass();
-        $entry->tag_name = $version;
-        $entry->assets   = [
-            $asset, $sig
+        return [
+            'tag_name' => $version,
+            'assets'   => [$asset, $sig]
         ];
-
-        return $entry;
     }
 
     /**

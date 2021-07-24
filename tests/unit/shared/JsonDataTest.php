@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function json_encode;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 /**
  * @covers \PharIo\Phive\JsonData
@@ -37,13 +36,11 @@ class JsonDataTest extends TestCase {
     }
 
     public function testGetParsedReturnsExpectedValue(): void {
-        $raw  = json_encode(['foo' => 'bar']);
-        $data = new JsonData($raw);
+        $input = ['foo' => 'bar'];
+        $raw   = json_encode($input);
+        $data  = new JsonData($raw);
 
-        $expected      = new stdClass();
-        $expected->foo = 'bar';
-
-        $this->assertEquals($expected, $data->getParsed());
+        $this->assertEquals($input, $data->getParsed());
     }
 
     public function testHasFragmentReturnsFalse(): void {
@@ -91,9 +88,6 @@ class JsonDataTest extends TestCase {
         $data = new JsonData($raw);
 
         $this->assertSame('bar', $data->getFragment('parent.child.foo'));
-
-        $expectedObject      = new stdClass();
-        $expectedObject->foo = 'bar';
-        $this->assertEquals($expectedObject, $data->getFragment('parent.child'));
+        $this->assertEquals(['foo' => 'bar'], $data->getFragment('parent.child'));
     }
 }

@@ -30,7 +30,7 @@ class GithubRepository implements SourceRepository {
 
         foreach ($this->jsonData->getParsed() as $entry) {
             try {
-                $version = new Version($entry->tag_name);
+                $version = new Version($entry['tag_name']);
             } catch (InvalidVersionException $exception) {
                 // we silently ignore invalid version identifiers for now as they are
                 // likely to be an arbitrary tag that erroneously got promoted to release
@@ -39,8 +39,8 @@ class GithubRepository implements SourceRepository {
             $pharUrl      = null;
             $signatureUrl = null;
 
-            foreach ($entry->assets as $asset) {
-                $url = $asset->browser_download_url;
+            foreach ($entry['assets'] as $asset) {
+                $url = $asset['browser_download_url'];
 
                 if (substr($url, -5, 5) === '.phar') {
                     $pharUrl = new PharUrl($url);

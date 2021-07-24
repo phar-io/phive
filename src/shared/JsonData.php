@@ -12,21 +12,20 @@ namespace PharIo\Phive;
 
 use const JSON_BIGINT_AS_STRING;
 use const JSON_ERROR_NONE;
+use function array_key_exists;
 use function explode;
 use function is_array;
 use function json_decode;
 use function json_last_error;
 use function json_last_error_msg;
-use function property_exists;
 use function sprintf;
 use InvalidArgumentException;
-use StdClass;
 
 class JsonData {
     /** @var string */
     private $raw;
 
-    /** @var array|stdClass */
+    /** @var array */
     private $parsed;
 
     /**
@@ -36,14 +35,14 @@ class JsonData {
      */
     public function __construct($raw) {
         $this->raw = $raw;
-        $parsed    = json_decode($raw, false, 512, JSON_BIGINT_AS_STRING);
+        $parsed    = json_decode($raw, true, 512, JSON_BIGINT_AS_STRING);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new InvalidArgumentException(json_last_error_msg(), json_last_error());
         }
 
-        if (!$parsed instanceof stdClass && !is_array($parsed)) {
-            throw new InvalidArgumentException('Given JSON string does not parse into object or array');
+        if (!is_array($parsed)) {
+            throw new InvalidArgumentException('Given JSON string does not parse into expected/supported structure');
         }
         $this->parsed = $parsed;
     }
@@ -52,10 +51,7 @@ class JsonData {
         return $this->raw;
     }
 
-    /**
-     * @return array<StdClass>
-     */
-    public function getParsed() {
+    public function getParsed(): array {
         return $this->parsed;
     }
 
@@ -69,22 +65,16 @@ class JsonData {
         }
     }
 
-    /**
-     * @param string $fragmentSpecification
-     *
-     * @return array<string, string>
-     */
-    public function getFragment($fragmentSpecification) {
-        /** @var StdClass $data */
+    public function getFragment(string $fragmentSpecification) {
         $data = $this->parsed;
 
         foreach (explode('.', $fragmentSpecification) as $key) {
-            if (!property_exists($data, $key)) {
+            if (!array_key_exists($key, $data)) {
                 throw new InvalidArgumentException(
                     sprintf('Fragment %s of %s not found', $key, $fragmentSpecification)
                 );
             }
-            $data = $data->{$key};
+            $data = $data[$key];
         }
 
         return $data;
