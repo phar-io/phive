@@ -5,12 +5,13 @@ All notable changes to Phive are documented in this file using the [Keep a CHANG
 
 ## [0.15.0] - 2021-07-24
 
-Please note: Version 0.15.x requires PHP 7.3 or later.
+__Please note__: Version 0.15.x requires PHP 7.3 or later.
 
-Please also note: As the SKS keyserver pool finally ceased operation, keys only hosted on their infrastructure
-                  will no longer be available to phive and installations might fail if the respective maintainer
-                  did not (re)publish their keys on still active servers. If not already done so, please tell them
-                  to use `keys.openpgp.org` as their preferred key server.  
+__Please also note__:
+As the SKS keyserver pool finally ceased operation, keys only hosted on their infrastructure
+will no longer be available to phive and installations might fail if the respective maintainer
+did not (re)publish their keys on still active servers. If not already done so, please tell them
+to use `keys.openpgp.org` as their preferred key server.  
 
 As of this version, `--trust-gpg-keys` accepts *fingerprint* as well as *key id* strings 
 
