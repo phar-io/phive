@@ -14,6 +14,7 @@ use function count;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Traversable;
 
 class ReleaseCollection implements Countable, IteratorAggregate {
     /** @var Release[] */
@@ -27,7 +28,7 @@ class ReleaseCollection implements Countable, IteratorAggregate {
         return count($this->releases);
     }
 
-    public function getIterator() {
+    public function getIterator(): Traversable {
         return new ArrayIterator($this->releases);
     }
 }
