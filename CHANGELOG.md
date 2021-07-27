@@ -22,6 +22,10 @@ As of this version, `--trust-gpg-keys` accepts *fingerprint* as well as *key id*
 ### Removed
 * All Code dealing with the SKS keyserver pools has been removed
 
+### Changed
+
+* [#310](https://github.com/phar-io/phive/issues/310): Version constraints using the caret operator (^) now honor pre-1.0 releases, e.g. ^0.3 translates to 0.3.*)
+
 
 ## [0.14.5] - 2020-11-30
 
