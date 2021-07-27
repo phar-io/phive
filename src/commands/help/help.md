@@ -27,7 +27,8 @@
     _-c, --copy_                   Copy PHAR file instead of using symlink
     _-g, --global_                 Install a copy of the PHAR globally (likely requires root privileges)
         _--temporary_              Do not add entries in phive.xml for installed PHARs
-        _--trust-gpg-keys_         Silently import these keys when required (fingerprint or key id, separated by comma)
+        _--trust-gpg-keys_         Silently import these keys when required (40-digit fingerprint
+                                   or 16-digit long key ID, optionally with the `0x` prefix, separated by comma)
         _--force-accept-unsigned_  Force installation of unsigned phars
 
 **composer**
