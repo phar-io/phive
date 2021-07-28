@@ -470,7 +470,8 @@ any changed PHARs
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/phar-io/phive/compare/0.14.5...HEAD
+[Unreleased]: https://github.com/phar-io/phive/compare/0.15.0...HEAD
+[0.15.0]: https://github.com/phar-io/phive/compare/0.14.5...0.15.0
 [0.14.5]: https://github.com/phar-io/phive/compare/0.14.4...0.14.5
 [0.14.4]: https://github.com/phar-io/phive/compare/0.14.3...0.14.4
 [0.14.3]: https://github.com/phar-io/phive/compare/0.14.2...0.14.3
