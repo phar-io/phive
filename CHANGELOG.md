@@ -3,6 +3,14 @@
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 
+## [Unreleased]
+
+__Please note__: Version 0.15.x requires PHP 7.3 or later.
+
+### Fixed
+* [#327](https://github.com/phar-io/phive/issues/327): "Broken cURL install" message is not being displayed
+
+
 ## [0.15.0] - 2021-07-24
 
 __Please note__: Version 0.15.x requires PHP 7.3 or later.
