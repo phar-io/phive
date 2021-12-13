@@ -33,6 +33,13 @@ chmod +x phive.phar
 mv phive.phar /usr/local/bin/phive
 ```
 
+## Homebrew
+
+If you have Homebrew you can easily install it with:
+```bash
+brew install phive
+```
+
 ## Sample Usages
 
 Once installed, PHIVE is ready for action. Some example invocations are shown below:
