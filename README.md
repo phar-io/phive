@@ -54,6 +54,8 @@ Once installed, PHIVE is ready for action. Some example invocations are shown be
     phive update --prefer-offline
     phive update phpunit
 
+    phive help
+
 ## How it works
 
 PHIVE makes installation easy by downloading the phar archive from the given location, including the verification of
