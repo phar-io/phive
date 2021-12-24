@@ -28,7 +28,12 @@ class ReleaseSelector {
     /**
      * @throws ReleaseException
      */
-    public function select(ReleaseCollection $releases, VersionConstraint $versionConstraint, bool $acceptUnsigned): SupportedRelease {
+    public function select(
+        PharIdentifier $identifier,
+        ReleaseCollection $releases,
+        VersionConstraint $versionConstraint,
+        bool $acceptUnsigned
+    ): SupportedRelease {
         /** @var null|Release $latest */
         $latest = null;
 
@@ -70,7 +75,9 @@ class ReleaseSelector {
         }
 
         if ($latest === null) {
-            throw new ReleaseException('No matching release found!');
+            throw new ReleaseException(
+                sprintf('No matching release found for %s!', $identifier->asString())
+            );
         }
 
         return $latest;

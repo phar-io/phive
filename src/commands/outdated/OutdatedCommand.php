@@ -138,7 +138,12 @@ class OutdatedCommand implements Cli\Command {
         $repository = $this->pharResolver->resolve($requestedPhar);
         $releases   = $repository->getReleasesByRequestedPhar($requestedPhar);
 
-        return $this->selector->select($releases, $requestedPhar->getVersionConstraint(), true);
+        return $this->selector->select(
+            $requestedPhar->getIdentifier(),
+            $releases,
+            $requestedPhar->getVersionConstraint(),
+            true
+        );
     }
 
     private function renderJsonOutput(array $outdated): string {

@@ -62,7 +62,12 @@ class InstallCommand implements Cli\Command {
         $repository = $this->pharResolver->resolve($requestedPhar);
         $releases   = $repository->getReleasesByRequestedPhar($requestedPhar);
 
-        return $this->selector->select($releases, $requestedPhar->getLockedVersion(), $this->config->forceAcceptUnsignedPhars());
+        return $this->selector->select(
+            $requestedPhar->getIdentifier(),
+            $releases,
+            $requestedPhar->getLockedVersion(),
+            $this->config->forceAcceptUnsignedPhars()
+        );
     }
 
     private function getDestination(string $pharName, RequestedPhar $requestedPhar, Directory $destination): Filename {
