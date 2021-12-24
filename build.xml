@@ -48,7 +48,7 @@
     </target>
 
     <target name="install-tools" unless="tools-installed" depends="-tools-installed" description="Install tools with Phive">
-        <exec executable="${phive.bin}" taskname="phive">
+        <exec executable="${phive.bin}" taskname="phive" failonerror="true">
             <arg value="install"/>
             <arg value="--copy" />
             <arg value="--trust-gpg-keys" />
