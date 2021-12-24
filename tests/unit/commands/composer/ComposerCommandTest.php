@@ -13,6 +13,7 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Input;
+use PharIo\Phive\PharAlias;
 use PharIo\Version\ExactVersionConstraint;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -85,6 +86,7 @@ class ComposerCommandTest extends TestCase {
         $requestedPhar->method('getVersionConstraint')->willReturn(new ExactVersionConstraint('1.0.0'));
         $requestedPhar->method('hasLocation')->willReturn(true);
         $requestedPhar->method('getLocation')->willReturn(new Filename('destination/foo.phar'));
+        $requestedPhar->method('getIdentifier')->willReturn(new PharAlias('Foo'));
 
         $this->composerService->method('findCandidates')->willReturn([$requestedPhar]);
         $this->input->method('confirm')->willReturn(true);
