@@ -40,6 +40,13 @@ If you have Homebrew you can easily install it with:
 brew install phive
 ```
 
+## Getting started
+
+`phive` expects a command to be specified to run. To get a list of available commands and their
+respective options, you can can run `phive` either with `--help`, `help` or without any additional
+parameters. To give you a general idea on how to use it, have a look at the following sample usages.
+
+
 ## Sample Usages
 
 Once installed, PHIVE is ready for action. Some example invocations are shown below:
