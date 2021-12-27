@@ -36,7 +36,7 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli;
 
 if (defined('HHVM_VERSION')) {
-    fwrite(STDERR, "HHVM runtime not supported. Please use with PHP 7.2 or later.\n\n");
+    fwrite(STDERR, "HHVM runtime not supported. Please use with PHP 7.3 or later.\n\n");
     die(99);
 }
 
