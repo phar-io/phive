@@ -10,13 +10,13 @@
  */
 namespace PharIo\Phive;
 
-use PharIo\Phive\Cli\CommandOptionsException;
 use function array_map;
 use function array_merge;
 use function array_reduce;
 use function count;
 use function usort;
 use PharIo\FileSystem\Filename;
+use PharIo\Phive\Cli\CommandOptionsException;
 use PharIo\Version\AnyVersionConstraint;
 
 class StatusCommandConfig {

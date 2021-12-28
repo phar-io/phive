@@ -10,12 +10,12 @@
  */
 namespace PharIo\Phive;
 
-use PharIo\Phive\Cli\CommandOptionsException;
 use const PREG_SPLIT_NO_EMPTY;
 use function count;
 use function mb_strtolower;
 use function preg_split;
 use PharIo\FileSystem\Directory;
+use PharIo\Phive\Cli\CommandOptionsException;
 use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\ExactVersionConstraint;
 use PharIo\Version\VersionConstraint;
