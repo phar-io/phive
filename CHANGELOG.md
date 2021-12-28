@@ -10,6 +10,11 @@ __Please note__: Version 0.15.x requires PHP 7.3 or later.
 ### Fixed
 * [#327](https://github.com/phar-io/phive/issues/327): "Broken cURL install" message is not being displayed
 
+### Changed
+* [#341](https://github.com/phar-io/phive/pull/341): Display identifier when no release matches (thanks @villfa)
+* [#342](https://github.com/phar-io/phive/pull/342):Update error message with the right version
+
+
 
 ## [0.15.0] - 2021-07-24
 
