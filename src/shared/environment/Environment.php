@@ -176,7 +176,7 @@ abstract class Environment {
      * @throws ExtensionsMissingException
      */
     private function ensureRequiredExtensionsLoaded(): void {
-        $required = ['dom', 'mbstring', 'pcre', 'curl', 'phar'];
+        $required = ['dom', 'mbstring', 'pcre', 'curl', 'phar', 'libxml'];
         $missing  = [];
 
         foreach ($required as $test) {
