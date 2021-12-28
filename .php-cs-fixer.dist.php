@@ -8,7 +8,8 @@ $finder = PhpCsFixer\Finder::create()
     ->files()
     ->in(__DIR__ . '/src')
     ->in(__DIR__ . '/tests/unit')
-    ->in(__DIR__ . '/tests/regression');
+    ->in(__DIR__ . '/tests/regression')
+    ->notName('autoload.php');
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
