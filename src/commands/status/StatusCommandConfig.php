@@ -10,6 +10,7 @@
  */
 namespace PharIo\Phive;
 
+use PharIo\Phive\Cli\CommandOptionsException;
 use function array_map;
 use function array_merge;
 use function array_reduce;
@@ -36,7 +37,7 @@ class StatusCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\Cli\CommandOptionsException
+     * @throws CommandOptionsException
      * @throws ConfigException
      */
     public function getPhars(): array {

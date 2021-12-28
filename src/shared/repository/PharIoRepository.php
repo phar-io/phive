@@ -28,7 +28,7 @@ class PharIoRepository implements SourceRepository {
         $query    = sprintf('//phive:phar[@name="%s"]/phive:release', $requestedPhar->getAlias()->asString());
 
         foreach ($this->xmlFile->query($query) as $releaseNode) {
-            /* @var \DOMElement $releaseNode */
+            /* @var DOMElement $releaseNode */
             $releases->add(
                 new SupportedRelease(
                     $requestedPhar->getAlias()->asString(),

@@ -10,6 +10,8 @@
  */
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Filename;
+
 class AuthXmlConfigFileLocator {
     /** @var Config */
     private $config;
@@ -26,7 +28,7 @@ class AuthXmlConfigFileLocator {
         $this->output      = $output;
     }
 
-    public function getFile(bool $global): \PharIo\FileSystem\Filename {
+    public function getFile(bool $global): Filename {
         if ($global) {
             return $this->config->getGlobalAuth();
         }

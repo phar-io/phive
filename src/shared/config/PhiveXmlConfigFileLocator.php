@@ -10,6 +10,8 @@
  */
 namespace PharIo\Phive;
 
+use PharIo\FileSystem\Filename;
+
 class PhiveXmlConfigFileLocator {
     /** @var Config */
     private $config;
@@ -26,7 +28,7 @@ class PhiveXmlConfigFileLocator {
         $this->output      = $output;
     }
 
-    public function getFile(): \PharIo\FileSystem\Filename {
+    public function getFile(): Filename {
         $primary  = $this->config->getProjectInstallation();
         $fallback = $this->environment->getWorkingDirectory()->file('phive.xml');
 

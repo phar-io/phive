@@ -10,6 +10,7 @@
  */
 namespace PharIo\Phive;
 
+use PharIo\Phive\Cli\CommandOptionsException;
 use const PREG_SPLIT_NO_EMPTY;
 use function count;
 use function mb_strtolower;
@@ -47,7 +48,7 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws \PharIo\Phive\Cli\CommandOptionsException
+     * @throws CommandOptionsException
      * @throws ConfigException
      */
     public function getTargetDirectory(): Directory {
