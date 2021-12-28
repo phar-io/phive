@@ -248,7 +248,7 @@ abstract class PhiveXmlConfig {
         return $this->configFile->query('//phive:configuration/phive:targetDirectory[1]')->item(0);
     }
 
-    private function isIdentical(DOMElement $pharNode, InstalledPhar $installedPhar) {
+    private function isIdentical(DOMElement $pharNode, InstalledPhar $installedPhar): bool {
         return
             $pharNode->getAttribute('version') === $installedPhar->getVersionConstraint()->asString() &&
             $pharNode->getAttribute('installed') === $installedPhar->getInstalledVersion()->getVersionString() &&

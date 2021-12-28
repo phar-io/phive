@@ -153,6 +153,8 @@ class Request {
 
     /**
      * @throws RequestException
+     *
+     * @param string|true $value
      */
     private function setOption(Context $context, string $option, $value): void {
         try {

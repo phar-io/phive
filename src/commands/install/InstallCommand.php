@@ -70,7 +70,7 @@ class InstallCommand implements Cli\Command {
         );
     }
 
-    private function getDestination(string $pharName, RequestedPhar $requestedPhar, Directory $destination): Filename {
+    private function getDestination(string $pharName, RequestedPhar $requestedPhar, Directory $destination): ?Filename {
         if ($requestedPhar->hasLocation()) {
             return $requestedPhar->getLocation();
         }
