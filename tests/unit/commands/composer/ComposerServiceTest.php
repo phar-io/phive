@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -27,7 +27,7 @@ class ComposerServiceTest extends TestCase {
         $sourcesList = $this->getSourcesListMock();
         $sourcesList->method('getAliasForComposerAlias')
             ->willReturnCallback(
-                function (ComposerAlias $composerAlias) {
+                static function (ComposerAlias $composerAlias) {
                     switch ($composerAlias) {
                         case new ComposerAlias('theseer/autoload'):
                             return 'phpab';

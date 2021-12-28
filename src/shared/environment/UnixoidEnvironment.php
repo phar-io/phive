@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -39,8 +39,8 @@ class UnixoidEnvironment extends Environment {
     }
 
     /**
-     * @throws DirectoryException
      * @throws BadMethodCallException
+     * @throws DirectoryException
      */
     public function getHomeDirectory(): Directory {
         if (!$this->hasHomeDirectory()) {

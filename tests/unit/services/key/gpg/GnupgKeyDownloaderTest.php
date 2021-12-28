@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -23,7 +23,7 @@ class GnupgKeyDownloaderTest extends TestCase {
     /** @var Cli\Output|ObjectProphecy */
     private $output;
 
-    public function setUp(): void {
+    protected function setUp(): void {
         $this->curl   = $this->prophesize(CurlHttpClient::class);
         $this->output = $this->prophesize(Cli\Output::class);
     }

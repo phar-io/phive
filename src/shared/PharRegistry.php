@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -276,7 +276,7 @@ class PharRegistry {
         $path  = [];
 
         foreach ($nodes as $node) {
-            /** @var $node DOMElement */
+            /** @var DOMElement $node */
             $path[] = $node->getAttribute('destination');
         }
 

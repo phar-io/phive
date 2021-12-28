@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -11,7 +11,7 @@
 namespace PharIo\Phive;
 
 /**
- * Resolves an alias to a list of Phar.io repository URLs
+ * Resolves an alias to a list of Phar.io repository URLs.
  */
 class PharIoAliasResolver extends AbstractRequestedPharResolver {
     /** @var null|SourcesList */

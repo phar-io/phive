@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -59,7 +59,7 @@ class RingdownCurlHttpClient implements HttpClient {
 
             try {
                 $response = $this->client->{$method}($url, $etag);
-                /** @var $response HttpResponse */
+                /** @var HttpResponse $response */
                 if ($response->isSuccess()) {
                     return $response;
                 }

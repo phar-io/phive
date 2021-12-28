@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -163,12 +163,12 @@ class AuthXmlConfigTest extends TestCase {
         $node = $this->getDomElementMock();
         $node
             ->method('getAttribute')
-            ->willReturnCallback(function ($name) use ($getAttributeList) {
+            ->willReturnCallback(static function ($name) use ($getAttributeList) {
                 return $getAttributeList[$name] ?? '';
             });
         $node
             ->method('hasAttribute')
-            ->willReturnCallback(function ($name) use ($hasAttributeList) {
+            ->willReturnCallback(static function ($name) use ($hasAttributeList) {
                 return in_array($name, $hasAttributeList, true);
             });
 

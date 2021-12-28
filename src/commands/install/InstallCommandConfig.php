@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -47,8 +47,8 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws ConfigException
      * @throws \PharIo\Phive\Cli\CommandOptionsException
+     * @throws ConfigException
      */
     public function getTargetDirectory(): Directory {
         if ($this->installGlobally()) {
@@ -59,9 +59,9 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws InstallCommandConfigException
-     * @throws ConfiguredPharException
      * @throws Cli\CommandOptionsException
+     * @throws ConfiguredPharException
+     * @throws InstallCommandConfigException
      * @throws UnsupportedVersionConstraintException
      *
      * @return RequestedPhar[]
@@ -107,8 +107,8 @@ class InstallCommandConfig {
 
     /**
      * @throws Cli\CommandOptionsException
-     * @throws UnsupportedVersionConstraintException
      * @throws InstallCommandConfigException
+     * @throws UnsupportedVersionConstraintException
      *
      * @return RequestedPhar[]
      */

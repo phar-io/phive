@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -82,7 +82,7 @@ abstract class GeneralContext implements Context {
     }
 
     /**
-     * Return Options array
+     * Return Options array.
      *
      * Format: (key == name, value = short-char or false, e.g. ['long' => 'l', 'other' => false])
      * Return empty array if no options are supported
@@ -92,7 +92,7 @@ abstract class GeneralContext implements Context {
     }
 
     /**
-     * Return conflicting pairs of options
+     * Return conflicting pairs of options.
      *
      * Format: Array of pairs (e.g. [ ['a' => 'b'], ['a' => 'c'] ])
      * Lookup is performed both ways

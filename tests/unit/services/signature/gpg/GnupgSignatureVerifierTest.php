@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -24,7 +24,7 @@ class GnupgSignatureVerifierTest extends TestCase {
     /** @var KeyService|ObjectProphecy */
     private $keyservice;
 
-    public function setUp(): void {
+    protected function setUp(): void {
         $this->gnupg      = $this->prophesize(Gnupg::class);
         $this->keyservice = $this->prophesize(KeyService::class);
     }

@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -78,11 +78,11 @@ class AuthXmlConfig implements AuthConfig {
      */
     private function handleBasicAuthentication(string $domain, DOMElement $node): Authentication {
         if (
-            $node->hasAttribute('username')
-            && !empty($username = $node->getAttribute('username'))
-            && strpos($username, ':') === false
-            && $node->hasAttribute('password')
-            && !empty($node->getAttribute('password'))
+            $node->hasAttribute('username') &&
+            !empty($username = $node->getAttribute('username')) &&
+            strpos($username, ':') === false &&
+            $node->hasAttribute('password') &&
+            !empty($node->getAttribute('password'))
         ) {
             return BasicAuthentication::fromLoginPassword($domain, $username, $node->getAttribute('password'));
         }

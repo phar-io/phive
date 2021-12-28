@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -61,6 +61,6 @@ class MigrateCommand implements Cli\Command {
             return;
         }
         $executed = $this->migrationService->runAll();
-        $this->output->writeInfo(sprintf('%d migration%s have been done.', $executed, $executed !== 1 ? 's':''));
+        $this->output->writeInfo(sprintf('%d migration%s have been done.', $executed, $executed !== 1 ? 's' : ''));
     }
 }

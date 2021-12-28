@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -56,6 +56,6 @@ class ConsoleInput implements Input {
             return $default;
         }
 
-        return ($response === 'y');
+        return $response === 'y';
     }
 }

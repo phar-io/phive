@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -13,8 +13,8 @@ namespace PharIo\Phive;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PharIo\Phive\StaticPhiveVersion
  * @covers \PharIo\Phive\PhiveVersion
+ * @covers \PharIo\Phive\StaticPhiveVersion
  */
 class StaticPhiveVersionTest extends TestCase {
     public function testGetVersionString(): void {

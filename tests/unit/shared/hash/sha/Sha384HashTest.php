@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -13,8 +13,8 @@ namespace PharIo\Phive;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PharIo\Phive\Sha384Hash
  * @covers \PharIo\Phive\BaseHash
+ * @covers \PharIo\Phive\Sha384Hash
  */
 class Sha384HashTest extends TestCase {
     public static function invalidHashProvider() {

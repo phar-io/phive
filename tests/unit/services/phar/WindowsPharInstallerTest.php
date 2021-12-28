@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -23,8 +23,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
- * @covers \PharIo\Phive\WindowsPharInstaller
  * @covers \PharIo\Phive\PharInstaller
+ * @covers \PharIo\Phive\WindowsPharInstaller
  */
 class WindowsPharInstallerTest extends TestCase {
     public const TMP_DIR = __DIR__ . '/tmp';

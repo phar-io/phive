@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -40,7 +40,7 @@ class MigrationService {
      * @return Migration[]
      */
     public function getUserMigrations(): array {
-        return array_filter($this->factory->getMigrations(), function (Migration $migration) {
+        return array_filter($this->factory->getMigrations(), static function (Migration $migration) {
             return $migration->isUserMigration();
         });
     }

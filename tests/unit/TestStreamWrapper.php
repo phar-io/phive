@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -18,7 +18,6 @@ use function file_exists;
 use function filesize;
 use function fopen;
 use function fread;
-use function get_called_class;
 use function implode;
 use function is_readable;
 use function stat;
@@ -64,7 +63,7 @@ class TestStreamWrapper {
 
         static::$basedir = $dir;
 
-        stream_wrapper_register($protocol, get_called_class());
+        stream_wrapper_register($protocol, static::class);
     }
 
     public static function unregister(): void {

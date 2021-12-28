@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -19,8 +19,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
- * @covers \PharIo\Phive\UnixoidEnvironment
  * @covers \PharIo\Phive\Environment
+ * @covers \PharIo\Phive\UnixoidEnvironment
  */
 class UnixoidEnvironmentTest extends TestCase {
     public static function tputCommandDataProvider() {

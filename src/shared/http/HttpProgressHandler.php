@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -17,7 +17,7 @@ interface HttpProgressHandler {
 
     /**
      * Method is called with updates from transfers (upload/download)
-     * Return false to signal the http client to abort the transfer, true to continue
+     * Return false to signal the http client to abort the transfer, true to continue.
      */
     public function handleUpdate(HttpProgressUpdate $update): bool;
 }

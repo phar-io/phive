@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -19,7 +19,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 /**
  * @covers \PharIo\Phive\ConfiguredPhar
  */
-class ConfiguredPharTest  extends TestCase {
+class ConfiguredPharTest extends TestCase {
     public function testGetName(): void {
         $name           = 'somePhar';
         $configuredPhar = new ConfiguredPhar($name, $this->getVersionConstraintMock());

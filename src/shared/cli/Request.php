@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -152,9 +152,9 @@ class Request {
     }
 
     /**
-     * @throws RequestException
-     *
      * @param string|true $value
+     *
+     * @throws RequestException
      */
     private function setOption(Context $context, string $option, $value): void {
         try {

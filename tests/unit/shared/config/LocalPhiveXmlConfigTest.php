@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -23,8 +23,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
- * @covers \PharIo\Phive\PhiveXmlConfig
  * @covers \PharIo\Phive\LocalPhiveXmlConfig
+ * @covers \PharIo\Phive\PhiveXmlConfig
  */
 class LocalPhiveXmlConfigTest extends TestCase {
 

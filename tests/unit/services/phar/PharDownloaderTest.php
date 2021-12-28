@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 /*
  * This file is part of Phive.
  *
@@ -34,7 +34,7 @@ class PharDownloaderTest extends TestCase {
     /** @var ObjectProphecy|VerificationResult */
     private $verificationResult;
 
-    public function setUp(): void {
+    protected function setUp(): void {
         $this->fileDownloader     = $this->prophesize(FileDownloader::class);
         $this->signatureVerifier  = $this->createMock(SignatureVerifier::class);
         $this->checksumService    = $this->prophesize(ChecksumService::class);
