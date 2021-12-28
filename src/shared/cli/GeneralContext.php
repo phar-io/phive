@@ -67,11 +67,9 @@ abstract class GeneralContext implements Context {
     /**
      * @throws ContextException
      *
-     * @return (int|string)|false
-     *
      * @psalm-return array-key|false
      */
-    public function getOptionForChar(string $char) {
+    public function getOptionForChar(string $char): string {
         if (!$this->hasOptionForChar($char)) {
             throw new ContextException('No short option with this char');
         }
