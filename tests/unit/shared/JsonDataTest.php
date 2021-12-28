@@ -43,38 +43,21 @@ class JsonDataTest extends TestCase {
         $this->assertEquals($input, $data->getParsed());
     }
 
-    public function testHasFragmentReturnsFalse(): void {
+    public function testTryGetFragmentReturnsFalse(): void {
         $raw  = json_encode(['foo' => 'bar']);
         $data = new JsonData($raw);
 
-        $this->assertFalse($data->hasFragment('foobar'));
+        $this->assertFalse($data->tryGetFragment('foobar'));
     }
 
-    public function testHasFragmentReturnsTrue(): void {
+    public function testTryGetFragmentReturnsTrue(): void {
         $raw  = json_encode(['foo' => 'bar']);
         $data = new JsonData($raw);
 
-        $this->assertTrue($data->hasFragment('foo'));
+        $this->assertTrue($data->tryGetFragment('foo'));
     }
 
-    public function testGetFragmentThrowsExceptionIfFragmentDoesNotExist(): void {
-        $raw = json_encode(
-            [
-                'parent' => [
-                    'child' => [
-                        'foo' => 'bar'
-                    ]
-                ]
-            ]
-        );
-
-        $data = new JsonData($raw);
-        $this->expectException(InvalidArgumentException::class);
-
-        $data->getFragment('parent.child.foobar');
-    }
-
-    public function testGetFragmentReturnsExpectedValue(): void {
+    public function testTryGetFragmentReturnsExpectedValue(): void {
         $raw = json_encode(
             [
                 'parent' => [
@@ -87,7 +70,9 @@ class JsonDataTest extends TestCase {
 
         $data = new JsonData($raw);
 
-        $this->assertSame('bar', $data->getFragment('parent.child.foo'));
-        $this->assertEquals(['foo' => 'bar'], $data->getFragment('parent.child'));
+        $this->assertTrue($data->tryGetFragment('parent.child.foo', $fragment));
+        $this->assertSame('bar', $fragment);
+        $this->assertTrue($data->tryGetFragment('parent.child', $fragment));
+        $this->assertEquals(['foo' => 'bar'], $fragment);
     }
 }
