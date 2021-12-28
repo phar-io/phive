@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Input;
-use PharIo\Phive\PharAlias;
 use PharIo\Version\ExactVersionConstraint;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
