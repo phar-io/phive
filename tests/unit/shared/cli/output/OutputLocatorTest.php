@@ -14,6 +14,9 @@ use PharIo\Phive\Environment;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
+/**
+ * @covers \PharIo\Phive\Cli\OutputLocator
+ */
 class OutputLocatorTest extends TestCase {
     private $factory;
 

@@ -16,6 +16,9 @@ use PharIo\Phive\Cli\Output;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
+/**
+ * @covers \PharIo\Phive\AuthXmlConfigFileLocator
+ */
 class AuthXmlConfigFileLocatorTest extends TestCase {
     public function testWarnAboutDoubleConfigFile(): void {
         $environmentMock = $this->getEnvironmentMock();
