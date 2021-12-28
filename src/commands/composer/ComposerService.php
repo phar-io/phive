@@ -55,14 +55,14 @@ class ComposerService {
         $jsonData = new JsonData($composerFilename->read()->getContent());
         $requires = [];
 
-        if ($jsonData->hasFragment('require')) {
-            foreach ($jsonData->getFragment('require') as $required => $constraint) {
+        if ($jsonData->tryGetFragment('require', $fragment)) {
+            foreach ($fragment as $required => $constraint) {
                 $requires[$required] = $constraint;
             }
         }
 
-        if ($jsonData->hasFragment('require-dev')) {
-            foreach ($jsonData->getFragment('require-dev') as $required => $constraint) {
+        if ($jsonData->tryGetFragment('require-dev', $fragment)) {
+            foreach ($fragment as $required => $constraint) {
                 $requires[$required] = $constraint;
             }
         }
