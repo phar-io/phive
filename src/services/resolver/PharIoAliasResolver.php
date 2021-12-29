@@ -35,7 +35,7 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
 
         try {
             $source = $this->getSourcesList()->getSourceForAlias($requestedPhar->getAlias());
-            $file   = $this->fileDownloader->download($source->getUrl());
+            $file   = $this->fileDownloader->download($this->getUrl($source));
         } catch (SourcesListException $e) {
             return $this->tryNext($requestedPhar);
         }
@@ -67,5 +67,15 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
         }
 
         return $this->sources;
+    }
+
+    private function getUrl(Source $source): Url {
+        $url = $source->getUrl();
+
+        if ($source->getType() === 'github') {
+            $url = $url->withParams(['per_page' => 100]);
+        }
+
+        return $url;
     }
 }
