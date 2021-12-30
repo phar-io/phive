@@ -94,7 +94,7 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
     }
 
     public function testMigrateRename(): void {
-        $directory = new Directory('/tmp');
+        $directory = new Directory(sys_get_temp_dir());
         $directory->file('phive.xml')->putContent('<?xml><root>Foobar</root>');
 
         $environment = $this->createMock(Environment::class);

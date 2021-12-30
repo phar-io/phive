@@ -37,7 +37,7 @@ class TargetDirectoryLocator {
         if ($this->cliOptions->hasOption('target')) {
             $path = $this->cliOptions->getOption('target');
 
-            if ($path[0] === '/') {
+            if ($path[0] === DIRECTORY_SEPARATOR || preg_match('~\A[A-Z]:(?![^/\\\\])~i', $path) > 0) {
                 return new Directory($path);
             }
 

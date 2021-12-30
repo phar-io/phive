@@ -10,6 +10,7 @@
  */
 namespace PharIo\Phive;
 
+use function implode;
 use DOMDocument;
 use DOMElement;
 use DOMNodeList;
@@ -134,11 +135,12 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $node1 = $this->domHelper->createElement('node');
         $node1->setAttribute('url', 'https://example.com/phpunit-5.3.0.phar');
 
+        $locationNode2 = implode(DIRECTORY_SEPARATOR, [__DIR__, 'fixtures', 'tools', 'phpunit']);
         $node2 = $this->domHelper->createElement('node');
         $node2->setAttribute('version', '5.2.12');
         $node2->setAttribute('name', 'phpunit');
         $node2->setAttribute('installed', '5.2.12');
-        $node2->setAttribute('location', __DIR__ . '/fixtures/tools/phpunit');
+        $node2->setAttribute('location', $locationNode2);
 
         $node3 = $this->domHelper->createElement('node');
         $node3->setAttribute('name', 'phpunit');
@@ -159,7 +161,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $config   = new LocalPhiveXmlConfig($configFile, $parserMock, $this->getEnvironmentMock());
         $expected = [
             new ConfiguredPhar('https://example.com/phpunit-5.3.0.phar', new AnyVersionConstraint(), null, null, new PharUrl('https://example.com/phpunit-5.3.0.phar')),
-            new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12'), new Filename(__DIR__ . '/fixtures/tools/phpunit')),
+            new ConfiguredPhar('phpunit', new AnyVersionConstraint(), new Version('5.2.12'), new Filename($locationNode2)),
             new ConfiguredPhar('phpunit', new AnyVersionConstraint()),
         ];
         $actual = $config->getPhars();
