@@ -14,6 +14,7 @@ use function method_exists;
 use function unlink;
 use PharIo\FileSystem\Directory;
 use PHPUnit\Framework\TestCase;
+use function sys_get_temp_dir;
 
 /**
  * @covers \PharIo\Phive\HomePhiveXmlMigration
@@ -22,9 +23,9 @@ class HomePhiveXmlMigrationTest extends TestCase {
     use MigrationMocks;
 
     protected function tearDown(): void {
-        @unlink('/tmp/phive.xml');
-        @unlink('/tmp/phive.xml.backup');
-        @unlink('/tmp/global.xml');
+        @unlink(sys_get_temp_dir() . '/phive.xml');
+        @unlink(sys_get_temp_dir() . '/phive.xml.backup');
+        @unlink(sys_get_temp_dir() . '/global.xml');
         parent::tearDown();
     }
 
@@ -71,7 +72,7 @@ class HomePhiveXmlMigrationTest extends TestCase {
     }
 
     public function testMigrate(): void {
-        $directory = new Directory('/tmp');
+        $directory = new Directory(sys_get_temp_dir());
         $directory->file('phive.xml')->putContent('<?xml><root>Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
@@ -81,14 +82,14 @@ class HomePhiveXmlMigrationTest extends TestCase {
 
         $migration->migrate();
 
-        $this->assertFileExists('/tmp/global.xml');
+        $this->assertFileExists(sys_get_temp_dir() . '/global.xml');
 
         if (method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist('/tmp/phive.xml');
+            $this->assertFileDoesNotExist(sys_get_temp_dir() . '/phive.xml');
         } else {
-            $this->assertFileNotExists('/tmp/phive.xml');
+            $this->assertFileNotExists(sys_get_temp_dir() . '/phive.xml');
         }
-        $this->assertStringEqualsFile('/tmp/global.xml', '<?xml><root>Foobar</root>');
+        $this->assertStringEqualsFile(sys_get_temp_dir() . '/global.xml', '<?xml><root>Foobar</root>');
     }
 
     private function createMigration(array $existingFiles): HomePhiveXmlMigration {

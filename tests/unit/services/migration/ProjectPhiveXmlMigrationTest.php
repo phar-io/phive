@@ -13,6 +13,7 @@ namespace PharIo\Phive;
 use function method_exists;
 use function rmdir;
 use function unlink;
+use function sys_get_temp_dir;
 use PharIo\FileSystem\Directory;
 use PHPUnit\Framework\TestCase;
 
@@ -25,10 +26,10 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
     }
 
     protected function tearDown(): void {
-        @unlink('/tmp/phive.xml');
-        @unlink('/tmp/phive.xml.backup');
-        @unlink('/tmp/.phive/phars.xml');
-        @rmdir('/tmp/.phive');
+        @unlink(sys_get_temp_dir() . '/phive.xml');
+        @unlink(sys_get_temp_dir() . '/phive.xml.backup');
+        @unlink(sys_get_temp_dir() . '/.phive/phars.xml');
+        @rmdir(sys_get_temp_dir() . '/.phive');
         parent::tearDown();
     }
 
@@ -69,7 +70,7 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
     }
 
     public function testMigrate(): void {
-        $directory = new Directory('/tmp');
+        $directory = new Directory(sys_get_temp_dir());
         $directory->file('phive.xml')->putContent('<?xml><root>Foobar</root>');
 
         $environment = $this->createMock(Environment::class);
@@ -82,14 +83,14 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
 
         $migration->migrate();
 
-        $this->assertFileExists('/tmp/.phive/phars.xml');
+        $this->assertFileExists(sys_get_temp_dir() . '/.phive/phars.xml');
 
         if (method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist('/tmp/phive.xml');
+            $this->assertFileDoesNotExist(sys_get_temp_dir() . '/phive.xml');
         } else {
-            $this->assertFileNotExists('/tmp/phive.xml');
+            $this->assertFileNotExists(sys_get_temp_dir() . '/phive.xml');
         }
-        $this->assertStringEqualsFile('/tmp/.phive/phars.xml', '<?xml><root>Foobar</root>');
+        $this->assertStringEqualsFile(sys_get_temp_dir() . '/.phive/phars.xml', '<?xml><root>Foobar</root>');
     }
 
     public function testMigrateRename(): void {
@@ -106,15 +107,15 @@ class ProjectPhiveXmlMigrationTest extends TestCase {
 
         $migration->migrate();
 
-        $this->assertFileExists('/tmp/.phive/phars.xml');
-        $this->assertFileExists('/tmp/phive.xml.backup');
+        $this->assertFileExists(sys_get_temp_dir() . '/.phive/phars.xml');
+        $this->assertFileExists(sys_get_temp_dir() . '/phive.xml.backup');
 
         if (method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist('/tmp/phive.xml');
+            $this->assertFileDoesNotExist(sys_get_temp_dir() . '/phive.xml');
         } else {
-            $this->assertFileNotExists('/tmp/phive.xml');
+            $this->assertFileNotExists(sys_get_temp_dir() . '/phive.xml');
         }
-        $this->assertStringEqualsFile('/tmp/.phive/phars.xml', '<?xml><root>Foobar</root>');
+        $this->assertStringEqualsFile(sys_get_temp_dir() . '/.phive/phars.xml', '<?xml><root>Foobar</root>');
     }
 
     private function createMigration(bool $haveLegacy, bool $haveNewFile, bool $accepted): ProjectPhiveXmlMigration {

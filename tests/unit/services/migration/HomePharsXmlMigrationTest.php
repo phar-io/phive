@@ -15,6 +15,7 @@ use function unlink;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\File;
 use PHPUnit\Framework\TestCase;
+use function sys_get_temp_dir;
 
 /**
  * @covers \PharIo\Phive\HomePharsXmlMigration
@@ -23,9 +24,9 @@ class HomePharsXmlMigrationTest extends TestCase {
     use MigrationMocks;
 
     protected function tearDown(): void {
-        @unlink('/tmp/registry.xml');
-        @unlink('/tmp/phars.xml');
-        @unlink('/tmp/phars.xml.backup');
+        @unlink(sys_get_temp_dir() . '/registry.xml');
+        @unlink(sys_get_temp_dir() . '/phars.xml');
+        @unlink(sys_get_temp_dir() . '/phars.xml.backup');
         parent::tearDown();
     }
 
@@ -69,7 +70,7 @@ class HomePharsXmlMigrationTest extends TestCase {
     }
 
     public function testMigrate(): void {
-        $directory = new Directory('/tmp');
+        $directory = new Directory(sys_get_temp_dir());
         $directory->file('phars.xml')->putContent('<?xml><root>Foobar</root>');
 
         $config = $this->createPartialMock(Config::class, ['getHomeDirectory']);
@@ -79,14 +80,14 @@ class HomePharsXmlMigrationTest extends TestCase {
 
         $migration->migrate();
 
-        $this->assertFileExists('/tmp/registry.xml');
+        $this->assertFileExists(sys_get_temp_dir() . '/registry.xml');
 
         if (method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist('/tmp/phars.xml');
+            $this->assertFileDoesNotExist(sys_get_temp_dir() . '/phars.xml');
         } else {
-            $this->assertFileNotExists('/tmp/phars.xml');
+            $this->assertFileNotExists(sys_get_temp_dir() . '/phars.xml');
         }
-        $this->assertStringEqualsFile('/tmp/registry.xml', '<?xml><root>Foobar</root>');
+        $this->assertStringEqualsFile(sys_get_temp_dir() . '/registry.xml', '<?xml><root>Foobar</root>');
     }
 
     private function createMigration(array $existingFiles): HomePharsXmlMigration {
