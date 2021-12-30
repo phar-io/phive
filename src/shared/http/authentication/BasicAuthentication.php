@@ -16,7 +16,7 @@ class BasicAuthentication extends Authentication {
     public static function fromLoginPassword(string $domain, string $login, string $password): self {
         $credentials = base64_encode($login . ':' . $password);
 
-        return new static($domain,  $credentials);
+        return new static($domain, $credentials);
     }
 
     protected function getType(): string {

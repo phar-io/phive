@@ -11,10 +11,10 @@
 namespace PharIo\Phive;
 
 use function method_exists;
+use function sys_get_temp_dir;
 use function unlink;
 use PharIo\FileSystem\Directory;
 use PHPUnit\Framework\TestCase;
-use function sys_get_temp_dir;
 
 /**
  * @covers \PharIo\Phive\HomePhiveXmlMigration
