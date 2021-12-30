@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
- * @requires OSFAMILY Linux|Darwin
+ * @requires OSFAMILY Linux
  * @covers \PharIo\Phive\PharInstaller
  * @covers \PharIo\Phive\UnixoidPharInstaller
  */
