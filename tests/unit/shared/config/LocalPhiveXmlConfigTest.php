@@ -136,7 +136,7 @@ class LocalPhiveXmlConfigTest extends TestCase {
         $node1->setAttribute('url', 'https://example.com/phpunit-5.3.0.phar');
 
         $locationNode2 = implode(DIRECTORY_SEPARATOR, [__DIR__, 'fixtures', 'tools', 'phpunit']);
-        $node2 = $this->domHelper->createElement('node');
+        $node2         = $this->domHelper->createElement('node');
         $node2->setAttribute('version', '5.2.12');
         $node2->setAttribute('name', 'phpunit');
         $node2->setAttribute('installed', '5.2.12');
