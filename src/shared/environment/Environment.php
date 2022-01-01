@@ -37,13 +37,6 @@ abstract class Environment {
     /** @var array */
     protected $server = [];
 
-    /**
-     * @return static
-     */
-    public static function fromSuperGlobals(): self {
-        return new static($_SERVER);
-    }
-
     public function __construct(array $server) {
         $this->server = $server;
     }

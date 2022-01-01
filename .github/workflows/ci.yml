@@ -33,3 +33,10 @@ jobs:
           phive.bin: "/phive.phar"
         with:
           args: -Dphive.bin=./phive.phar php-cs-fixer
+
+      - name: phpstan
+        uses: './.github/actions/phive-ant'
+        env:
+          phive.bin: "/phive.phar"
+        with:
+          args: -Dphive.bin=./phive.phar phpstan

@@ -14,9 +14,9 @@ use function hash;
 use function preg_match;
 use function sprintf;
 
-class Sha1Hash extends BaseHash {
+final class Sha1Hash extends BaseHash {
     public static function forContent(string $content): Hash {
-        return new static(hash('sha1', $content));
+        return new self(hash('sha1', $content));
     }
 
     /**

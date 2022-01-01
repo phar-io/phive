@@ -34,7 +34,7 @@ class ReleaseSelector {
         VersionConstraint $versionConstraint,
         bool $acceptUnsigned
     ): SupportedRelease {
-        /** @var null|Release $latest */
+        /** @var null|SupportedRelease $latest */
         $latest = null;
 
         foreach ($releases as $release) {
@@ -45,7 +45,7 @@ class ReleaseSelector {
 
             if ($latest === null || $release->getVersion()->isGreaterThan($latest->getVersion())) {
                 if (!$release->isSupported()) {
-                    /* @var UnsupportedRelease $release */
+                    /** @var UnsupportedRelease $release */
                     $this->output->writeWarning(
                         sprintf(
                             '%s %s: %s',

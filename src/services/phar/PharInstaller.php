@@ -53,10 +53,6 @@ abstract class PharInstaller {
         }
     }
 
-    public function localErrorHandler(int $errno, string $errstr): void {
-        throw new PharInstallerException($errstr, $errno);
-    }
-
     protected function getOutput(): Cli\Output {
         return $this->output;
     }
@@ -113,9 +109,10 @@ abstract class PharInstaller {
     }
 
     private function registerLocalErrorHandler(): void {
-        /** @psalm-suppress InvalidArgument */
         $this->originalHandler = set_error_handler(
-            [$this, 'localErrorHandler']
+            static function (int $errno, string $errstr): void {
+                throw new PharInstallerException($errstr, $errno);
+            }
         );
     }
 
