@@ -1,4 +1,5 @@
 parameters:
+    phpVersion: 80000
     level: 5
     paths:
         - %currentWorkingDirectory%/phive

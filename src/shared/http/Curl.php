@@ -25,12 +25,13 @@ use function curl_getinfo;
 use function curl_init;
 use function curl_setopt;
 use function curl_setopt_array;
+use CurlHandle;
 
 /**
  * @codeCoverageIgnore
  */
 class Curl {
-    /** @var resource */
+    /** @var CurlHandle|resource */
     private $curlHandle;
 
     public function init(string $url = null): void {

@@ -10,7 +10,7 @@
  */
 namespace PharIo\Phive;
 
-class BearerAuthentication extends Authentication {
+final class BearerAuthentication extends Authentication {
     protected function getType(): string {
         return 'Bearer';
     }

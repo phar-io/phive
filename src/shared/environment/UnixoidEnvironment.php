@@ -17,7 +17,7 @@ use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\DirectoryException;
 use Throwable;
 
-class UnixoidEnvironment extends Environment {
+final class UnixoidEnvironment extends Environment {
 
     /** @var Executor */
     private $executor;
@@ -26,7 +26,7 @@ class UnixoidEnvironment extends Environment {
     private $whichCommand;
 
     public static function fromSuperGlobals(): Environment {
-        return new static($_SERVER, new Executor());
+        return new self($_SERVER, new Executor());
     }
 
     public function __construct(array $server, Executor $executor) {

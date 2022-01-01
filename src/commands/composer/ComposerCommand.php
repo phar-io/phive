@@ -50,6 +50,9 @@ class ComposerCommand extends InstallCommand {
      * @psalm-return ComposerCommandConfig
      */
     protected function getConfig(): InstallCommandConfig {
-        return parent::getConfig();
+        $config = parent::getConfig();
+        assert($config instanceof ComposerCommandConfig);
+
+        return $config;
     }
 }

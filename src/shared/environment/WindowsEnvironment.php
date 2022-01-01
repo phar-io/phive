@@ -15,7 +15,14 @@ use function dirname;
 use BadMethodCallException;
 use PharIo\FileSystem\Directory;
 
-class WindowsEnvironment extends Environment {
+final class WindowsEnvironment extends Environment {
+    /**
+     * @return static
+     */
+    public static function fromSuperGlobals(): self {
+        return new self($_SERVER);
+    }
+
     public function hasHomeDirectory(): bool {
         return array_key_exists('HOMEDRIVE', $this->server) && array_key_exists('HOMEPATH', $this->server);
     }

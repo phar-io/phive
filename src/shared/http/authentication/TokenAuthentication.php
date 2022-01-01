@@ -10,7 +10,7 @@
  */
 namespace PharIo\Phive;
 
-class TokenAuthentication extends Authentication {
+final class TokenAuthentication extends Authentication {
     protected function getType(): string {
         return 'Token';
     }
