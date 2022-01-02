@@ -40,7 +40,7 @@ if (!class_exists('DOMNodeList')) {
 
 if (!function_exists('curl_init')) {
     /**
-     * @return resource
+     * @return CurlHandle|resource
      */
     function curl_init(?string $url) {
     }
@@ -48,8 +48,12 @@ if (!function_exists('curl_init')) {
 
 if (!function_exists('curl_exec')) {
     /**
-     * @param resource $handle
+     * @param CurlHandle|resource $handle
      */
     function curl_exec($handle): string {
     }
+}
+
+if (!class_exists('CurlHandle')) {
+    class CurlHandle {}
 }
