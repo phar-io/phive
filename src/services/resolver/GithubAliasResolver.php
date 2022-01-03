@@ -68,7 +68,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
         try {
             $file = $this->fileDownloader->download($url);
         } catch (DownloadFailedException $e) {
-            $this->updateRateLimit();
+            $this->updateRateLimit($this->rateLimit);
 
             throw $e;
         }
@@ -80,6 +80,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
 
     /**
      * @throws GithubAliasResolverException
+     * @psalm-assert !null $this->rateLimit
      */
     private function ensureWithinRateLimit(): void {
         $this->initRateLimit();
@@ -99,7 +100,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
         $this->rateLimit = $response->getRateLimit();
     }
 
-    private function updateRateLimit(): void {
+    private function updateRateLimit(RateLimit $previousRateLimit): void {
         if ($this->fileDownloader->hasRateLimit()) {
             $this->rateLimit = $this->fileDownloader->getRateLimit();
 
@@ -107,9 +108,9 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
         }
 
         $this->rateLimit = new RateLimit(
-            $this->rateLimit->getLimit(),
-            $this->rateLimit->getRemaining() - 1,
-            $this->rateLimit->getResetTime()
+            $previousRateLimit->getLimit(),
+            $previousRateLimit->getRemaining() - 1,
+            $previousRateLimit->getResetTime()
         );
     }
 }

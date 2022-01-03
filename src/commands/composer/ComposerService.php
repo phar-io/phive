@@ -56,12 +56,14 @@ class ComposerService {
         $requires = [];
 
         if ($jsonData->tryGetFragment('require', $fragment)) {
+            /** @var array<string, string> $fragment */
             foreach ($fragment as $required => $constraint) {
                 $requires[$required] = $constraint;
             }
         }
 
         if ($jsonData->tryGetFragment('require-dev', $fragment)) {
+            /** @var array<string, string> $fragment */
             foreach ($fragment as $required => $constraint) {
                 $requires[$required] = $constraint;
             }

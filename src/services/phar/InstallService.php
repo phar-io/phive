@@ -80,11 +80,14 @@ class InstallService {
             return $requestedVersionConstraint;
         }
 
+        /** @var int $major */
+        $major = $installedVersion->getMajor()->getValue();
+
         return new AndVersionConstraintGroup(
             sprintf('^%s', $installedVersion->getVersionString()),
             [
                 new GreaterThanOrEqualToVersionConstraint($installedVersion->getVersionString(), $installedVersion),
-                new SpecificMajorVersionConstraint($installedVersion->getVersionString(), $installedVersion->getMajor()->getValue())
+                new SpecificMajorVersionConstraint($installedVersion->getVersionString(), $major)
             ]
         );
     }

@@ -31,10 +31,10 @@ use CurlHandle;
  * @codeCoverageIgnore
  */
 class Curl {
-    /** @var CurlHandle|resource */
+    /** @var CurlHandle */
     private $curlHandle;
 
-    public function init(string $url = null): void {
+    public function init(string $url): void {
         $this->curlHandle = curl_init($url);
     }
 
@@ -80,6 +80,7 @@ class Curl {
      * @psalm-suppress InvalidReturnType
      */
     public function exec(): string {
+        /** @var false|string $result */
         $result = curl_exec($this->curlHandle);
 
         if ($result === false) {

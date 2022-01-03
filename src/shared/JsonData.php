@@ -54,6 +54,9 @@ class JsonData {
         return $this->parsed;
     }
 
+    /**
+     * @param mixed $fragment
+     */
     public function tryGetFragment(string $fragmentSpecification, &$fragment = null): bool {
         $data = $this->parsed;
 

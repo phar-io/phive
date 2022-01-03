@@ -38,18 +38,7 @@ if (!class_exists('DOMNodeList')) {
     }
 }
 
-if (!function_exists('curl_init')) {
-    /**
-     * @return resource
-     */
-    function curl_init(?string $url) {
-    }
+if (!class_exists('CurlHandle')) {
+    class CurlHandle {}
 }
 
-if (!function_exists('curl_exec')) {
-    /**
-     * @param resource $handle
-     */
-    function curl_exec($handle): string {
-    }
-}

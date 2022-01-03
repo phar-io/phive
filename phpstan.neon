@@ -5,9 +5,5 @@ parameters:
         - %currentWorkingDirectory%/phive
         - %currentWorkingDirectory%/src/
     ignoreErrors:
-        # Level 2
-        - '#^Method PharIo\\Phive\\PharRegistry::getFirstMatchingPharNode\(\) should return DOMElement\|null but returns DOMNode\|null\.$#'
-        # Level 5
-        - '/^Parameter #1 \$pharNode of method PharIo\\Phive\\PharRegistry::nodetoPhar\(\) expects DOMElement, DOMNode given\./'
         # Level 6
         #- '# constructor expects Gnupg, Gnupg\|PharIo\\GnuPG\\GnuPG given\.$#'

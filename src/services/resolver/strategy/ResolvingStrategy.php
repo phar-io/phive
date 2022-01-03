@@ -11,5 +11,5 @@
 namespace PharIo\Phive;
 
 interface ResolvingStrategy {
-    public function execute(RequestedPharResolverService $pharResolverService): void;
+    public function execute(RequestedPharResolverService $service): void;
 }
