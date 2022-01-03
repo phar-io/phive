@@ -31,16 +31,16 @@ use function sprintf;
 
 class CurlConfig {
 
-    /** @var string optional proxy URL */
+    /** @var null|string optional proxy URL */
     private $proxyUrl;
 
-    /** @var string optional proxy credentials */
+    /** @var null|string optional proxy credentials */
     private $proxyCredentials;
 
     /** @var string */
     private $userAgent;
 
-    /** @var array */
+    /** @var array<string, LocalSslCertificate> */
     private $localSslCertificates = [];
 
     /** @var AuthConfig */

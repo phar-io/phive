@@ -145,6 +145,10 @@
         </exec>
     </target>
 
+    <target name="psalm" depends="install-tools" description="Run Psalm">
+        <exec executable="./tools/psalm" failonerror="true"/>
+    </target>
+
     <target name="phpstan" depends="install-tools" description="Run PHPStan">
         <exec executable="./tools/phpstan" failonerror="true"/>
     </target>

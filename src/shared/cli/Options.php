@@ -22,6 +22,9 @@ class Options {
     /** @var string[] */
     private $arguments = [];
 
+    /**
+     * @param mixed $value
+     */
     public function setOption(string $option, $value): void {
         $this->options[$option] = $value;
     }
@@ -32,6 +35,8 @@ class Options {
 
     /**
      * @throws CommandOptionsException
+     *
+     * @return mixed
      */
     public function getOption(string $name) {
         if (!$this->hasOption($name)) {

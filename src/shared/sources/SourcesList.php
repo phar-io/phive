@@ -76,7 +76,7 @@ class SourcesList {
         $result = [];
 
         foreach ($this->sourcesFile->query('//phive:phar') as $node) {
-            /* @var DOMElement $node */
+            /** @var DOMElement $node */
             $result[] = $node->getAttribute('alias');
         }
 

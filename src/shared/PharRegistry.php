@@ -73,7 +73,8 @@ class PharRegistry {
         $phars = [];
 
         foreach ($this->dbFile->query(sprintf('//phive:phar[@name="%s"]', $name)) as $pharNode) {
-            $phars[] = $this->nodetoPhar($pharNode);
+            /** @var DOMElement $pharNode */
+            $phars[] = $this->nodeToPhar($pharNode);
         }
 
         return $phars;
@@ -107,7 +108,7 @@ class PharRegistry {
             ));
         }
 
-        return $this->nodetoPhar($this->getFirstMatchingPharNode($name, $version));
+        return $this->nodeToPhar($this->getFirstMatchingPharNode($name, $version));
     }
 
     public function hasPhar(string $name, Version $version): bool {
@@ -122,14 +123,13 @@ class PharRegistry {
             sprintf('//phive:phar[phive:usage/@destination="%s"]', $filename->asString())
         )->item(0);
 
-        if ($pharNode === null) {
-            throw new PharRegistryException(
-                sprintf('No phar with usage %s found', $filename->asString())
-            );
+        if ($pharNode instanceof DOMElement) {
+            return $this->nodeToPhar($pharNode);
         }
 
-        /* @var DOMElement $pharNode */
-        return $this->nodetoPhar($pharNode);
+        throw new PharRegistryException(
+            sprintf('No phar with usage %s found', $filename->asString())
+        );
     }
 
     public function removeUsage(Phar $phar, Filename $destination): void {
@@ -169,7 +169,8 @@ class PharRegistry {
         $unusedPhars = [];
 
         foreach ($this->dbFile->query('//phive:phar[not(phive:usage)]') as $pharNode) {
-            $unusedPhars[] = $this->nodetoPhar($pharNode);
+            /** @var DOMElement $pharNode */
+            $unusedPhars[] = $this->nodeToPhar($pharNode);
         }
 
         return $unusedPhars;
@@ -182,6 +183,7 @@ class PharRegistry {
         $installedPhars = [];
 
         foreach ($this->dbFile->query('//phive:phar') as $pharNode) {
+            /** @var DOMElement $pharNode */
             $installedPhars[] = $this->nodetoUsedPhar($pharNode);
         }
 
@@ -196,7 +198,8 @@ class PharRegistry {
         $query     = sprintf('//phive:phar[contains(phive:usage/@destination, "%s")]', $destination->asString());
 
         foreach ($this->dbFile->query($query) as $pharNode) {
-            $usedPhars[] = $this->nodetoPhar($pharNode);
+            /** @var DOMElement $pharNode */
+            $usedPhars[] = $this->nodeToPhar($pharNode);
         }
 
         return $usedPhars;
@@ -258,12 +261,15 @@ class PharRegistry {
      * @psalm-ignore-nullable-return
      */
     private function getFirstMatchingPharNode(string $name, Version $version): ?DOMElement {
-        $query = sprintf('//phive:phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
+        $query    = sprintf('//phive:phar[@name="%s" and @version="%s"]', $name, $version->getVersionString());
+        $pharNode = $this->dbFile->query($query)->item(0);
 
-        return $this->dbFile->query($query)->item(0);
+        assert($pharNode === null || $pharNode instanceof DOMElement);
+
+        return $pharNode;
     }
 
-    private function nodetoPhar(DOMElement $pharNode): Phar {
+    private function nodeToPhar(DOMElement $pharNode): Phar {
         return new Phar(
             $pharNode->getAttribute('name'),
             new Version($pharNode->getAttribute('version')),

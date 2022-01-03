@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <psalm
+    errorLevel="2"
+    phpVersion="8.0"
     totallyTyped="false"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -47,7 +49,7 @@
 <!--        <MissingClosureParamType errorLevel="info" />-->
 <!--        <MissingParamType errorLevel="info" />-->
 
-        <RedundantCondition errorLevel="info" />
+<!--        <RedundantCondition errorLevel="info" />-->
 
 <!--        <DocblockTypeContradiction errorLevel="info" />-->
 <!--        <RedundantConditionGivenDocblockType errorLevel="info" />-->

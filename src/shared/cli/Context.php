@@ -25,6 +25,9 @@ interface Context {
 
     public function addArgument(string $arg): void;
 
+    /**
+     * @param mixed $value
+     */
     public function setOption(string $option, $value): void;
 
     public function getOptions(): Options;
