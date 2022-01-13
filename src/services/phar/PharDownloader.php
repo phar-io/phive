@@ -103,15 +103,10 @@ class PharDownloader {
             );
         }
 
-        /* @psalm-suppress PossiblyNullArgument */
-        if ($release->hasExpectedHash() && !$this->checksumService->verify($release->getExpectedHash(), $phar)) {
-            throw new VerificationFailedException(
-                sprintf(
-                    'Wrong checksum! Expected %s',
-                    /* @psalm-suppress PossiblyNullReference */
-                    $release->getExpectedHash()->asString()
-                )
-            );
+        $hash = $release->getExpectedHash();
+
+        if ($hash !== null && !$this->checksumService->verify($hash, $phar)) {
+            throw new VerificationFailedException(sprintf('Wrong checksum! Expected %s', $hash->asString()));
         }
 
         return $signatureVerificationResult->getFingerprint();

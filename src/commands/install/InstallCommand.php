@@ -71,8 +71,10 @@ class InstallCommand implements Cli\Command {
     }
 
     private function getDestination(string $pharName, RequestedPhar $requestedPhar, Directory $destination): Filename {
-        if ($requestedPhar->hasLocation()) {
-            return $requestedPhar->getLocation();
+        $location = $requestedPhar->getLocation();
+
+        if ($location !== null) {
+            return $location;
         }
 
         return $destination->file($pharName);
