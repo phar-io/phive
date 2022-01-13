@@ -38,7 +38,3 @@ if (!class_exists('DOMNodeList')) {
     }
 }
 
-if (!class_exists('CurlHandle')) {
-    class CurlHandle {}
-}
-

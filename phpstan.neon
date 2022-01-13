@@ -1,9 +1,5 @@
 parameters:
-    phpVersion: 80000
     level: 5
     paths:
         - %currentWorkingDirectory%/phive
         - %currentWorkingDirectory%/src/
-    ignoreErrors:
-        # Level 6
-        #- '# constructor expects Gnupg, Gnupg\|PharIo\\GnuPG\\GnuPG given\.$#'
