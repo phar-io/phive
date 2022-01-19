@@ -83,6 +83,10 @@ class InstallCommandConfig {
         return $this->cliOptions->hasOption('force-accept-unsigned');
     }
 
+    public function skipSignatureVerification(): bool {
+        return $this->cliOptions->hasOption('skip-signature-verification');
+    }
+
     /**
      * @throws ConfiguredPharException
      *
