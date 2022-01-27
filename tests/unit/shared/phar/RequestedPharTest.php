@@ -10,6 +10,8 @@
  */
 namespace PharIo\Phive;
 
+use Exception;
+use PharIo\FileSystem\Filename;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
@@ -65,10 +67,60 @@ class RequestedPharTest extends TestCase {
         $this->assertSame('foo', $phar->asString());
     }
 
+    public function testHasLocationReturnsFalseWhenNoLocationIsSet(): void {
+        $phar = new RequestedPhar(
+            new PharAlias('foo'),
+            $this->getVersionConstraintMock(),
+            $this->getVersionConstraintMock()
+        );
+
+        $this->assertFalse($phar->hasLocation());
+    }
+
+    public function testHasLocationReturnsTrueWhenLocationIsSet(): void {
+        $phar = new RequestedPhar(
+            new PharAlias('foo'),
+            $this->getVersionConstraintMock(),
+            $this->getVersionConstraintMock(),
+            $this->getFilenameMock()
+        );
+
+        $this->assertTrue($phar->hasLocation());
+    }
+
+    public function testGetLocation(): void {
+        $location = $this->getFilenameMock();
+        $phar     = new RequestedPhar(
+            new PharAlias('foo'),
+            $this->getVersionConstraintMock(),
+            $this->getVersionConstraintMock(),
+            $location
+        );
+
+        $this->assertSame($location, $phar->getLocation());
+    }
+
+    public function testGetLocationThrowsExceptionWhenNoLocationIsSet(): void {
+        $phar = new RequestedPhar(
+            new PharAlias('foo'),
+            $this->getVersionConstraintMock(),
+            $this->getVersionConstraintMock()
+        );
+        $this->expectException(Exception::class);
+        $phar->getLocation();
+    }
+
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|VersionConstraint
      */
     private function getVersionConstraintMock() {
         return $this->createMock(VersionConstraint::class);
+    }
+
+    /**
+     * @return Filename|PHPUnit_Framework_MockObject_Mockobject
+     */
+    private function getFilenameMock() {
+        return $this->createMock(Filename::class);
     }
 }

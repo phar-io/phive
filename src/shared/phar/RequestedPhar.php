@@ -91,8 +91,12 @@ class RequestedPhar {
         return $this->location !== null;
     }
 
-    public function getLocation(): ?Filename {
-        return $this->location;
+    public function getLocation(): Filename {
+        if ($this->location !== null) {
+            return $this->location;
+        }
+
+        throw new Exception('Requested PHAR has no location');
     }
 
     public function asString(): string {
