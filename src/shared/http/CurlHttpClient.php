@@ -161,11 +161,11 @@ class CurlHttpClient implements HttpClient {
         try {
             $result = $this->curl->exec();
         } catch (CurlException $e) {
-            $curlErrorCode = $this->curl->getLastErrorNumber();
+            $curlErrorCode = (int)$e->getCode();
 
             if ($curlErrorCode === CURLE_SSL_PEER_CERTIFICATE) { /* SSL certificate problem */
                 throw new HttpException(
-                    $this->curl->getLastErrorMessage() . ' (while requesting ' . $this->url . ')' . "\n\n" .
+                    $e->getMessage() . ' (while requesting ' . $this->url . ')' . "\n\n" .
                     'This likely means your curl installation is incomplete and can not verify certificates.' . "\n" .
                     'Please install a cacert.pem (for instance from https://curl.haxx.se/docs/caextract.html) and try again.',
                     $curlErrorCode
@@ -173,7 +173,7 @@ class CurlHttpClient implements HttpClient {
             }
 
             throw new HttpException(
-                $this->curl->getLastErrorMessage() . ' (while requesting ' . $this->url . ')',
+                $e->getMessage() . ' (while requesting ' . $this->url . ')',
                 $curlErrorCode
             );
         }
@@ -184,16 +184,9 @@ class CurlHttpClient implements HttpClient {
             return new HttpResponse($httpCode, $result ?: '', $this->etag, $this->parseRateLimitHeaders());
         }
 
-        if ($httpCode > 0) {
-            throw new HttpException(
-                sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url->asString()),
-                $httpCode
-            );
-        }
-
         throw new HttpException(
-            $this->curl->getLastErrorMessage() . ' (while requesting ' . $this->url . ')',
-            $this->curl->getLastErrorNumber()
+            sprintf('Unexpected Response Code %d while requesting %s', $httpCode, $this->url->asString()),
+            $httpCode
         );
     }
 

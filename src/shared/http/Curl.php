@@ -38,18 +38,10 @@ class Curl {
     /** @var int */
     private $httpCode = 0;
 
-    /** @var string */
-    private $errorMessage = '';
-
-    /** @var int */
-    private $errorCode = 0;
-
     public function init(string $url): void {
-        $this->url          = $url;
-        $this->options      = [];
-        $this->httpCode     = 0;
-        $this->errorMessage = '';
-        $this->errorCode    = 0;
+        $this->url      = $url;
+        $this->options  = [];
+        $this->httpCode = 0;
     }
 
     public function setResolve(string $resolveString): void {
@@ -96,10 +88,7 @@ class Curl {
         $this->httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($result === false) {
-            $this->errorMessage = curl_error($ch);
-            $this->errorCode    = curl_errno($ch);
-
-            throw new CurlException('Request failed');
+            throw new CurlException(curl_error($ch), curl_errno($ch));
         }
 
         return (string)$result;
@@ -107,13 +96,5 @@ class Curl {
 
     public function getHttpCode(): int {
         return $this->httpCode;
-    }
-
-    public function getLastErrorMessage(): string {
-        return $this->errorMessage;
-    }
-
-    public function getLastErrorNumber(): int {
-        return $this->errorCode;
     }
 }
