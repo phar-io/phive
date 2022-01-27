@@ -24,7 +24,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
 /**
- * @requires OSFAMILY Linux
  * @covers \PharIo\Phive\PharInstaller
  * @covers \PharIo\Phive\UnixoidPharInstaller
  */
@@ -32,6 +31,12 @@ class UnixoidPharInstallerTest extends TestCase {
     public const TMP_DIR = __DIR__ . '/tmp';
 
     protected function setUp(): void {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Unix systems only.');
+
+            return;
+        }
+
         $this->cleanupTmpDirectory();
         mkdir(self::TMP_DIR);
     }
