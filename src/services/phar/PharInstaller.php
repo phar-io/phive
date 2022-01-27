@@ -85,12 +85,6 @@ abstract class PharInstaller {
                 (int)$e->getCode(),
                 $e
             );
-        } catch (PharInstallerException $e) {
-            throw new PharInstallerException(
-                sprintf('Directory %s could not be created: %s', $dir->asString(), $e->getMessage()),
-                (int)$e->getCode(),
-                $e
-            );
         }
     }
 

@@ -215,7 +215,7 @@ class CurlHttpClientTest extends TestCase {
 
         $this->curlConfig->method('getAuthentication')
             ->with('example.com')
-            ->willReturn(new TokenAuthentication('example.com', 'foobar'));
+            ->willReturn(new TokenAuthentication('foobar'));
 
         $this->curl->expects($this->once())
             ->method('addHttpHeaders')
