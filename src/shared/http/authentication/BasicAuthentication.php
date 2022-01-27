@@ -13,10 +13,10 @@ namespace PharIo\Phive;
 use function base64_encode;
 
 final class BasicAuthentication extends Authentication {
-    public static function fromLoginPassword(string $domain, string $login, string $password): self {
+    public static function fromLoginPassword(string $login, string $password): self {
         $credentials = base64_encode($login . ':' . $password);
 
-        return new self($domain, $credentials);
+        return new self($credentials);
     }
 
     protected function getType(): string {

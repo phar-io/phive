@@ -17,12 +17,8 @@ abstract class Authentication {
     /** @var string */
     private $credentials;
 
-    /** @var string */
-    private $domain;
-
-    public function __construct(string $domain, string $credentials) {
+    public function __construct(string $credentials) {
         $this->credentials = $credentials;
-        $this->domain      = $domain;
     }
 
     public function asHttpHeaderString(): string {

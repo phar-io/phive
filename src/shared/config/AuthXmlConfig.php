@@ -64,9 +64,9 @@ class AuthXmlConfig implements AuthConfig {
 
         switch ($authType) {
             case 'Token':
-                return new TokenAuthentication($domain, $authCredentials);
+                return new TokenAuthentication($authCredentials);
             case 'Bearer':
-                return new BearerAuthentication($domain, $authCredentials);
+                return new BearerAuthentication($authCredentials);
 
             default:
                 throw new AuthException(sprintf('Invalid authentication type for %s', $domain));
@@ -84,11 +84,11 @@ class AuthXmlConfig implements AuthConfig {
             $node->hasAttribute('password') &&
             !empty($node->getAttribute('password'))
         ) {
-            return BasicAuthentication::fromLoginPassword($domain, $username, $node->getAttribute('password'));
+            return BasicAuthentication::fromLoginPassword($username, $node->getAttribute('password'));
         }
 
         if ($node->hasAttribute('credentials') && !empty($node->getAttribute('credentials'))) {
-            return new BasicAuthentication($domain, $node->getAttribute('credentials'));
+            return new BasicAuthentication($node->getAttribute('credentials'));
         }
 
         throw new AuthException(sprintf('Basic authentication data for %s is invalid', $domain));

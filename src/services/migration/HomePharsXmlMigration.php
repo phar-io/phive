@@ -26,10 +26,6 @@ class HomePharsXmlMigration implements Migration {
     }
 
     public function canMigrate(): bool {
-        if (!$this->mustMigrate()) {
-            return false;
-        }
-
         return $this->mustMigrate() && !$this->inError();
     }
 

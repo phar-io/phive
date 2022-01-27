@@ -62,7 +62,7 @@ class CurlConfigBuilderTest extends TestCase {
     public function testAddsGitHubAuthToken(): void {
         $this->authConfig->method('getAuthentication')
             ->with('api.github.com')
-            ->willReturn(new TokenAuthentication('api.github.com', 'foo'));
+            ->willReturn(new TokenAuthentication('foo'));
         $this->authConfig->method('hasAuthentication')
             ->with('api.github.com')
             ->willReturn(true);
@@ -75,7 +75,7 @@ class CurlConfigBuilderTest extends TestCase {
     public function testAddsGitLabAuthToken(): void {
         $this->authConfig->method('getAuthentication')
             ->with('gitlab.com')
-            ->willReturn(new BearerAuthentication('gitlab.com', 'foo'));
+            ->willReturn(new BearerAuthentication('foo'));
         $this->authConfig->method('hasAuthentication')
             ->with('gitlab.com')
             ->willReturn(true);

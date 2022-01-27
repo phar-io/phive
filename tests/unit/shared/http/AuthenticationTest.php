@@ -21,7 +21,7 @@ class AuthenticationTest extends TestCase {
     public function testCanBeConvertedToString(): void {
         $this->assertEquals(
             'Authorization: Bearer foo',
-            (new BearerAuthentication('example.com', 'foo'))->asHttpHeaderString()
+            (new BearerAuthentication('foo'))->asHttpHeaderString()
         );
     }
 
@@ -29,7 +29,7 @@ class AuthenticationTest extends TestCase {
         // https://tools.ietf.org/html/rfc7617#section-2
         $this->assertEquals(
             'Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==',
-            BasicAuthentication::fromLoginPassword('example.com', 'Aladdin', 'open sesame')->asHttpHeaderString()
+            BasicAuthentication::fromLoginPassword('Aladdin', 'open sesame')->asHttpHeaderString()
         );
     }
 }
