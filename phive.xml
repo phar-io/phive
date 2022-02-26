@@ -4,5 +4,5 @@
   <phar name="phpunit" version="9" installed="9.5.11" location="./tools/phpunit" copy="false"/>
   <phar name="phpstan" version="^1.0" installed="1.4.2" location="./tools/phpstan" copy="false"/>
   <phar name="php-cs-fixer" version="^3.4" installed="3.4.0" location="./tools/php-cs-fixer" copy="false"/>
-  <phar name="psalm" version="4" installed="4.16.1" location="./tools/psalm" copy="false"/>
+  <phar name="psalm" version="4" installed="4.21.0" location="./tools/psalm" copy="false"/>
 </phive>

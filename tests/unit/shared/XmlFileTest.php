@@ -12,6 +12,7 @@ namespace PharIo\Phive;
 
 use org\bovigo\vfs\vfsStream;
 use PharIo\FileSystem\Directory;
+use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
 use PHPUnit\Framework\TestCase;
 
@@ -43,6 +44,22 @@ class XmlFileTest extends TestCase {
         $actual = $file->query('phive:node1', $context);
         $this->assertSame(1, $actual->length);
         $this->assertSame('Node 1 Value', $actual->item(0)->nodeValue);
+    }
+
+    public function testFromFileWithValidXml(): void {
+        $path = __DIR__ . '/fixtures/xmlFile.xml';
+        $file = XmlFile::fromFile(new File(new Filename($path), file_get_contents($path)));
+
+        $actual = $file->query('//phive:node1');
+        $this->assertSame(1, $actual->length);
+        $this->assertSame('Node 1 Value', $actual->item(0)->nodeValue);
+    }
+
+    public function testFromFileWithEmptyContent(): void {
+        $path = __DIR__ . '/fixture/xmlFile.xml';
+
+        $this->expectException(InvalidXmlException::class);
+        $file = XmlFile::fromFile(new File(new Filename($path), ''));
     }
 
     public function testSavesXmlToFile(): void {

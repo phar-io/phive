@@ -113,6 +113,7 @@ spl_autoload_register(
                 'phario\\phive\\installservice' => '/services/phar/InstallService.php',
                 'phario\\phive\\internalfilemigration' => '/services/migration/InternalFileMigration.php',
                 'phario\\phive\\invalidhashexception' => '/shared/exceptions/InvalidHashException.php',
+                'phario\\phive\\invalidxmlexception' => '/shared/exceptions/InvalidXmlException.php',
                 'phario\\phive\\ioexception' => '/shared/exceptions/IOException.php',
                 'phario\\phive\\jsondata' => '/shared/JsonData.php',
                 'phario\\phive\\keydownloader' => '/services/key/KeyDownloader.php',

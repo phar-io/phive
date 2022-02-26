@@ -35,9 +35,18 @@ class XmlFile {
     /** @var string */
     private $rootElementName;
 
+    /**
+     * @throws InvalidXmlException
+     */
     public static function fromFile(File $file): self {
-        $dom = self::createDomDocument();
-        $dom->loadXML($file->getContent());
+        $dom     = self::createDomDocument();
+        $content = $file->getContent();
+
+        if ($content === '') {
+            throw new InvalidXmlException();
+        }
+
+        $dom->loadXML($content);
 
         $xmlFile = new self(
             $file->getFilename(),
