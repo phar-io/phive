@@ -50,11 +50,13 @@ class PharIoAliasResolver extends AbstractRequestedPharResolver {
                     new JsonData($file->getContent())
                 );
             case 'phar.io':
-                $repo = new PharIoRepository(
-                    XmlFile::fromFile($file)
-                );
-
-                return $repo;
+                try {
+                    return new PharIoRepository(
+                        XmlFile::fromFile($file)
+                    );
+                } catch (InvalidXmlException $e) {
+                    break;
+                }
         }
 
         return $this->tryNext($requestedPhar);

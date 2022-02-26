@@ -156,7 +156,7 @@ abstract class PhiveXmlConfig {
     public function getTargetDirectory(): Directory {
         $node = $this->getTargetDirectoryNode();
 
-        if ($node === null) {
+        if ($node === null || !is_string($node->nodeValue)) {
             throw new ConfigException('Tools directory is not configured in phive.xml');
         }
 
