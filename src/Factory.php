@@ -552,7 +552,7 @@ class Factory {
 
     private function getRemovalService(): RemovalService {
         return new RemovalService(
-            $this->environment,
+            $this->getEnvironment(),
             $this->getOutput()
         );
     }
