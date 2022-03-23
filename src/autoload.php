@@ -174,6 +174,7 @@ spl_autoload_register(
                 'phario\\phive\\releaseselector' => '/services/phar/ReleaseSelector.php',
                 'phario\\phive\\remotefirstresolvingstrategy' => '/services/resolver/strategy/RemoteFirstResolvingStrategy.php',
                 'phario\\phive\\remotesourceslistfileloader' => '/shared/sources/RemoteSourcesListFileLoader.php',
+                'phario\\phive\\removalservice' => '/services/phar/RemovalService.php',
                 'phario\\phive\\removecommand' => '/commands/remove/RemoveCommand.php',
                 'phario\\phive\\removecommandconfig' => '/commands/remove/RemoveCommandConfig.php',
                 'phario\\phive\\removecontext' => '/commands/remove/RemoveContext.php',

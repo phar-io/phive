@@ -76,7 +76,8 @@ class Factory {
             new RemoveCommandConfig($this->request->parse(new RemoveContext()), $this->getTargetDirectoryLocator()),
             $this->getPharRegistry(),
             $this->getOutput(),
-            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global'))
+            $this->getPhiveXmlConfig($this->request->getOptions()->hasOption('global')),
+            $this->getRemovalService()
         );
     }
 
@@ -546,6 +547,13 @@ class Factory {
         return new PublicKeyReader(
             $this->getTemporaryGnupg(),
             $this->getConfig()->getTemporaryWorkingDirectory()
+        );
+    }
+
+    private function getRemovalService(): RemovalService {
+        return new RemovalService(
+            $this->environment,
+            $this->getOutput()
         );
     }
 }

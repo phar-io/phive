@@ -28,18 +28,25 @@ class RemoveCommand implements Cli\Command {
     private $phiveXmlConfig;
 
     /**
+     * @var RemovalService
+     */
+    private $removalService;
+
+    /**
      * @internal param PharService $pharService
      */
     public function __construct(
         RemoveCommandConfig $config,
         PharRegistry $pharRegistry,
         Cli\Output $output,
-        PhiveXmlConfig $phiveXmlConfig
+        PhiveXmlConfig $phiveXmlConfig,
+        RemovalService $removalService
     ) {
         $this->config         = $config;
         $this->pharRegistry   = $pharRegistry;
         $this->output         = $output;
         $this->phiveXmlConfig = $phiveXmlConfig;
+        $this->removalService = $removalService;
     }
 
     public function execute(): void {
@@ -55,7 +62,7 @@ class RemoveCommand implements Cli\Command {
         );
         $this->phiveXmlConfig->removePhar($phar->getName());
         $this->pharRegistry->removeUsage($phar, $location);
-        unlink($location->asString());
+        $this->removalService->remove($location);
 
         if (!$this->pharRegistry->hasUsages($phar)) {
             $this->output->writeInfo(
