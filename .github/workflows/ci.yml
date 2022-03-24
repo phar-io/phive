@@ -8,42 +8,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: composer
-        uses: docker://composer
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          args: install --no-interaction --prefer-dist --optimize-autoloader
+          php-version: 7.4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 11
+
+      - name: composer
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: phive
-        uses: './.github/actions/phive-ant'
-        with:
-          args: 'getphive'
+        run: ant getphive
 
       - name: phive install
-        uses: './.github/actions/phive-ant'
-        env:
-          phive.bin: "/phive.phar"
-        with:
-          args: -Dphive.bin=./phive.phar install-tools
+        run: ant -Dphive.bin=./phive.phar install-tools
 
       - name: php-cs-fixer
-        uses: './.github/actions/phive-ant'
-        env:
-          phive.bin: "/phive.phar"
-        with:
-          args: -Dphive.bin=./phive.phar php-cs-fixer
+        run: ant -Dphive.bin=./phive.phar php-cs-fixer
 
       - name: phpstan
-        uses: './.github/actions/phive-ant'
-        env:
-          phive.bin: "/phive.phar"
-        with:
-          args: -Dphive.bin=./phive.phar phpstan
+        run: ant -Dphive.bin=./phive.phar phpstan
 
       - name: psalm
-        uses: './.github/actions/phive-ant'
-        env:
-          phive.bin: "/phive.phar"
-        with:
-          args: -Dphive.bin=./phive.phar psalm
+        run: ant -Dphive.bin=./phive.phar psalm
