@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 use function sprintf;
-use function unlink;
 
 class RemoveCommand implements Cli\Command {
 

@@ -21,24 +21,21 @@ class RemovalService {
     /** @var Output */
     private $output;
 
-    /**
-     * @param Environment $environment
-     * @param Output      $output
-     */
-    public function __construct(Environment $environment, Cli\Output $output) {
+    public function __construct(Environment $environment, Output $output) {
         $this->environment = $environment;
-        $this->output = $output;
+        $this->output      = $output;
     }
 
     public function remove(Filename $filename): void {
         if ($this->environment instanceof WindowsEnvironment) {
-            $filename = new Filename( $filename->asString() . '.bat');
+            $filename = new Filename($filename->asString() . '.bat');
         }
 
         if (!$filename->exists()) {
             $this->output->writeWarning(
                 sprintf('Cannot delete file "%s": File not found.', $filename->asString())
             );
+
             return;
         }
 
