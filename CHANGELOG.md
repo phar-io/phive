@@ -10,6 +10,7 @@ __Please note__: Version 0.15.x requires PHP 7.3 or later.
 ### Fixed
 * [#327](https://github.com/phar-io/phive/issues/327): "Broken cURL install" message is not being displayed
 * [#361](https://github.com/phar-io/phive/issues/361): Problem with 'remove' command on Windows
+* [#366](https://github.com/phar-io/phive/issues/366): purge command deleted the wrong version
 
 ### Changed
 * [#325](https://github.com/phar-io/phive/pull/325): Improve the documentation concerning GPG key handling
