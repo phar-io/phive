@@ -81,17 +81,21 @@ class PharRegistry {
     }
 
     public function addUsage(Phar $phar, Filename $destination): void {
-        $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
 
         $absolutePath = $destination->withAbsolutePath()->asString();
 
-        if ($this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $absolutePath), $pharNode)->length
-            !== 0
-        ) {
-            return;
+        $oldUsage = $this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $absolutePath))->item(0);
+        if ($oldUsage !== null) {
+            $oldUsage->parentNode->removeChild($oldUsage);
         }
+
         $usageNode = $this->dbFile->createElement('usage');
         $usageNode->setAttribute('destination', $absolutePath);
+
+        $pharNode = $this->getFirstMatchingPharNode($phar->getName(), $phar->getVersion());
+        if ($pharNode === null) {
+            throw new PharRegistryException('No phar node for specified name and version found');
+        }
         $pharNode->appendChild($usageNode);
         $this->dbFile->save();
     }
