@@ -3,13 +3,14 @@
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 
-## [Unreleased]
+## [0.15.1] - 2022-03-28
 
 __Please note__: Version 0.15.x requires PHP 7.3 or later.
 
 ### Fixed
 * [#327](https://github.com/phar-io/phive/issues/327): "Broken cURL install" message is not being displayed
 * [#361](https://github.com/phar-io/phive/issues/361): Problem with 'remove' command on Windows
+* [#363](https://github.com/phar-io/phive/issues/363): phive install failure: Undefined variable: output
 * [#366](https://github.com/phar-io/phive/issues/366): purge command deleted the wrong version
 
 ### Changed
@@ -17,6 +18,7 @@ __Please note__: Version 0.15.x requires PHP 7.3 or later.
 * [#341](https://github.com/phar-io/phive/pull/341): Display identifier when no release matches (thanks @villfa)
 * [#342](https://github.com/phar-io/phive/pull/342): Update error message with the right version
 * [#346](https://github.com/phar-io/phive/pull/346): Fetch 100 github releases at a time (also on phar.io resolved aliases)
+
 
 
 ## [0.15.0] - 2021-07-24

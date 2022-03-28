@@ -106,11 +106,11 @@ abstract class Environment {
     }
 
     /**
-     * @throws ExtensionsMissingException
+     * @throws FeatureMissingException
      */
     public function ensureFitness(): void {
         $this->ensureTimezoneSet();
-        $this->ensureRequiredExtensionsLoaded();
+        $this->ensureRequiredFeaturesAvailable();
         $this->disableXDebug();
     }
 
@@ -165,21 +165,25 @@ abstract class Environment {
         }
     }
 
-    /**
-     * @throws ExtensionsMissingException
-     */
-    private function ensureRequiredExtensionsLoaded(): void {
-        $required = ['dom', 'mbstring', 'pcre', 'curl', 'phar', 'libxml'];
+    private function ensureRequiredFeaturesAvailable(): void {
+        $extensions = ['dom', 'mbstring', 'pcre', 'curl', 'phar', 'libxml', 'foo'];
+        $functions = ['exec', 'php_uname', 'escapeshellarg'];
         $missing  = [];
 
-        foreach ($required as $test) {
+        foreach ($extensions as $test) {
             if (!extension_loaded($test)) {
                 $missing[] = sprintf('ext/%s not installed/enabled', $test);
             }
         }
 
+        foreach ($functions as $test) {
+            if (!function_exists($test)) {
+                $missing[] = sprintf('function %s not available', $test);
+            }
+        }
+
         if (count($missing)) {
-            throw new ExtensionsMissingException($missing);
+            throw new FeatureMissingException($missing);
         }
     }
 }

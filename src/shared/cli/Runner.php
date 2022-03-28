@@ -29,7 +29,7 @@ use function substr;
 use PharIo\Phive\Environment;
 use PharIo\Phive\ErrorException;
 use PharIo\Phive\Exception;
-use PharIo\Phive\ExtensionsMissingException;
+use PharIo\Phive\FeatureMissingException;
 use PharIo\Phive\MigrationService;
 use PharIo\Phive\MigrationsFailedException;
 use PharIo\Phive\PhiveContext;
@@ -196,11 +196,11 @@ class Runner {
         try {
             $this->environment->ensureFitness();
             $this->migrationService->ensureFitness();
-        } catch (ExtensionsMissingException $e) {
+        } catch (FeatureMissingException $e) {
             throw new RunnerException(
                 sprintf(
-                    "Your environment is not ready to run phive due to the following reason(s):\n\n          %s\n",
-                    implode("\n          ", $e->getMissing())
+                    "Your environment is not ready to run phive due to the following reason(s):\n\n- %s\n",
+                    implode("\n- ", $e->getMissing())
                 ),
                 self::RC_EXT_MISSING
             );

@@ -12,12 +12,12 @@ namespace PharIo\Phive;
 
 use Exception;
 
-class ExtensionsMissingException extends Exception {
+class FeatureMissingException extends Exception {
     /** @var array */
     private $missing;
 
     /**
-     * ExtensionsMissingException constructor.
+     * FeatureMissingException constructor.
      */
     public function __construct(array $missing) {
         $this->missing = $missing;
