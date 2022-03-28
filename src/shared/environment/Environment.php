@@ -166,7 +166,7 @@ abstract class Environment {
     }
 
     private function ensureRequiredFeaturesAvailable(): void {
-        $extensions = ['dom', 'mbstring', 'pcre', 'curl', 'phar', 'libxml', 'foo'];
+        $extensions = ['dom', 'mbstring', 'pcre', 'curl', 'phar', 'libxml'];
         $functions = ['exec', 'php_uname', 'escapeshellarg'];
         $missing  = [];
 
