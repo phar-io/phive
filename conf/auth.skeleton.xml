@@ -9,10 +9,10 @@
     <!-- PHIVE AUTH CONFIGURATION -->
 
     <!--
-        <domain host="api.github.com" type="token" credentials="ThisIsASecretToken" />
-        <domain host="example.com" type="basic" username="Aladdin" password="open sesame" />
-        <domain host="example.org" type="basic" credentials="QWxhZGRpbjpvcGVuIHNlc2FtZQ==" />
-        <domain host="gitlab.com" type="bearer" credentials="ThisIsAPrivateToken" />
+        <domain host="api.github.com" type="Token" credentials="ThisIsASecretToken" />
+        <domain host="example.com" type="Basic" username="Aladdin" password="open sesame" />
+        <domain host="example.org" type="Basic" credentials="QWxhZGRpbjpvcGVuIHNlc2FtZQ==" />
+        <domain host="gitlab.com" type="Bearer" credentials="ThisIsAPrivateToken" />
     -->
 
 </auth>

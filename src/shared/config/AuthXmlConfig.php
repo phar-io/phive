@@ -50,9 +50,9 @@ class AuthXmlConfig implements AuthConfig {
             throw new AuthException(sprintf('Authentication data for %s is invalid', $domain));
         }
 
-        $authType = $auth->getAttribute('type');
+        $authType = strtolower($auth->getAttribute('type'));
 
-        if ($authType === 'Basic') {
+        if ($authType === 'basic') {
             return $this->handleBasicAuthentication($domain, $auth);
         }
 
@@ -63,9 +63,9 @@ class AuthXmlConfig implements AuthConfig {
         $authCredentials = $auth->getAttribute('credentials');
 
         switch ($authType) {
-            case 'Token':
+            case 'token':
                 return new TokenAuthentication($authCredentials);
-            case 'Bearer':
+            case 'bearer':
                 return new BearerAuthentication($authCredentials);
 
             default:

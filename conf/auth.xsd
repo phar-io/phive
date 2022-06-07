@@ -18,10 +18,10 @@
     </xs:element>
     <xs:simpleType name="type">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Basic"/>
-            <xs:enumeration value="Bearer"/>
-            <xs:enumeration value="Token"/>
-            <xs:enumeration value="Digest"/>
+            <xs:enumeration value="basic"/>
+            <xs:enumeration value="bearer"/>
+            <xs:enumeration value="token"/>
+            <xs:enumeration value="digest"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>
