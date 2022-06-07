@@ -255,12 +255,12 @@ class Factory {
             new EnvironmentAuthConfig($this->getEnvironment()),
             new AuthXmlConfig(new XmlFile(
                 $this->getAuthXmlConfigFileLocator()->getFile(false),
-                'https://phar.io/phive-auth',
+                'https://phar.io/auth',
                 'auth'
             )),
             new AuthXmlConfig(new XmlFile(
                 $this->getAuthXmlConfigFileLocator()->getFile(true),
-                'https://phar.io/phive-auth',
+                'https://phar.io/auth',
                 'auth'
             ))
         ]);
