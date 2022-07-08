@@ -71,23 +71,23 @@ class GitlabRepositoryTest extends TestCase {
      * @param string $version
      * @param string $url
      */
-    private function getGitlabEntry($version, $url): stdClass {
-        $asset       = new stdClass();
-        $asset->url  = $url;
-        $asset->name = basename($url);
+    private function getGitlabEntry($version, $url): array {
+        return [
+            'tag_name' => $version,
+            'assets' => [
+                'links' => [
+                    [
+                        'name' => basename($url),
+                        'url' => $url,
+                    ],
+                    [
+                        'name' => basename($url) . '.asc',
+                        'url' => $url . '.asc',
+                    ]
+                ],
 
-        $sig       = new stdClass();
-        $sig->url  = $url . '.asc';
-        $sig->name = basename($url) . '.asc';
-
-        $assets        = new stdClass();
-        $assets->links = [$asset, $sig];
-
-        $entry           = new stdClass();
-        $entry->tag_name = $version;
-        $entry->assets   = $assets;
-
-        return $entry;
+            ],
+        ];
     }
 
     /**
