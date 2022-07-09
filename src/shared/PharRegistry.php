@@ -10,13 +10,13 @@
  */
 namespace PharIo\Phive;
 
-use DOMNode;
 use function array_unique;
 use function chmod;
 use function file_get_contents;
 use function in_array;
 use function sprintf;
 use DOMElement;
+use DOMNode;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\DirectoryException;
 use PharIo\FileSystem\File;
