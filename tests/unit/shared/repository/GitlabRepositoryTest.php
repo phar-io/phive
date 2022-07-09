@@ -14,7 +14,6 @@ use function basename;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use stdClass;
 
 /**
  * @covers \PharIo\Phive\GitlabRepository
@@ -74,15 +73,15 @@ class GitlabRepositoryTest extends TestCase {
     private function getGitlabEntry($version, $url): array {
         return [
             'tag_name' => $version,
-            'assets' => [
+            'assets'   => [
                 'links' => [
                     [
                         'name' => basename($url),
-                        'url' => $url,
+                        'url'  => $url,
                     ],
                     [
                         'name' => basename($url) . '.asc',
-                        'url' => $url . '.asc',
+                        'url'  => $url . '.asc',
                     ]
                 ],
 
