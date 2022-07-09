@@ -10,6 +10,7 @@
  */
 namespace PharIo\Phive;
 
+use DOMNode;
 use function array_unique;
 use function chmod;
 use function file_get_contents;
@@ -86,6 +87,7 @@ class PharRegistry {
         $oldUsage = $this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $absolutePath))->item(0);
 
         if ($oldUsage !== null) {
+            assert($oldUsage->parentNode instanceof DOMNode);
             $oldUsage->parentNode->removeChild($oldUsage);
         }
 
