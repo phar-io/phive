@@ -2,6 +2,17 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.15.2] - 2022-08-02
+
+__Please note__: Version 0.15.x requires PHP 7.3 or later.
+
+### Fixed
+* [#373](https://github.com/phar-io/phive/issues/373): Fix array access in gitlab repo
+* [#375](https://github.com/phar-io/phive/issues/375): Fix gitlab repo tests
+* Fix Namespace for auth file
+
+## Changed
+* Make auth type string case insensitive
 
 ## [0.15.1] - 2022-03-28
 
