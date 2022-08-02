@@ -87,7 +87,7 @@ class PharRegistry {
 
         $oldUsage = $this->dbFile->query(sprintf('//phive:usage[@destination="%s"]', $absolutePath))->item(0);
 
-        if ($oldUsage instanceof DOMNodeList && $oldUsage->parentNode instanceof DOMNode) {
+        if ($oldUsage instanceof DOMNodeList) {
             $oldUsage->parentNode->removeChild($oldUsage);
         }
 
