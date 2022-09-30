@@ -18,6 +18,8 @@ use DOMXPath;
 use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\File;
 use PharIo\FileSystem\Filename;
+use function rename;
+use function uniqid;
 
 class XmlFile {
     /** @var null|DOMDocument */
@@ -82,7 +84,10 @@ class XmlFile {
 
     public function save(): void {
         $this->getDirectory()->ensureExists();
-        $this->getDom()->save($this->filename->asString());
+        $targetFilename = $this->filename->asString();
+        $temporaryFilename = $targetFilename . '.' . uniqid('tmp', true);
+        $this->getDom()->save($temporaryFilename);
+        rename($temporaryFilename, $targetFilename);
     }
 
     public function getDirectory(): Directory {
