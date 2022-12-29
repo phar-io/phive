@@ -1,6 +1,6 @@
 {
   "name" : "phar-io/phive",
-  "description" : "",
+  "description" : "The Phar Installation and Verification Environment.",
   "license" : "BSD-3-Clause",
   "authors" : [
     {
