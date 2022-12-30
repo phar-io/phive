@@ -22,6 +22,7 @@ jobs:
           - '7.4'
           - '8.0'
           - '8.1'
+          - '8.2'
     name: Run install on [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
     steps:
       - uses: actions/checkout@v2
