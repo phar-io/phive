@@ -36,6 +36,8 @@ class TestStreamWrapper {
 
     public static $map = [];
 
+    public $context;
+
     protected $_protocol;
 
     /** @var string */
