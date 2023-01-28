@@ -80,6 +80,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
 
     /**
      * @throws GithubAliasResolverException
+     *
      * @psalm-assert !null $this->rateLimit
      */
     private function ensureWithinRateLimit(): void {

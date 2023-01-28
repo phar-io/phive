@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class KeyImportResult {
-
     /** @var int */
     private $count;
 

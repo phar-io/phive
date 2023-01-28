@@ -14,7 +14,6 @@ use function putenv;
 use PharIo\FileSystem\Directory;
 
 class GnuPG {
-
     /** @var \GnuPG */
     private $gnupg;
 

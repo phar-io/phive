@@ -16,7 +16,6 @@ use PharIo\Version\InvalidVersionException;
 use PharIo\Version\Version;
 
 class GithubRepository implements SourceRepository {
-
     /** @var JsonData */
     private $jsonData;
 

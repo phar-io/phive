@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use DateTimeImmutable;
 
 class RateLimit {
-
     /** @var int */
     private $limit;
 

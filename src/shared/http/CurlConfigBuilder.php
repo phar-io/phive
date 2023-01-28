@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function sprintf;
 
 class CurlConfigBuilder {
-
     /** @var Environment */
     private $environment;
 

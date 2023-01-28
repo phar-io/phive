@@ -24,7 +24,6 @@ use function ucfirst;
 use DateTimeImmutable;
 
 class CurlHttpClient implements HttpClient {
-
     /** @var CurlConfig */
     private $config;
 

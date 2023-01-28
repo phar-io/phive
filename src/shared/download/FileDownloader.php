@@ -14,7 +14,6 @@ use function sprintf;
 use PharIo\FileSystem\File;
 
 class FileDownloader {
-
     /** @var HttpClient */
     private $httpClient;
 

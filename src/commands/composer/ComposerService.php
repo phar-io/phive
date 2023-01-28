@@ -17,7 +17,6 @@ use PharIo\FileSystem\Filename;
 use PharIo\Version\VersionConstraintParser;
 
 class ComposerService {
-
     /** @var SourcesList */
     private $sourcesList;
 

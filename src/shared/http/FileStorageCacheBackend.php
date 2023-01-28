@@ -16,7 +16,6 @@ use function str_replace;
 use PharIo\FileSystem\Directory;
 
 class FileStorageCacheBackend implements CacheBackend {
-
     /** @var Directory */
     private $basedir;
 

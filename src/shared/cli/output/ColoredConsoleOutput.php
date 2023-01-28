@@ -25,7 +25,6 @@ class ColoredConsoleOutput extends ConsoleOutput {
     }
 
     public function writeMarkdown(string $markdown): void {
-
         // bold => yellow
         $markdown = preg_replace_callback('/(\*\*|__)(.*?)\1/', static function (array $matches): string {
             return "\033[33m" . $matches[2] . "\033[0m"; // 0m

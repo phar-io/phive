@@ -15,7 +15,6 @@ use function count;
 use function sprintf;
 
 class Options {
-
     /** @var array<string, mixed> */
     private $options = [];
 

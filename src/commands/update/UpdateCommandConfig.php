@@ -14,7 +14,6 @@ use function in_array;
 use PharIo\FileSystem\Directory;
 
 class UpdateCommandConfig {
-
     /** @var Cli\Options */
     private $cliOptions;
 

@@ -22,7 +22,6 @@ use PharIo\Version\VersionConstraint;
 use PharIo\Version\VersionConstraintParser;
 
 class InstallCommandConfig {
-
     /** @var Cli\Options */
     private $cliOptions;
 

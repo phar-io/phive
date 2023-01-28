@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Filename;
 
 class OutdatedConfig {
-
     /** @var Cli\Options */
     private $options;
 

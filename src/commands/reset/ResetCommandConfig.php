@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class ResetCommandConfig {
-
     /** @var Cli\Options */
     private $cliOptions;
 

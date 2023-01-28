@@ -22,7 +22,6 @@ use PharIo\Version\Version;
 use PharIo\Version\VersionConstraintParser;
 
 abstract class PhiveXmlConfig {
-
     /** @var XmlFile */
     private $configFile;
 

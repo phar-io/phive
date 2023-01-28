@@ -22,7 +22,6 @@ use Exception;
 use PharIo\Phive\Cli\Output;
 
 class RingdownCurlHttpClient implements HttpClient {
-
     /** @var HttpClient */
     private $client;
 

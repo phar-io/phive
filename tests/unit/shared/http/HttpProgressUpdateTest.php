@@ -77,10 +77,6 @@ class HttpProgressUpdateTest extends TestCase {
 
     /**
      * @dataProvider percentProvider
-     *
-     * @param $total
-     * @param $received
-     * @param $expectedPercent
      */
     public function testGetDownloadPercent($total, $received, $expectedPercent): void {
         $url    = new Url('https://example.com');
@@ -91,10 +87,6 @@ class HttpProgressUpdateTest extends TestCase {
 
     /**
      * @dataProvider percentProvider
-     *
-     * @param $total
-     * @param $sent
-     * @param $expectedPercent
      */
     public function testGetUploadPercent($total, $sent, $expectedPercent): void {
         $url    = new Url('https://example.com');

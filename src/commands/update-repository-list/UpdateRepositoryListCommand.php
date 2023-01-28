@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\Phive\Cli\Command;
 
 class UpdateRepositoryListCommand implements Command {
-
     /** @var RemoteSourcesListFileLoader */
     private $loader;
 

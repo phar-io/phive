@@ -14,7 +14,6 @@ use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
 class InstallCommand implements Cli\Command {
-
     /** @var InstallCommandConfig */
     private $config;
 

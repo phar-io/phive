@@ -14,7 +14,6 @@ use function file_get_contents;
 use function str_replace;
 
 class HelpCommand implements Cli\Command {
-
     /** @var Environment */
     private $environment;
 

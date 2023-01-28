@@ -22,7 +22,6 @@ use PharIo\Version\AnyVersionConstraint;
 use PharIo\Version\Version;
 
 class SelfupdateCommand implements Cli\Command {
-
     /** @var PharDownloader */
     private $pharDownloader;
 

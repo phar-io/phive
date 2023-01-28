@@ -14,7 +14,6 @@ use function sprintf;
 use PharIo\Phive\Cli\ConsoleTable;
 
 class MigrateCommand implements Cli\Command {
-
     /** @var MigrateCommandConfig */
     private $config;
 

@@ -17,7 +17,6 @@ use function sprintf;
 use function str_pad;
 
 class HttpProgressRenderer implements HttpProgressHandler {
-
     /** @var Cli\Output */
     private $output;
 

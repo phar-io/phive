@@ -18,7 +18,6 @@ use function sprintf;
 use function strtolower;
 
 class ConsoleInput implements Input {
-
     /** @var Output */
     private $output;
 

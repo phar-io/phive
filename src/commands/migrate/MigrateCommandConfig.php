@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class MigrateCommandConfig {
-
     /** @var Cli\Options */
     private $cliOptions;
 

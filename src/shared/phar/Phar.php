@@ -18,7 +18,6 @@ use PharIo\Manifest\ManifestLoaderException;
 use PharIo\Version\Version;
 
 class Phar {
-
     /** @var string */
     private $name;
 

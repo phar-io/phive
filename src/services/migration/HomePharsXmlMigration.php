@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Filename;
 
 class HomePharsXmlMigration implements Migration {
-
     /** @var Filename */
     private $legacy;
 

@@ -50,7 +50,6 @@ class CompatibilityService {
 
         foreach ($manifest->getRequirements() as $requirement) {
             switch (true) {
-
                 case $requirement instanceof PhpVersionRequirement: {
                     $php = $requirement->getVersionConstraint();
 

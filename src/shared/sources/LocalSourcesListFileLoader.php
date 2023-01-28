@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Filename;
 
 class LocalSourcesListFileLoader implements SourcesListFileLoader {
-
     /** @var Filename */
     private $filename;
 

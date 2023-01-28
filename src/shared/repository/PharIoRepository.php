@@ -15,7 +15,6 @@ use DOMElement;
 use PharIo\Version\Version;
 
 class PharIoRepository implements SourceRepository {
-
     /** @var XmlFile */
     private $xmlFile;
 

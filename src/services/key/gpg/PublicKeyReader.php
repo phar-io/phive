@@ -15,7 +15,6 @@ use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
 class PublicKeyReader {
-
     /** @var GnuPG */
     private $gnupg;
 

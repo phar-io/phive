@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\FileSystem\Directory;
 
 class RemoveCommandConfig {
-
     /** @var Cli\Options */
     private $cliOptions;
 

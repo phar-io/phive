@@ -50,7 +50,7 @@ class EnvironmentAuthConfig implements AuthConfig {
             // "Token" Authorizations
             case 'api.github.com':
                 return new TokenAuthentication($token);
-            // "Bearer" Authorizations
+                // "Bearer" Authorizations
             case 'gitlab.com':
                 return new BearerAuthentication($token);
 

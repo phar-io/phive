@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class UpdateCommand implements Cli\Command {
-
     /** @var UpdateCommandConfig */
     private $config;
 

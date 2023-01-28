@@ -20,7 +20,6 @@ use PharIo\Phive\Cli\CommandOptionsException;
 use PharIo\Version\AnyVersionConstraint;
 
 class StatusCommandConfig {
-
     /** @var Cli\Options */
     private $cliOptions;
 

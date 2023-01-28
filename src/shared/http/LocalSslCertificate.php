@@ -16,7 +16,6 @@ use function stream_get_meta_data;
 use function tmpfile;
 
 class LocalSslCertificate {
-
     /** @var string */
     private $hostname;
 

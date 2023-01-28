@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function in_array;
 
 class TrustedCollection {
-
     /** @var string[] */
     private $keyIds = [];
 

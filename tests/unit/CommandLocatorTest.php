@@ -20,9 +20,6 @@ class CommandLocatorTest extends TestCase {
     /**
      * @dataProvider commandProvider
      *
-     * @param $command
-     * @param $factoryMethod
-     *
      * @throws Cli\CommandLocatorException
      */
     public function testValidCommandsAreReturned($command, $factoryMethod): void {

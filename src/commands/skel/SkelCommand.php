@@ -19,7 +19,6 @@ use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Output;
 
 class SkelCommand implements Cli\Command {
-
     /** @var SkelCommandConfig */
     private $config;
 

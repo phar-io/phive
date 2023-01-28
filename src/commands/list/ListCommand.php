@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function count;
 
 class ListCommand implements Cli\Command {
-
     /** @var SourcesList */
     private $sourcesList;
 

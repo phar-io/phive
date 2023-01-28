@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function in_array;
 
 class ResetCommand implements Cli\Command {
-
     /** @var ResetCommandConfig */
     private $config;
 

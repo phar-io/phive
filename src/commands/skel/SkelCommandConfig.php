@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function rtrim;
 
 class SkelCommandConfig {
-
     /** @var Cli\Options */
     private $cliOptions;
 

@@ -18,7 +18,6 @@ use PharIo\FileSystem\DirectoryException;
 use Throwable;
 
 final class UnixoidEnvironment extends Environment {
-
     /** @var Executor */
     private $executor;
 

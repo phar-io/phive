@@ -14,7 +14,6 @@ use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Output;
 
 class RemovalService {
-
     /** @var Environment */
     private $environment;
 
