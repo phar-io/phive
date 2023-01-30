@@ -1,13 +1,18 @@
 FROM fedora:37
 
-RUN dnf install -y php-cli php-xml php-curl php-mbstring gnupg which
+LABEL stage=phive-fedora-build
 
-ADD ./build/phar/phive*.phar ./opt/phario/phive
-RUN chmod +x ./opt/phario/phive
+RUN dnf install -y php-cli php-xml php-curl php-mbstring gnupg which busybox
+
+ADD build/phar/phive*.phar /usr/local/bin/phive
+RUN chmod +x /usr/local/bin/phive
 RUN mkdir /repo
+RUN mkdir /phive
+RUN ln -sf /usr/sbin/busybox /bin/sh
+
+ENV PHIVE_HOME=/phive
+ENV HOME=/phive
 
 WORKDIR /repo
 
-ENV PHIVE_HOME=/home
-
-ENTRYPOINT ["/opt/phario/phive"]
+ENTRYPOINT ["/usr/local/bin/phive"]
