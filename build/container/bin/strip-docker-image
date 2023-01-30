@@ -1,0 +1,154 @@
+#!/bin/bash
+# NAME
+#	strip-docker-image - strips the bare essentials from an image and exports them
+#
+# SYNOPSIS
+#	strip-docker-image -i image-name -t target-image-name -t [-p package | -f file] [-d Dockerfile] [-x expose-port] [-v]
+#
+#
+# OPTIONS
+#	-i image-name		to strip
+#	-t target-image-name	the image name of the stripped image
+#	-p package		package to include from image, multiple -p allowed.
+#	-f file			file to include from image, multiple -f allowed.
+#	-x port			to expose.
+#	-d Dockerfile		to incorporate in the stripped image.
+#	-v			verbose
+#
+# DESCRIPTION
+#   	creates a new Docker image based on the scratch  which contains
+#	only the the source image of selected packages and files.
+#
+# EXAMPLE
+#	The following example strips the nginx installation from the default NGiNX docker image,
+#
+#        strip-docker-image -i nginx -t stripped-nginx  \
+#			-p nginx  \
+#			-f /etc/passwd \
+#			-f /etc/group \
+#			-f '/lib/*/libnss*' \
+#			-f /bin/ls \
+#			-f /bin/cat \
+#			-f /bin/sh \
+#			-f /bin/mkdir \
+#			-f /bin/ps \
+#			-f /var/run \
+#			-f /var/log/nginx
+#
+# AUTHOR
+#  Mark van Holsteijn
+#
+# COPYRIGHT
+#
+#   Copyright 2015 Xebia Nederland B.V.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+#
+
+function usage() {
+	echo "usage: $(basename $0) -i image-name -t stripped-image-name [-d Dockerfile] [-p package | -f file] [-v]" >&2
+	echo "	$@" >&2
+}
+
+function parse_commandline() {
+
+	while getopts "vi:t:p:f:x:d:" OPT; do
+	    case "$OPT" in
+		v)
+		    VERBOSE=-v
+		    ;;
+		p)
+		    PACKAGES="$PACKAGES -p $OPTARG"
+		    ;;
+		f)
+		    FILES="$FILES -f $OPTARG"
+		    ;;
+		i)
+		    IMAGE_NAME="$OPTARG"
+		    ;;
+		t)
+		    TARGET_IMAGE_NAME="$OPTARG"
+		    ;;
+		x)
+		    EXPOSE_PORTS="$EXPOSE_PORTS $OPTARG"
+		    ;;
+		d)
+		    DOCKERFILES="$DOCKERFILES \"$OPTARG\""
+		    ;;
+		*)
+		    usage
+		    exit 1
+		    ;;
+	    esac
+	done
+	shift $((OPTIND-1))
+
+	if [ -z "$IMAGE_NAME" ] ; then
+		usage "image name is missing."
+		exit 1
+	fi
+
+	if [ -z "$TARGET_IMAGE_NAME" ] ; then
+		usage "target image name -t missing."
+		exit 1
+	fi
+
+	if [ -z "$PACKAGES" -a -z "$FILES" ] ; then
+		usage "Missing -p or -f options"
+		exit 1
+	fi
+	export PACKAGES FILES VERBOSE
+}
+
+parse_commandline "$@"
+
+DIR=strip-docker-image-$$
+mkdir -p $DIR/export
+SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+docker run -v $PWD/$DIR/export:/export:Z \
+	  -v $SCRIPT_DIR:/mybin:Z \
+	  --entrypoint="/bin/bash" \
+	  $IMAGE_NAME \
+	  /mybin/strip-docker-image-export -d /export $VERBOSE $PACKAGES $FILES
+
+cat > $DIR/Dockerfile <<!
+FROM scratch
+ADD export /
+!
+
+for DOCKERFILE in $DOCKERFILES ; do
+    sed ':x; /\\$/ { N; s/\\\n//; tx }' "$(eval echo $DOCKERFILE)" \
+	    | grep -v '^\(FROM\|RUN\|ADD\|COPY\)' \
+	    >> $DIR/Dockerfile
+done
+
+for PORT in $EXPOSE_PORTS ; do
+	echo EXPOSE $PORT >> $DIR/Dockerfile
+done
+
+EXPOSE=$(docker inspect -f '{{range $key, $value := .Config.ExposedPorts}}{{$key}} {{end}}' $IMAGE_NAME | sed -e 's/\/[a-z]* / /g')
+ENTRYPOINT=$(docker inspect --format='{{if .Config.Entrypoint}}ENTRYPOINT {{json .Config.Entrypoint}}{{end}}' $IMAGE_NAME)
+CMD=$(docker inspect --format='{{if .Config.Cmd}}CMD {{json .Config.Cmd}}{{end}}' $IMAGE_NAME)
+
+[ -z "$EXPOSE" ] || echo "EXPOSE $EXPOSE" >> $DIR/Dockerfile
+[ -z "$ENTRYPOINT" ] || echo $ENTRYPOINT >> $DIR/Dockerfile
+[ -z "$CMD" ] || echo $CMD >> $DIR/Dockerfile
+
+(
+	cd $DIR
+	docker build --no-cache -t $TARGET_IMAGE_NAME .
+)
+
+rm -rf $DIR
