@@ -21,7 +21,7 @@
         <property name="clean.done" value="true"/>
     </target>
 
-    <target name="getphive" description="Get phive on travis-ci">
+    <target name="getphive" description="Get phive">
         <exec executable="wget" taskname="wget">
             <arg value="https://phar.io/releases/phive.phar"/>
         </exec>
