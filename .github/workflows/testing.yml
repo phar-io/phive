@@ -23,7 +23,7 @@ jobs:
           - '8.0'
           - '8.1'
           - '8.2'
-    name: Test on [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
+    name: Test
     steps:
       - uses: actions/checkout@v3
       - name: Setup cache environment
