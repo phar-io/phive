@@ -1,0 +1,10 @@
+#
+# This is merely a fragment to be added to the stripped container
+# The main Containerfile is in the project root
+#
+LABEL stage=phive-fedora-build
+
+ENV PHIVE_HOME=/phive
+ENV HOME=/phive
+
+WORKDIR /repo

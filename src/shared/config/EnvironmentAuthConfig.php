@@ -47,10 +47,9 @@ class EnvironmentAuthConfig implements AuthConfig {
         $token = $this->environment->getVariable(self::KNOWN_TOKEN[$domain]);
 
         switch ($domain) {
-            // "Token" Authorizations
             case 'api.github.com':
                 return new TokenAuthentication($token);
-                // "Bearer" Authorizations
+
             case 'gitlab.com':
                 return new BearerAuthentication($token);
 

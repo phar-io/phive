@@ -119,13 +119,13 @@
     </target>
 
     <target name="composer" description="Install composer dependencies (including dev)">
-        <exec executable="composer">
+        <exec executable="${basedir}/tools/composer">
             <arg value="install"/>
         </exec>
     </target>
 
     <target name="composer-no-dev" description="Install composer dependencies (without dev)">
-        <exec executable="composer">
+        <exec executable="${basedir}/tools/composer">
             <arg value="install"/>
             <arg value="--no-dev"/>
         </exec>
@@ -151,6 +151,50 @@
 
     <target name="phpstan" depends="install-tools" description="Run PHPStan">
         <exec executable="./tools/phpstan" failonerror="true"/>
+    </target>
+
+    <target name="build-container-image">
+        <exec executable="podman" failonerror="true" taskname="fedora">
+            <arg value="build" />
+            <arg line="-t phive-fedora" />
+            <arg line="-f ${basedir}/Containerfile" />
+        </exec>
+        <exec executable="${basedir}/build/container/bin/strip-docker-image" failonerror="true" taskname="stripping">
+            <arg line="-i localhost/phive-fedora" />
+            <arg line="-t phive" />
+            <arg line="-d ${basedir}/build/container/Containerfile.stripped" />
+            <arg line="-p tzdata" />
+            <arg line="-f /usr/bin/php" />
+            <arg line="-f /usr/lib64/php/modules/bz2.so" />
+            <arg line="-f /usr/lib64/php/modules/curl.so" />
+            <arg line="-f /usr/lib64/php/modules/dom.so" />
+            <arg line="-f /usr/lib64/php/modules/mbstring.so" />
+            <arg line="-f /usr/lib64/php/modules/phar.so" />
+            <arg line="-f /usr/lib64/php/modules/xml.so" />
+            <arg line="-f /etc/php.ini" />
+            <arg line="-f /etc/php.d/20-curl.ini" />
+            <arg line="-f /etc/php.d/20-dom.ini" />
+            <arg line="-f /etc/php.d/20-mbstring.ini" />
+            <arg line="-f /etc/php.d/20-phar.ini" />
+            <arg line="-f /etc/php.d/20-xml.ini" />
+            <arg line="-f /etc/php.d/20-bz2.so" />
+            <arg line="-f /usr/local/bin/phive" />
+            <arg line="-f /tmp" />
+            <arg line="-f /usr/bin/which" />
+            <arg line="-f /usr/bin/gpg" />
+            <arg line="-f /usr/bin/env" />
+            <arg line="-f /usr/sbin/busybox" />
+            <arg line="-f /bin/sh" />
+            <arg line="-f /etc/pki/tls/certs/ca-bundle.crt" />
+            <arg line="-f /repo" />
+            <arg line="-f /phive" />
+        </exec>
+        <exec executable="podman" failonerror="true" taskname="cleanup">
+            <arg value="image" />
+            <arg value="prune" />
+            <arg value="--force" />
+            <arg line="--filter label=stage=phive-fedora-build" />
+        </exec>
     </target>
 
 </project>
