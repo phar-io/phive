@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         operating-system:
+          - macOS-latest
           - ubuntu-latest
           - windows-latest
-          - macOS-latest
         php-versions:
           - '7.3'
           - '7.4'
