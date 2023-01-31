@@ -16,7 +16,6 @@ use PharIo\Version\InvalidVersionException;
 use PharIo\Version\Version;
 
 class GitlabRepository implements SourceRepository {
-
     /** @var JsonData */
     private $jsonData;
 

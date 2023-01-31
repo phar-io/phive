@@ -16,7 +16,6 @@ use PharIo\GnuPG\Factory as GnuPGFactory;
 use PharIo\Version\VersionConstraintParser;
 
 class Factory {
-
     /** @var null|CurlConfig */
     private $curlConfig;
 

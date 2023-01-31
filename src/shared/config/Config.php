@@ -21,7 +21,6 @@ use PharIo\FileSystem\Filename;
 use PharIo\Phive\Cli\Options;
 
 class Config {
-
     /** @var Environment */
     private $environment;
 

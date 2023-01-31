@@ -15,7 +15,6 @@ use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
 
 class InstalledPhar {
-
     /** @var string */
     private $name;
 

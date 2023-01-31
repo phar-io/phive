@@ -11,7 +11,6 @@
 namespace PharIo\Phive\Cli;
 
 interface CommandLocator {
-
     /**
      * @throws CommandLocatorException
      */

@@ -14,7 +14,6 @@ use function array_filter;
 use function count;
 
 class MigrationService {
-
     /** @var MigrationFactory */
     private $factory;
 

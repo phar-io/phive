@@ -28,7 +28,6 @@ use PHPUnit_Framework_MockObject_MockObject;
  * @covers \PharIo\Phive\PhiveXmlConfig
  */
 class LocalPhiveXmlConfigTest extends TestCase {
-
     /** @var DOMDocument */
     private $domHelper;
 

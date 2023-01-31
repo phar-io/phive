@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class ETag {
-
     /** @var string */
     private $value;
 

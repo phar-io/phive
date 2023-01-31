@@ -15,7 +15,6 @@ use InvalidArgumentException;
 use PharIo\GnuPG\ErrorStrings;
 
 class GnupgVerificationResult implements VerificationResult {
-
     /** @var array */
     private $verificationData;
 

@@ -17,7 +17,6 @@ use function substr;
 use OutOfBoundsException;
 
 class Request {
-
     /** @var array */
     private $argv;
 

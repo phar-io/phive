@@ -14,7 +14,6 @@ use function sprintf;
 use DOMElement;
 
 class SourcesList {
-
     /** @var XmlFile */
     private $sourcesFile;
 

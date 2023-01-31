@@ -24,7 +24,6 @@ use PharIo\FileSystem\Filename;
 use PharIo\Version\Version;
 
 class PharRegistry {
-
     /** @var Directory */
     private $pharDirectory;
 

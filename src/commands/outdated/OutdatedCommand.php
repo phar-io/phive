@@ -19,7 +19,6 @@ use DOMDocument;
 use PharIo\Phive\Cli\ConsoleTable;
 
 class OutdatedCommand implements Cli\Command {
-
     /** @var PhiveXmlConfig */
     private $phiveXmlConfig;
 

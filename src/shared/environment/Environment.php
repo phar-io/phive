@@ -33,7 +33,6 @@ use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
 abstract class Environment {
-
     /** @var array */
     protected $server = [];
 

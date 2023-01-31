@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class ExecutorResult {
-
     /** @var string */
     private $command;
 

@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\Version\Version;
 
 class SupportedRelease implements Release {
-
     /** @var Version */
     private $version;
 

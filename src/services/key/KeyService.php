@@ -14,7 +14,6 @@ use function in_array;
 use function sprintf;
 
 class KeyService {
-
     /** @var KeyDownloader */
     private $keyDownloader;
 

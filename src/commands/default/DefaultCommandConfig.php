@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class DefaultCommandConfig {
-
     /** @var Cli\Options */
     private $cliOptions;
 

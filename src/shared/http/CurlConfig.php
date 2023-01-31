@@ -30,7 +30,6 @@ use function defined;
 use function sprintf;
 
 class CurlConfig {
-
     /** @var null|string optional proxy URL */
     private $proxyUrl;
 

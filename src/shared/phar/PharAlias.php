@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class PharAlias implements PharIdentifier {
-
     /** @var string */
     private $alias;
 

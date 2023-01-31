@@ -16,7 +16,6 @@ use function str_split;
 use DateTimeImmutable;
 
 class PublicKey {
-
     /** @var string */
     private $id;
 

@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class HttpResponse {
-
     /** @var string */
     private $responseBody;
 

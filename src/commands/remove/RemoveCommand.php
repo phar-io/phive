@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function sprintf;
 
 class RemoveCommand implements Cli\Command {
-
     /** @var RemoveCommandConfig */
     private $config;
 

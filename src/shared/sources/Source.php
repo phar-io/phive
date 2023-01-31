@@ -15,7 +15,6 @@ use function sprintf;
 use InvalidArgumentException;
 
 class Source {
-
     /** @var string */
     private $type;
 

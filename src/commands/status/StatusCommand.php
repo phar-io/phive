@@ -18,7 +18,6 @@ use function substr;
 use PharIo\Phive\Cli\ConsoleTable;
 
 class StatusCommand implements Cli\Command {
-
     /** @var Cli\Output */
     private $output;
 

@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class MigrationFactory {
-
     /** @var Factory */
     private $factory;
     /** @var Cli\Input */

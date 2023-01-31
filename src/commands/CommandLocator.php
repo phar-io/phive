@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function sprintf;
 
 class CommandLocator implements Cli\CommandLocator {
-
     /** @var Factory */
     private $factory;
 

@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function sprintf;
 
 abstract class Authentication {
-
     /** @var string */
     private $credentials;
 

@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class DefaultCommand implements Cli\Command {
-
     /** @var VersionCommand */
     private $versionCommand;
 

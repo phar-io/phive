@@ -135,9 +135,6 @@ class TestStreamWrapper {
     }
 
     /**
-     * @param $path
-     * @param $flags
-     *
      * @return array|bool
      */
     public function url_stat($path, $flags) {
@@ -175,9 +172,6 @@ class TestStreamWrapper {
         return $baseDir . '/' . implode('/', $sane);
     }
 
-    /**
-     * @param $data
-     */
     protected function _setDataSize($data): void {
         $this->_dataSize = strlen($data);
     }

@@ -14,7 +14,6 @@ use PharIo\FileSystem\Directory;
 use PharIo\FileSystem\Filename;
 
 class ComposerCommandConfig extends InstallCommandConfig {
-
     /** @var Directory */
     private $workingDirectory;
 

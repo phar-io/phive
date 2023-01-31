@@ -90,9 +90,6 @@ class RegressionTestCase extends TestCase {
         $this->getPharRegistry()->addUsage($phar, $usage);
     }
 
-    /**
-     * @param $command
-     */
     protected function runPhiveCommand($command, array $arguments = []) {
         $call = $this->getTestedPharFilename();
         $call .= ' --home ' . (string)$this->getPhiveHomeDirectory();
@@ -179,9 +176,6 @@ class RegressionTestCase extends TestCase {
         return new Directory(__DIR__ . '/fixtures/phive-home');
     }
 
-    /**
-     * @param $path
-     */
     private function removeDirectory($path): void {
         $files = glob($path . '/*');
 

@@ -49,6 +49,7 @@ class EnvironmentAuthConfig implements AuthConfig {
         switch ($domain) {
             case 'api.github.com':
                 return new TokenAuthentication($token);
+
             case 'gitlab.com':
                 return new BearerAuthentication($token);
 

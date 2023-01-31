@@ -3,6 +3,6 @@
   <phar name="phpab" version="^1.27" installed="1.27.1" location="./tools/phpab" copy="false"/>
   <phar name="phpunit" version="^9.5" installed="9.5.19" location="./tools/phpunit" copy="false"/>
   <phar name="phpstan" version="^1.0" installed="1.4.10" location="./tools/phpstan" copy="false"/>
-  <phar name="php-cs-fixer" version="^3.4" installed="3.8.0" location="./tools/php-cs-fixer" copy="false"/>
+  <phar name="php-cs-fixer" version="^3.13.2" installed="3.13.2" location="./tools/php-cs-fixer" copy="false"/>
   <phar name="psalm" version="^4.0" installed="4.22.0" location="./tools/psalm" copy="false"/>
 </phive>

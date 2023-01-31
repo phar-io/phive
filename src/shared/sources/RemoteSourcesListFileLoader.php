@@ -14,7 +14,6 @@ use DateTimeImmutable;
 use PharIo\FileSystem\Filename;
 
 class RemoteSourcesListFileLoader implements SourcesListFileLoader {
-
     /** @var Url */
     private $sourceUrl;
 

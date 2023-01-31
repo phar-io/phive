@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use PharIo\Version\Version;
 
 class UnsupportedRelease implements Release {
-
     /** @var string */
     private $name;
 

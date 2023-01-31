@@ -13,7 +13,6 @@ namespace PharIo\Phive\Cli;
 use PharIo\Phive\Environment;
 
 class OutputLocator {
-
     /** @var OutputFactory */
     private $factory;
 

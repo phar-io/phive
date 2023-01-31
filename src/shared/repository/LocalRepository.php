@@ -15,7 +15,6 @@ use function pathinfo;
 use PharIo\FileSystem\Filename;
 
 class LocalRepository implements SourceRepository {
-
     /** @var PharRegistry */
     private $registry;
 

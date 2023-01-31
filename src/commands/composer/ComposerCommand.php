@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function sprintf;
 
 class ComposerCommand extends InstallCommand {
-
     /** @var ComposerService */
     private $composerService;
 
@@ -47,6 +46,7 @@ class ComposerCommand extends InstallCommand {
     /**
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-suppress LessSpecificReturnStatement
+     *
      * @psalm-return ComposerCommandConfig
      */
     protected function getConfig(): InstallCommandConfig {

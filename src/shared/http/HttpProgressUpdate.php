@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function round;
 
 class HttpProgressUpdate {
-
     /** @var Url */
     private $url;
 

@@ -13,7 +13,6 @@ namespace PharIo\Phive;
 use function sprintf;
 
 class PurgeCommand implements Cli\Command {
-
     /** @var PharRegistry */
     private $repository;
 

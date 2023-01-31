@@ -20,7 +20,6 @@ use PHPUnit_Framework_MockObject_MockObject;
  * @covers \PharIo\Phive\PharIoRepository
  */
 class PharIoRepositoryTest extends TestCase {
-
     /** @var DOMDocument */
     private $domHelper;
 

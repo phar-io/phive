@@ -11,7 +11,6 @@
 namespace PharIo\Phive;
 
 class UrlRepository implements SourceRepository {
-
     /** @var null|Url */
     private $url;
 

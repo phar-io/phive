@@ -17,7 +17,6 @@ use function sprintf;
 use function strlen;
 
 abstract class GeneralContext implements Context {
-
     /** @var Options */
     private $options;
 
