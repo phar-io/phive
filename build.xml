@@ -38,7 +38,6 @@
         <delete file="phive.phar.asc" />
     </target>
 
-
     <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
         <property name="prepare.done" value="true"/>
     </target>
