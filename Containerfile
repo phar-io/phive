@@ -9,6 +9,7 @@ RUN chmod +x /usr/local/bin/phive
 RUN mkdir /repo
 RUN mkdir /phive
 RUN ln -sf /usr/sbin/busybox /bin/sh
+RUN mkdir /github && ln -s /repo /github/workspace
 
 ENV PHIVE_HOME=/phive
 ENV HOME=/phive
