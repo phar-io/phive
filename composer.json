@@ -18,15 +18,15 @@
     "issues" : "https://github.com/phar-io/phive/issues"
   },
   "require" : {
-    "php" : "^7.3||^8.0",
-    "ext-dom" : "*",
-    "ext-curl" : "*",
+    "php": "^7.3||^8.0",
+    "ext-curl": "*",
+    "ext-dom": "*",
     "ext-mbstring": "*",
     "ext-xml": "*",
-    "phar-io/version": "^3.0.3",
     "phar-io/filesystem": "^2.0.1",
     "phar-io/gnupg": "^1.0",
-    "phar-io/manifest": "^2.0"
+    "phar-io/manifest": "^2.0",
+    "phar-io/version": "^3.0.3"
   },
   "require-dev": {
     "mikey179/vfsstream": "^1.6.4"
@@ -44,5 +44,8 @@
       "phive"
   ],
   "minimum-stability" : "dev",
-  "prefer-stable" : true
+  "prefer-stable" : true,
+  "config": {
+    "sort-packages": true
+  }
 }
