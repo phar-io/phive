@@ -28,30 +28,22 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-
-      - name: "Set up Java"
-        uses: "actions/setup-java@v3"
-        with:
-          distribution: "zulu"
-          java-version: "11"
+          tools: "phive"
 
       - name: "Install dependencies with composer"
         run: "composer install --no-interaction --optimize-autoloader --prefer-dist"
 
-      - name: "Install phive"
-        run: "ant getphive"
-
       - name: "Install dependencies with phive"
-        run: "ant -Dphive.bin=./phive.phar install-tools"
+        run: "phive install --copy --trust-gpg-keys 4AA394086372C20A,2A8299CE842DD38C,CF1A108D0E7AE720,2DE50EB60C013FFFA831040D12CE0F1D262429A5,E82B2FB314E9906E,51C67305FFC2E5C0"
 
       - name: "Run friendsofphp/php-cs-fixer"
-        run: "ant -Dphive.bin=./phive.phar php-cs-fixer"
+        run: "./tools/php-cs-fixer fix --dry-run"
 
       - name: "Run phpstan/phpstan"
-        run: "ant -Dphive.bin=./phive.phar phpstan"
+        run: "./tools/phpstan"
 
       - name: "Run vimeo/psalm"
-        run: "ant -Dphive.bin=./phive.phar psalm"
+        run: "./tools/psalm"
 
   tests:
     name: "Tests"
