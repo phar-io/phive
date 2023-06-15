@@ -108,7 +108,7 @@ jobs:
       - name: "Install phpunit/phpunit with phive"
         env:
           GITHUB_AUTH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: "php ./phive --no-progress install --trust-gpg-keys D8406D0D82947747293778314AA394086372C20A phpunit"
+        run: "php ./phive --no-progress install --trust-gpg-keys D8406D0D82947747293778314AA394086372C20A phpunit@^9.5"
 
       - name: "Run tests with phpunit/phpunit"
         run: "./tools/phpunit"
