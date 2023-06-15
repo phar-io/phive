@@ -35,15 +35,15 @@ class ListCommandTest extends TestCase {
 
         $output->expects($this->at(3))
             ->method('writeText')
-            ->with($this->stringContains('phpunit'));
+            ->with($this->stringContains('phpab'));
 
         $output->expects($this->at(4))
             ->method('writeText')
-            ->with($this->stringContains('phpab'));
+            ->with($this->stringContains('phploc'));
 
         $output->expects($this->at(5))
             ->method('writeText')
-            ->with($this->stringContains('phploc'));
+            ->with($this->stringContains('phpunit'));
 
         $command = new ListCommand($sourcesList, $localSources, $output);
         $command->execute();
