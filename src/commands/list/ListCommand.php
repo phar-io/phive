@@ -11,6 +11,7 @@
 namespace PharIo\Phive;
 
 use function count;
+use function sort;
 
 class ListCommand implements Cli\Command {
     /** @var SourcesList */
@@ -41,6 +42,8 @@ class ListCommand implements Cli\Command {
     }
 
     private function printAliases(array $aliases): void {
+        sort($aliases);
+
         foreach ($aliases as $aliasName) {
             $this->output->writeText("* {$aliasName}\n");
         }
