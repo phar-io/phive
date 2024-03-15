@@ -34,7 +34,7 @@ class RequestedPhar {
         PharIdentifier $identifier,
         VersionConstraint $versionConstraint,
         VersionConstraint $lockedVersion,
-        Filename $location = null,
+        ?Filename $location = null,
         bool $makeCopy = false
     ) {
         $this->identifier        = $identifier;

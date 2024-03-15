@@ -80,7 +80,7 @@ class RegressionTestCase extends TestCase {
      * @param string $version
      * @param string $filename
      */
-    protected function addPharToRegistry($name, $version, $filename, Filename $usage = null): void {
+    protected function addPharToRegistry($name, $version, $filename, ?Filename $usage = null): void {
         $phar = new Phar($name, new Version($version), new File(new Filename($filename), 'foo'));
         $this->getPharRegistry()->addPhar($phar);
 

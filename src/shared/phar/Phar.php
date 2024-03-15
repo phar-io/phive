@@ -30,7 +30,7 @@ class Phar {
     /** @var null|string */
     private $signatureFingerprint;
 
-    public function __construct(string $name, Version $version, File $file, string $signatureFingerprint = null) {
+    public function __construct(string $name, Version $version, File $file, ?string $signatureFingerprint = null) {
         $this->name                 = $name;
         $this->file                 = $file;
         $this->version              = $version;

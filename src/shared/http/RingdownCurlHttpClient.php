@@ -40,11 +40,11 @@ class RingdownCurlHttpClient implements HttpClient {
         $this->output = $output;
     }
 
-    public function get(Url $url, ETag $etag = null): HttpResponse {
+    public function get(Url $url, ?ETag $etag = null): HttpResponse {
         return $this->execWrapper('get', $url, $etag);
     }
 
-    public function head(Url $url, ETag $etag = null): HttpResponse {
+    public function head(Url $url, ?ETag $etag = null): HttpResponse {
         return $this->execWrapper('head', $url, $etag);
     }
 

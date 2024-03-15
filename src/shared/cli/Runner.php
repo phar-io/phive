@@ -137,7 +137,7 @@ class Runner {
     /**
      * @param array<int, array<string, mixed>> $trace
      */
-    private function showErrorWithTrace(string $error, string $file, int $line, array $trace = null): void {
+    private function showErrorWithTrace(string $error, string $file, int $line, ?array $trace = null): void {
         $baseLen = strlen(dirname(__DIR__, 3) . '') + 1;
 
         $message   = [$error];

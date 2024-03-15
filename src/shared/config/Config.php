@@ -33,7 +33,7 @@ class Config {
     public function __construct(
         Environment $environment,
         Options $cliOptions,
-        DateTimeImmutable $now = null
+        ?DateTimeImmutable $now = null
     ) {
         $this->environment = $environment;
         $this->cliOptions  = $cliOptions;

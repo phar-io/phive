@@ -31,7 +31,7 @@ class Factory {
     /** @var null|PharRegistry */
     private $registry;
 
-    public function __construct(Cli\Request $request, PhiveVersion $version = null) {
+    public function __construct(Cli\Request $request, ?PhiveVersion $version = null) {
         $this->request = $request;
         $this->version = $version;
     }
