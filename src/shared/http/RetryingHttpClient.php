@@ -46,19 +46,19 @@ class RetryingHttpClient implements HttpClient {
         $this->output   = $output;
     }
 
-    public function head(Url $url, ETag $etag = null): HttpResponse {
+    public function head(Url $url, ?ETag $etag = null): HttpResponse {
         $this->triesPerformed = 0;
 
         return $this->doTry('head', $url, $etag);
     }
 
-    public function get(Url $url, ETag $etag = null): HttpResponse {
+    public function get(Url $url, ?ETag $etag = null): HttpResponse {
         $this->triesPerformed = 0;
 
         return $this->doTry('get', $url, $etag);
     }
 
-    private function doTry(string $method, Url $url, ETag $etag = null): HttpResponse {
+    private function doTry(string $method, Url $url, ?ETag $etag = null): HttpResponse {
         try {
             $this->triesPerformed++;
 

@@ -68,7 +68,7 @@ class XmlFile {
         return $this->getDom()->createElementNS($this->namespace, $name, $text);
     }
 
-    public function query(string $xpath, DOMNode $ctx = null): DOMNodeList {
+    public function query(string $xpath, ?DOMNode $ctx = null): DOMNodeList {
         if ($ctx === null) {
             $ctx = $this->getDom()->documentElement;
         }

@@ -55,7 +55,7 @@ class CurlHttpClient implements HttpClient {
     /**
      * @throws HttpException
      */
-    public function head(Url $url, ETag $etag = null): HttpResponse {
+    public function head(Url $url, ?ETag $etag = null): HttpResponse {
         $this->url  = $url;
         $this->etag = $etag;
 
@@ -69,7 +69,7 @@ class CurlHttpClient implements HttpClient {
     /**
      * @throws HttpException
      */
-    public function get(Url $url, ETag $etag = null): HttpResponse {
+    public function get(Url $url, ?ETag $etag = null): HttpResponse {
         $this->url  = $url;
         $this->etag = $etag;
 

@@ -31,7 +31,7 @@ class SkelCommand implements Cli\Command {
     /** @var Output */
     private $output;
 
-    public function __construct(SkelCommandConfig $config, Cli\Output $output, PhiveVersion $version, DateTimeImmutable $now = null) {
+    public function __construct(SkelCommandConfig $config, Cli\Output $output, PhiveVersion $version, ?DateTimeImmutable $now = null) {
         $this->config  = $config;
         $this->version = $version;
 

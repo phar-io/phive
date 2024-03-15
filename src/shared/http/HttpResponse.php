@@ -23,7 +23,7 @@ class HttpResponse {
     /** @var null|RateLimit */
     private $rateLimit;
 
-    public function __construct(int $httpCode, string $responseBody, ETag $etag = null, RateLimit $rateLimit = null) {
+    public function __construct(int $httpCode, string $responseBody, ?ETag $etag = null, ?RateLimit $rateLimit = null) {
         $this->responseBody = $responseBody;
         $this->httpCode     = $httpCode;
         $this->etag         = $etag;

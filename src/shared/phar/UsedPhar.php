@@ -22,7 +22,7 @@ class UsedPhar extends Phar {
         Version $version,
         File $file,
         array $usages,
-        string $signatureFingerprint = null
+        ?string $signatureFingerprint = null
     ) {
         parent::__construct($name, $version, $file, $signatureFingerprint);
         $this->usages = $usages;

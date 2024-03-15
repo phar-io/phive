@@ -36,9 +36,9 @@ class ConfiguredPhar {
     public function __construct(
         string $name,
         VersionConstraint $versionConstraint,
-        Version $installedVersion = null,
-        Filename $location = null,
-        PharUrl $url = null,
+        ?Version $installedVersion = null,
+        ?Filename $location = null,
+        ?PharUrl $url = null,
         bool $copy = false
     ) {
         $this->name              = $name;

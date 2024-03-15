@@ -28,7 +28,7 @@ class SupportedRelease implements Release {
     /** @var null|Url */
     private $signatureUrl;
 
-    public function __construct(string $name, Version $version, PharUrl $url, Url $signatureUrl = null, Hash $expectedHash = null) {
+    public function __construct(string $name, Version $version, PharUrl $url, ?Url $signatureUrl = null, ?Hash $expectedHash = null) {
         $this->name         = $name;
         $this->version      = $version;
         $this->url          = $url;

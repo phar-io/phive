@@ -20,7 +20,7 @@ class UrlRepository implements SourceRepository {
     /**
      * UrlRepository constructor.
      */
-    public function __construct(Url $url = null, Url $sigUrl = null) {
+    public function __construct(?Url $url = null, ?Url $sigUrl = null) {
         $this->url    = $url;
         $this->sigUrl = $sigUrl;
     }
