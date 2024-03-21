@@ -59,7 +59,7 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws Cli\CommandOptionsException
+     * @throws CommandOptionsException
      * @throws ConfiguredPharException
      * @throws InstallCommandConfigException
      * @throws UnsupportedVersionConstraintException
@@ -106,7 +106,7 @@ class InstallCommandConfig {
     }
 
     /**
-     * @throws Cli\CommandOptionsException
+     * @throws CommandOptionsException
      * @throws InstallCommandConfigException
      * @throws UnsupportedVersionConstraintException
      *

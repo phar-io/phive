@@ -105,7 +105,7 @@ class PharDownloaderTest extends TestCase {
             $this->getPharRegistryMock()
         );
 
-        $this->expectException(\PharIo\Phive\VerificationFailedException::class);
+        $this->expectException(VerificationFailedException::class);
 
         $downloader->download($release);
     }

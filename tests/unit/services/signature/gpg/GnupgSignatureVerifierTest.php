@@ -33,7 +33,7 @@ class GnupgSignatureVerifierTest extends TestCase {
         $this->gnupg->verify('foo', 'bar')->willThrow(new Exception());
         $verifier = new GnupgSignatureVerifier($this->gnupg->reveal(), $this->keyservice->reveal());
 
-        $this->expectException(\PharIo\Phive\VerificationFailedException::class);
+        $this->expectException(VerificationFailedException::class);
 
         $verifier->verify('foo', 'bar', []);
     }

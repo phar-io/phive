@@ -123,6 +123,7 @@ abstract class PhiveXmlConfig {
      */
     public function getPhars(): array {
         $phars = [];
+
         /** @var DOMElement $pharNode */
         foreach ($this->configFile->query('//phive:phar') as $pharNode) {
             $phars[] = $this->nodeToConfiguredPhar($pharNode);

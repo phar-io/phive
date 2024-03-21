@@ -139,6 +139,7 @@ class TestStreamWrapper {
      */
     public function url_stat($path, $flags) {
         $translatedPath = $this->_translate($path, static::$basedir);
+
         // Suppress warnings if requested or if the file or directory does not
         // exist. This is consistent with PHP's plain filesystem stream wrapper.
         if ($flags & STREAM_URL_STAT_QUIET || !file_exists($translatedPath)) {

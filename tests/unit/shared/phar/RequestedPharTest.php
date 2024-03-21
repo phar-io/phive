@@ -118,7 +118,7 @@ class RequestedPharTest extends TestCase {
     }
 
     /**
-     * @return Filename|PHPUnit_Framework_MockObject_Mockobject
+     * @return Filename|PHPUnit_Framework_MockObject_MockObject
      */
     private function getFilenameMock() {
         return $this->createMock(Filename::class);

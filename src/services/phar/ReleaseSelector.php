@@ -57,6 +57,7 @@ class ReleaseSelector {
 
                     continue;
                 }
+
                 /** @var SupportedRelease $release */
                 if (!$acceptUnsigned && !$release->hasSignatureUrl()) {
                     $this->output->writeWarning(

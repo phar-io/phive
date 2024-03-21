@@ -37,7 +37,7 @@ class Sha384HashTest extends TestCase {
      * @dataProvider invalidHashProvider
      */
     public function testThrowsExceptionIfValueIsNotAValidSha384Hash($hashValue): void {
-        $this->expectException(\PharIo\Phive\InvalidHashException::class);
+        $this->expectException(InvalidHashException::class);
 
         new Sha384Hash($hashValue);
     }

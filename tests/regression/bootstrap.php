@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /*
  * This file is part of Phive.
  *
@@ -14,4 +15,4 @@ require __DIR__ . '/RegressionTestBootstrap.php';
 
 require __DIR__ . '/RegressionTestCase.php';
 
-(new \PharIo\Phive\RegressionTestBootstrap())->run();
+(new PharIo\Phive\RegressionTestBootstrap())->run();

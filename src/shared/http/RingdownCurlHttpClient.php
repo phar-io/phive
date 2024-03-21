@@ -58,6 +58,7 @@ class RingdownCurlHttpClient implements HttpClient {
 
             try {
                 $response = $this->client->{$method}($url, $etag);
+
                 /** @var HttpResponse $response */
                 if ($response->isSuccess()) {
                     return $response;

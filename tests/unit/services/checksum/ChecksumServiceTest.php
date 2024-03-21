@@ -32,7 +32,7 @@ class ChecksumServiceTest extends TestCase {
         $file    = new File(new Filename('foo'), 'bar');
         $service = new ChecksumService();
 
-        $this->expectException(\PharIo\Phive\InvalidHashException::class);
+        $this->expectException(InvalidHashException::class);
 
         $service->verify(new UnsupportedHashStub(), $file);
     }

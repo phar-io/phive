@@ -38,7 +38,7 @@ class Sha512HashTest extends TestCase {
      * @dataProvider invalidHashProvider
      */
     public function testThrowsExceptionIfValueIsNotAValidSha512Hash($hashValue): void {
-        $this->expectException(\PharIo\Phive\InvalidHashException::class);
+        $this->expectException(InvalidHashException::class);
 
         new Sha512Hash($hashValue);
     }
