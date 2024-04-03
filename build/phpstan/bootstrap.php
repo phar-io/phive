@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
-if (!class_exists('Gnupg')) {
-    class Gnupg {
+if (!class_exists('gnupg')) {
+    class gnupg {
         public function import($p): array {
         }
 

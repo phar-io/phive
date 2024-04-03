@@ -14,13 +14,13 @@ use function putenv;
 use PharIo\FileSystem\Directory;
 
 class GnuPG {
-    /** @var \GnuPG */
+    /** @var \gnupg */
     private $gnupg;
 
     /** @var Directory */
     private $homeDir;
 
-    public function __construct(\GnuPG $gnupg, Directory $homeDir) {
+    public function __construct(\gnupg $gnupg, Directory $homeDir) {
         $this->gnupg   = $gnupg;
         $this->homeDir = $homeDir;
     }
