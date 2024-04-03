@@ -18,14 +18,14 @@ use Prophecy\Prophecy\ObjectProphecy;
  * @covers \PharIo\Phive\GnupgSignatureVerifier
  */
 class GnupgSignatureVerifierTest extends TestCase {
-    /** @var \Gnupg|ObjectProphecy */
+    /** @var GnuPG|ObjectProphecy */
     private $gnupg;
 
     /** @var KeyService|ObjectProphecy */
     private $keyservice;
 
     protected function setUp(): void {
-        $this->gnupg      = $this->prophesize(Gnupg::class);
+        $this->gnupg      = $this->prophesize(GnuPG::class);
         $this->keyservice = $this->prophesize(KeyService::class);
     }
 
