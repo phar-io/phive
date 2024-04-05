@@ -116,7 +116,7 @@ class UrlTest extends TestCase {
         $this->assertEquals('/', (new Url('https://host'))->getPath());
     }
 
-    public function testFilenameCanBeRetreived(): void {
+    public function testFilenameCanBeRetrieved(): void {
         $this->assertEquals(
             new Filename('some.phar'),
             (new Url('https://example.com/some.phar'))->getFilename()
