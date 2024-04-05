@@ -152,7 +152,7 @@ That means strings like `v1.2.0` or `1.2` will turn into `1.2.0`.
 Please note: Version 0.13.x is the last to support PHP 7.1. Users are encouraged to upgrade to PHP 7.2 or later.
 
 ### Fixed
-* Github blocks HEAD requests to their API Rate Limit endpoint, use GET
+* GitHub blocks HEAD requests to their API Rate Limit endpoint, use GET
 
 
 ## [0.13.4] - 2020-09-18
@@ -222,7 +222,7 @@ Please note: Version 0.13.x is the last to support PHP 7.1. Uses are encouraged 
 ### Changed
 
 * Added `keys.openpgp.org` to keyserver list
-* Changed order of keyservers: new verifing keyserver first, use fedora & ubuntu second, sks as last resort
+* Changed order of keyservers: new verifying keyserver first, use fedora & ubuntu second, sks as last resort
   (This will be less of an issue once [#158](https://github.com/phar-io/phive/issues/158) is implemented.)
 
 ## [0.12.2] - 2019-06-02

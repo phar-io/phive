@@ -50,7 +50,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
             return $this->tryNext($requestedPhar);
         } catch (GithubAliasResolverException $e) {
             $this->output->writeWarning(
-                sprintf('Github API Rate Limit exceeded - cannot resolve "%s"', $name)
+                sprintf('GitHub API Rate Limit exceeded - cannot resolve "%s"', $name)
             );
 
             return $this->tryNext($requestedPhar);
@@ -87,7 +87,7 @@ class GithubAliasResolver extends AbstractRequestedPharResolver {
         $this->initRateLimit();
 
         if ($this->rateLimit->getRemaining() === 0) {
-            throw new GithubAliasResolverException('Github API over rate limit');
+            throw new GithubAliasResolverException('GitHub API over rate limit');
         }
     }
 

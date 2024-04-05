@@ -53,7 +53,7 @@ class HomePhiveXmlMigrationTest extends TestCase {
     /**
      * No phive.xml, and no global.xml.
      */
-    public function testNotInErrorWithBothOldANdNewMissing(): void {
+    public function testNotInErrorWithBothOldAndNewMissing(): void {
         $migration = $this->createMigration([]);
 
         $this->assertFalse($migration->inError());

@@ -124,7 +124,7 @@ class CurlHttpClientTest extends TestCase {
         $this->curlHttpClient->get($url);
     }
 
-    public function testHandleProgressInfoPassesEpectedObjectToProgressHandler(): void {
+    public function testHandleProgressInfoPassesExpectedObjectToProgressHandler(): void {
         $this->curl->method('getHttpCode')
             ->willReturn(200);
 
