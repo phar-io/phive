@@ -42,6 +42,7 @@ class InstallCommand implements Cli\Command {
         $targetDirectory = $this->getConfig()->getTargetDirectory();
 
         $todo = $this->getConfig()->getRequestedPhars();
+
         if (count($todo) === 0) {
             throw new InstallationFailedException('No phars to install');
         }
