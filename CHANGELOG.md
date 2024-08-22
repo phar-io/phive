@@ -2,6 +2,15 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.15.3] - 2024-08-22
+
+### Fixed
+* [#431](https://github.com/phar-io/phive/issues/431): Error while executing: Preparing php v8.4.0
+
+### Added
+* [#430](https://github.com/phar-io/phive/issues/430): Warn about missing configuration when running "phive install"
+
+
 ## [0.15.2] - 2022-08-02
 
 __Please note__: Version 0.15.x requires PHP 7.3 or later.
