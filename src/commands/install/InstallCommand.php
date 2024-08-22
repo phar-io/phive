@@ -41,7 +41,12 @@ class InstallCommand implements Cli\Command {
     public function execute(): void {
         $targetDirectory = $this->getConfig()->getTargetDirectory();
 
-        foreach ($this->getConfig()->getRequestedPhars() as $requestedPhar) {
+        $todo = $this->getConfig()->getRequestedPhars();
+        if (count($todo) === 0) {
+            throw new InstallationFailedException('No phars to install');
+        }
+
+        foreach ($todo as $requestedPhar) {
             $this->installRequestedPhar($requestedPhar, $targetDirectory);
         }
     }
