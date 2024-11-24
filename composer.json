@@ -29,7 +29,7 @@
     "phar-io/version": "^3.0.3"
   },
   "require-dev": {
-    "mikey179/vfsstream": "^1.6.4"
+    "mikey179/vfsstream": "^1.6.12"
   },
   "suggest": {
     "ext-gnupg": "*",
