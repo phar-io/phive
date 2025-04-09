@@ -10,6 +10,7 @@
  */
 namespace PharIo\Phive;
 
+use LogicException;
 use const PHP_QUERY_RFC3986;
 use function array_key_exists;
 use function basename;
@@ -44,7 +45,7 @@ class Url {
         return stripos($string, 'https://') === 0;
     }
 
-    public function __construct(string $uri, string $filename = null, array $requiredHeaders = []) {
+    public function __construct(string $uri, ?string $filename = null, array $requiredHeaders = []) {
         $components = $this->parseURL($uri);
         $this->ensureHttps($components['scheme'] ?? '');
         $this->uri      = $uri;
