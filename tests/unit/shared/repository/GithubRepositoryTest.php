@@ -13,6 +13,7 @@ namespace PharIo\Phive;
 use PharIo\Version\Version;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
+use function basename;
 
 /**
  * @covers \PharIo\Phive\GithubRepository
@@ -38,8 +39,8 @@ class GithubRepositoryTest extends TestCase {
             new SupportedRelease(
                 'foo',
                 new Version('5.3.0'),
-                new PharUrl('https://example.com/foo-5.3.0.phar'),
-                new Url('https://example.com/foo-5.3.0.phar.asc')
+                new PharUrl('https://example.com/foo-5.3.0.phar', 'foo-5.3.0.phar', ['Accept: application/octet-stream']),
+                new Url('https://example.com/foo-5.3.0.phar.asc', 'foo-5.3.0.phar.asc', ['Accept: application/octet-stream'])
             )
         );
         $expectedReleases->add(
@@ -53,12 +54,13 @@ class GithubRepositoryTest extends TestCase {
             new SupportedRelease(
                 'foo',
                 new Version('5.2.12'),
-                new PharUrl('https://example.com/foo-5.2.12.phar'),
-                new Url('https://example.com/foo-5.2.12.phar.asc')
+                new PharUrl('https://example.com/foo-5.2.12.phar', 'foo-5.2.12.phar', ['Accept: application/octet-stream']),
+                new Url('https://example.com/foo-5.2.12.phar.asc', 'foo-5.2.12.phar.asc', ['Accept: application/octet-stream'])
             )
         );
 
         $repository = new GithubRepository($jsonData);
+
         $this->assertEquals(
             $expectedReleases,
             $repository->getReleasesByRequestedPhar($requestedPhar)
@@ -70,8 +72,8 @@ class GithubRepositoryTest extends TestCase {
      * @param string $url
      */
     private function getGithubEntry($version, $url): array {
-        $asset = ['browser_download_url' => $url];
-        $sig   = ['browser_download_url' => $url . '.asc'];
+        $asset = ['url' => $url, 'name' => basename($url)];
+        $sig   = ['url' => $url . '.asc', 'name' => basename($url) . '.asc'];
 
         return [
             'tag_name' => $version,
