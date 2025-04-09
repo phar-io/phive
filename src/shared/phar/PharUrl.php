@@ -19,7 +19,7 @@ use PharIo\Version\Version;
 
 class PharUrl extends Url implements PharIdentifier {
     public function getPharName(): string {
-        $filename = $this->getFilename()->asString(); //pathinfo($this->asString(), PATHINFO_FILENAME);
+        $filename = pathinfo($this->getFilename()->asString(), PATHINFO_FILENAME);
         preg_match('/(.*)-[\d]+.[\d]+.[\d]+.*/', $filename, $matches);
 
         if (count($matches) !== 2) {
@@ -33,7 +33,7 @@ class PharUrl extends Url implements PharIdentifier {
      * @throws UnsupportedVersionConstraintException
      */
     public function getPharVersion(): Version {
-        $filename = $this->getFilename()->asString(); //pathinfo($this->asString(), PATHINFO_FILENAME);
+        $filename = pathinfo($this->getFilename()->asString(), PATHINFO_FILENAME);
         preg_match('/-[vVrR]?([\d]+.[\d]+.[\d]+.*)/', $filename, $matches);
 
         if (count($matches) !== 2) {
