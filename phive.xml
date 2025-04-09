@@ -5,4 +5,5 @@
   <phar name="phpstan" version="^1.0" installed="1.12.23" location="./tools/phpstan" copy="false"/>
   <phar name="php-cs-fixer" version="^3.13.2" installed="3.75.0" location="./tools/php-cs-fixer" copy="false"/>
   <phar name="psalm" version="^4.0" installed="4.30.0" location="./tools/psalm" copy="false"/>
+  <phar name="composer" version="^2.8.5" installed="2.8.8" location="./tools/composer" copy="false"/>
 </phive>
