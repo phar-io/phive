@@ -39,16 +39,17 @@ class GithubRepository implements SourceRepository {
             $signatureUrl = null;
 
             foreach ($entry['assets'] as $asset) {
-                $url = $asset['browser_download_url'];
+                $assetUrl = $asset['url'];
+                $assetName = $asset['name'];
 
-                if (substr($url, -5, 5) === '.phar') {
-                    $pharUrl = new PharUrl($url);
+                if (substr($assetName, -5, 5) === '.phar') {
+                    $pharUrl = new PharUrl($assetUrl, $assetName, ['Accept: application/octet-stream']);
 
                     continue;
                 }
 
-                if (in_array(substr($url, -4, 4), ['.asc', '.sig'], true)) {
-                    $signatureUrl = new Url($url);
+                if (in_array(substr($assetName, -4, 4), ['.asc', '.sig'], true)) {
+                    $signatureUrl = new Url($assetUrl, $assetName, ['Accept: application/octet-stream']);
                 }
             }
 

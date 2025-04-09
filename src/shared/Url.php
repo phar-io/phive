@@ -10,6 +10,7 @@
  */
 namespace PharIo\Phive;
 
+use LogicException;
 use const PHP_QUERY_RFC3986;
 use function array_key_exists;
 use function basename;
@@ -32,6 +33,10 @@ class Url {
     /** @var string */
     private $path;
 
+    private ?string $filename;
+
+    private array $requiredHeaders;
+
     public static function isUrl(string $string): bool {
         return strpos($string, '://') !== false;
     }
@@ -40,12 +45,14 @@ class Url {
         return stripos($string, 'https://') === 0;
     }
 
-    public function __construct(string $uri) {
+    public function __construct(string $uri, ?string $filename = null, array $requiredHeaders = []) {
         $components = $this->parseURL($uri);
         $this->ensureHttps($components['scheme'] ?? '');
         $this->uri      = $uri;
         $this->hostname = $components['host'];
         $this->path     = array_key_exists('path', $components) ? $components['path'] : '/';
+        $this->filename = $filename;
+        $this->requiredHeaders = $requiredHeaders;
     }
 
     public function __toString(): string {
@@ -64,8 +71,16 @@ class Url {
         return $this->path;
     }
 
+    public function hasRequiredHeaders(): bool {
+        return !empty($this->requiredHeaders);
+    }
+
+    public function getRequiredHeaders(): array {
+        return $this->requiredHeaders;
+    }
+
     public function getFilename(): Filename {
-        return new Filename(basename($this->getPath()));
+        return new Filename($this->filename ?? basename($this->getPath()));
     }
 
     public function withParams(array $params): self {

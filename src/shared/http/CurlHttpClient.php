@@ -146,6 +146,12 @@ class CurlHttpClient implements HttpClient {
             $headers[] = $this->config->getAuthentication($hostname)->asHttpHeaderString();
         }
 
+        if ($this->url->hasRequiredHeaders()) {
+            foreach($this->url->getRequiredHeaders() as $requiredHeader) {
+                $headers[] = $requiredHeader;
+            }
+        }
+
         if (count($headers) > 0) {
             $this->curl->addHttpHeaders($headers);
         }
