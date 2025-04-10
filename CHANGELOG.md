@@ -2,6 +2,20 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [0.16.0] - 2025-04-10
+
+__Please note__: Version 0.16.x requires PHP 8.0 or later.
+
+### Added
+* Phive can now download phars from private github repositories (given an GITHUB_AUTH_TOKEN is set or an entry ith the auth.xml exists). This finally closes the last (edge) case missing in [#40](https://github.com/phar-io/phive/issues/40) for github.
+
+### Fixed
+* [#443](https://github.com/phar-io/phive/issues/443): RingdownCurlHttpClient removes unavailable hosts too aggressively (thanks @lukaslangen)
+
+### Removed
+* [#435](https://github.com/phar-io/phive/pull/435): Remove defunct pgp.mit.edu as keyserver
+
+
 ## [0.15.3] - 2024-08-22
 
 ### Fixed
