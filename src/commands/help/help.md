@@ -67,13 +67,15 @@
     
     _-s, --status_   Show the status of all migrations
 
-**update [--prefer-offline] [<alias1> <alias2> ...]**
+**update [--prefer-offline] [--trust-gpg-keys] [<alias1> <alias2> ...]**
     Update PHARs configured in the project's phive.xml to the newest applicable version.
 
-    _--prefer-offline_    Try to use local PHARs first, only connect to remote repositories
-                        if no local PHAR satisfies the given version constraint.
+    _--prefer-offline_         Try to use local PHARs first, only connect to remote repositories
+                             if no local PHAR satisfies the given version constraint.
+    _--trust-gpg-keys_         Silently import these keys when required (40-digit fingerprint
+                             or 16-digit long key ID, optionally with the `0x` prefix, separated by comma)
 
-    _alias_               If one or more aliases are provided, only those will be updated
+    _alias_                    If one or more aliases are provided, only those will be updated
 
 **update-repository-list**
     Update the alias list of known PHAR distributed applications and libraries

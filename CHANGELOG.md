@@ -2,6 +2,11 @@
 
 All notable changes to Phive are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [Unreleased]
+
+### Added
+* Added `--trust-gpg-keys` option to the `update` command to silently import GPG keys when required
+
 ## [0.16.0] - 2025-04-10
 
 __Please note__: Version 0.16.x requires PHP 8.0 or later.
