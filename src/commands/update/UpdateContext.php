@@ -10,13 +10,19 @@
  */
 namespace PharIo\Phive;
 
+use function in_array;
 use PharIo\Phive\Cli\GeneralContext;
 
 class UpdateContext extends GeneralContext {
+    public function requiresValue(string $option): bool {
+        return in_array($option, ['trust-gpg-keys'], true);
+    }
+
     protected function getKnownOptions(): array {
         return [
             'force-accept-unsigned' => false,
             'prefer-offline'        => false,
+            'trust-gpg-keys'        => false,
             'global'                => 'g'
         ];
     }
