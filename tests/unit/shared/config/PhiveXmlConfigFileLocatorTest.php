@@ -34,10 +34,28 @@ class PhiveXmlConfigFileLocatorTest extends TestCase {
         $locator = new PhiveXmlConfigFileLocator(
             $environmentMock,
             new Config($environmentMock, new Options()),
+            new Options(),
             $outputMock
         );
 
         $locator->getFile(false);
+    }
+
+    public function testReturnsConfigPathWhenConfigOptionIsSet(): void {
+        $customConfigPath = '/custom/path/phars.xml';
+        $options          = new Options();
+        $options->setOption('config', $customConfigPath);
+
+        $locator = new PhiveXmlConfigFileLocator(
+            $this->getEnvironmentMock(),
+            $this->createMock(Config::class),
+            $options,
+            $this->getOutputMock()
+        );
+
+        $result = $locator->getFile();
+
+        $this->assertEquals($customConfigPath, $result->asString());
     }
 
     /**

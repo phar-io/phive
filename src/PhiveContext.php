@@ -10,11 +10,12 @@
  */
 namespace PharIo\Phive;
 
+use function in_array;
 use PharIo\Phive\Cli\GeneralContext;
 
 class PhiveContext extends GeneralContext {
     public function requiresValue(string $option): bool {
-        return $option === 'home';
+        return in_array($option, ['home', 'config'], true);
     }
 
     public function acceptsArguments(): bool {
@@ -30,6 +31,7 @@ class PhiveContext extends GeneralContext {
             'version'     => false,
             'help'        => false,
             'home'        => false,
+            'config'      => false,
             'no-progress' => false
         ];
     }

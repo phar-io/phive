@@ -448,6 +448,7 @@ class Factory {
         return new PhiveXmlConfigFileLocator(
             $this->getEnvironment(),
             $this->getConfig(),
+            $this->request->getOptions(),
             $this->getOutput()
         );
     }

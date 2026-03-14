@@ -22,13 +22,21 @@ class PhiveXmlConfigFileLocator {
     /** @var Cli\Output */
     private $output;
 
-    public function __construct(Environment $environment, Config $config, Cli\Output $output) {
+    /** @var Cli\Options */
+    private $options;
+
+    public function __construct(Environment $environment, Config $config, Cli\Options $options, Cli\Output $output) {
         $this->environment = $environment;
         $this->config      = $config;
+        $this->options     = $options;
         $this->output      = $output;
     }
 
     public function getFile(): Filename {
+        if ($this->options->hasOption('config')) {
+            return new Filename($this->options->getOption('config'));
+        }
+
         $primary  = $this->config->getProjectInstallation();
         $fallback = $this->environment->getWorkingDirectory()->file('phive.xml');
 

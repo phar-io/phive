@@ -3,6 +3,7 @@
 
 **Global options:**
     _--home_         Set a custom Phive home directory (default: ~/.phive)
+    _--config_       Use a custom project configuration file (default: .phive/phars.xml or phive.xml)
     _--no-progress_  Do not print progress updates during file downloads
 
 **Commands:**

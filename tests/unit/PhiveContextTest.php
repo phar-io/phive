@@ -29,9 +29,14 @@ class PhiveContextTest extends TestCase {
         $this->assertFalse($context->canContinue());
     }
 
-    public function testKnowsHomeOptions(): void {
+    public function testKnowsHomeOption(): void {
         $context = new PhiveContext();
         $this->assertTrue($context->knowsOption('home'));
+    }
+
+    public function testKnowsConfigOption(): void {
+        $context = new PhiveContext();
+        $this->assertTrue($context->knowsOption('config'));
     }
 
     /**
@@ -48,6 +53,7 @@ class PhiveContextTest extends TestCase {
     public function requiresValueTestDataProvider() {
         return [
             ['home', true],
+            ['config', true],
             ['foo', false],
             ['home2', false]
         ];
